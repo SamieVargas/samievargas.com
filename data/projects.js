@@ -63,7 +63,7 @@ export const FEATURED_PROJECTS = [
     filters: ['AI Agent'],
     tags: ['JavaScript', 'Anthropic API', 'AI Agent', 'Prompt Engineering', 'Cloudflare Workers', 'GitHub Pages', 'Two-Call Architecture'],
     links: [
-      { href: 'https://samievargas.github.io/signal/', label: 'Try it →' },
+      { href: 'https://samievargas.com/signal/', label: 'Try it →' },
     ],
     dim: false,
   },
@@ -110,7 +110,7 @@ export const FEATURED_PROJECTS = [
     filters: ['AI Agent'],
     tags: ['JavaScript', 'Anthropic API', 'AI Agent', 'Cloudflare Workers', 'Prompt Engineering', 'GitHub Pages', 'UX Design'],
     links: [
-      { href: 'https://samievargas.github.io/brain-dump', label: 'Try it →' },
+      { href: 'https://samievargas.com/brain-dump', label: 'Try it →' },
       { href: 'https://github.com/SamieVargas/brain-dump', label: 'View on GitHub →' },
     ],
   },
@@ -344,12 +344,12 @@ export const FEATURED_PROJECTS = [
       slides: [
         {
           type: 'iframe',
-          src: 'https://samievargas.github.io/assets/atx-foodie-inspection/atx_choropleth_site_widget.html',
+          src: 'https://samievargas.com/assets/atx-foodie-inspection/atx_choropleth_site_widget.html',
           label: 'Zip Code Compliance Map',
         },
         {
           type: 'iframe',
-          src: 'https://samievargas.github.io/assets/atx-foodie-inspection/atx_zipcode_site_widget.html',
+          src: 'https://samievargas.com/assets/atx-foodie-inspection/atx_zipcode_site_widget.html',
           label: 'Zip Code Lookup',
         },
         {
@@ -406,14 +406,14 @@ export const GRID_PROJECTS = [
           src: './assets/tarot-tracker/deck.png',
           alt: 'Tarot Tracker spread view',
           label: 'Live App',
-          link: 'https://samievargas.github.io/tarot-tracker/',
+          link: 'https://samievargas.com/tarot-tracker/',
         },
         {
           type: 'img',
           src: './assets/tarot-tracker/card.png',
           alt: 'Tarot Tracker card view',
           label: 'Card History',
-          link: 'https://samievargas.github.io/tarot-tracker/',
+          link: 'https://samievargas.com/tarot-tracker/',
         },
       ],
     },
