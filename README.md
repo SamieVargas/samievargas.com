@@ -1,5 +1,5 @@
 # samievargas.github.io
-My portfolio site. Live at [samievargas.github.io](https://samievargas.github.io).
+My portfolio site. Live at [samievargas.com](https://samievargas.com).
 
 ---
 
@@ -96,4 +96,4 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 
 ## Contact
 
-[samievargas.github.io](https://samievargas.github.io) has everything. Email is on the contact section. LinkedIn is [linkedin.com/in/samievargas12](https://www.linkedin.com/in/samievargas12/). Kaggle is [kaggle.com/samievargas](https://www.kaggle.com/samievargas) if you want to see the notebooks.
+[samievargas.com](https://samievargas.com) has everything. Email is on the contact section. LinkedIn is [linkedin.com/in/samievargas12](https://www.linkedin.com/in/samievargas12/). Kaggle is [kaggle.com/samievargas](https://www.kaggle.com/samievargas) if you want to see the notebooks.

@@ -25,7 +25,7 @@ export const OBSERVATIONS = [
   source: {
     text: 'Full story with photos and data →',
     linkText: 'The Raccoon Invoice ↗',
-    linkHref: 'https://samievargas.github.io/raccoon/',
+    linkHref: 'https://samievargas.com/raccoon/',
     suffix: '',
   },
 },
