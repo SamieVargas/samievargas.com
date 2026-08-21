@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231A6B5A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='20' fill='white'%3ES%3C/text%3E%3C/svg%3E">
 
@@ -13,14 +16,12 @@
     gtag('config', 'G-K7B7NDTKEL');
   </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Samie Vargas</title>
-  <meta name="description" content="Samie Vargas — operations and analytics work out of Austin, TX.">
+  <meta name="description" content="Samie Vargas — customer success operations to AI go-to-market. Eight years running enterprise accounts, now building the AI tools that do the work by hand. Austin, TX.">
 
   <!-- OG / Social -->
   <meta property="og:title"       content="Samie Vargas">
-  <meta property="og:description" content="Operations and analytics. Austin, TX">
+  <meta property="og:description" content="I build the systems that make revenue teams work. Austin, TX">
   <meta property="og:image"       content="https://samievargas.com/og-image.png">
   <meta property="og:url"         content="https://samievargas.com">
   <meta property="og:type"        content="website">
@@ -29,136 +30,311 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<!-- ── PROGRESS BAR ────────────────────────────────────────── -->
-<div id="progress-bar"></div>
-
-<!-- ── BACK TO TOP ─────────────────────────────────────────── -->
-<button id="back-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
-<!-- ── TOAST ───────────────────────────────────────────────── -->
-<div id="toast"></div>
-
-<!-- ── COMMAND PALETTE ──────────────────────────────────────── -->
-<div id="cmd-palette" class="cmd-overlay" hidden aria-modal="true" role="dialog" aria-label="Command palette">
-  <div class="cmd-modal">
-    <div class="cmd-search-row">
-      <span class="cmd-search-icon">⌘</span>
-      <input id="cmd-input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false">
-      <kbd class="cmd-esc-hint">ESC</kbd>
-    </div>
-    <ul id="cmd-list" class="cmd-list" role="listbox"></ul>
-  </div>
-</div>
-
 <!-- ── NAV ─────────────────────────────────────────────────── -->
-<nav>
-  <a class="nav-name" href="#">Samie Vargas</a>
-  <ul class="nav-links">
-    <li><a href="#experience"   data-nav="experience">Experience</a></li>
-    <li><a href="#work"         data-nav="work">Work</a></li>
-    <li><a href="#skills"       data-nav="skills">Skills</a></li>
-    <li><a href="#observations" data-nav="observations">Observations</a></li>
-    <li><a href="#about"        data-nav="about">About</a></li>
-    <li><a href="#contact"      data-nav="contact">Contact</a></li>
-    <li>
-      <button id="dark-toggle" class="nav-icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode (⌘D)">
-        <span class="icon-moon" aria-hidden="true">☽</span>
-        <span class="icon-sun"  aria-hidden="true">☀</span>
-      </button>
-    </li>
-    <li>
-      <button id="cmd-trigger" class="nav-icon-btn" aria-label="Open command palette" title="Command palette (⌘K)">
-        ⌘K
-      </button>
-    </li>
-    <li><a class="nav-resume" href="./Resume.pdf" target="_blank" rel="noopener">Resume ↓</a></li>
-  </ul>
+<nav class="nav">
+  <a class="nav__name" href="#top">Samie Vargas</a>
+  <ul class="nav__links" id="nav-links"></ul>
+  <a class="nav__mobile-cta btn btn--accent" href="#contact">Contact</a>
 </nav>
 
-<!-- ── HERO — dark magazine split ──────────────────────────── -->
-<header class="hero" id="hero">
-  <div class="hero-left">
-    <div>
-      <div class="hero-kicker" id="hero-kicker">Senior Manager · Austin, TX</div>
-      <h1 class="hero-name">Samie<em>Vargas</em></h1>
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<header class="hero" id="top">
+  <aside class="hero__rail">
+    <dl>
+      <dt class="label label--mid">Now</dt>
+      <dd>Senior Manager,<br>Service · GLG</dd>
+    </dl>
+    <dl>
+      <dt class="label label--mid">Next</dt>
+      <dd class="accent">AI go-to-market</dd>
+    </dl>
+    <dl>
+      <dt class="label label--mid">Based</dt>
+      <dd>Austin, TX<br>Remote</dd>
+    </dl>
+    <p class="status"><i class="status__dot"></i><span>Exploring roles</span></p>
+    <div class="hero__count">
+      <p class="label label--mid">Shipped</p>
+      <strong>12</strong>
     </div>
-    <div>
-      <div class="otw-badge">
-        <span class="otw-dot"></span>
-        <span class="open-text" style="font-family:var(--mono);font-size:.68rem;color:#6bc4ac;text-transform:uppercase;letter-spacing:.08em;">Exploring</span>
-      </div>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#work">See My Work</a>
-        <a class="btn btn-ghost-dark" href="https://linkedin.com/in/samievargas12" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn btn-ghost-dark" href="https://github.com/SamieVargas" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn btn-ghost-dark" href="./Resume.pdf" target="_blank" rel="noopener">Resume ↓</a>
-      </div>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div>
-      <p class="hero-pos">8 years in enterprise CS ops, now building AI tools that do the work I used to do by hand. I take a messy real-world workflow, find where the signal is, and ship something that acts on it.</p>
-      <p class="hero-tagline">I sit at the intersection of the business problem and the data layer, and build at both ends. Most of what's here started as a problem I had and a thing I shipped to fix it.</p>
-    </div>
-    <div class="hero-teasers">
-      <div class="hero-teaser">
-        <div class="teaser-k">Latest Project</div>
-        <div class="teaser-v" id="hero-latest-project">Signal — AI account-intelligence tool for CS, live at samievargas.com/signal</div>
-      </div>
-      <div class="hero-teaser">
-        <div class="teaser-k">Latest Observation</div>
-        <div class="teaser-v" id="hero-latest-obs">"The 0.60 reorder rate is technically correct and also meaningless"</div>
-      </div>
+  </aside>
+
+  <div class="hero__body">
+    <p class="hero__kicker">Customer success operations → AI go-to-market</p>
+    <h1>I build the systems that make <em>revenue teams</em> work.</h1>
+    <p class="lead">Eight years running enterprise customer accounts — health scoring, renewal forecasting, a Center of Excellence built from nothing. Now I build the AI tools that do the work I used to do by hand.</p>
+    <p class="hero__note">Everything here started as a problem I had and a thing I shipped to fix it.</p>
+    <div class="hero__actions">
+      <a class="btn btn--solid" href="#work">See the work</a>
+      <a class="btn btn--ghost" href="./Resume.pdf" target="_blank" rel="noopener">Résumé ↓</a>
+      <a class="btn btn--ghost" href="https://www.linkedin.com/in/samievargas12/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
 </header>
 
-<!-- ── OBS TEASER BAND — dark continuation ─────────────────── -->
-<div class="obs-band">
-  <div class="obs-band-head">
-    <span class="obs-band-l">From the Observations archive</span>
-    <a class="obs-band-r" href="#observations">read all 7 ↓</a>
+<!-- ── STATS ───────────────────────────────────────────────── -->
+<div class="stats" data-reveal>
+  <div>
+    <strong>$14M+</strong>
+    <p>Enterprise book managed across a team of client solutions managers.</p>
   </div>
-  <div class="obs-qs">
-    <div class="oq">
-      <div class="oq-src">Instacart · 3.4M orders · dbt</div>
-      <div class="oq-text">"The 0.60 reorder rate is technically correct and also meaningless"</div>
-    </div>
-    <div class="oq">
-      <div class="oq-src">Life in Pixels · behavioral data</div>
-      <div class="oq-text">"A walk is worth +0.5: what my own mood data showed"</div>
-    </div>
-    <div class="oq">
-      <div class="oq-src">Garmin · personal biometric data</div>
-      <div class="oq-text">"My nervous system knew about the raccoon before I did"</div>
-    </div>
+  <div>
+    <strong>60%</strong>
+    <p>Less prep time per quarterly review after rolling out AI workflows to 8 managers.</p>
+  </div>
+  <div>
+    <strong>3.4M</strong>
+    <p>Grocery orders modeled to find where an industry-standard metric breaks.</p>
   </div>
 </div>
 
-<!-- ── DYNAMIC SECTIONS (populated by js/main.js → render.js) -->
-<section id="experience"></section>
-<section id="work"></section>
-<section id="skills"></section>
-<section id="observations"></section>
-<section id="about"></section>
-<section id="contact"></section>
+<!-- ── SIGNAL — the feature ────────────────────────────────── -->
+<section class="section section--alt" id="signal">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">Start here</span>
+      <h2>The thing I built for the job I do</h2>
+    </div>
+    <a class="label label--mid" href="https://samievargas.com/signal/" target="_blank" rel="noopener">samievargas.com/signal ↗</a>
+  </div>
+
+  <div class="signal rule-top" data-reveal>
+    <a class="signal__shot" href="https://samievargas.com/signal/" target="_blank" rel="noopener">
+      <img src="assets/signal/signal-7.png" alt="Signal — accounts ranked by risk, each with a one-line read" loading="lazy" width="1200" height="800">
+    </a>
+    <div>
+      <p class="label label--accent">AI agent · in use · built solo</p>
+      <h3>Signal</h3>
+      <p class="lead">I spent eight years doing an hour of account digging before every quarterly review. Signal does it in a minute.</p>
+      <p class="signal__note">Paste in call notes, decks, CRM exports — anything. It returns a read on the account, an analysis of who actually matters, ranked places to press, and a single “do this today.”</p>
+      <div class="signal__actions">
+        <a class="btn btn--accent" href="https://samievargas.com/signal/" target="_blank" rel="noopener">Try Signal</a>
+        <a class="btn btn--ghost" href="https://samievargas.com/brain-dump" target="_blank" rel="noopener">Brain Dump</a>
+      </div>
+      <div class="minigrid">
+        <div><strong>60 min → 1</strong><span>Prep per account</span></div>
+        <div><strong>4 modes</strong><span>Brief · risk · relationship · pre-call</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ────────────────────────────────────────────────── -->
+<section class="section" id="work">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">01</span>
+      <h2>Selected work</h2>
+    </div>
+    <div class="section__head-r">
+      <span class="label label--mid" id="work-count"></span>
+      <span class="seg-wrap">
+        <span class="label label--mid">Read as</span>
+        <span class="seg" id="read-as">
+          <button type="button" class="is-on" data-mode="plain">Plain</button>
+          <button type="button" data-mode="tech">Technical</button>
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div class="filters" id="filters" data-reveal></div>
+  <div class="cards" id="cards"></div>
+
+  <div style="margin-top:36px" data-reveal>
+    <p class="label label--mid" style="margin-bottom:14px">Also built</p>
+    <div class="mini-cards" id="also"></div>
+  </div>
+</section>
+
+<!-- ── THE FIELD ───────────────────────────────────────────── -->
+<section class="section" id="field">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">02b</span>
+      <h2>Everything here started as something I noticed</h2>
+    </div>
+    <span class="label label--mid">Click a dot</span>
+  </div>
+  <p class="field__intro">Left is where I only noticed something. Right is where I built something about it. Top half was my job, bottom half was my life. The two halves turn out to look the same.</p>
+
+  <div class="field rule-top">
+    <div>
+      <div class="plot" id="plot">
+        <span class="plot__axis plot__axis--tl">Work</span>
+        <span class="plot__axis plot__axis--bl">Life</span>
+        <span class="plot__axis plot__axis--tr">Built it →</span>
+      </div>
+      <div class="plot-key">
+        <div><i></i><span class="label label--mid">Something you can open</span></div>
+        <div><i></i><span class="label label--mid">A note, no artifact</span></div>
+      </div>
+    </div>
+    <article class="field__card" id="field-card"></article>
+  </div>
+</section>
+
+<!-- ── CURRENTLY BUILDING ──────────────────────────────────── -->
+<section class="section section--alt" id="building">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">02</span>
+      <h2>Currently building</h2>
+    </div>
+  </div>
+  <div id="building-rows" data-reveal></div>
+</section>
+
+<!-- ── EXPERIENCE ──────────────────────────────────────────── -->
+<section class="section" id="experience">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">03</span>
+      <h2>Experience</h2>
+    </div>
+    <button type="button" class="btn btn--ghost btn--sm" id="roles-toggle-all">Expand all</button>
+  </div>
+  <div class="exp" data-reveal>
+    <div class="exp__co">
+      <h3>GLG</h3>
+      <p>Austin, TX · Remote<br>Jul 2018 – Present<br>3 roles · 8 years</p>
+    </div>
+    <div id="roles"></div>
+  </div>
+</section>
+
+<!-- ── SKILLS AND CREDENTIALS ──────────────────────────────── -->
+<section class="section section--alt" id="skills">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">04</span>
+      <h2>Skills and credentials</h2>
+    </div>
+  </div>
+  <div class="tabs" id="skill-tabs" role="tablist" data-reveal></div>
+  <div id="skill-panels" style="margin-bottom:40px"></div>
+
+  <div data-reveal>
+    <div id="certs"></div>
+    <div class="cert-more">
+      <span class="label label--mid">8 further credentials — Google BI, Google AI, Anthropic, Databricks, GA4, PMI</span>
+      <button type="button" class="btn btn--ghost btn--sm" id="certs-toggle">Show all</button>
+    </div>
+    <div class="cert-list" id="other-certs" hidden></div>
+  </div>
+</section>
+
+<!-- ── OBSERVATIONS ────────────────────────────────────────── -->
+<section class="section" id="writing">
+  <div class="section__head" style="margin-bottom:8px" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">05</span>
+      <h2>Observations</h2>
+    </div>
+    <span class="label" id="obs-counter"></span>
+  </div>
+  <p class="label" style="margin-bottom:26px">Notes from the data I live in</p>
+
+  <div class="obs rule-top" data-reveal>
+    <div>
+      <p class="label label--accent" id="obs-tag"></p>
+      <h3 id="obs-title"></h3>
+      <div class="obs__nav">
+        <button type="button" class="arrow" id="obs-prev" aria-label="Previous observation">‹</button>
+        <button type="button" class="arrow" id="obs-next" aria-label="Next observation">›</button>
+        <div class="dots" id="obs-dots"></div>
+      </div>
+    </div>
+    <div>
+      <div id="obs-chart"></div>
+      <div class="obs__body" id="obs-body"></div>
+      <p class="obs__src" id="obs-src"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ───────────────────────────────────────────────── -->
+<section class="section section--alt" id="about">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">06</span>
+      <h2>About</h2>
+    </div>
+  </div>
+
+  <div class="about rule-top" data-reveal>
+    <div id="facts"></div>
+
+    <div class="about__bio">
+      <p>Eight years managing a $14M+ book of enterprise accounts. Most of what I built didn't exist before I built it — health scoring systems, renewal pipeline architecture, Salesforce dashboards, team playbooks, a Center of Excellence from scratch. I'm good at finding the thing that's missing and building it before anyone's formally asked.</p>
+      <p>I've been layering in data analytics because I kept running into the same wall: the numbers existed, the insight was sitting right there, and nothing changed. The certificates, the Instacart project, the Austin inspection analysis all came from the same impulse. Sit with the mess long enough and something shows up.</p>
+      <p style="margin-bottom:30px">This site is a portfolio but it's also just me. I'd be building most of this stuff regardless.</p>
+
+      <p class="label label--mid" style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule)">Beyond the résumé</p>
+      <div class="carousel">
+        <div class="carousel__track" id="interests"></div>
+      </div>
+      <div class="carousel__nav">
+        <button type="button" class="arrow arrow--sm" id="int-prev" aria-label="Previous">‹</button>
+        <button type="button" class="arrow arrow--sm" id="int-next" aria-label="Next">›</button>
+        <div class="dots" id="int-dots"></div>
+      </div>
+
+      <div class="media">
+        <div>
+          <p class="label label--mid" style="margin-bottom:10px">Listening to</p>
+          <iframe src="https://open.spotify.com/embed/playlist/3oLN1CsU4GEi8N3q6SbhbE?utm_source=generator&amp;theme=0" height="152" frameborder="0" allowfullscreen loading="lazy" title="Spotify playlist" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        </div>
+        <div class="media__cols">
+          <div>
+            <p class="label label--mid" style="margin-bottom:10px">Reading</p>
+            <p>Agatha Christie<br>Seishi Yokomizo<br>Terry Pratchett</p>
+          </div>
+          <div>
+            <p class="label label--mid" style="margin-bottom:10px">Playing</p>
+            <p>House Flipper 2<br>Ring Fit<br>Stardew Valley</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────────────── -->
+<section class="section" id="contact">
+  <div class="section__head" data-reveal>
+    <div class="section__head-l">
+      <span class="section__num">07</span>
+      <h2>Contact</h2>
+    </div>
+  </div>
+  <div class="contact rule-top" data-reveal>
+    <div>
+      <h3>Come say <em>howdy</em>.</h3>
+      <p>Open to conversations about AI go-to-market, revenue operations, and anything where a messy workflow needs a system built around it.</p>
+      <button type="button" class="btn btn--solid" id="copy-email">Copy my email</button>
+    </div>
+    <div class="links" id="contact-links"></div>
+  </div>
+</section>
 
 <!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer>
-  <p>© 2026 Samie Vargas</p>
-  <p>Austin, TX · Remote</p>
+<footer class="footer">
+  <span class="label label--mid">© 2026 Samie Vargas</span>
+  <span class="label label--mid">Austin, TX · Remote</span>
 </footer>
 
-<!-- ── JS (type=module = auto-deferred; runs after DOM ready) -->
-<script type="module" src="js/main.js"></script>
+<!-- ── MOBILE TAB BAR ──────────────────────────────────────── -->
+<nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/app.js"></script>
 </body>
 </html>
