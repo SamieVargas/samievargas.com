@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Résumé — Samie Vargas</title>
+<meta name="description" content="Samie Vargas — applied-AI operator in enterprise customer success. Austin, TX · remote. Printable résumé.">
+<link rel="canonical" href="https://samievargas.com/resume">
+<meta name="theme-color" content="#1a6b5a">
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f4f1e8;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #16150f;
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+  a { color: #1a6b5a; text-decoration: none; }
+
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    padding: 14px 24px; background: #fbf9f3; border-bottom: 1px solid #e2ddce;
+  }
+  .bar a.brand { font: 400 17px 'Newsreader', Georgia, serif; color: #16150f; }
+  .bar .actions { display: flex; gap: 8px; }
+  .bar .btn {
+    font: 400 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase;
+    padding: 9px 14px; white-space: nowrap; cursor: pointer;
+  }
+  .bar .solid { background: #16150f; color: #fbf9f3; border: 1px solid #16150f; }
+  .bar .solid:hover { background: #1a6b5a; border-color: #1a6b5a; color: #fbf9f3; }
+  .bar .ghost { border: 1px solid #c9c3b1; color: #16150f; background: none; }
+  .bar .ghost:hover { border-color: #16150f; }
+
+  .sheet {
+    max-width: 8.5in; margin: 28px auto; background: #fff;
+    padding: 0.6in; border: 1px solid #e2ddce;
+    box-shadow: 0 2px 14px rgba(22, 21, 15, .07);
+  }
+
+  .doc-head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    padding-bottom: 12px; border-bottom: 1.5px solid #16150f; margin-bottom: 20px;
+  }
+  .doc-head h1 { font: 400 34px/1 'Newsreader', Georgia, serif; letter-spacing: -.02em; }
+  .doc-head p { font: 400 9.5px/1.7 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #3a382e; text-align: right; }
+
+  section { margin-bottom: 20px; }
+  .sec-label {
+    margin-bottom: 8px;
+    font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #1a6b5a;
+  }
+  .summary { font-size: 10.5px; line-height: 1.6; color: #16150f; }
+
+  .comp { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 7px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
+  .comp span:first-child { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #16150f; }
+  .comp span:last-child { font-size: 10px; line-height: 1.55; color: #3a382e; }
+
+  .co { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 6px; border-bottom: 1px solid #16150f; margin-bottom: 2px; }
+  .co h2 { font: 500 15px 'Newsreader', Georgia, serif; }
+  .mono-meta { font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #6d6a5c; white-space: nowrap; }
+
+  .role { padding: 12px 0 4px; }
+  .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 7px; }
+  .role-head h3 { font: 400 13px 'Newsreader', Georgia, serif; color: #16150f; }
+  .role ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .role li, .proj-body { position: relative; padding-left: 14px; font-size: 10px; line-height: 1.55; color: #16150f; break-inside: avoid; }
+  .role li::before, .proj-body::before { content: '—'; position: absolute; left: 0; color: #1a6b5a; }
+
+  .proj { padding: 10px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
+  .proj h3 { margin-bottom: 3px; font: 400 13px 'Newsreader', Georgia, serif; }
+  .proj .stack { margin-bottom: 5px; font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #6d6a5c; }
+
+  .cert-line { padding: 6px 0; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
+  .edu { padding-top: 6px; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
+  .avoid-break { break-inside: avoid; }
+  section:last-child { margin-bottom: 0; }
+
+  @media (max-width: 700px) {
+    .sheet { margin: 0; border: none; padding: 24px 18px; }
+    .doc-head { flex-wrap: wrap; }
+    .doc-head p { text-align: left; }
+    .comp { grid-template-columns: 1fr; gap: 3px; }
+  }
+
+  @page { size: letter; margin: 0.6in; }
+  @media print {
+    body { background: #fff; }
+    .bar { display: none; }
+    .sheet { max-width: none; margin: 0; padding: 0; border: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <a class="brand" href="/">Samie Vargas</a>
+  <div class="actions">
+    <a class="btn ghost" href="/">← Back to the site</a>
+    <a class="btn solid" href="/Resume.pdf" download>Download PDF ↓</a>
+  </div>
+</div>
+
+<main class="sheet">
+  <header class="doc-head">
+    <h1>Samie Vargas</h1>
+    <p>Austin, TX · Remote<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
+  </header>
+
+  <section>
+    <p class="sec-label">00 — Summary</p>
+    <p class="summary">Applied-AI operator embedded in an enterprise customer-facing team for 8 years at GLG, a PE-backed global expert network. The AI person on a non-AI team: deployed LLM-assisted workflows across my own team under personal license, drove their adoption, and contributed to the internal and client-facing AI enablement strategy conversations as that work scaled. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, translating ambiguous enterprise needs into structured workflows and feeding field insight back into how the organization operates. Builds the analytical and technical layer hands-on: Python, SQL, dbt, and the Anthropic API across self-shipped projects, with Google Advanced Data Analytics certification and the full Anthropic AI Fluency credential set. Looking for an Applied AI, AI Enablement, or AI Workflow role at a remote-first, async, output-judged company.</p>
+  </section>
+
+  <section>
+    <p class="sec-label" style="margin-bottom:10px">01 — Core competencies</p>
+    <div class="comp"><span>AI enablement</span><span>LLM Workflow Design &amp; Deployment · Team-Level AI Adoption · Prompt Engineering · AI Tool Evaluation · Internal &amp; Client-Facing AI Strategy Input · Human-in-the-Loop Process Design · AI Fluency Enablement</span></div>
+    <div class="comp"><span>Build</span><span>Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API Integration · Structured JSON / Schema Design</span></div>
+    <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
+    <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Looker Studio · Tableau</span></div>
+    <div class="comp"><span>Stack</span><span>Anthropic API · Claude · ChatGPT · Gemini · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4</span></div>
+  </section>
+
+  <section>
+    <p class="sec-label" style="margin-bottom:10px">02 — Professional experience</p>
+    <div class="co">
+      <h2>GLG</h2>
+      <span class="mono-meta">Austin, TX · Remote · Jul 2018 – Present</span>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <h3>Senior Manager, Service</h3>
+        <span class="mono-meta">Oct 2023 – Present</span>
+      </div>
+      <ul>
+        <li>Deployed AI-assisted workflows using Claude, ChatGPT, Gemini, and in-house LLM tools to accelerate account analysis, QBR prep, escalation drafting, and data synthesis, building the workflows independently under personal license and driving their adoption across my team.</li>
+        <li>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling, bringing the embedded practitioner perspective into cross-team discussions on where LLM workflows fit, what to standardize, and how to operationalize them safely for non-technical users.</li>
+        <li>Own end-to-end engagement and delivery for a 14M+ enterprise portfolio, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger from a single accountable position.</li>
+        <li>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</li>
+        <li>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</li>
+        <li>Drove 5% YoY portfolio growth by mapping new use cases and operational gaps through structured discovery, and led enablement sessions for stakeholder layers from end users to senior executives.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <h3>Manager, Client Solutions — Team Lead</h3>
+        <span class="mono-meta">Mar 2022 – Oct 2023</span>
+      </div>
+      <ul>
+        <li>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, reducing ramp time and standardizing quality.</li>
+        <li>Managed a team of client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</li>
+        <li>Built renewal forecasting models and pipeline tracking in Salesforce that improved quarterly accuracy and surfaced at-risk accounts earlier.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <h3>Associate → Senior Client Solutions Manager</h3>
+        <span class="mono-meta">Jul 2018 – Feb 2022</span>
+      </div>
+      <ul>
+        <li>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted twice in four years.</li>
+        <li>Built custom Salesforce reporting infrastructure for account-health visibility that became the team standard.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <p class="sec-label" style="margin-bottom:10px">03 — Applied AI &amp; analytics projects</p>
+    <div class="proj">
+      <h3>Brain Dump — AI Agent for Executive-Function Support</h3>
+      <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Vanilla JS · samievargas.com/brain-dump</p>
+      <p class="proj-body">Built and shipped an AI agent that turns unstructured brain dumps into structured, energy-state-aware task plans, architected around a Cloudflare proxy to the Anthropic API with structured JSON output and energy-state branching logic. Put in front of early users, whose feedback drove a single-step simplification to the capture flow.</p>
+    </div>
+    <div class="proj">
+      <h3>Signal — Account Intelligence for CS Professionals</h3>
+      <p class="stack">Anthropic API · Multi-Call LLM Architecture · Source-Weighted Prompts · samievargas.com/signal</p>
+      <p class="proj-body">Designed a multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs through source-weighted prompts and an analysis-focus toggle. Validated with early users, including a senior CS leader, and refined to a single-step entry flow from their feedback.</p>
+    </div>
+    <div class="proj">
+      <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
+      <p class="stack">dbt Cloud · BigQuery · SQL · scikit-learn · github.com/SamieVargas/instacart-project</p>
+      <p class="proj-body">Built a staging → mart dbt pipeline across 3.4M orders with 35 passing tests; found a 0.60 reorder ratio hides a 3x segment gap (0.221 new vs 0.670 veteran users), validated with random forest (AUC 0.989 vs 0.857).</p>
+    </div>
+    <div class="proj">
+      <h3>ATX Foodie — Public Health Compliance Analysis</h3>
+      <p class="stack">Python · Socrata API · folium · kaggle.com/code/samievargas/atx-foodie-inspection</p>
+      <p class="proj-body">Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections score 8 points below routine visits, evidence of a broken corrective loop.</p>
+    </div>
+  </section>
+
+  <section class="avoid-break" style="margin-bottom:18px">
+    <p class="sec-label" style="margin-bottom:10px">04 — Certifications</p>
+    <p class="cert-line">Anthropic AI Fluency — Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
+    <p class="cert-line">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
+    <p class="cert-line">dbt Fundamentals · PSM I — Professional Scrum Master · Snowflake Hands-On Essentials</p>
+    <p class="cert-line">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals</p>
+  </section>
+
+  <section class="avoid-break">
+    <p class="sec-label" style="margin-bottom:10px">05 — Education</p>
+    <p class="edu">B.S. Biochemistry · The University of Texas at Austin</p>
+  </section>
+</main>
+
+</body>
+</html>
