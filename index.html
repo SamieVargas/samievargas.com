@@ -4,8 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231A6B5A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='20' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+  <title>Samie Vargas — applied AI &amp; enablement</title>
+  <meta name="description" content="Applied-AI operator in enterprise customer success. I build the LLM workflows and ship the tools — Signal, Brain Dump, dbt pipelines. Austin, remote.">
+  <link rel="canonical" href="https://samievargas.com/">
+  <meta name="theme-color" content="#1a6b5a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samievargas.com/">
+  <meta property="og:title" content="I ship AI tools that replace work I used to do by hand">
+  <meta property="og:description" content="Signal reads messy account files in a minute. 3.4M orders modeled in dbt. 21,160 inspection records. Eight years running a $14M+ enterprise book.">
+  <meta property="og:image" content="https://samievargas.com/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Samie Vargas — applied AI and enablement. Austin, remote.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
@@ -16,21 +34,10 @@
     gtag('config', 'G-K7B7NDTKEL');
   </script>
 
-  <title>Samie Vargas</title>
-  <meta name="description" content="Samie Vargas — customer success operations to AI go-to-market. Eight years running enterprise accounts, now building the AI tools that do the work by hand. Austin, TX.">
-
-  <!-- OG / Social -->
-  <meta property="og:title"       content="Samie Vargas">
-  <meta property="og:description" content="I build the systems that make revenue teams work. Austin, TX">
-  <meta property="og:image"       content="https://samievargas.com/og-image.png">
-  <meta property="og:url"         content="https://samievargas.com">
-  <meta property="og:type"        content="website">
-  <meta name="twitter:card"       content="summary_large_image">
-
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -39,209 +46,195 @@
 <!-- ── NAV ─────────────────────────────────────────────────── -->
 <nav class="nav">
   <a class="nav__name" href="#top">Samie Vargas</a>
-  <ul class="nav__links" id="nav-links"></ul>
-  <a class="nav__mobile-cta btn btn--accent" href="#contact">Contact</a>
+  <div class="nav__links">
+    <a href="#signal">Signal</a>
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#notes">Notes</a>
+    <a href="/life">Life</a>
+    <a class="nav__cta" href="/resume">Résumé</a>
+  </div>
 </nav>
 
 <!-- ── HERO ────────────────────────────────────────────────── -->
 <header class="hero" id="top">
-  <aside class="hero__rail">
-    <dl>
-      <dt class="label label--mid">Now</dt>
-      <dd>Senior Manager,<br>Service · GLG</dd>
-    </dl>
-    <dl>
-      <dt class="label label--mid">Next</dt>
-      <dd class="accent">AI go-to-market</dd>
-    </dl>
-    <dl>
-      <dt class="label label--mid">Based</dt>
-      <dd>Austin, TX<br>Remote</dd>
-    </dl>
-    <p class="status"><i class="status__dot"></i><span>Exploring roles</span></p>
-    <div class="hero__count">
-      <p class="label label--mid">Shipped</p>
-      <strong>12</strong>
-    </div>
-  </aside>
-
   <div class="hero__body">
-    <p class="hero__kicker">Customer success operations → AI go-to-market</p>
-    <h1>I build the systems that make <em>revenue teams</em> work.</h1>
-    <p class="lead">Eight years running enterprise customer accounts — health scoring, renewal forecasting, a Center of Excellence built from nothing. Now I build the AI tools that do the work I used to do by hand.</p>
-    <p class="hero__note">Everything here started as a problem I had and a thing I shipped to fix it.</p>
+    <p class="status"><i class="status__dot"></i><span>Exploring applied-AI and enablement roles · Austin, TX · remote</span></p>
+    <h1>I ship AI tools that replace work I used to do <em>by hand</em>.</h1>
+    <p class="lead">Eight years inside an enterprise customer-facing team at GLG, running a $14M+ portfolio. I was the AI person on a non-AI team: I built the LLM workflows, drove the adoption, then started shipping the tools myself.</p>
+    <p class="hero__note">Two of them are live below and you can use them right now. Every project on this page started as a problem I actually had.</p>
     <div class="hero__actions">
-      <a class="btn btn--solid" href="#work">See the work</a>
-      <a class="btn btn--ghost" href="./Resume.pdf" target="_blank" rel="noopener">Résumé ↓</a>
-      <a class="btn btn--ghost" href="https://www.linkedin.com/in/samievargas12/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn--solid" href="#signal">See what I built</a>
+      <a class="btn btn--ghost" href="/resume">Résumé ↓</a>
+      <button type="button" class="btn btn--ghost" data-copy-email>Copy my email</button>
     </div>
   </div>
+  <aside class="hero__stats" id="hero-stats"></aside>
 </header>
 
-<!-- ── STATS ───────────────────────────────────────────────── -->
-<div class="stats" data-reveal>
-  <div>
-    <strong>$14M+</strong>
-    <p>Enterprise book managed across a team of client solutions managers.</p>
-  </div>
-  <div>
-    <strong>60%</strong>
-    <p>Less prep time per quarterly review after rolling out AI workflows to 8 managers.</p>
-  </div>
-  <div>
-    <strong>3.4M</strong>
-    <p>Grocery orders modeled to find where an industry-standard metric breaks.</p>
-  </div>
-</div>
-
-<!-- ── SIGNAL — the feature ────────────────────────────────── -->
+<!-- ── SIGNAL — the flagship ───────────────────────────────── -->
 <section class="section section--alt" id="signal">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">Start here</span>
-      <h2>The thing I built for the job I do</h2>
+      <h2>Messy documents in. A read you can act on out.</h2>
     </div>
-    <a class="label label--mid" href="https://samievargas.com/signal/" target="_blank" rel="noopener">samievargas.com/signal ↗</a>
+    <a class="label label--mid" href="https://samievargas.com/signal/">samievargas.com/signal ↗</a>
   </div>
-
-  <div class="signal rule-top" data-reveal>
-    <a class="signal__shot" href="https://samievargas.com/signal/" target="_blank" rel="noopener">
-      <img src="assets/signal/signal-7.png" alt="Signal — accounts ranked by risk, each with a one-line read" loading="lazy" width="1200" height="800">
-    </a>
+  <div class="signal rule-top">
     <div>
       <p class="label label--accent">AI agent · in use · built solo</p>
       <h3>Signal</h3>
-      <p class="lead">I spent eight years doing an hour of account digging before every quarterly review. Signal does it in a minute.</p>
-      <p class="signal__note">Paste in call notes, decks, CRM exports — anything. It returns a read on the account, an analysis of who actually matters, ranked places to press, and a single “do this today.”</p>
-      <div class="signal__actions">
-        <a class="btn btn--accent" href="https://samievargas.com/signal/" target="_blank" rel="noopener">Try Signal</a>
-        <a class="btn btn--ghost" href="https://samievargas.com/brain-dump" target="_blank" rel="noopener">Brain Dump</a>
+      <p class="lead">A multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs. I spent eight years doing that hour of digging by hand.</p>
+      <div class="sig-flow">
+        <div class="sig-in" id="sig-in">
+          <p class="panel-label">What you paste in</p>
+          <div class="sig-in__stage" id="sig-scraps"></div>
+        </div>
+        <div class="sig-flow__arrow">→</div>
+        <div class="sig-out" id="sig-out">
+          <p class="panel-label">What comes back — 51 seconds</p>
+          <div id="sig-rows"></div>
+        </div>
       </div>
-      <div class="minigrid">
-        <div><strong>60 min → 1</strong><span>Prep per account</span></div>
-        <div><strong>4 modes</strong><span>Brief · risk · relationship · pre-call</span></div>
+      <div class="sig-stack">
+        <a class="btn btn--accent btn--md" href="https://samievargas.com/signal/">Try it on your own notes</a>
+        <span class="sig-stack__note">Anthropic API · Cloudflare Workers · source-weighted prompts</span>
       </div>
+    </div>
+    <div>
+      <div class="sig-shot"><img src="assets/signal/signal-7.png" alt="Signal output — accounts ranked by risk, each with a one-line read" width="1200" height="800"></div>
+      <div class="callouts" id="sig-notes"></div>
+      <p class="finding"><strong>What it found — </strong>the contact read is the sleeper feature. It makes explicit what experienced managers do instinctively.</p>
     </div>
   </div>
 </section>
 
-<!-- ── WORK ────────────────────────────────────────────────── -->
-<section class="section" id="work">
-  <div class="section__head" data-reveal>
-    <div class="section__head-l">
-      <span class="section__num">01</span>
-      <h2>Selected work</h2>
-    </div>
-    <div class="section__head-r">
-      <span class="label label--mid" id="work-count"></span>
-      <span class="seg-wrap">
-        <span class="label label--mid">Read as</span>
-        <span class="seg" id="read-as">
-          <button type="button" class="is-on" data-mode="plain">Plain</button>
-          <button type="button" data-mode="tech">Technical</button>
-        </span>
-      </span>
-    </div>
-  </div>
-
-  <div class="filters" id="filters" data-reveal></div>
-  <div class="cards" id="cards"></div>
-
-  <div style="margin-top:36px" data-reveal>
-    <p class="label label--mid" style="margin-bottom:14px">Also built</p>
-    <div class="mini-cards" id="also"></div>
-  </div>
-</section>
-
-<!-- ── THE FIELD ───────────────────────────────────────────── -->
-<section class="section" id="field">
+<!-- ── BRAIN DUMP ──────────────────────────────────────────── -->
+<section class="section section--dark" id="braindump">
   <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">02b</span>
-      <h2>Everything here started as something I noticed</h2>
+      <span class="section__num">Try it here</span>
+      <h2>Five minutes in. Four piles out.</h2>
     </div>
-    <span class="label label--mid">Click a dot</span>
+    <a class="label" href="https://samievargas.com/brain-dump">samievargas.com/brain-dump ↗</a>
   </div>
-  <p class="field__intro">Left is where I only noticed something. Right is where I built something about it. Top half was my job, bottom half was my life. The two halves turn out to look the same.</p>
-
-  <div class="field rule-top">
+  <div class="bd rule-top">
     <div>
-      <div class="plot" id="plot">
-        <span class="plot__axis plot__axis--tl">Work</span>
-        <span class="plot__axis plot__axis--bl">Life</span>
-        <span class="plot__axis plot__axis--tr">Built it →</span>
-      </div>
-      <div class="plot-key">
-        <div><i></i><span class="label label--mid">Something you can open</span></div>
-        <div><i></i><span class="label label--mid">A note, no artifact</span></div>
+      <h3>Brain Dump</h3>
+      <p class="bd__lead">An AI agent that turns an unstructured dump into an energy-state-aware plan. Structured JSON out of a Cloudflare proxy to the Anthropic API, with branching logic on the state you say you are in.</p>
+      <p class="bd__note">The sorting is not the product. Matching the output to the state someone is actually in is the product — so change the state below and watch the same dump re-sort.</p>
+      <div class="bd-dump">
+        <p class="panel-label">Raw dump · five minutes, no editing</p>
+        <div class="bd-dump__stage" id="bd-bits"></div>
       </div>
     </div>
-    <article class="field__card" id="field-card"></article>
+    <div>
+      <div class="bd-states" id="bd-states"></div>
+      <div class="bd-piles" id="bd-piles"></div>
+      <p class="bd__state-note" id="bd-note"></p>
+      <a class="btn btn--dark btn--md" href="https://samievargas.com/brain-dump">Open Brain Dump</a>
+    </div>
   </div>
 </section>
 
-<!-- ── CURRENTLY BUILDING ──────────────────────────────────── -->
-<section class="section section--alt" id="building">
-  <div class="section__head" data-reveal>
+<!-- ── THE ANALYSIS WORK ───────────────────────────────────── -->
+<section class="section" id="work">
+  <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">02</span>
-      <h2>Currently building</h2>
+      <span class="section__num">01</span>
+      <h2>The analysis work</h2>
+    </div>
+    <span class="label label--mid">Both start from a question I actually had</span>
+  </div>
+
+  <div class="dag-wrap">
+    <div class="dag-head">
+      <p class="label label--accent" style="letter-spacing:.14em">The Instacart pipeline · sources through marts · 35 tests passing</p>
+      <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Data flowing left to right</span>
+    </div>
+    <div class="dag" id="dag">
+      <span class="dag__tier" style="left:2%;top:6%">Source</span>
+      <span class="dag__node dag__node--src" style="left:2%;top:79%">instacart.orders</span>
+      <span class="dag__tier" style="left:25%;top:6%">Staging · 5 models</span>
+      <span class="dag__node" style="left:25%;top:14%">stg_order_products</span>
+      <span class="dag__node" style="left:25%;top:29%">stg_products</span>
+      <span class="dag__node" style="left:25%;top:44%">stg_aisles</span>
+      <span class="dag__node" style="left:25%;top:59%">stg_departments</span>
+      <span class="dag__node" style="left:25%;top:79%">stg_orders</span>
+      <span class="dag__tier" style="left:52%;top:24%">Intermediate</span>
+      <span class="dag__node dag__node--int" style="left:52%;top:32%">int_order_products_joined</span>
+      <span class="dag__node dag__node--int" style="left:52%;top:79%">fct_orders</span>
+      <span class="dag__tier" style="left:82%;top:24%">Marts</span>
+      <span class="dag__node dag__node--mart" style="left:82%;top:32%">dim_products</span>
+      <span class="dag__node dag__node--mart" style="left:82%;top:79%">dim_users</span>
     </div>
   </div>
-  <div id="building-rows" data-reveal></div>
+
+  <div id="annotated"></div>
+
+  <div class="also">
+    <p class="label label--mid" style="margin:0">Also built</p>
+    <div>
+      <p>A random-forest reorder model on the same Instacart data — 0.9886 AUC for veterans against 0.8566 for new users, which is what confirmed the segment split was real and not an artifact of the pipeline. <a href="https://github.com/SamieVargas/instacart-project">Model and notebook ↗</a></p>
+      <p class="also__more">In progress: review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game. The personal tools — Life OS, Life in Pixels, the tarot tracker — live on <a href="/life">/life</a>.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ── EXPERIENCE ──────────────────────────────────────────── -->
-<section class="section" id="experience">
-  <div class="section__head" data-reveal>
+<section class="section section--alt" id="experience">
+  <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">03</span>
+      <span class="section__num">02</span>
       <h2>Experience</h2>
     </div>
     <button type="button" class="btn btn--ghost btn--sm" id="roles-toggle-all">Expand all</button>
   </div>
-  <div class="exp" data-reveal>
-    <div class="exp__co">
-      <h3>GLG</h3>
-      <p>Austin, TX · Remote<br>Jul 2018 – Present<br>3 roles · 8 years</p>
+  <div class="rule-top" style="padding-top:26px">
+    <div class="exp-co">
+      <div class="exp-co__l">
+        <h3>GLG</h3>
+        <span class="label label--mid">Austin, TX · Remote · Jul 2018 – present</span>
+      </div>
+      <span class="label" style="letter-spacing:.1em;white-space:nowrap;color:var(--faint-deco)">8 years · 6 roles · IC to people manager</span>
     </div>
+    <div class="rail" id="rail"><i></i></div>
+    <div class="rail-ticks" id="rail-ticks"></div>
     <div id="roles"></div>
   </div>
 </section>
 
-<!-- ── SKILLS AND CREDENTIALS ──────────────────────────────── -->
-<section class="section section--alt" id="skills">
-  <div class="section__head" data-reveal>
+<!-- ── SKILLS ──────────────────────────────────────────────── -->
+<section class="section" id="skills">
+  <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">04</span>
+      <span class="section__num">03</span>
       <h2>Skills and credentials</h2>
     </div>
   </div>
-  <div class="tabs" id="skill-tabs" role="tablist" data-reveal></div>
-  <div id="skill-panels" style="margin-bottom:40px"></div>
-
-  <div data-reveal>
-    <div id="certs"></div>
-    <div class="cert-more">
-      <span class="label label--mid">8 further credentials — Google BI, Google AI, Anthropic, Databricks, GA4, PMI</span>
-      <button type="button" class="btn btn--ghost btn--sm" id="certs-toggle">Show all</button>
+  <div class="skills rule-top" style="padding-top:26px">
+    <div>
+      <div class="skill-tabs" role="tablist" id="skill-tabs"></div>
+      <p class="skill-line" id="skill-line"></p>
     </div>
-    <div class="cert-list" id="other-certs" hidden></div>
+    <div>
+      <div id="certs"></div>
+      <p class="certs-more">Plus the full Anthropic AI Fluency set — Claude 101, Claude Code 101, Agent Skills, Claude Cowork, AI Capabilities &amp; Limitations, AI Fluency Framework — Google Data Analytics, Google Business Intelligence, GA4, Databricks Fundamentals, PMI, Six Sigma White Belt.</p>
+    </div>
   </div>
 </section>
 
-<!-- ── OBSERVATIONS ────────────────────────────────────────── -->
-<section class="section" id="writing">
-  <div class="section__head" style="margin-bottom:8px" data-reveal>
+<!-- ── NOTES ───────────────────────────────────────────────── -->
+<section class="section section--alt" id="notes">
+  <div class="section__head" style="margin-bottom:8px">
     <div class="section__head-l">
-      <span class="section__num">05</span>
-      <h2>Observations</h2>
+      <span class="section__num">04</span>
+      <h2>Notes from the data I live in</h2>
     </div>
-    <span class="label" id="obs-counter"></span>
+    <span class="label" id="obs-counter" style="color:var(--faint-deco)"></span>
   </div>
-  <p class="label" style="margin-bottom:26px">Notes from the data I live in</p>
-
-  <div class="obs rule-top" data-reveal>
+  <div class="obs rule-top">
     <div>
       <p class="label label--accent" id="obs-tag"></p>
       <h3 id="obs-title"></h3>
@@ -259,79 +252,42 @@
   </div>
 </section>
 
-<!-- ── ABOUT ───────────────────────────────────────────────── -->
-<section class="section section--alt" id="about">
-  <div class="section__head" data-reveal>
-    <div class="section__head-l">
-      <span class="section__num">06</span>
-      <h2>About</h2>
+<!-- ── LIFE TEASER ─────────────────────────────────────────── -->
+<section class="section" id="life" style="padding-top:56px;padding-bottom:56px">
+  <div class="life-teaser">
+    <div>
+      <p class="section__num" style="display:block;margin-bottom:10px">05</p>
+      <h2>The rest of it lives on <em>/life</em>.</h2>
+      <p class="life-teaser__blurb">The noticing field, the tarot tracker, seven decks, the Greenbelt at fifteen of twenty-one miles, Agatha Christie in order, and what I have been listening to. Same instinct, no résumé pressure.</p>
+      <a class="btn btn--ghost btn--md" href="/life">Go to /life →</a>
     </div>
-  </div>
-
-  <div class="about rule-top" data-reveal>
-    <div id="facts"></div>
-
-    <div class="about__bio">
-      <p>Eight years managing a $14M+ book of enterprise accounts. Most of what I built didn't exist before I built it — health scoring systems, renewal pipeline architecture, Salesforce dashboards, team playbooks, a Center of Excellence from scratch. I'm good at finding the thing that's missing and building it before anyone's formally asked.</p>
-      <p>I've been layering in data analytics because I kept running into the same wall: the numbers existed, the insight was sitting right there, and nothing changed. The certificates, the Instacart project, the Austin inspection analysis all came from the same impulse. Sit with the mess long enough and something shows up.</p>
-      <p style="margin-bottom:30px">This site is a portfolio but it's also just me. I'd be building most of this stuff regardless.</p>
-
-      <p class="label label--mid" style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule)">Beyond the résumé</p>
-      <div class="carousel">
-        <div class="carousel__track" id="interests"></div>
-      </div>
-      <div class="carousel__nav">
-        <button type="button" class="arrow arrow--sm" id="int-prev" aria-label="Previous">‹</button>
-        <button type="button" class="arrow arrow--sm" id="int-next" aria-label="Next">›</button>
-        <div class="dots" id="int-dots"></div>
-      </div>
-
-      <div class="media">
-        <div>
-          <p class="label label--mid" style="margin-bottom:10px">Listening to</p>
-          <iframe src="https://open.spotify.com/embed/playlist/3oLN1CsU4GEi8N3q6SbhbE?utm_source=generator&amp;theme=0" height="152" frameborder="0" allowfullscreen loading="lazy" title="Spotify playlist" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        </div>
-        <div class="media__cols">
-          <div>
-            <p class="label label--mid" style="margin-bottom:10px">Reading</p>
-            <p>Agatha Christie<br>Seishi Yokomizo<br>Terry Pratchett</p>
-          </div>
-          <div>
-            <p class="label label--mid" style="margin-bottom:10px">Playing</p>
-            <p>House Flipper 2<br>Ring Fit<br>Stardew Valley</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="tile-grid" id="life-teasers"></div>
   </div>
 </section>
 
 <!-- ── CONTACT ─────────────────────────────────────────────── -->
-<section class="section" id="contact">
-  <div class="section__head" data-reveal>
-    <div class="section__head-l">
-      <span class="section__num">07</span>
-      <h2>Contact</h2>
-    </div>
-  </div>
-  <div class="contact rule-top" data-reveal>
+<section class="section section--dark" id="contact" style="border-bottom:none">
+  <div class="contact">
     <div>
-      <h3>Come say <em>howdy</em>.</h3>
-      <p>Open to conversations about AI go-to-market, revenue operations, and anything where a messy workflow needs a system built around it.</p>
-      <button type="button" class="btn btn--solid" id="copy-email">Copy my email</button>
+      <p class="contact__kicker">07 · Contact</p>
+      <h2>Come say <em>howdy</em>.</h2>
+      <p class="contact__blurb">Open to anything where a messy workflow needs a system built around it.</p>
+      <div class="cmdlines">
+        <p style="--d:0s"><span class="kw">SELECT</span> * <span class="kw">FROM</span> conversations <span class="kw">WHERE</span> topic = 'ai'</p>
+        <p style="--d:.14s">dbt run --select samie.availability</p>
+        <p style="--d:.28s">mail sammisnv@gmail.com<span class="cursor">▍</span></p>
+      </div>
+      <button type="button" class="btn btn--dark" data-copy-email>Copy my email</button>
     </div>
-    <div class="links" id="contact-links"></div>
+    <div class="contact__links" id="contact-links"></div>
   </div>
 </section>
 
 <!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer class="footer">
-  <span class="label label--mid">© 2026 Samie Vargas</span>
-  <span class="label label--mid">Austin, TX · Remote</span>
+<footer class="footer footer--dark">
+  <span class="label">© 2026 Samie Vargas</span>
+  <span class="label">Austin, TX · Remote · no framework, no build step</span>
 </footer>
-
-<!-- ── MOBILE TAB BAR ──────────────────────────────────────── -->
-<nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
