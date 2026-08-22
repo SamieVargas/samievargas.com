@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Site toolkit — Samie Vargas</title>
+  <meta name="description" content="How samievargas.com is put together: the design tokens, the components, the marks, the copy decisions, and every change with the reason attached.">
+  <link rel="canonical" href="https://samievargas.com/toolkit">
+  <meta name="theme-color" content="#1a6b5a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samievargas.com/toolkit">
+  <meta property="og:title" content="How this site is put together">
+  <meta property="og:description" content="The tokens, the components, the marks, the copy decisions, and a change log pulled live from the repo.">
+  <meta property="og:image" content="https://samievargas.com/og-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K7B7NDTKEL');
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a class="nav__name" href="/">Samie Vargas</a>
+  <div class="nav__links">
+    <a href="/">← The work</a>
+    <a href="/life">/life</a>
+    <span class="is-here label label--mid" style="color:var(--accent)">/toolkit</span>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<header class="page-hero">
+  <span class="label label--wide">samievargas.com/toolkit</span>
+  <h1 style="font-size:clamp(42px,5vw,72px);max-width:24ch">How this site is <em>put together</em>.</h1>
+  <p class="lead" style="max-width:62ch;margin-bottom:16px">I always wanted my own website, and I wanted to teach myself to code past HTML. This page is the part I would normally keep in a scratch file: the tokens, the components, the marks, the copy decisions, and every change I have made with the reason attached.</p>
+  <p style="font-size:14px;line-height:1.7;color:var(--muted);max-width:58ch;margin-bottom:30px">It is public because I found <a href="https://www.evebouffard.com/">evebouffard.com</a> and loved being able to see the thinking that went into a site alongside the site. So here is mine.</p>
+  <div class="tk-stats">
+    <div style="padding-right:8px"><strong id="tk-age">—</strong><span>Since the first commit</span></div>
+    <div><strong id="tk-count">—</strong><span>Commits, latest first below</span></div>
+    <div><strong>0</strong><span>Frameworks · no build step</span></div>
+    <div><strong>Opus</strong><span>Built with Claude Opus</span></div>
+  </div>
+</header>
+
+<!-- ── CHANGE LOG ──────────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">01</span>
+      <h2>What I changed, and why</h2>
+    </div>
+    <span class="label" id="feed-status" style="letter-spacing:.1em;white-space:nowrap">Loading from GitHub…</span>
+  </div>
+  <p class="tk-intro">The list on the left is pulled live from the commits on <a href="https://github.com/SamieVargas/samievargas.github.io">samievargas.github.io</a>, so it updates itself when I push. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why.</p>
+  <div class="changelog rule-top" style="padding-top:26px">
+    <div>
+      <span class="col-label">Commits</span>
+      <div id="commits"></div>
+      <p class="feed-note" id="feed-note"></p>
+    </div>
+    <div>
+      <span class="col-label">The reasons</span>
+      <div id="notes"></div>
+      <div class="backlog">
+        <span class="label label--mid">Backlog</span>
+        <p>Empty. Everything I know about is shipped — I am pushing the rest right now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DESIGN SYSTEM ───────────────────────────────────────── -->
+<section class="section">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">02</span>
+      <h2>The pieces I reuse</h2>
+    </div>
+  </div>
+  <p class="tk-intro">Everything here is in <span style="font-family:var(--mono);font-size:12px">css/styles.css</span> and rendered live, so this page breaks if I break the styles. Two typefaces, one green, no framework: Newsreader for anything that speaks, IBM Plex Mono for anything that labels, Helvetica for the reading.</p>
+  <div class="ds-grid">
+    <div>
+      <p class="ds-name">Buttons</p>
+      <p class="ds-class">.btn--solid · --accent · --ghost</p>
+      <div class="ds-row">
+        <span class="btn btn--solid btn--md">See the work</span>
+        <span class="btn btn--accent btn--md">Try Signal</span>
+        <span class="btn btn--ghost btn--md">LinkedIn</span>
+      </div>
+    </div>
+    <div>
+      <p class="ds-name">Segmented control</p>
+      <p class="ds-class">.seg — plain / technical</p>
+      <span class="seg"><span class="is-on">Plain</span><span>Technical</span></span>
+    </div>
+    <div>
+      <p class="ds-name">Filter chips</p>
+      <p class="ds-class">.chip · .chip.is-on</p>
+      <div class="ds-row">
+        <span class="chip is-on">All</span>
+        <span class="chip">AI</span>
+        <span class="chip">Data</span>
+      </div>
+    </div>
+    <div>
+      <p class="ds-name">Tech tags</p>
+      <p class="ds-class">.tag — never clickable</p>
+      <div class="ds-row" style="gap:6px">
+        <span class="tag">dbt Cloud</span>
+        <span class="tag">BigQuery</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
+    <div>
+      <p class="ds-name">Carousel controls</p>
+      <p class="ds-class">.arrow · .dot · .dot.is-on</p>
+      <div class="ds-row" style="gap:10px;align-items:center">
+        <span class="arrow" style="cursor:default">‹</span>
+        <span class="arrow" style="cursor:default">›</span>
+        <span style="display:flex;gap:6px;margin-left:8px"><i class="dot is-on" style="cursor:default"></i><i class="dot" style="cursor:default"></i><i class="dot" style="cursor:default"></i></span>
+      </div>
+    </div>
+    <div>
+      <p class="ds-name">Labels</p>
+      <p class="ds-class">.label — never body copy</p>
+      <div class="ds-col">
+        <span class="label">Shipped</span>
+        <span class="label label--mid">6 of 8 shown</span>
+        <span class="label label--accent">AI agent · in use · built solo</span>
+      </div>
+    </div>
+    <div>
+      <p class="ds-name">Verify pill</p>
+      <p class="ds-class">.cert__verify — credentials only</p>
+      <span class="cert__verify">Verify ↗</span>
+    </div>
+    <div>
+      <p class="ds-name">Status dot</p>
+      <p class="ds-class">.status — pulses, 2.4s</p>
+      <span style="display:inline-flex;align-items:center;gap:9px"><i class="status__dot" style="display:block"></i><span class="label label--accent" style="letter-spacing:.12em">Exploring roles</span></span>
+    </div>
+  </div>
+  <div class="token-grid" id="tokens"></div>
+  <p class="token-note">One correction I made to my own system: the faint grey was #9a9686, which measures 2.6:1 on paper and fails contrast. Anything carrying meaning now uses #77735f at 4.6:1, and the old value is decorative only.</p>
+</section>
+
+<!-- ── MARKS AND CARDS ─────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">03</span>
+      <h2>The mark, and what a link looks like</h2>
+    </div>
+  </div>
+  <p class="tk-intro" style="margin-bottom:28px">Most people meet this site as a favicon in a crowded tab strip or a card in someone's Slack. Both were the least considered part of it, so I redrew them in the same type as everything else.</p>
+  <div class="marks rule-top">
+    <div>
+      <h3>Favicon</h3>
+      <p class="blurb">An italic S in Newsreader on the site green, with a hairline inset so it reads as a plate instead of a blob. I checked it at 16px first and drew back up from there.</p>
+      <div class="fav-row">
+        <div>
+          <svg viewBox="0 0 64 64" width="64" height="64" style="border:1px solid var(--rule)"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><rect x="4.5" y="4.5" width="55" height="55" rx="6" fill="none" stroke="rgba(251,249,243,.35)" stroke-width="1.5"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 40px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
+          <p class="cap">64px</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><rect x="4.5" y="4.5" width="55" height="55" rx="6" fill="none" stroke="rgba(251,249,243,.35)" stroke-width="1.5"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 40px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
+          <p class="cap">32px</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 64 64" width="16" height="16"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 44px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
+          <p class="cap">16px · tab</p>
+        </div>
+      </div>
+      <p class="fav-set-label">In the set</p>
+      <p class="fav-set">favicon.svg · favicon-32.png<br>favicon-16.png · apple-touch-icon 180<br>icon-192 · icon-512, both maskable</p>
+    </div>
+    <div>
+      <h3>Social card · 1200×630</h3>
+      <p class="blurb" style="max-width:64ch">The card used to be 347×190 and said only my name, so it arrived blurry and told you nothing. Now it carries the claim, the domain, and three numbers I can defend.</p>
+      <img class="og-hero" src="og-card.png" alt="The social card: I ship AI tools that replace work I used to do by hand">
+      <p class="fav-set-label" style="margin-bottom:14px">The same card, everywhere it shows up</p>
+      <div class="previews">
+        <div>
+          <p class="pv-label">Slack</p>
+          <div class="pv-slack">
+            <p class="dom">samievargas.com</p>
+            <p class="t">I ship AI tools that replace work I used to do by hand</p>
+            <p class="d">Signal reads messy account files in a minute. 3.4M orders modeled in dbt.</p>
+            <img src="og-card.png" alt="Card preview in Slack">
+          </div>
+        </div>
+        <div>
+          <p class="pv-label">iMessage</p>
+          <div class="pv-imsg">
+            <img src="og-card.png" alt="Card preview in iMessage">
+            <div class="meta">
+              <p class="t">I ship AI tools that replace work I used to do by hand</p>
+              <p class="dom">samievargas.com</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="pv-label">LinkedIn</p>
+          <div class="pv-li">
+            <img src="og-card.png" alt="Card preview on LinkedIn">
+            <div class="meta">
+              <p class="t">I ship AI tools that replace work I used to do by hand</p>
+              <p class="dom">samievargas.com · 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COPY DECISIONS ──────────────────────────────────────── -->
+<section class="section">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">04</span>
+      <h2>The lines that do the work</h2>
+    </div>
+  </div>
+  <p class="tk-intro">Six strings that most people never see me choose, and the reasoning behind each. These are what is live now.</p>
+  <div id="meta-rows"></div>
+  <div class="headblock">
+    <div class="headblock__bar">
+      <h3>All of it, as it sits in &lt;head&gt;</h3>
+      <button type="button" id="copy-head">Copy the whole block</button>
+    </div>
+    <pre id="head-snippet"></pre>
+  </div>
+</section>
+
+<!-- ── HOW IT IS BUILT ─────────────────────────────────────── -->
+<section class="section section--alt" style="padding-bottom:72px;border-bottom:none">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">05</span>
+      <h2>How it is built</h2>
+    </div>
+  </div>
+  <div class="built rule-top" style="padding-top:26px">
+    <div>
+      <p>Plain HTML, CSS custom properties, and vanilla JavaScript modules, deployed on GitHub Pages. No framework and no build step, which was the point: I wanted to understand every part of it rather than inherit someone else's structure.</p>
+      <p>The two agents on the site — Signal and Brain Dump — talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public. Same pattern both times.</p>
+      <p>I built it with Claude Opus, and I am saying so here because the alternative is pretending I did not. What I brought was the judgement: what to cut, what to prove, and which numbers I am willing to defend.</p>
+    </div>
+    <div class="built__cells">
+      <div><span>Front end</span><p>HTML · CSS custom properties · vanilla JS modules</p></div>
+      <div><span>Agents</span><p>Anthropic API behind a Cloudflare Worker</p></div>
+      <div><span>Data work</span><p>dbt on BigQuery · Python · folium</p></div>
+      <div><span>Hosting</span><p>GitHub Pages · custom domain · GA4</p></div>
+      <div><span>Built with</span><p>Claude Opus, and my own judgement about what to cut</p></div>
+      <div><span>Source</span><p><a href="https://github.com/SamieVargas/samievargas.github.io">the whole repo is public ↗</a></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer class="footer footer--light">
+  <a class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)" href="/">← Back to the work</a>
+  <span class="label" id="footer-line" style="letter-spacing:.13em;font-size:11px;color:var(--muted)"></span>
+</footer>
+
+<script type="module" src="js/toolkit.js"></script>
+</body>
+</html>
