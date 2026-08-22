@@ -1,178 +1,238 @@
 // ============================================================
 // js/app.js
-// Portfolio v2 — no build step, no framework. Content lives in
+// Work page — no build step, no framework. Content lives in
 // data/content.js; this file gives it shape and behaviour.
 // ============================================================
 
 import {
-  NAV, TABS, FILTERS, PROJECTS, ALSO, BUILDING, ROLES,
-  SKILL_GROUPS, CERTS, OTHER_CERTS, OBSERVATIONS,
-  QUICK_FACTS, INTERESTS, CONTACT_LINKS, FIELD,
+  HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
+  DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
+  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
 } from '../data/content.js';
 
-const $  = (sel) => document.querySelector(sel);
+const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const MOBILE = () => window.matchMedia('(max-width: 820px)').matches;
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HAS_IO = 'IntersectionObserver' in window;
 
-// ── Nav and tab bar ──────────────────────────────────────────
-function renderNav() {
-  $('#nav-links').innerHTML =
-    NAV.map((n) => `<li><a href="${n.href}" data-nav="${n.id}">${esc(n.label)}</a></li>`).join('') +
-    '<li><a class="nav__cta" href="#contact">Contact</a></li>';
-
-  $('#tabbar').innerHTML = TABS.map((t) =>
-    `<a href="${t.href}" data-tab="${t.href.slice(1)}"><i></i>${esc(t.label)}</a>`).join('');
+// ── Hero ─────────────────────────────────────────────────────
+function renderHeroStats() {
+  $('#hero-stats').innerHTML = HERO_STATS.map((s) =>
+    `<div><strong>${esc(s.stat)}</strong><span>${esc(s.label)}</span></div>`).join('');
 }
 
-function trackSections() {
-  if (!('IntersectionObserver' in window)) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      const id = e.target.id;
-      document.querySelectorAll('[data-nav]').forEach((a) =>
-        a.classList.toggle('is-active', a.dataset.nav === id));
-      document.querySelectorAll('[data-tab]').forEach((a) =>
-        a.classList.toggle('is-active', a.dataset.tab === id || (a.dataset.tab === 'top' && id === 'signal')));
-    });
-  }, { threshold: 0.25 });
-  NAV.forEach((n) => { const el = document.getElementById(n.id); if (el) io.observe(el); });
-}
+// ── Signal: scrap sort + typewriter ──────────────────────────
+function renderSignal() {
+  $('#sig-scraps').innerHTML = SIGNAL_SCRAPS.map((sc, i) => `
+    <div class="sig-scrap" style="left:${sc.left};top:${sc.top};transform:rotate(${sc.rot}deg);--d:${(i * 0.14).toFixed(2)}s;--stack-top:${i * 39}px">${esc(sc.text)}</div>`).join('');
 
-// ── Work: filters, plain/technical, project cards ────────────
-const work = { filter: 'All', tech: false, open: [] };
+  $('#sig-rows').innerHTML = SIGNAL_OUT.map((o, i) => `
+    <div class="sig-out__row" style="--d:${(0.5 + i * 0.18).toFixed(2)}s">
+      <span>${esc(o.k)}</span>
+      <span class="v"${o.typing ? ' data-typed' : ''}>${o.typing ? '' : esc(o.v)}</span>${o.typing ? '<span class="sig-cursor">▍</span>' : ''}
+    </div>`).join('');
 
-function matches(item) {
-  return work.filter === 'All' || (item.filters || []).includes(work.filter);
-}
-
-function renderFilters() {
-  $('#filters').innerHTML = FILTERS.map((f) =>
-    `<button type="button" class="chip${f === work.filter ? ' is-on' : ''}" data-filter="${esc(f)}">${esc(f)}</button>`).join('');
-}
-
-function renderCards() {
-  $('#cards').innerHTML = PROJECTS.map((p) => {
-    const open = work.open.includes(p.id);
-    return `
-    <article class="card" data-card="${p.id}"${matches(p) ? '' : ' hidden'}>
-      <img class="card__shot" src="${p.img}" alt="${esc(p.title)}" loading="lazy" width="1200" height="800">
-      <div class="card__body">
-        <div class="card__meta">
-          <span class="label label--accent">${esc(p.kicker)}</span>
-          <span class="label label--mid">${esc(p.year)}</span>
-        </div>
-        <h3>${esc(p.title)}</h3>
-        <p data-copy>${esc(work.tech ? p.how : p.plain)}</p>
-        <div class="card__detail"${open ? '' : ' hidden'}>
-          <div>
-            <span class="label label--mid">How it works</span>
-            <p>${esc(p.how)}</p>
-          </div>
-          <div>
-            <span class="label label--mid">What it found</span>
-            <p>${esc(p.found)}</p>
-          </div>
-          <div class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
-        </div>
-        <div class="card__actions">
-          <button type="button" class="btn btn--ghost btn--sm" data-detail="${p.id}">${open ? 'Less detail' : 'How it works'}</button>
-          <a class="label label--accent" href="${p.href}" target="_blank" rel="noopener">${esc(p.linkLabel)}</a>
-        </div>
-      </div>
-    </article>`;
-  }).join('');
-
-  $('#also').innerHTML = ALSO.map((a) => `
-    <article class="mini-card" data-mini="${esc(a.title)}"${matches(a) ? '' : ' hidden'}>
-      <span class="label label--accent">${esc(a.kicker)}</span>
-      <h4>${esc(a.title)}</h4>
-      <p>${esc(a.plain)}</p>
-    </article>`).join('');
-
-  const shown = PROJECTS.filter(matches).length + ALSO.filter(matches).length;
-  $('#work-count').textContent = `${shown} of ${PROJECTS.length + ALSO.length} shown`;
-}
-
-function wireWork() {
-  $('#filters').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-filter]');
-    if (!btn) return;
-    work.filter = btn.dataset.filter;
-    renderFilters();
-    renderCards();
-  });
-
-  $('#read-as').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-mode]');
-    if (!btn) return;
-    work.tech = btn.dataset.mode === 'tech';
-    $('#read-as').querySelectorAll('button').forEach((b) => b.classList.toggle('is-on', b === btn));
-    renderCards();
-  });
-
-  $('#cards').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-detail]');
-    if (!btn) return;
-    const id = btn.dataset.detail;
-    work.open = work.open.includes(id) ? work.open.filter((x) => x !== id) : [...work.open, id];
-    const card = $(`[data-card="${id}"]`);
-    card.querySelector('.card__detail').hidden = !work.open.includes(id);
-    btn.textContent = work.open.includes(id) ? 'Less detail' : 'How it works';
-  });
-}
-
-// ── The field ────────────────────────────────────────────────
-let fieldSel = FIELD[0].id;
-
-function renderField() {
-  const plot = $('#plot');
-  plot.querySelectorAll('.plot__pt').forEach((el) => el.remove());
-  plot.insertAdjacentHTML('beforeend', FIELD.map((d) => `
-    <button type="button" class="plot__pt${parseFloat(d.x) > 50 ? ' plot__pt--flip' : ''}${d.art ? ' plot__pt--art' : ''}${d.id === fieldSel ? ' is-on' : ''}"
-            data-pt="${d.id}" style="left:${d.x};top:${d.y}" aria-label="${esc(d.title)}"><i></i><span>${esc(d.short)}</span></button>`).join(''));
-
-  const f = FIELD.find((d) => d.id === fieldSel) || FIELD[0];
-  $('#field-card').innerHTML = `
-    <div class="field__shot" style="background-image:${f.art ? `url('${f.art}')` : 'none'}">
-      ${f.art ? '' : '<p>Nothing to open — this one is just something I noticed</p>'}
-    </div>
-    <div class="field__body">
-      <div class="field__meta">
-        <span class="label label--accent">${esc(f.kind)}</span>
-        <span class="label label--mid">${esc(f.year)}</span>
-      </div>
-      <h3>${esc(f.title)}</h3>
-      <p>${esc(f.line)}</p>
-      ${f.art
-        ? `<a class="btn btn--accent" href="${f.href}" target="_blank" rel="noopener">${esc(f.linkLabel)}</a>`
-        : '<p class="field__note">No link — just something I noticed</p>'}
-    </div>`;
-}
-
-function wireField() {
-  $('#plot').addEventListener('click', (e) => {
-    const pt = e.target.closest('[data-pt]');
-    if (!pt) return;
-    fieldSel = pt.dataset.pt;
-    renderField();
-  });
-}
-
-// ── Currently building ───────────────────────────────────────
-function renderBuilding() {
-  $('#building-rows').innerHTML = BUILDING.map((b) => `
-    <div class="row">
-      <p class="row__status"><i></i><span class="label label--mid">In progress</span></p>
-      <div>
-        <h4>${esc(b.title)}</h4>
-        <p>${esc(b.body)}</p>
-      </div>
+  $('#sig-notes').innerHTML = SIGNAL_NOTES.map((c) => `
+    <div class="callout">
+      <span>${c.n}</span>
+      <div><strong>${esc(c.title)}</strong><span class="callout__body">${esc(c.body)}</span></div>
     </div>`).join('');
 }
 
-// ── Experience ───────────────────────────────────────────────
+function signalIn() {
+  $('#sig-in').classList.add('is-in');
+  $('#sig-out').classList.add('is-in');
+}
+
+function typeSignal(instant) {
+  const target = $('[data-typed]');
+  const cursor = $('.sig-cursor');
+  if (instant) {
+    target.textContent = SIGNAL_TYPED;
+    if (cursor) cursor.hidden = true;
+    return;
+  }
+  let len = 0;
+  const timer = setInterval(() => {
+    len += 1;
+    target.textContent = SIGNAL_TYPED.slice(0, len);
+    if (len >= SIGNAL_TYPED.length) {
+      clearInterval(timer);
+      if (cursor) cursor.hidden = true;
+    }
+  }, 26);
+}
+
+function watchSignal() {
+  if (REDUCED || !HAS_IO) { signalIn(); typeSignal(true); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      signalIn();
+      setTimeout(() => typeSignal(false), 1100);
+    });
+  }, { threshold: 0.3 });
+  io.observe($('#signal'));
+}
+
+// ── Brain Dump: scatter + pour ───────────────────────────────
+let energy = 'Foggy';
+
+function renderDumpBits() {
+  $('#bd-bits').innerHTML = DUMP_BITS.map((d, i) => `
+    <span class="bd-bit" style="left:${d.x}%;top:${d.y}%;transform:rotate(${d.r}deg);--dx:${d.dx}px;--dy:${d.dy}px;--dr:${d.dr}deg;--d:${(i * 0.11).toFixed(2)}s">${esc(d.t)}</span>`).join('');
+}
+
+function renderStates() {
+  $('#bd-states').innerHTML = Object.keys(BRAIN_STATES).map((k) =>
+    `<button type="button" class="bd-state${k === energy ? ' is-on' : ''}" data-state="${k}">${k}</button>`).join('');
+}
+
+function renderPiles() {
+  const st = BRAIN_STATES[energy];
+  $('#bd-piles').innerHTML = st.piles.map((p, i) => `
+    <div class="bd-pile" style="--d:${(i * 0.09).toFixed(2)}s"><span>${esc(p.k)}</span><span>${esc(p.v)}</span></div>`).join('');
+  $('#bd-note').textContent = st.note;
+}
+
+function wireBrainDump() {
+  $('#bd-states').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-state]');
+    if (!btn || btn.dataset.state === energy) return;
+    energy = btn.dataset.state;
+    renderStates();
+    const piles = $('#bd-piles');
+    piles.classList.add('is-reset');
+    renderPiles();
+    // Two frames so the reset state paints before the pour transition runs.
+    requestAnimationFrame(() => requestAnimationFrame(() => piles.classList.remove('is-reset')));
+  });
+}
+
+// ── dbt DAG edges ────────────────────────────────────────────
+function renderDagEdges() {
+  const stgRight = 47, intLeft = 52, intRight = 78, martLeft = 82;
+  const y = { src: 82, sop: 17, sp: 32, sa: 47, sd: 62, so: 82, int: 36, fct: 82, dimP: 36, dimU: 82 };
+  const curve = (x1, y1, x2, y2) => {
+    const mx = (x1 + x2) / 2;
+    return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+  };
+  // The real lineage: orders → stg_orders; four staging models → int;
+  // int → dim_products; stg_orders + int → fct_orders → dim_users.
+  const edges = [
+    [22, y.src, 25, y.so], [stgRight, y.sop, intLeft, y.int], [stgRight, y.sp, intLeft, y.int],
+    [stgRight, y.sa, intLeft, y.int], [stgRight, y.sd, intLeft, y.int],
+    [intRight, y.int, martLeft, y.dimP], [stgRight, y.so, intLeft, y.fct],
+    [intRight - 10, y.int + 4, intLeft, y.fct - 2], [intRight, y.fct, martLeft, y.dimU],
+  ];
+  const paths = edges.map((e, i) =>
+    `<path d="${curve(e[0], e[1], e[2], e[3])}" fill="none" stroke="#1a6b5a" stroke-width="0.28" opacity="0.55" stroke-dasharray="1.6 1.2" style="--d:${(i * 0.08).toFixed(2)}s"/>`).join('');
+  $('#dag').insertAdjacentHTML('afterbegin',
+    `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${paths}</svg>`);
+}
+
+// ── ATX choropleth ───────────────────────────────────────────
+function zipColor(score) {
+  if (score <= 89.0) return '#0f6e56';
+  if (score <= 90.6) return '#4daa91';
+  if (score <= 92.0) return '#d97706';
+  return '#b91c1c';
+}
+
+function zipMapSvg() {
+  const W = 330, H = 420, pad = 16;
+  const lats = [], lngs = [];
+  ATX_ZIPS.forEach((z) => { lats.push(z.box[0], z.box[2]); lngs.push(z.box[1], z.box[3]); });
+  const latMax = Math.max(...lats), latMin = Math.min(...lats);
+  const lngMax = Math.max(...lngs), lngMin = Math.min(...lngs);
+  const k = Math.cos((30.3 * Math.PI) / 180); // equirectangular x-correction at Austin's latitude
+  const spanX = (lngMax - lngMin) * k, spanY = latMax - latMin;
+  const scale = Math.min((W - pad * 2) / spanX, (H - pad * 2) / spanY);
+  const offX = pad + ((W - pad * 2) - spanX * scale) / 2;
+  const offY = pad + ((H - pad * 2) - spanY * scale) / 2;
+  const px = (lng) => offX + (lng - lngMin) * k * scale;
+  const py = (lat) => offY + (latMax - lat) * scale;
+  const river = `M${px(-97.79)},${py(30.276)} C${px(-97.762)},${py(30.262)} ${px(-97.742)},${py(30.268)} ${px(-97.728)},${py(30.258)}`
+    + ` C${px(-97.714)},${py(30.248)} ${px(-97.700)},${py(30.252)} ${px(-97.676)},${py(30.238)}`;
+  const rects = ATX_ZIPS.map((z, i) => {
+    const [t, l, b, r] = z.box;
+    const x = px(l), yTop = py(t), w = px(r) - px(l), h = py(b) - py(t);
+    return `<g style="--d:${(i * 0.045).toFixed(2)}s">
+      <rect x="${x.toFixed(1)}" y="${yTop.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${zipColor(z.score)}" fill-opacity="0.78" stroke="#f8f6ef" stroke-width="1.2"><title>${z.zip} · ${esc(z.label)} · ${z.score} avg score</title></rect>
+      <text x="${(x + w / 2).toFixed(1)}" y="${(yTop + h / 2 - 1).toFixed(1)}" text-anchor="middle" style="font:500 10px 'IBM Plex Mono',monospace;fill:#fff;pointer-events:none">${z.zip}</text>
+      <text x="${(x + w / 2).toFixed(1)}" y="${(yTop + h / 2 + 11).toFixed(1)}" text-anchor="middle" style="font:400 10px 'IBM Plex Mono',monospace;fill:rgba(255,255,255,.85);pointer-events:none">${z.score.toFixed(1)}</text>
+    </g>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="display:block" role="img" aria-label="Choropleth of average Austin food-inspection score across 18 zip codes">
+    ${rects}
+    <path d="${river}" fill="none" stroke="#f8f6ef" stroke-width="6" stroke-linecap="round"/>
+    <path d="${river}" fill="none" stroke="#7ba9a0" stroke-width="2.6" stroke-linecap="round"/>
+    <text x="14" y="${H - 10}" stroke="#f8f6ef" stroke-width="3.2" paint-order="stroke" style="font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;fill:#8d8975">N ↑ · 18 zips</text>
+  </svg>`;
+}
+
+// ── Annotated analysis projects ──────────────────────────────
+function renderAnnotated() {
+  $('#annotated').innerHTML = ANNOTATED.map((p) => `
+    <div class="annotated">
+      <div class="annotated__head">
+        <div>
+          <span class="label label--accent">${esc(p.kicker)}</span>
+          <h3>${esc(p.headline)}</h3>
+        </div>
+        <a class="btn btn--accent" style="padding:12px 20px" href="${p.href}">${esc(p.cta)}</a>
+      </div>
+      <div class="annotated__grid" style="grid-template-columns:${p.cols}">
+        <div class="annotated__shot" style="order:${p.imgFirst ? 1 : 2}"><img src="${p.img}" alt="${esc(p.alt)}"></div>
+        <div style="order:${p.imgFirst ? 2 : 1}">
+          <p class="input-line">${esc(p.inputLine)}</p>
+          ${p.notes.map((c) => `
+            <div class="callout">
+              <span>${c.n}</span>
+              <div><strong>${esc(c.title)}</strong><span class="callout__body">${esc(c.body)}</span></div>
+            </div>`).join('')}
+          <p class="finding"><strong>What it found — </strong>${esc(p.finding)}</p>
+        </div>
+      </div>
+      ${p.isAtx ? `
+      <div class="choro">
+        <div class="choro__map">${zipMapSvg()}</div>
+        <div class="choro__body">
+          <span class="label label--accent">Compliance by zip · avg inspection score · city avg 90.6</span>
+          <p>All eighteen high-restaurant-density zips. Lower score means fewer violations, so the dark tiles are the good ones: South Congress at 88.7, Rundberg and South Lamar at 88.8. Crestview and North Burnet sit a full point above the city average, and Pflugerville is the outlier at 92.3.</p>
+          <div class="choro-legend">
+            <span>Score · lower is better</span>
+            <span class="swatch"><i style="background:#0f6e56"></i><span>≤ 89.0 — best</span></span>
+            <span class="swatch"><i style="background:#4daa91"></i><span>89.0 – 90.6</span></span>
+            <span class="swatch"><i style="background:#d97706"></i><span>90.6 – 92.0</span></span>
+            <span class="swatch"><i style="background:#b91c1c"></i><span>&gt; 92.0 — highest scrutiny</span></span>
+          </div>
+          <a class="choro__src" href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">21,160 records · City of Austin open data · the pannable version ↗</a>
+        </div>
+      </div>` : ''}
+    </div>`).join('');
+}
+
+// ── Experience: rail + roles ─────────────────────────────────
 let openRoles = [];
+
+function renderRailTicks() {
+  $('#rail-ticks').innerHTML = RAIL_TICKS.map((t) => `<span>${t}</span>`).join('');
+}
+
+function watchExperience() {
+  const rail = $('#rail');
+  if (REDUCED || !HAS_IO) { rail.classList.add('is-in'); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      rail.classList.add('is-in');
+    });
+  }, { threshold: 0.25 });
+  io.observe($('#experience'));
+}
 
 function renderRoles() {
   $('#roles').innerHTML = ROLES.map((r, i) => {
@@ -181,13 +241,12 @@ function renderRoles() {
     <div class="role">
       <div class="role__head">
         <h4>${esc(r.title)}</h4>
-        <div class="role__head-r">
-          <span class="label label--mid">${esc(r.period)}</span>
-          <button type="button" class="btn btn--ghost btn--sm" data-role="${i}">${open ? 'Hide' : 'Detail'}</button>
-        </div>
+        <span class="label label--mid" style="letter-spacing:.1em;white-space:nowrap">${esc(r.period)}</span>
+        <button type="button" class="btn btn--ghost btn--sm" data-role="${i}">${open ? 'Hide' : 'Detail'}</button>
       </div>
-      <ul${open ? '' : ' hidden'}>${r.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
-      <div class="tags">${r.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <p class="role__meta">${esc(r.meta)}</p>
+      ${open ? `<div class="role__bullets">${r.bullets.map((b, bi) => `
+        <p><i style="--d:${(bi * 0.14).toFixed(2)}s"></i><span>${esc(b)}</span></p>`).join('')}</div>` : ''}
     </div>`;
   }).join('');
   $('#roles-toggle-all').textContent = openRoles.length === ROLES.length ? 'Collapse all' : 'Expand all';
@@ -207,51 +266,65 @@ function wireRoles() {
   });
 }
 
-// ── Skills and credentials ───────────────────────────────────
-function renderSkills() {
-  $('#skill-tabs').innerHTML = SKILL_GROUPS.map((g, i) =>
-    `<button type="button" role="tab" class="tab${i === 0 ? ' is-on' : ''}" data-tab-i="${i}" aria-selected="${i === 0}">${esc(g.label)}</button>`).join('');
+// ── Skills: measured tab indicator ───────────────────────────
+let skillTab = 0;
+let tabEls = [];
 
-  $('#skill-panels').innerHTML = SKILL_GROUPS.map((g, i) => `
-    <div class="panel${i === 0 ? ' is-on' : ''}" data-panel="${i}">
-      ${g.items.map((it) => `<div class="skill"><strong>${esc(it.name)}</strong>${it.note ? `<span>${esc(it.note)}</span>` : ''}</div>`).join('')}
-    </div>`).join('');
+function renderSkillTabs() {
+  const host = $('#skill-tabs');
+  host.innerHTML = SKILLS.map((g, i) =>
+    `<button type="button" role="tab" class="${i === skillTab ? 'is-on' : ''}" data-tab="${i}" aria-selected="${i === skillTab}">${esc(g.label)}</button>`).join('')
+    + '<i class="indicator"></i>';
+  tabEls = [...host.querySelectorAll('button')];
+  measureTab();
+}
 
+function measureTab() {
+  // Measured, not computed: equal-width columns clip "AI ENABLEMENT".
+  const el = tabEls[skillTab];
+  const ind = $('#skill-tabs .indicator');
+  if (!el || !ind) return;
+  ind.style.width = `${el.offsetWidth}px`;
+  ind.style.transform = `translateX(${el.offsetLeft}px)`;
+}
+
+function renderSkillLine() {
+  const line = $('#skill-line');
+  line.textContent = SKILLS[skillTab].line;
+  line.style.animation = 'none';
+  void line.offsetHeight; // restart the crossfade
+  line.style.animation = '';
+}
+
+function wireSkills() {
+  $('#skill-tabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-tab]');
+    if (!btn) return;
+    skillTab = Number(btn.dataset.tab);
+    tabEls.forEach((t, i) => {
+      t.classList.toggle('is-on', i === skillTab);
+      t.setAttribute('aria-selected', String(i === skillTab));
+    });
+    measureTab();
+    renderSkillLine();
+  });
+  window.addEventListener('resize', measureTab);
+  // Re-measure once the mono font loads and tab widths settle.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureTab);
+}
+
+function renderCerts() {
   $('#certs').innerHTML = CERTS.map((c) => `
     <div class="cert">
       <div>
         <h4>${esc(c.name)}</h4>
         <p>${esc(c.issuer)}</p>
       </div>
-      <a class="cert__verify" href="${c.href}" target="_blank" rel="noopener">Verify ↗</a>
+      <a class="cert__verify" href="${c.href}">Verify ↗</a>
     </div>`).join('');
-
-  $('#other-certs').innerHTML = OTHER_CERTS.map((c) =>
-    `<div><strong>${esc(c.name)}</strong><span>${esc(c.issuer)}</span></div>`).join('');
 }
 
-function wireSkills() {
-  $('#skill-tabs').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-tab-i]');
-    if (!btn) return;
-    const i = btn.dataset.tabI;
-    $('#skill-tabs').querySelectorAll('.tab').forEach((t) => {
-      const on = t === btn;
-      t.classList.toggle('is-on', on);
-      t.setAttribute('aria-selected', String(on));
-    });
-    $('#skill-panels').querySelectorAll('.panel').forEach((p) =>
-      p.classList.toggle('is-on', p.dataset.panel === i));
-  });
-
-  $('#certs-toggle').addEventListener('click', (e) => {
-    const list = $('#other-certs');
-    list.hidden = !list.hidden;
-    e.currentTarget.textContent = list.hidden ? 'Show all' : 'Hide';
-  });
-}
-
-// ── Observations ─────────────────────────────────────────────
+// ── Notes / observations ─────────────────────────────────────
 let obsIdx = 0;
 let dayIdx = -1;
 
@@ -262,7 +335,7 @@ function renderObs() {
   $('#obs-counter').textContent = `${obsIdx + 1} of ${OBSERVATIONS.length}`;
   $('#obs-body').innerHTML = o.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('');
   $('#obs-src').innerHTML = o.linkText
-    ? `${esc(o.sourceText)} <a href="${o.linkHref}" target="_blank" rel="noopener">${esc(o.linkText)}</a> ${esc(o.suffix || '')}`
+    ? `${esc(o.sourceText)} <a href="${o.linkHref}">${esc(o.linkText)}</a>`
     : esc(o.sourceText);
   $('#obs-dots').innerHTML = OBSERVATIONS.map((_, i) =>
     `<button type="button" class="dot${i === obsIdx ? ' is-on' : ''}" data-obs="${i}" aria-label="Observation ${i + 1}"></button>`).join('');
@@ -281,143 +354,112 @@ function renderChart() {
       </div>
       <div class="chart__bars">
         ${chart.days.map((d, i) => `
-          <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}"
-                  class="${d.v <= 10 ? 'is-low' : ''}${dayIdx === i ? ' is-on' : ''}">
-            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%"></i>
+          <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}" class="${d.v <= 10 ? 'is-low' : ''}">
+            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;--d:${(i * 0.07).toFixed(2)}s"></i>
           </button>`).join('')}
       </div>
       <div class="chart__scale">
         <span class="label label--mid">${esc(chart.days[0].d)}</span>
         <span class="label label--mid">${esc(chart.days[chart.days.length - 1].d)}</span>
       </div>
-      <p class="chart__readout">${dayIdx > -1
-        ? `${esc(chart.days[dayIdx].d)} — ${chart.days[dayIdx].v} — ${esc(chart.days[dayIdx].note)}`
-        : `${chart.days.length} days, from normal to the floor and back`}</p>
+      <p class="chart__readout"></p>
     </div>`;
+  updateChartReadout();
+}
+
+function updateChartReadout() {
+  const chart = OBSERVATIONS[obsIdx].chart;
+  if (!chart) return;
+  $('#obs-chart .chart__readout').textContent = dayIdx > -1
+    ? `${chart.days[dayIdx].d} — ${chart.days[dayIdx].v} — ${chart.days[dayIdx].note}`
+    : `${chart.days.length} days, from normal to the floor and back`;
+  $('#obs-chart').querySelectorAll('[data-day]').forEach((b, i) =>
+    b.classList.toggle('is-on', i === dayIdx));
 }
 
 function wireObs() {
-  $('#obs-prev').addEventListener('click', () => { obsIdx = (obsIdx - 1 + OBSERVATIONS.length) % OBSERVATIONS.length; dayIdx = -1; renderObs(); });
-  $('#obs-next').addEventListener('click', () => { obsIdx = (obsIdx + 1) % OBSERVATIONS.length; dayIdx = -1; renderObs(); });
+  const step = (dir) => {
+    obsIdx = (obsIdx + dir + OBSERVATIONS.length) % OBSERVATIONS.length;
+    dayIdx = -1;
+    renderObs();
+  };
+  $('#obs-prev').addEventListener('click', () => step(-1));
+  $('#obs-next').addEventListener('click', () => step(1));
   $('#obs-dots').addEventListener('click', (e) => {
     const dot = e.target.closest('[data-obs]');
     if (!dot) return;
-    obsIdx = Number(dot.dataset.obs); dayIdx = -1; renderObs();
+    obsIdx = Number(dot.dataset.obs);
+    dayIdx = -1;
+    renderObs();
   });
-
   const scrub = (e) => {
     const bar = e.target.closest('[data-day]');
     if (!bar) return;
     dayIdx = Number(bar.dataset.day);
-    renderChart();
+    updateChartReadout();
   };
   $('#obs-chart').addEventListener('mouseover', scrub);
   $('#obs-chart').addEventListener('click', scrub);
-  $('#obs-chart').addEventListener('mouseleave', () => { if (dayIdx > -1) { dayIdx = -1; renderChart(); } });
-}
-
-// ── About: facts and the interests carousel ──────────────────
-let intPage = 0;
-
-function renderFacts() {
-  $('#facts').innerHTML = QUICK_FACTS.map((f) => `
-    <div class="fact">
-      <strong class="label label--mid">${esc(f.label)}</strong>
-      <span>${esc(f.value)}</span>
-    </div>`).join('');
-}
-
-function renderInterests() {
-  $('#interests').innerHTML = INTERESTS.map((it) => `
-    <article class="interest">
-      <h4>${esc(it.title)}</h4>
-      <p>${esc(it.body)}</p>
-    </article>`).join('');
-  moveCarousel();
-}
-
-function pages() { return Math.ceil(INTERESTS.length / (MOBILE() ? 1 : 2)); }
-
-function moveCarousel() {
-  const total = pages();
-  if (intPage > total - 1) intPage = total - 1;
-  $('#interests').style.transform = `translateX(calc(${-100 * intPage}% - ${intPage * 16}px))`;
-  $('#int-dots').innerHTML = Array.from({ length: total }, (_, i) =>
-    `<button type="button" class="dot${i === intPage ? ' is-on' : ''}" data-int="${i}" aria-label="Page ${i + 1}"></button>`).join('');
-}
-
-function wireInterests() {
-  $('#int-prev').addEventListener('click', () => { intPage = (intPage - 1 + pages()) % pages(); moveCarousel(); });
-  $('#int-next').addEventListener('click', () => { intPage = (intPage + 1) % pages(); moveCarousel(); });
-  $('#int-dots').addEventListener('click', (e) => {
-    const dot = e.target.closest('[data-int]');
-    if (!dot) return;
-    intPage = Number(dot.dataset.int);
-    moveCarousel();
+  $('#obs-chart').addEventListener('mouseleave', () => {
+    if (dayIdx > -1) { dayIdx = -1; updateChartReadout(); }
   });
-  window.addEventListener('resize', moveCarousel);
 }
 
-// ── Contact ──────────────────────────────────────────────────
-function renderContact() {
+// ── Life teaser + contact ────────────────────────────────────
+function renderLifeTeasers() {
+  $('#life-teasers').innerHTML = LIFE_TEASERS.map((l) => `
+    <div><span class="label">${esc(l.k)}</span><p>${esc(l.v)}</p></div>`).join('');
+}
+
+function renderContactLinks() {
   $('#contact-links').innerHTML = CONTACT_LINKS.map((l) => `
-    <a href="${l.href}"${l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>
-      <span class="label label--mid">${esc(l.label)}</span>${esc(l.value)}
+    <a href="${l.href}">
+      <span class="label">${esc(l.label)}</span>
+      <span class="value">${esc(l.value)}</span>
     </a>`).join('');
 }
 
+// ── Copy email ───────────────────────────────────────────────
 function wireCopyEmail() {
-  const btn = $('#copy-email');
+  const email = 'sammisnv@gmail.com';
   const toast = $('#toast');
-  let timer;
-  btn.addEventListener('click', async () => {
-    const email = 'sammisnv@gmail.com';
-    try { await navigator.clipboard.writeText(email); } catch (err) { /* clipboard blocked — the toast still names the address */ }
-    toast.textContent = `Email copied — ${email}`;
-    toast.classList.add('is-on');
-    btn.textContent = 'Copied';
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      toast.classList.remove('is-on');
-      btn.textContent = 'Copy my email';
-    }, 2200);
+  document.querySelectorAll('[data-copy-email]').forEach((btn) => {
+    let timer;
+    const original = btn.textContent;
+    btn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(email); } catch (err) { /* toast still names the address */ }
+      btn.textContent = `Copied — ${email}`;
+      if (toast) { toast.textContent = `Email copied — ${email}`; toast.classList.add('is-on'); }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        btn.textContent = original;
+        if (toast) toast.classList.remove('is-on');
+      }, 2200);
+    });
   });
 }
 
-// ── Reveal on first view ─────────────────────────────────────
-function initReveal() {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced || !('IntersectionObserver' in window)) return;
-  document.documentElement.classList.add('js-reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('is-in');
-      io.unobserve(e.target);
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
-}
-
 // ── Boot ─────────────────────────────────────────────────────
-renderNav();
-renderFilters();
-renderCards();
-renderField();
-renderBuilding();
+renderHeroStats();
+renderSignal();
+renderDumpBits();
+renderStates();
+renderPiles();
+renderDagEdges();
+renderAnnotated();
+renderRailTicks();
 renderRoles();
-renderSkills();
+renderSkillTabs();
+renderSkillLine();
+renderCerts();
 renderObs();
-renderFacts();
-renderInterests();
-renderContact();
+renderLifeTeasers();
+renderContactLinks();
 
-wireWork();
-wireField();
+wireBrainDump();
 wireRoles();
 wireSkills();
 wireObs();
-wireInterests();
 wireCopyEmail();
-trackSections();
-initReveal();
+watchSignal();
+watchExperience();

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>The rest of it — Samie Vargas</title>
+  <meta name="description" content="The personal half: the noticing field, the raccoon invoice, seven tarot decks, the Greenbelt at 15 of 21 miles, and where I actually eat in Austin.">
+  <link rel="canonical" href="https://samievargas.com/life">
+  <meta name="theme-color" content="#1a6b5a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samievargas.com/life">
+  <meta property="og:title" content="The rest of it — Samie Vargas">
+  <meta property="og:description" content="Same instinct as the work — notice something, sit with it, make a thing — pointed at raccoons, tarot decks, and the Greenbelt instead of revenue.">
+  <meta property="og:image" content="https://samievargas.com/og-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K7B7NDTKEL');
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a class="nav__name" href="/">Samie Vargas</a>
+  <div class="nav__links">
+    <a href="/">← The work</a>
+    <span class="is-here label label--mid" style="color:var(--accent)">/life</span>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<header class="page-hero">
+  <span class="label label--wide">Austin, TX · since 2014</span>
+  <h1>The rest of <em>it</em>.</h1>
+  <p class="lead">I would be building most of this regardless. Same instinct as the work — notice something, sit with it, make a thing — pointed at raccoons, tarot decks, and the Greenbelt instead of revenue.</p>
+</header>
+
+<!-- ── THE FIELD ───────────────────────────────────────────── -->
+<section class="section" id="field">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">01</span>
+      <h2>Everything here started as something I noticed</h2>
+    </div>
+    <span class="label label--mid">Click a dot</span>
+  </div>
+  <p class="field__intro">Left is where I only noticed something. Right is where I built something about it. None of this is on the work page — it is the same instinct, pointed at raccoons, tooth zones, and the Greenbelt.</p>
+  <div class="field rule-top">
+    <div>
+      <div class="plot" id="plot">
+        <span class="plot__axis plot__axis--tl">Work</span>
+        <span class="plot__axis plot__axis--bl">Life</span>
+        <span class="plot__axis plot__axis--tr">Built it →</span>
+        <span class="plot__mid-h"></span>
+        <span class="plot__mid-v"></span>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" id="plot-lines"></svg>
+      </div>
+      <div class="plot-key">
+        <div><i></i><span class="label label--mid">Something you can open</span></div>
+        <div><i></i><span class="label label--mid">A note, no artifact</span></div>
+      </div>
+    </div>
+    <article class="field__card" id="field-card"></article>
+  </div>
+</section>
+
+<!-- ── IN PROGRESS ─────────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">02</span>
+      <h2>Things I am part-way through</h2>
+    </div>
+    <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Nothing here is finished, which is the point</span>
+  </div>
+  <div class="progress-grid" id="progress"></div>
+</section>
+
+<!-- ── THE RACCOON INVOICE ─────────────────────────────────── -->
+<section class="section">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">03</span>
+      <h2>The Raccoon Invoice</h2>
+    </div>
+    <a class="label label--mid" style="white-space:nowrap" href="https://samievargas.com/raccoon/">samievargas.com/raccoon ↗</a>
+  </div>
+  <div class="raccoon rule-top">
+    <div>
+      <p class="lead">For five nights I slept badly and could not explain it. I blamed podcasts. I cancelled plans. Then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.</p>
+      <p class="raccoon__note">The wearable had the whole story before I did. What surprised me was the tail: the raccoons left on May 3 and it took eight more days to get back to baseline. The nervous system does not get the memo.</p>
+      <div class="invoice">
+        <div class="invoice__head">
+          <span>Itemized · Apr 24 – May 11</span>
+          <span>Balance due · nothing</span>
+        </div>
+        <div id="invoice-rows"></div>
+      </div>
+    </div>
+    <div>
+      <p class="battery__label">Body battery, out of 100 · hover a day</p>
+      <div class="battery__bars" id="battery"></div>
+      <div class="battery__scale">
+        <span class="label label--mid" style="letter-spacing:.1em">Apr 24</span>
+        <span class="label label--mid" style="letter-spacing:.1em">May 11</span>
+      </div>
+      <p class="battery__readout" id="battery-readout"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── INTERESTS ───────────────────────────────────────────── -->
+<section class="section">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">04</span>
+      <h2>Beyond the résumé</h2>
+    </div>
+  </div>
+  <div class="interests-grid" id="interests"></div>
+</section>
+
+<!-- ── EATING HERE ─────────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">05</span>
+      <h2>Eating here</h2>
+    </div>
+    <span class="label label--mid" style="white-space:nowrap">Hover a place · scores are real</span>
+  </div>
+  <p class="eat__intro">The standing rotation, and the reason the inspection project exists — I pulled 21,160 city records because I wanted to know about exactly this list. Scores are the city's, and lower means fewer violations.</p>
+  <div class="eat" id="places"></div>
+  <div class="eat__foot">
+    <p>The Caesar salad search continues and may be structurally doomed. Current standard: cold plate, no anchovy, croutons that were bread yesterday. Nothing in Austin has cleared it yet, which is the only open ticket on this page.</p>
+    <a href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">How I checked all of them ↗</a>
+  </div>
+</section>
+
+<!-- ── ON ROTATION ─────────────────────────────────────────── -->
+<section class="section">
+  <div class="rotation">
+    <div>
+      <div class="rotation__head">
+        <span class="section__num">06</span>
+        <h2>On rotation</h2>
+      </div>
+      <div id="facts"></div>
+    </div>
+    <div class="rotation__main">
+      <div class="rotation__top">
+        <a class="np" href="https://open.spotify.com/playlist/3oLN1CsU4GEi8N3q6SbhbE">
+          <div class="np__head">
+            <span>Now playing</span>
+            <span>Spotify ↗</span>
+          </div>
+          <p class="np__title">The one I keep coming back to</p>
+          <p class="np__blurb">Built over a couple of years, mostly for walking the Greenbelt and for the hour before I start writing anything.</p>
+          <div class="np__eq" id="eq"></div>
+          <div class="np__foot">
+            <span class="np__play">▶</span>
+            <span class="np__track"><i></i></span>
+            <span>open in Spotify</span>
+          </div>
+        </a>
+        <div class="media-lists">
+          <div>
+            <span class="label label--mid">Reading</span>
+            <div id="reading"></div>
+          </div>
+          <div>
+            <span class="label label--mid">Playing</span>
+            <div id="playing"></div>
+          </div>
+        </div>
+      </div>
+      <p class="label label--mid" style="display:block;margin-bottom:14px;letter-spacing:.13em">Things I built for myself</p>
+      <div class="thumbs">
+        <figure>
+          <div class="frame"><img src="assets/life-os/lifeos_today.png" alt="Life OS — the daily dashboard"></div>
+          <figcaption>Life OS · fifteen charts about me</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img src="assets/tarot-tracker/deck.png" alt="The tarot tracker"></div>
+          <figcaption>Tarot tracker · seven decks logged</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img src="assets/pixels-rag/pixels-rag-1.png" alt="Life in Pixels"></div>
+          <figcaption>Life in Pixels · ask my data anything</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer class="footer footer--light">
+  <a class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)" href="/">← Back to the work</a>
+  <span class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)">© 2026 Samie Vargas</span>
+</footer>
+
+<script type="module" src="js/life.js"></script>
+</body>
+</html>
