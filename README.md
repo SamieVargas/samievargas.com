@@ -20,39 +20,33 @@ I made this decision early and I'd make it the same way again. I didn't want to 
 **Structure:**
 
 ```
-index.html
+index.html           -- the whole page: nav, hero, section shells, footer
 css/
-  variables.css      -- design tokens, light + dark mode
-  styles.css         -- all the actual styles
+  styles.css         -- design tokens and every style, one accent colour
 js/
-  main.js            -- boot sequence, all interactive behavior
-  render.js          -- renders each section from data files
+  app.js             -- renders the lists from data/, wires every control
 data/
-  about.js           -- bio, quick facts, interests, contact
-  experience.js      -- work history
-  projects.js        -- featured and grid projects
-  skills.js          -- skill groups and certifications
-  building.js        -- currently building section
-  observations.js    -- writing/observations carousel
+  content.js         -- projects, roles, skills, certs, observations,
+                        quick facts, interests, contact links, the field
 assets/
   atx-foodie-inspection/   -- charts and visuals for that project
 ```
 
-The data files are just exported JS objects. If I want to update a project description or add a new interest card I go to one file, change the text, push. That's the whole update flow.
+`data/content.js` is just exported JS objects. If I want to update a project description or add a new interest card I go to one file, change the text, push. That's the whole update flow. Prose that only appears once — the hero, the bio, the Signal writeup — sits directly in `index.html`.
 
 ---
 
 ## Features worth noting
 
-**Dark mode** -- system preference respected, toggle in the nav, persisted to localStorage.
+**Plain or technical** -- every project card leads with what the thing does in plain language. "How it works" opens the architecture, and the Plain/Technical switch rewrites all four cards at once. Technical readers get everything, nobody else has to wade through it.
 
-**Command palette** -- Cmd+K or Ctrl+K. I built this because I wanted it, not because anyone asked for it. You can navigate sections, toggle dark mode, copy my email, download my resume. It's maybe a little extra for a personal site. I don't regret it.
+**The field** -- a plot of everything on here, placed by whether I only noticed it or actually built something, and whether it came from work or from my life. Click a dot, the panel next to it changes. The two halves turn out to look the same.
 
-**Scroll reveal** -- IntersectionObserver, CSS transitions, no library.
+**Observations** -- a carousel of short-form writing about things I've noticed in data. The raccoon one has a scrubable chart of my body battery going to the floor for ten days. This is the part of the site I want to keep adding to the most.
 
-**Project carousels** -- the featured projects have image carousels built from scratch. They gave me more trouble than they should have and I now have opinions about timing and DOM paint order that I did not have before. If you read my code you may see "plz work" more than once. 
+**Mobile as an app** -- under 820px the layout collapses to one column and a four-item tab bar pins to the bottom, so navigation stays under a thumb.
 
-**Observations section** -- a carousel of short-form writing about things I've noticed in data. This is the part of the site I want to keep adding to the most.
+**Scroll reveal** -- IntersectionObserver, CSS transitions, no library. Content is visible by default, so nothing depends on the animation firing.
 
 **Spotify embed** -- links to a playlist I actually listen to.
 
