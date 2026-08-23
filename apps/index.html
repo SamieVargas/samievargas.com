@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini apps — Samie Vargas</title>
+<meta name="description" content="Fifteen small single-purpose tools, each with its own visual identity. Six pull live data, one reads files you export yourself, two track what you tap, and the rest need nothing but a browser.">
+<link rel="canonical" href="https://samievargas.com/apps/">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #14151a; }
+  a { color: #9be8c8; text-decoration: none; } a:hover { color: #d6f7e8; }
+  .shotlink:hover { border-color: #9be8c8 !important; }
+  @media (max-width: 760px) { .approw { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+<div style="min-height:100vh;background:#14151a;color:#e8eaee;font-family:'Space Mono',monospace;padding:56px 44px 90px;box-sizing:border-box">
+  <div style="max-width:1240px;margin:0 auto">
+
+    <div style="border-bottom:1px solid #2c2e36;padding-bottom:26px">
+      <div style="font-size:10.5px;letter-spacing:5px;color:#7c8290">FIFTEEN MINI APPS · BUILT, WORKING, PUBLISHABLE</div>
+      <h1 style="font-family:'Instrument Serif',serif;font-size:62px;margin:12px 0 0;font-weight:400;line-height:1">The Mini Apps</h1>
+      <p style="font-family:'Instrument Serif',serif;font-style:italic;font-size:23px;line-height:1.4;color:#b4bac6;margin:16px 0 0;max-width:780px">Small single-purpose tools, each with its own visual identity. Six pull live data, one reads files you export yourself, two track what you tap, and the rest need nothing but a browser.</p>
+      <div style="display:flex;gap:30px;margin-top:26px;flex-wrap:wrap;font-size:11.5px;color:#7c8290">
+        <div><span style="color:#9be8c8">6</span> live API</div>
+        <div><span style="color:#9be8c8">1</span> paste-in import</div>
+        <div><span style="color:#9be8c8">2</span> self-tracking</div>
+        <div><span style="color:#9be8c8">6</span> self-contained</div>
+        <div><span style="color:#9be8c8">0</span> servers, keys, or logins</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0;margin-top:20px">
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="six-degrees" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/six-degrees.png" alt="Six Degrees of Anything" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">01</span>
+            <a href="six-degrees" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Six Degrees of Anything</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE API</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Two things — people, films, bands, companies, towns — and the shortest path between them. Dolly Parton reaches Austin through Willie Nelson, who she influenced and who worked there.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Wikidata search API + SPARQL — live, keyless</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Entity resolution, bidirectional neighbour expansion, client-side intersection, property-specificity ranking</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Graph search</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Go to four degrees</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">A queue, a visited set, and cached frontiers gets you past the current two-and-a-half hop ceiling without hammering the endpoint.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · REAL ALGORITHM WORK</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Draw the graph</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Replace the row of cards with an animated force layout: nodes settle, the winning path lights up, rejected bridges fade out.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · MOST VISIBLE PAYOFF</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Make it a game</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Daily pair, guess the bridge before revealing, score by degrees. Turns a lookup into something people return to.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="died-doing-what" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/died-doing-what.png" alt="Died Doing What" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">02</span>
+            <a href="died-doing-what" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Died Doing What</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE API</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Pick a trade and Wikidata reports how its people actually died. Poets: tuberculosis leads at 460 of 2,564 recorded deaths, median age 58. Click any cause to see who.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Wikidata SPARQL — live, keyless</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Aggregate COUNT query plus a separate sample query for names, median age computed in-browser</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Mortality analysis</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Control for century</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Tuberculosis wins any pre-1950 trade. Bucket by era and the real occupational hazards surface.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · BIGGEST HONESTY GAIN</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Compare two trades</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Boxers against poets on one axis. Comparison is where this stops being trivia and starts being analysis.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the cohort</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Deaths accumulating along a timeline as bars fill, so you watch a profession's mortality shape build.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · PURE POLISH</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="nepotism-graph" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/nepotism.png" alt="The Nepotism Graph" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">03</span>
+            <a href="nepotism-graph" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">The Nepotism Graph</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE API</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Which professions run in families. Of 25,885 conductors in Wikidata, 347 have a parent, child, or sibling who was also a conductor — and the Stamitz and Newman lines run deep.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Wikidata SPARQL — live, keyless</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">VALUES-bound property instead of a 4-way UNION (1s instead of a timeout), pair de-duplication, ratio against a total-count query</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Social-structure analysis</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Rank trades against each other</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Conductor vs economist vs racing driver on one screen — the interesting claim is which trade is most hereditary.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Follow a line past this trade</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Let a dynasty keep going when descendants changed profession, so the Coppolas stay one family across directing and acting.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · REAL GRAPH WORK</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the descent</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Portraits already stagger in; add a vertical family tree that grows downward generation by generation.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · ALREADY HALF DONE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="taco-coin-flip" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/taco-flip.png" alt="Taco Coin Flip" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">04</span>
+            <a href="taco-coin-flip" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Taco Coin Flip</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE API</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Settles a lunch argument between two Austin restaurants. Search either one against the city's real inspection records, flip the coin, and if one place scored materially worse the coin defers to the cleaner option.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">data.austintexas.gov (Socrata) — live, keyless</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">SoQL query, grouped by facility_id, full inspection history per venue</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Civic data toy</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Map the two options</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Geocode both picks and draw the walk between them.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Cleanest taco near me</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Geolocation plus a radius query turns the joke into a weekly-use tool.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · MOST USEFUL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the flip properly</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">A real 3D coin with a settle-and-wobble landing, then the verdict typing in underneath.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · PURE DELIGHT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="same-name" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/same-name.png" alt="Same Name, Different Life" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">05</span>
+            <a href="same-name" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Same Name, Different Life</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE API</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Type a name and it finds every human in Wikidata who carried it, laid out three ways: a packed timeline by birth year, a constellation joining people who shared a line of work, and the plain list.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">query.wikidata.org SPARQL — live, keyless</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">GROUP_CONCAT aggregation, greedy lane packing, client-side edge building</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Data visualisation</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Two names, side by side</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Compare namesakes and see which name skews to which trade and era.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Put them on a map</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Birthplaces plotted, so you watch a name migrate across centuries.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the century strip</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Columns filling in chronological order on load, so the shape of the name arrives over time rather than all at once.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="whodunit-roulette" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/whodunit.png" alt="Whodunit Roulette" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">06</span>
+            <a href="whodunit-roulette" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Whodunit Roulette</a>
+            <span style="background:#9be8c8;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">LIVE + IMPORT</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Picks your next mystery by mood rather than publication order. Import your Goodreads or StoryGraph export and it learns which authors you return to, then ranks accordingly. “Go deeper” swaps the curated pool for live records from Open Library.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Open Library subjects API (live) + Goodreads / StoryGraph CSV</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">CSV parsing with quoted-field handling, author-affinity weighting, redacted body count</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Recommender</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Learn from rejections</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">‘Not tonight’ should weigh as heavily as ‘I’ll read it.’</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Show me my taste</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">A profile built from your log: short, fair, mean, nothing over 400 pages.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · MOST SHAREABLE</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the deal</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Card flips from a face-down deck, spine-out shelf of what you’ve read building alongside.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="backlog-reaper" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/backlog-reaper.png" alt="Backlog Reaper" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">07</span>
+            <a href="backlog-reaper" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Backlog Reaper</a>
+            <span style="background:#e8c99b;color:#14151a;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">IMPORT</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Your unplayed pile, scored by guilt — years owned weighed against hours actually played — and one title condemned. Delete it forever or spare it like a coward. Import your real Steam library by pasting the JSON you fetched yourself.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Steam GetOwnedGames JSON, or plain text lines (any platform)</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Dual-format parser, guilt scoring, persistent graveyard</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Decision tool</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Escalate on spared titles</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Track reprieves and call them out the second time around.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Price the pile</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Paste prices and show the guilt in dollars, not counts.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the reaping</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">The condemned row struck through, greying, then sliding into the graveyard.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · PURE DELIGHT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="streak-autopsy" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/streak-autopsy.png" alt="Streak Autopsy" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">08</span>
+            <a href="streak-autopsy" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Streak Autopsy</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-TRACKING</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">A habit tracker that only gets interesting when you fail. It counts the days itself — tap done, watch the streak — and at a two-day gap it stamps the habit DECEASED, opens a case file, and asks exactly one question about why.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Your own taps, in localStorage</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Date-keyed logs, streak and best-run computation, repeat-cause detection</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Personal tracker</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Predict the next death</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">It knows rain kills your streaks; one keyless weather call makes it an early-warning system.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · BEST IDEA HERE</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Issue a death certificate</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">A shareable image per case, stamped and dated.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the dot grid</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Days filling left to right on load, with the gap opening up as a visible break.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="was-it-worth-it" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/worth-it.png" alt="Was It Worth It?" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">09</span>
+            <a href="was-it-worth-it" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Was It Worth It?</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-TRACKING</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Log a purchase. Thirty days later it asks whether you still care, and takes only yes or no. The receipt keeps your lifetime regret rate, which is the number nobody tracks and everybody should.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Manual entry, in localStorage</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Judgment queue gated by elapsed days, regret-rate aggregation</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Personal ledger</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Find the pattern</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Cluster regrets by price band and time of day: ‘70% of purchases over $150 made on weeknights.’</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Import a bank CSV</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Bulk-load a month so the 30-day clock starts properly.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the receipt</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">It should print — paper feeding up, line items landing one at a time.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · PURE DELIGHT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="sample-size-roast" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/sample-size.png" alt="Sample Size Roast" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">10</span>
+            <a href="sample-size-roast" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Sample Size Roast</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Paste a percentage claim, give it n, and receive consequences. Real Wald margin-of-error maths, a verdict tier, the interval drawn to scale, and a copyable honest rewrite of the stat.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Whatever you type</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">p̂ ± 1.96√(p̂(1−p̂)/n), required-n solve, tiered verdicts</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Statistics literacy</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Make it a bookmarklet</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Roast any stat on the page you’re reading.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Two-claim mode</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Test whether the gap between two percentages is significant at all — the mistake people actually make.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · SHARPEST</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the interval</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">The confidence band snapping wider as n falls, so you feel the uncertainty.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="oracle" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/oracle.png" alt="One-Question Oracle" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">11</span>
+            <a href="oracle" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">One-Question Oracle</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">An obsidian scrying stone that never answers. Ask it anything and it hands back a harder question, which it then loads into the input so the next consult goes one level deeper. Five descents, then it goes dark.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">None — a rule ladder over your phrasing</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Keyword routing on turn one, fixed descent ladder after, session chain log</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Thinking tool</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Let a model take turn one</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Keep the ladder as fallback; show both answers and label which is which.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Save the descent</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">A shareable transcript of the five questions you were asked.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Deepen the stone</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Smoke that reacts to the question’s length, text surfacing character by character.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="sql-tarot" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/sql-tarot.png" alt="SQL Tarot" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">12</span>
+            <a href="sql-tarot" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">SQL Tarot</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">A fourteen-card deck of SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod. It reads the spread and then assembles the query the cards imply.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">None — the deck is the data</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Weighted deal, reversal states, spread-driven query assembly</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Whimsy with domain knowledge</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Make the query runnable</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Point the spread at a public dataset and return real rows.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · BEST PAYOFF</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Reading history</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Keep past spreads so patterns emerge across days.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the deal</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Cards flipping from a face-down deck with a slight rotation, reversed ones landing upside down.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="locked-room" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/locked-room.png" alt="Locked Room Generator" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">13</span>
+            <a href="locked-room" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Locked Room Generator</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">A house, a body, six guests, one impossible exit. Generates the floor plan, the particulars, the suspect list, and — on request — how it was actually done.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">None — combinatorial generation</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Seeded shuffles, scene-consistent plan marking, solution reveal</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Generative fiction</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Make the plan playable</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Click rooms to place suspects, commit to an accusation, then reveal.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · TURNS IT INTO A GAME</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Score across cases</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Track how often you were right.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the reveal</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">The solution typing out like a detective’s summation, plan annotating itself as it goes.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="escalation-simulator" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/escalation.png" alt="Escalation Simulator" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">14</span>
+            <a href="escalation-simulator" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Escalation Simulator</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">An enterprise account is on fire and you have five decisions. Every choice moves account health, champion status, and your internal capital, and each one names the real tradeoff afterwards. Four endings.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">None — hand-authored decision tree</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">State machine over health / capital / relationships, outcome branching</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Domain expertise as a game</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Show the road not taken</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Reveal what the other branches would have done to account health.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL · BIGGEST SIGNAL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Ground it in real training</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Cite the account-management frameworks behind each tradeoff so it teaches, not just tests.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the health meter</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Ticking down in real time after each choice, with the log typing in beneath.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid #2c2e36;padding:34px 0;display:grid;grid-template-columns:minmax(300px,470px) 1fr;gap:38px;align-items:start" class="approw">
+        <a href="corporate-translator" class="shotlink" style="display:block;border:1px solid #2c2e36;background:#0f1014;overflow:hidden">
+          <img src="shots/translator.png" alt="Corporate Translator" style="width:100%;display:block" loading="lazy">
+        </a>
+        <div>
+          <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+            <span style="font-size:11px;color:#5f6472">15</span>
+            <a href="corporate-translator" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.05;color:#e8eaee">Corporate Translator</a>
+            <span style="background:#2c2e36;color:#b4bac6;font-size:9.5px;letter-spacing:1.6px;padding:4px 9px;white-space:nowrap">SELF-CONTAINED</span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;color:#b4bac6;margin:14px 0 0;max-width:640px">Paste an email and slide from passive-aggressive to Texan warm. The slider genuinely rewrites the text at five stops, counts the passive tells it found, and states the honest subtext underneath.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:20px;font-size:11.5px;line-height:1.65">
+            <div><span style="color:#5f6472">DATA</span><br><span style="color:#d2d6df">Whatever you paste</span></div>
+            <div><span style="color:#5f6472">THE MECHANIC</span><br><span style="color:#d2d6df">Ordered regex substitution table, tell detection, subtext inference</span></div>
+            <div><span style="color:#5f6472">TYPE</span><br><span style="color:#d2d6df">Language tool</span></div>
+          </div>
+          <div style="margin-top:22px">
+            <div style="font-size:9.5px;letter-spacing:2px;color:#9be8c8">THREE WAYS TO PUSH IT</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:12px">
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">01</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Rules vs model, side by side</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Same input, both engines, labelled. Shows you know where deterministic rules win.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · BEST SIGNAL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">02</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Detect the tone you sent</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Paste a received email and have it read the subtext back to you.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">SMALL</div>
+              </div>
+              <div style="border-top:1px solid #2c2e36;padding-top:12px">
+                <div style="display:flex;gap:8px;align-items:baseline">
+                  <span style="font-size:10px;color:#9be8c8">03</span>
+                  <span style="font-size:12.5px;font-weight:700;color:#e8eaee">Animate the slider</span>
+                </div>
+                <p style="font-size:12.5px;line-height:1.6;color:#b4bac6;margin:7px 0 0">Text morphing word by word as the tone moves, rather than snapping between stops.</p>
+                <div style="font-size:9.5px;letter-spacing:1.4px;color:#5f6472;margin-top:8px">MEDIUM · PURE POLISH</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;border:1px solid #2c2e36;padding:30px 32px">
+      <div style="font-size:10.5px;letter-spacing:3px;color:#7c8290">STILL ON THE LIST</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:18px">
+        <div>
+          <div style="font-family:'Instrument Serif',serif;font-size:21px">Chart Crimes</div>
+          <div style="font-size:12px;line-height:1.6;color:#8d94a2;margin-top:6px">A lineup of charts that name their own crime — truncated axis, dual-axis abuse — with room to add your own.</div>
+        </div>
+        <div>
+          <div style="font-family:'Instrument Serif',serif;font-size:21px">The Correlation Machine</div>
+          <div style="font-size:12px;line-height:1.6;color:#8d94a2;margin-top:6px">Two real Socrata datasets, one spurious correlation, zero causation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;font-size:10.5px;letter-spacing:2px;color:#5f6472;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid #2c2e36;padding-top:18px">
+      <span><a href="/" style="color:inherit">SAMIEVARGAS.COM</a> · MINI APPS</span><span>SCREENSHOTS ARE STATIC · CLICK ONE TO OPEN THE REAL THING</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
