@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Was It Worth It? — Samie Vargas</title>
+<meta name="description" content="A regret audit for your purchases: log what you bought, wait thirty days, then answer yes or no — nothing else.">
+<link rel="canonical" href="https://samievargas.com/apps/was-it-worth-it">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #cfc9bd; }
+a { color: #23211c; } a:hover { color: #6b6459; }
+input, button { font: inherit; }
+@keyframes print { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
+@keyframes feed { from { max-height: 0; opacity: 0; } to { max-height: 900px; opacity: 1; } }
+@keyframes lineIn { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: none; } }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes judged { 0% { transform: scale(1); } 40% { transform: scale(1.03) rotate(-0.4deg); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+.btn-ghost:hover { border-color: #23211c; color: #23211c; }
+.paste-box:focus { border-color: #23211c; }
+.btn-yes:hover { background: #23211c; color: #fdfcf7; }
+.btn-no:hover { background: #b3372c; border-color: #b3372c; }
+.footer-link { color: inherit; text-decoration: none; }
+.footer-link:hover { color: #6b6459; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: repeating-linear-gradient(135deg, #cfc9bd 0 22px, #cac4b7 22px 44px); padding: 52px 40px 90px; box-sizing: border-box; color: #23211c; font-family: 'Space Mono', monospace">
+  <div style="max-width: 1160px; margin: 0 auto">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; border-bottom: 2px solid #23211c; padding-bottom: 18px">
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 4px; color: #6b6459; animation: lineIn 480ms ease both"><span style="color: #b3372c">[ FIG. 09 ]</span>&nbsp;&nbsp;REGRET AUDIT SERVICES · EST. TODAY</div>
+        <h1 style="font-size: 46px; font-weight: 700; letter-spacing: -1px; margin: 10px 0 0; line-height: 1; animation: lineIn 520ms ease both; animation-delay: 90ms">WAS IT WORTH IT?</h1>
+      </div>
+      <div style="font-size: 11px; line-height: 1.9; color: #6b6459; text-align: right; animation: lineIn 520ms ease both; animation-delay: 180ms">LOG A PURCHASE · WAIT 30 DAYS<br>ANSWER YES OR NO. NOTHING ELSE.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 40px; align-items: start">
+
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459">LOG A PURCHASE</div>
+        <div style="background: #fdfcf7; border: 1.5px solid #23211c; padding: 22px; margin-top: 12px">
+          <input id="itemInput" type="text" placeholder="Mechanical keyboard" style="width: 100%; box-sizing: border-box; background: transparent; border: none; border-bottom: 1px solid #d6d0c2; font-size: 19px; padding: 8px 0; color: #23211c; outline: none">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px">
+            <div>
+              <div style="font-size: 10px; letter-spacing: 1.6px; color: #6b6459">PRICE</div>
+              <input id="priceInput" type="number" style="width: 100%; box-sizing: border-box; background: #f4f2ea; border: 1px solid #d6d0c2; padding: 11px 12px; font-size: 17px; color: #23211c; margin-top: 7px; outline: none">
+            </div>
+            <div>
+              <div style="font-size: 10px; letter-spacing: 1.6px; color: #6b6459">DAYS AGO</div>
+              <input id="agoInput" type="number" value="0" style="width: 100%; box-sizing: border-box; background: #f4f2ea; border: 1px solid #d6d0c2; padding: 11px 12px; font-size: 17px; color: #23211c; margin-top: 7px; outline: none">
+            </div>
+          </div>
+          <button type="button" id="addBtn" style="width: 100%; margin-top: 18px; background: #23211c; color: #fdfcf7; border: none; padding: 14px 0; font-size: 12px; letter-spacing: 1.8px; white-space: nowrap; cursor: pointer">ADD TO THE LEDGER</button>
+          <button type="button" id="importToggle" class="btn-ghost" style="width: 100%; margin-top: 8px; background: transparent; color: #6b6459; border: 1px solid #d6d0c2; padding: 12px 0; font-size: 11px; letter-spacing: 1.4px; white-space: nowrap; cursor: pointer">IMPORT A BANK CSV</button>
+        </div>
+
+        <div id="importPanel" style="display: none; margin-top: 16px; background: #fdfcf7; border: 1.5px dashed #b8b1a1; padding: 20px; animation: lineIn 260ms ease both">
+          <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459">BULK IMPORT</div>
+          <p style="font-size: 12px; line-height: 1.7; color: #4a443b; margin: 10px 0 0">Paste a bank or card export. It reads <span style="color: #23211c">date, description, amount</span> in any column order and starts each item's thirty-day clock from its real date. Nothing is uploaded.</p>
+          <textarea id="pasteBox" class="paste-box" rows="5" placeholder="Date,Description,Amount&#10;2026-07-23,KEYCHRON KEYBOARDS,-189.00&#10;2026-08-14,BREVILLE AIR FRYER,-145.00" style="width: 100%; box-sizing: border-box; margin-top: 12px; background: #f4f2ea; border: 1px solid #d6d0c2; padding: 12px; font-family: 'Space Mono', monospace; font-size: 11.5px; line-height: 1.6; color: #23211c; outline: none; resize: vertical"></textarea>
+          <div style="display: flex; gap: 10px; margin-top: 10px; align-items: center; flex-wrap: wrap">
+            <button type="button" id="runImportBtn" style="background: #23211c; color: #fdfcf7; border: none; padding: 12px 18px; font-size: 11px; letter-spacing: 1.4px; white-space: nowrap; cursor: pointer">READ THE STATEMENT</button>
+            <span id="importNote" style="font-size: 11px; color: #6b6459"></span>
+          </div>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1.5px solid #23211c; padding-top: 20px">
+          <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459; margin-bottom: 14px">LIFETIME AUDIT</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; font-size: 12.5px; line-height: 1.7">
+            <div><span style="color: #6b6459">WORTH IT</span><br><span id="worthCount" style="font-size: 22px"></span></div>
+            <div><span style="color: #6b6459">REGRET</span><br><span id="regretCount" style="font-size: 22px; color: #b3372c"></span></div>
+            <div><span style="color: #6b6459">SPENT WELL</span><br><span id="wellSpent"></span></div>
+            <div><span style="color: #6b6459">WASTED</span><br><span id="wasted" style="color: #b3372c"></span></div>
+          </div>
+          <p id="verdict" style="font-size: 12.5px; line-height: 1.7; margin: 20px 0 0; color: #4a443b"></p>
+        </div>
+
+        <div id="patternWrap" style="display: none; margin-top: 26px; border-top: 1.5px solid #23211c; padding-top: 20px">
+          <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459">THE PATTERN</div>
+          <p id="headline" style="font-size: 14px; line-height: 1.65; color: #23211c; margin: 10px 0 0"></p>
+          <div id="bandsList" style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459">DUE FOR JUDGMENT</div>
+        <div id="noneDue" style="display: none; background: #fdfcf7; border: 1.5px dashed #b8b1a1; padding: 26px; margin-top: 12px; font-size: 13.5px; line-height: 1.7; color: #6b6459">Nothing is due yet. Everything in the ledger is still inside its thirty days, which is the only period during which a purchase is unambiguously good.</div>
+        <div id="dueList" style="display: flex; flex-direction: column; gap: 16px; margin-top: 12px"></div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 2px; color: #6b6459">THE LEDGER</div>
+        <div style="background: #fdfcf7; box-shadow: 0 8px 22px rgba(0,0,0,0.13); margin-top: 12px; padding: 24px 22px 30px; animation: feed 700ms ease both; overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), 95% 100%, 90% calc(100% - 9px), 85% 100%, 80% calc(100% - 9px), 75% 100%, 70% calc(100% - 9px), 65% 100%, 60% calc(100% - 9px), 55% 100%, 50% calc(100% - 9px), 45% 100%, 40% calc(100% - 9px), 35% 100%, 30% calc(100% - 9px), 25% 100%, 20% calc(100% - 9px), 15% 100%, 10% calc(100% - 9px), 5% 100%, 0 calc(100% - 9px))">
+          <div style="text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 2px">REGRET AUDIT SERVICES</div>
+          <div style="text-align: center; font-size: 10px; color: #6b6459; margin-top: 4px"><span id="ledgerCount"></span> ITEMS ON FILE</div>
+          <div style="border-top: 1.5px dashed #23211c; margin: 16px 0"></div>
+          <div id="ledgerEmpty" style="display: none; font-size: 12px; color: #6b6459; line-height: 1.7">Nothing on file. Log something you bought this month and come back in thirty days.</div>
+          <div id="ledgerList" style="display: flex; flex-direction: column; gap: 11px"></div>
+          <div style="border-top: 1.5px dashed #23211c; margin: 18px 0 12px"></div>
+          <div style="font-size: 11px; line-height: 1.8">TOTAL LOGGED &nbsp;<span id="totalLogged"></span><br>REGRET RATE &nbsp;<span id="regretRate"></span></div>
+          <div style="text-align: center; font-size: 10px; letter-spacing: 1px; margin-top: 16px">*** NO REFUNDS ON FEELINGS ***</div>
+        </div>
+        <button type="button" id="clearBtn" style="background: transparent; border: none; color: #6b6459; padding: 14px 0 0; font-size: 11px; letter-spacing: 1.4px; cursor: pointer; text-decoration: underline">clear the ledger</button>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px; border-top: 2px solid #23211c; padding-top: 18px; font-size: 10.5px; letter-spacing: 2px; color: #6b6459; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="footer-link" href="/">SAMIEVARGAS.COM</a> · <a class="footer-link" href="./">MINI APPS</a></span><span>STORED IN YOUR BROWSER ONLY</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const DEMO = [
+  { item: "Mechanical keyboard", price: 189, ago: 41, verdict: null },
+  { item: "Standing desk mat", price: 64, ago: 96, verdict: "yes" },
+  { item: "Second monitor arm", price: 120, ago: 210, verdict: "no" },
+  { item: "Ring Fit Adventure", price: 79, ago: 480, verdict: "yes" },
+  { item: "Air fryer", price: 145, ago: 8, verdict: null }
+];
+
+function money(n) { return "$" + Math.round(n).toLocaleString(); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+const state = {
+  items: DEMO.map(d => Object.assign({}, d)),
+  importOpen: false
+};
+
+const $ = id => document.getElementById(id);
+const itemInput = $("itemInput"), priceInput = $("priceInput"), agoInput = $("agoInput");
+const importPanel = $("importPanel"), importToggle = $("importToggle");
+const pasteBox = $("pasteBox"), importNote = $("importNote");
+
+function persist(items) { try { localStorage.setItem("worthit.items", JSON.stringify(items)); } catch (e) {} }
+
+function setImportNote(text, ok) {
+  importNote.textContent = text;
+  importNote.style.color = ok ? "#6b6459" : "#b3372c";
+}
+
+function render() {
+  const items = state.items;
+  const due = [];
+  items.forEach((x, i) => { if (!x.verdict && (parseInt(x.ago, 10) || 0) >= 30) due.push({ x: x, i: i }); });
+  const judged = items.filter(x => x.verdict);
+  const worth = judged.filter(x => x.verdict === "yes");
+  const regret = judged.filter(x => x.verdict === "no");
+  const wasted = regret.reduce((a, x) => a + (x.price || 0), 0);
+  const well = worth.reduce((a, x) => a + (x.price || 0), 0);
+  const total = items.reduce((a, x) => a + (x.price || 0), 0);
+  const rate = judged.length ? Math.round((regret.length / judged.length) * 100) : 0;
+
+  let verdict;
+  if (!judged.length) verdict = "Nothing judged yet. The ledger only becomes interesting once something has been sitting in it for a month.";
+  else if (rate >= 60) verdict = "You regret " + rate + "% of what you've judged. The pattern isn't the money, it's the thirty days — you buy for a version of your week that doesn't exist.";
+  else if (rate >= 30) verdict = money(wasted) + " on things you stopped caring about. Ordinary. Keep logging, the rate is the useful number.";
+  else verdict = "A " + rate + "% regret rate is genuinely good. Either your judgment is sound or you haven't logged the embarrassing ones.";
+
+  // Pattern: regret rate by price band.
+  const BANDS = [
+    { label: "Under $25", min: 0, max: 25 },
+    { label: "$25 to $75", min: 25, max: 75 },
+    { label: "$75 to $150", min: 75, max: 150 },
+    { label: "Over $150", min: 150, max: Infinity }
+  ];
+  const bandRows = BANDS.map(b => {
+    const inBand = judged.filter(x => (x.price || 0) >= b.min && (x.price || 0) < b.max);
+    const bad = inBand.filter(x => x.verdict === "no").length;
+    const rate = inBand.length ? Math.round((bad / inBand.length) * 100) : 0;
+    return {
+      label: b.label,
+      meta: inBand.length ? rate + "% regret · " + inBand.length + " judged" : "none judged",
+      pct: Math.max(2, rate) + "%",
+      color: rate >= 60 ? "#b3372c" : (rate >= 30 ? "#c47a20" : "#4f7a4f"),
+      rate: rate, n: inBand.length
+    };
+  });
+  const worstBand = bandRows.filter(b => b.n >= 2).sort((a, b) => b.rate - a.rate)[0];
+  let headline;
+  if (!judged.length) headline = "";
+  else if (worstBand && worstBand.rate >= 50) headline = "You regret " + worstBand.rate + "% of purchases in the " + worstBand.label.toLowerCase() + " band. That is where the money goes wrong.";
+  else if (worstBand) headline = "No band is a disaster. The worst is " + worstBand.label.toLowerCase() + " at " + worstBand.rate + "% regret.";
+  else headline = "Judge a few more and the bands start to separate.";
+
+  // Lifetime audit
+  $("worthCount").textContent = worth.length;
+  $("regretCount").textContent = regret.length;
+  $("wellSpent").textContent = money(well);
+  $("wasted").textContent = money(wasted);
+  $("verdict").textContent = verdict;
+
+  // The pattern
+  const hasPatterns = judged.length >= 3;
+  $("patternWrap").style.display = hasPatterns ? "" : "none";
+  if (hasPatterns) {
+    $("headline").textContent = headline;
+    $("bandsList").innerHTML = bandRows.map(b => `
+      <div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 11.5px; white-space: nowrap">
+          <span style="color: #4a443b">${esc(b.label)}</span>
+          <span style="color: #6b6459; flex: none">${esc(b.meta)}</span>
+        </div>
+        <div style="height: 8px; background: #d6d0c2; margin-top: 6px">
+          <div style="height: 100%; width: ${esc(b.pct)}; background: ${esc(b.color)}; transform-origin: left; animation: grow 520ms ease both"></div>
+        </div>
+      </div>`).join("");
+  } else {
+    $("bandsList").innerHTML = "";
+  }
+
+  // Due for judgment
+  $("noneDue").style.display = due.length === 0 ? "" : "none";
+  $("dueList").innerHTML = due.map(d => `
+    <div style="background: #fdfcf7; box-shadow: 0 8px 22px rgba(0,0,0,0.13); padding: 22px 22px 24px; animation: print 300ms ease both, judged 520ms ease 300ms both">
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; font-weight: 700; line-height: 1.35">
+        <span style="min-width: 0">${esc(d.x.item)}</span><span style="white-space: nowrap; flex: none">${esc(money(d.x.price))}</span>
+      </div>
+      <div style="font-size: 10.5px; color: #6b6459; margin-top: 8px; white-space: nowrap">LOGGED ${esc(d.x.ago)} DAYS AGO</div>
+      <div style="border-top: 1.5px dashed #23211c; margin: 16px 0 14px"></div>
+      <div style="font-size: 12.5px; text-align: center; line-height: 1.6">YOUR 30 DAYS ARE UP.<br>DO YOU STILL CARE?</div>
+      <div style="display: flex; gap: 12px; margin-top: 16px">
+        <button type="button" class="btn-yes" data-judge="yes" data-i="${d.i}" style="flex: 1; border: 2px solid #23211c; background: transparent; color: #23211c; padding: 15px 0; font-size: 16px; font-weight: 700; cursor: pointer">YES</button>
+        <button type="button" class="btn-no" data-judge="no" data-i="${d.i}" style="flex: 1; border: 2px solid #23211c; background: #23211c; color: #fdfcf7; padding: 15px 0; font-size: 16px; font-weight: 700; cursor: pointer">NO</button>
+      </div>
+    </div>`).join("");
+
+  // The ledger
+  $("ledgerCount").textContent = items.length;
+  $("ledgerEmpty").style.display = items.length === 0 ? "" : "none";
+  $("ledgerList").innerHTML = items.map((x, i) => {
+    const color = x.verdict === "no" ? "#b3372c" : "#23211c";
+    const status = x.verdict === "yes" ? "WORTH IT" : (x.verdict === "no" ? "REGRET" : ((parseInt(x.ago, 10) || 0) >= 30 ? "AWAITING JUDGMENT" : (30 - (parseInt(x.ago, 10) || 0)) + " DAYS TO GO"));
+    const delay = Math.min(i * 45, 900) + "ms";
+    return `
+      <div style="animation: lineIn 320ms ease both; animation-delay: ${delay}">
+        <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 12px">
+          <span style="color: ${color}">${esc(x.item)}</span><span>${esc(money(x.price))}</span>
+        </div>
+        <div style="font-size: 10px; color: #6b6459; margin-top: 3px">${esc(status)}</div>
+      </div>`;
+  }).join("");
+  $("totalLogged").textContent = money(total);
+  $("regretRate").textContent = judged.length ? rate + "%" : "—";
+}
+
+// Reads a bank/card CSV in any column order: finds date, description, amount by header name.
+function runImport() {
+  const raw = (pasteBox.value || "").trim();
+  if (!raw) { setImportNote("Nothing pasted yet.", false); return; }
+  const split = line => {
+    const out = []; let cur = "", q = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line.charAt(i);
+      if (c === '"') { q = !q; continue; }
+      if (c === "," && !q) { out.push(cur); cur = ""; continue; }
+      cur += c;
+    }
+    out.push(cur);
+    return out.map(x => x.trim());
+  };
+  const lines = raw.split(/\r?\n/).filter(l => l.trim());
+  const head = split(lines[0]).map(h => h.toLowerCase());
+  let di = -1, ni = -1, ai = -1;
+  head.forEach((h, i) => {
+    if (di < 0 && /date|posted/.test(h)) di = i;
+    if (ni < 0 && /desc|name|merchant|payee|memo|item/.test(h)) ni = i;
+    if (ai < 0 && /amount|debit|total|price|charge/.test(h)) ai = i;
+  });
+  const hasHeader = di >= 0 || ni >= 0 || ai >= 0;
+  if (!hasHeader) { di = 0; ni = 1; ai = 2; }
+  const today = new Date();
+  const parsed = [];
+  lines.slice(hasHeader ? 1 : 0).forEach(line => {
+    const c = split(line);
+    const name = (c[ni] || "").replace(/\s+/g, " ").trim();
+    const amt = Math.abs(parseFloat(String(c[ai] || "").replace(/[^0-9.\-]/g, ""))) || 0;
+    if (!name || !amt) return;
+    let ago = 0;
+    const d = new Date(c[di]);
+    if (!isNaN(d)) ago = Math.max(0, Math.round((today - d) / 86400000));
+    parsed.push({ item: name.length > 34 ? name.slice(0, 33) : name, price: amt, ago: ago, verdict: null });
+  });
+  if (!parsed.length) { setImportNote("Could not find description and amount columns.", false); return; }
+  const items = parsed.slice(0, 120).concat(state.items);
+  persist(items);
+  const due = parsed.filter(p => p.ago >= 30).length;
+  state.items = items;
+  state.importOpen = false;
+  pasteBox.value = "";
+  setImportNote("Read " + parsed.length + " purchases, " + due + " already due.", true);
+  syncImportPanel();
+  render();
+}
+
+function syncImportPanel() {
+  importPanel.style.display = state.importOpen ? "" : "none";
+  importToggle.textContent = state.importOpen ? "CLOSE IMPORT" : "IMPORT A BANK CSV";
+}
+
+importToggle.addEventListener("click", () => {
+  state.importOpen = !state.importOpen;
+  setImportNote("", true);
+  syncImportPanel();
+});
+
+pasteBox.addEventListener("input", () => setImportNote("", true));
+
+$("runImportBtn").addEventListener("click", runImport);
+
+$("addBtn").addEventListener("click", () => {
+  const name = (itemInput.value || "").trim();
+  if (!name) return;
+  const items = [{ item: name, price: parseFloat(priceInput.value) || 0, ago: parseInt(agoInput.value, 10) || 0, verdict: null }].concat(state.items);
+  persist(items);
+  state.items = items;
+  itemInput.value = "";
+  priceInput.value = "";
+  agoInput.value = "0";
+  render();
+});
+
+$("dueList").addEventListener("click", e => {
+  const btn = e.target.closest("[data-judge]");
+  if (!btn) return;
+  const i = parseInt(btn.getAttribute("data-i"), 10);
+  const v = btn.getAttribute("data-judge");
+  const items = state.items.map((x, j) => j === i ? Object.assign({}, x, { verdict: v }) : x);
+  persist(items);
+  state.items = items;
+  render();
+});
+
+$("clearBtn").addEventListener("click", () => {
+  persist([]);
+  state.items = [];
+  render();
+});
+
+let saved = null;
+try { saved = JSON.parse(localStorage.getItem("worthit.items") || "null"); } catch (e) {}
+if (Array.isArray(saved) && saved.length) state.items = saved;
+
+render();
+</script>
+</body>
+</html>
