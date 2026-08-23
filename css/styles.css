@@ -68,6 +68,7 @@ button { font: inherit; }
 @keyframes growwide { from { width: 0; } }
 @keyframes fadein { from { opacity: 0; } }
 @keyframes crossfade { from { opacity: 0; transform: translateY(4px); } }
+@keyframes tilein { from { opacity: 0; transform: translateY(5px) scale(.97); } }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes eqbar { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
 @keyframes playhead { from { width: 6%; } to { width: 92%; } }
@@ -309,8 +310,7 @@ em { font-style: italic; color: var(--accent); }
   margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--rule);
   display: grid; grid-template-columns: auto 1fr; gap: 34px; align-items: start;
 }
-.choro__map { border: 1px solid var(--rule); background: #f8f6ef; padding: 12px; }
-.choro__map g { animation: fadein .5s ease var(--d, 0s) both; }
+.choro__map { border: 1px solid var(--rule); background: #f8f6ef; padding: 8px; }
 .choro__body > .label--accent { letter-spacing: .14em; display: block; margin-bottom: 12px; }
 .choro__body > p { font-size: 14px; line-height: 1.65; color: var(--ink-soft); max-width: 52ch; margin-bottom: 16px; }
 .choro-legend { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }

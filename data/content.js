@@ -84,8 +84,8 @@ const BRAIN_STATES = {
 const ANNOTATED = [
   { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'One cited number, rebuilt until it split in half.',
     cta: 'See the models ↗', href: 'https://github.com/SamieVargas/instacart-project',
-    img: 'assets/instacart-dbt/dag_01_full_lineage.png', alt: 'dbt lineage graph — staging models through to marts',
-    cols: '1fr 1.15fr', imgFirst: true,
+    img: 'assets/instacart-dbt/find_03_looker_page-1.png', alt: 'Looker Studio — reorder behaviour by shopper segment',
+    cols: '1.2fr 1fr', imgFirst: true,
     inputLine: 'In: raw order tables · out: five staging models, one join, three marts, 35 passing tests',
     notes: [
       { n: '1', title: 'Lineage you can follow', body: 'Every mart traces back to a named staging model, so a number can be argued with.' },
@@ -95,8 +95,8 @@ const ANNOTATED = [
     finding: 'new shoppers reorder at 0.221, veterans at 0.670. The 0.60 everyone cites describes neither.' },
   { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'A pest-sighting post, turned into an audit of where I eat.',
     cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: 'assets/atx-foodie-inspection/my_favs.png', alt: 'Inspection scores for my regular restaurants',
-    cols: '1.15fr 1fr', imgFirst: false, isAtx: true,
+    img: 'assets/atx-foodie-inspection/zip_performance.png', alt: 'Compliance by zip code — top 10 by restaurant density, against the 90.8 city average',
+    cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
     inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
     notes: [
       { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name — the question I actually had.' },
