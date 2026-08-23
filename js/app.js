@@ -7,7 +7,7 @@
 import {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
+  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, ARCADE_TITLES,
 } from '../data/content.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -169,7 +169,7 @@ function zipLattice() {
 function zipMapSvg() {
   const W = 360, H = 430;
   const grid = zipLattice();
-  const skip = { '0-0': 1, '4-3': 1 };
+  const skip = { '0-0': 1, '0-3': 1, '4-3': 1 };
   const order = ATX_ZIPS.slice().sort((a, b) => b.box[0] - a.box[0]);
   const cells = [];
   for (let r = 0; r < 5; r++) for (let c = 0; c < 4; c++) if (!skip[`${r}-${c}`]) cells.push([r, c]);
@@ -232,7 +232,7 @@ function renderAnnotated() {
         <a class="btn btn--accent" style="padding:12px 20px" href="${p.href}">${esc(p.cta)}</a>
       </div>
       <div class="annotated__grid" style="grid-template-columns:${p.cols}">
-        <div class="annotated__shot" style="order:${p.imgFirst ? 1 : 2}"><img src="${p.img}" alt="${esc(p.alt)}"></div>
+        <div class="annotated__shot" style="order:${p.imgFirst ? 1 : 2}">${p.img ? `<img src="${p.img}" alt="${esc(p.alt)}">` : zipMapSvg()}</div>
         <div style="order:${p.imgFirst ? 2 : 1}">
           <p class="input-line">${esc(p.inputLine)}</p>
           ${p.notes.map((c) => `
@@ -245,16 +245,19 @@ function renderAnnotated() {
       </div>
       ${p.isAtx ? `
       <div class="choro">
-        <div class="choro__map">${zipMapSvg()}</div>
+        <div>
+          <span class="label label--accent" style="letter-spacing:.14em;display:block;margin-bottom:12px">Operational drift · avg score by inspection sequence</span>
+          <div style="border:1px solid var(--rule);background:#fff"><img src="assets/atx-foodie-inspection/burnout_inverted_trend.png" alt="Operational drift — average score by inspection sequence, 90.5 at the first visit against 92.6 by the fourteenth" style="display:block;width:100%"></div>
+          <p style="margin:14px 0 0;font-size:14px;line-height:1.65;color:var(--ink-soft);max-width:60ch">The axis is inverted, so the line falling is the bad direction. Venues do not converge on compliance as they get inspected more — they drift away from it, which is the part a scorecard alone never shows.</p>
+        </div>
         <div class="choro__body">
-          <span class="label label--accent">Compliance by zip · avg inspection score · city avg 90.8</span>
-          <p>All eighteen high-restaurant-density zips. Lower score means fewer violations, so the dark tiles are the good ones: South Congress at 88.7, Rundberg and South Lamar at 88.8. Crestview and North Burnet sit a full point above the city average, and Pflugerville is the outlier at 92.3.</p>
+          <span class="label label--accent">Reading the map above · city avg 90.6</span>
+          <p style="max-width:48ch">Seventeen high-restaurant-density zips. Lower means fewer violations, so the dark tiles are the good ones: South Congress at 88.7, Rundberg and South Lamar at 88.8. Crestview and North Burnet sit a full point above the city average.</p>
           <div class="choro-legend">
             <span>Score · lower is better</span>
             <span class="swatch"><i style="background:#0f6e56"></i><span>≤ 89.0 — best</span></span>
             <span class="swatch"><i style="background:#4daa91"></i><span>89.0 – 90.6</span></span>
-            <span class="swatch"><i style="background:#d97706"></i><span>90.6 – 92.0</span></span>
-            <span class="swatch"><i style="background:#b91c1c"></i><span>&gt; 92.0 — highest scrutiny</span></span>
+            <span class="swatch"><i style="background:#d97706"></i><span>&gt; 90.6 — highest scrutiny</span></span>
           </div>
           <a class="choro__src" href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">21,160 records · City of Austin open data · the pannable version ↗</a>
         </div>
@@ -467,6 +470,43 @@ function renderContactLinks() {
     </a>`).join('');
 }
 
+// ── Arcade ticker + Konami cheat ─────────────────────────────
+function wireArcadeTicker() {
+  const el = $('#arcade-ticker');
+  if (!el || REDUCED) return;
+  let idx = 0;
+  setInterval(() => {
+    idx = (idx + 1) % ARCADE_TITLES.length;
+    el.textContent = `${ARCADE_TITLES[idx]}.`;
+  }, 2200);
+}
+
+function wireKonami() {
+  const K = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let seq = [];
+  let overlays = [];
+  let t1, t2;
+  window.addEventListener('keydown', (e) => {
+    seq.push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
+    if (seq.length > K.length) seq.shift();
+    if (seq.length !== K.length || !K.every((k, i) => seq[i] === k)) return;
+    seq = [];
+    overlays.forEach((o) => o.remove());
+    const scan = document.createElement('div');
+    scan.style.cssText = 'position:fixed;inset:0;z-index:500;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(18,19,15,.32) 0px,rgba(18,19,15,.32) 3px,transparent 3px,transparent 6px);animation:blink .16s steps(2,start) 14';
+    const vig = document.createElement('div');
+    vig.style.cssText = 'position:fixed;inset:0;z-index:499;pointer-events:none;background:radial-gradient(ellipse at center,rgba(63,174,143,.12) 0%,rgba(18,19,15,.38) 100%)';
+    const toast = document.createElement('div');
+    toast.style.cssText = "position:fixed;left:50%;top:78px;transform:translateX(-50%);z-index:501;background:#12130f;color:#3fae8f;font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.26em;padding:12px 22px;border:1px solid #3fae8f;animation:driftup .3s ease";
+    toast.textContent = '+30 CREDITS · CHEAT ACCEPTED';
+    overlays = [scan, vig, toast];
+    overlays.forEach((o) => document.body.appendChild(o));
+    clearTimeout(t1); clearTimeout(t2);
+    t1 = setTimeout(() => { scan.remove(); vig.remove(); }, 2400);
+    t2 = setTimeout(() => toast.remove(), 4500);
+  });
+}
+
 // ── Copy email ───────────────────────────────────────────────
 function wireCopyEmail() {
   const email = 'sammisnv@gmail.com';
@@ -509,5 +549,7 @@ wireRoles();
 wireSkills();
 wireObs();
 wireCopyEmail();
+wireArcadeTicker();
+wireKonami();
 watchSignal();
 watchExperience();

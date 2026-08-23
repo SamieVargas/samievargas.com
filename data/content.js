@@ -95,15 +95,14 @@ const ANNOTATED = [
     finding: 'new shoppers reorder at 0.221, veterans at 0.670. The 0.60 everyone cites describes neither.' },
   { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'A pest-sighting post, turned into an audit of where I eat.',
     cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: 'assets/atx-foodie-inspection/zip_performance.png', alt: 'Compliance by zip code — top 10 by restaurant density, against the 90.8 city average',
-    cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
+    img: null, cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
     inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
     notes: [
       { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name — the question I actually had.' },
       { n: '2', title: 'Scored per visit type', body: 'Routine visits separated from follow-ups, which is where the pattern lives.' },
       { n: '3', title: '84 brands compared', body: 'A compliance scorecard across local restaurant groups, not single locations.' },
       { n: '4', title: 'Mapped by zip', body: 'A choropleth of Austin, so a neighborhood answer replaces an anecdote.' } ],
-    finding: 'follow-up inspections score eight points below routine visits. Evidence of a broken corrective loop.' },
+    finding: 'scores drift about two points worse across a venue\'s inspection history — 90.5 at the first visit, 92.6 by the fourteenth. Being flagged is not what fixes it.' },
 ];
 
 // Real per-zip averages from assets/atx-foodie-inspection — lower score = fewer violations.
@@ -125,7 +124,6 @@ const ATX_ZIPS = [
   { zip: '78757', score: 91.6, label: 'Crestview', box: [30.360, -97.730, 30.340, -97.710] },
   { zip: '78758', score: 91.6, label: 'North Burnet', box: [30.380, -97.730, 30.360, -97.710] },
   { zip: '78759', score: 89.4, label: 'Great Hills', box: [30.400, -97.775, 30.370, -97.745] },
-  { zip: '78660', score: 92.3, label: 'Pflugerville', box: [30.440, -97.640, 30.408, -97.610] },
 ];
 
 const ROLES = [
@@ -370,8 +368,32 @@ const TK_TOKENS = [
   { name: '--accent', hex: '#1a6b5a', use: 'The one green' },
 ];
 
+// ── The arcade (/apps) ───────────────────────────────────────
+
+const ARCADE_APPS = [
+  { slug: 'six-degrees', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things — people, films, bands, towns — and the shortest path between them. Dolly Parton reaches Austin through Willie Nelson.' },
+  { slug: 'died-doing-what', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died. Poets: tuberculosis leads, median age 58.' },
+  { slug: 'taco-coin-flip', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants — and if one scored worse on the city's real inspection records, the coin defers to the cleaner option." },
+  { slug: 'corporate-translator', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm. The slider genuinely rewrites the text.' },
+  { slug: 'streak-autopsy', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail. Two missed days and it stamps the habit DECEASED and opens a case file.' },
+  { slug: 'whodunit-roulette', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood. Import your Goodreads or StoryGraph export and it learns which authors you return to.' },
+  { slug: 'nepotism-graph', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families — of 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
+  { slug: 'same-name', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
+  { slug: 'backlog-reaper', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt, and one title condemned. Delete it forever or spare it like a coward.' },
+  { slug: 'was-it-worth-it', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase; thirty days later it asks whether you still care. Keeps your lifetime regret rate.' },
+  { slug: 'sample-size-roast', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences. Real margin-of-error math, plus an honest rewrite of the stat.' },
+  { slug: 'oracle', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers — ask it anything and it hands back a harder question.' },
+  { slug: 'sql-tarot', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
+  { slug: 'locked-room', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, one impossible exit — a fresh locked-room mystery generated every time.' },
+  { slug: 'escalation-simulator', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions. Every choice moves account health, and none of them are free.' },
+];
+
+// Ticker order on the work page differs deliberately from the arcade's curated order.
+const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin Flip', 'SQL Tarot', 'The Nepotism Graph', 'Corporate Translator', 'Streak Autopsy', 'The Locked Room', 'One-Question Oracle', 'Whodunit Roulette', 'Backlog Reaper', 'Was It Worth It?', 'Same Name, Different Life', 'Sample Size Roast', 'Escalation Simulator'];
+
 export {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
+  ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
