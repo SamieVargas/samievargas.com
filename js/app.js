@@ -140,35 +140,83 @@ function zipColor(score) {
   return '#b91c1c';
 }
 
+// A jittered 4×5 lattice tessellates the box into 18 organic tiles (two
+// corner cells skipped); zips fill them north-to-south by real latitude.
+function zipLattice() {
+  const W = [0.86, 1.2, 0.96, 0.98], H = [0.8, 1.14, 0.94, 1.08, 1.04];
+  const w = 360, h = 430, padX = 6, padY = 8;
+  const uw = w - padX * 2, uh = h - padY * 2;
+  const sw = W.reduce((a, b) => a + b, 0), sh = H.reduce((a, b) => a + b, 0);
+  const xs = [padX], ys = [padY];
+  W.forEach((k) => xs.push(xs[xs.length - 1] + (k / sw) * uw));
+  H.forEach((k) => ys.push(ys[ys.length - 1] + (k / sh) * uh));
+  const rnd = (a, b) => { const v = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return v - Math.floor(v); };
+  const grid = [];
+  for (let r = 0; r < ys.length; r++) {
+    grid[r] = [];
+    for (let c = 0; c < xs.length; c++) {
+      const lastC = c === xs.length - 1, lastR = r === ys.length - 1;
+      let x = xs[c] + (rnd(c, r) - 0.5) * (c === 0 || lastC ? 20 : 34);
+      let y = ys[r] + (rnd(r + 9, c + 3) - 0.5) * (r === 0 || lastR ? 16 : 30);
+      if (c === 0) x = Math.max(2, x); if (lastC) x = Math.min(w - 2, x);
+      if (r === 0) y = Math.max(3, y); if (lastR) y = Math.min(h - 3, y);
+      grid[r][c] = [+x.toFixed(1), +y.toFixed(1)];
+    }
+  }
+  return grid;
+}
+
 function zipMapSvg() {
-  const W = 330, H = 420, pad = 16;
-  const lats = [], lngs = [];
-  ATX_ZIPS.forEach((z) => { lats.push(z.box[0], z.box[2]); lngs.push(z.box[1], z.box[3]); });
-  const latMax = Math.max(...lats), latMin = Math.min(...lats);
-  const lngMax = Math.max(...lngs), lngMin = Math.min(...lngs);
-  const k = Math.cos((30.3 * Math.PI) / 180); // equirectangular x-correction at Austin's latitude
-  const spanX = (lngMax - lngMin) * k, spanY = latMax - latMin;
-  const scale = Math.min((W - pad * 2) / spanX, (H - pad * 2) / spanY);
-  const offX = pad + ((W - pad * 2) - spanX * scale) / 2;
-  const offY = pad + ((H - pad * 2) - spanY * scale) / 2;
-  const px = (lng) => offX + (lng - lngMin) * k * scale;
-  const py = (lat) => offY + (latMax - lat) * scale;
-  const river = `M${px(-97.79)},${py(30.276)} C${px(-97.762)},${py(30.262)} ${px(-97.742)},${py(30.268)} ${px(-97.728)},${py(30.258)}`
-    + ` C${px(-97.714)},${py(30.248)} ${px(-97.700)},${py(30.252)} ${px(-97.676)},${py(30.238)}`;
-  const rects = ATX_ZIPS.map((z, i) => {
-    const [t, l, b, r] = z.box;
-    const x = px(l), yTop = py(t), w = px(r) - px(l), h = py(b) - py(t);
-    return `<g style="--d:${(i * 0.045).toFixed(2)}s">
-      <rect x="${x.toFixed(1)}" y="${yTop.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${zipColor(z.score)}" fill-opacity="0.78" stroke="#f8f6ef" stroke-width="1.2"><title>${z.zip} · ${esc(z.label)} · ${z.score} avg score</title></rect>
-      <text x="${(x + w / 2).toFixed(1)}" y="${(yTop + h / 2 - 1).toFixed(1)}" text-anchor="middle" style="font:500 10px 'IBM Plex Mono',monospace;fill:#fff;pointer-events:none">${z.zip}</text>
-      <text x="${(x + w / 2).toFixed(1)}" y="${(yTop + h / 2 + 11).toFixed(1)}" text-anchor="middle" style="font:400 10px 'IBM Plex Mono',monospace;fill:rgba(255,255,255,.85);pointer-events:none">${z.score.toFixed(1)}</text>
-    </g>`;
-  }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="display:block" role="img" aria-label="Choropleth of average Austin food-inspection score across 18 zip codes">
-    ${rects}
-    <path d="${river}" fill="none" stroke="#f8f6ef" stroke-width="6" stroke-linecap="round"/>
-    <path d="${river}" fill="none" stroke="#7ba9a0" stroke-width="2.6" stroke-linecap="round"/>
-    <text x="14" y="${H - 10}" stroke="#f8f6ef" stroke-width="3.2" paint-order="stroke" style="font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;fill:#8d8975">N ↑ · 18 zips</text>
+  const W = 360, H = 430;
+  const grid = zipLattice();
+  const skip = { '0-0': 1, '4-3': 1 };
+  const order = ATX_ZIPS.slice().sort((a, b) => b.box[0] - a.box[0]);
+  const cells = [];
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 4; c++) if (!skip[`${r}-${c}`]) cells.push([r, c]);
+  const river = (() => {
+    const p = grid[3];
+    let d = `M${p[0][0]},${p[0][1]}`;
+    for (let i = 0; i < p.length - 1; i++) {
+      const a = p[i], b = p[i + 1], mx = (a[0] + b[0]) / 2, bend = i % 2 ? 14 : -14;
+      d += ` C${mx.toFixed(1)},${(a[1] + bend).toFixed(1)} ${mx.toFixed(1)},${(b[1] - bend).toFixed(1)} ${b[0]},${b[1]}`;
+    }
+    return d;
+  })();
+  const tiles = cells.map(([r, c], i) => {
+    const z = order[i];
+    const v = [grid[r][c], grid[r][c + 1], grid[r + 1][c + 1], grid[r + 1][c]];
+    const cx = v.reduce((s, q) => s + q[0], 0) / 4, cy = v.reduce((s, q) => s + q[1], 0) / 4;
+    return { z, pts: v.map((q) => q.join(',')).join(' '), cx, cy, i };
+  });
+  const scores = ATX_ZIPS.map((s) => s.score);
+  const worst = Math.min(...scores), best = Math.max(...scores);
+  const fills = tiles.map((t) => `
+    <polygon points="${t.pts}" fill="${zipColor(t.z.score)}" stroke="#f8f6ef" stroke-width="1.4"
+      style="animation:tilein .5s cubic-bezier(.34,1.15,.64,1) ${(t.i * 0.04).toFixed(2)}s both"><title>${t.z.zip} · ${esc(t.z.label)} · ${t.z.score.toFixed(1)} avg score</title></polygon>`).join('');
+  const extremes = tiles.filter((t) => t.z.score === worst || t.z.score === best).map((t) =>
+    `<polygon points="${t.pts}" fill="none" stroke="rgba(251,249,243,.85)" stroke-width="1.4" stroke-dasharray="4 3"/>`).join('');
+  const labels = tiles.map((t) => `
+    <g style="animation:fadein .4s ease ${(0.3 + t.i * 0.04).toFixed(2)}s both">
+      <text x="${t.cx.toFixed(1)}" y="${(t.cy - 4).toFixed(1)}" text-anchor="middle" style="font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.02em;fill:rgba(255,255,255,.95)">${t.z.zip}</text>
+      <text x="${t.cx.toFixed(1)}" y="${(t.cy + 15).toFixed(1)}" text-anchor="middle" style="font:300 20px Newsreader,Georgia,serif;fill:rgba(255,255,255,.95)">${t.z.score.toFixed(1)}</text>
+    </g>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:${W}px" role="img" aria-label="Choropleth of average Austin food-inspection score across 18 zip codes">
+    <defs>
+      <linearGradient id="riverfade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#8fb9b0" stop-opacity="0.4"/>
+        <stop offset="45%" stop-color="#7ba9a0" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#8fb9b0" stop-opacity="0.4"/>
+      </linearGradient>
+    </defs>
+    <g>${fills}</g>
+    <g pointer-events="none">${extremes}</g>
+    <path d="${river}" fill="none" stroke="#f8f6ef" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+    <path d="${river}" fill="none" stroke="url(#riverfade)" stroke-width="3" stroke-linecap="round"/>
+    <g pointer-events="none">${labels}</g>
+    <g pointer-events="none">
+      <circle cx="${W - 27}" cy="27" r="13" fill="rgba(251,249,243,.94)"/>
+      <path d="M${W - 27},18 l4,12 l-4,-3 l-4,3 z" fill="#1a6b5a"/>
+    </g>
   </svg>`;
 }
 
@@ -199,7 +247,7 @@ function renderAnnotated() {
       <div class="choro">
         <div class="choro__map">${zipMapSvg()}</div>
         <div class="choro__body">
-          <span class="label label--accent">Compliance by zip · avg inspection score · city avg 90.6</span>
+          <span class="label label--accent">Compliance by zip · avg inspection score · city avg 90.8</span>
           <p>All eighteen high-restaurant-density zips. Lower score means fewer violations, so the dark tiles are the good ones: South Congress at 88.7, Rundberg and South Lamar at 88.8. Crestview and North Burnet sit a full point above the city average, and Pflugerville is the outlier at 92.3.</p>
           <div class="choro-legend">
             <span>Score · lower is better</span>
