@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whodunit Roulette — Samie Vargas</title>
+<meta name="description" content="A murder has been selected for you: pick tonight's mood and get a classic mystery novel dealt from a curated pool — or from Open Library — ranked against your Goodreads or StoryGraph shelves.">
+<link rel="canonical" href="https://samievargas.com/apps/whodunit-roulette">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #f6ecd9; }
+a { color: #6e1f1a; } a:hover { color: #3a1f1a; }
+button, textarea, input { font: inherit; }
+@keyframes deal { 0% { opacity: 0; transform: translateY(30px) rotateY(180deg) rotate(-4deg) scale(0.94); } 45% { opacity: 1; } 100% { opacity: 1; transform: rotateY(0) rotate(0) scale(1); } }
+@keyframes shelfIn { from { opacity: 0; transform: scaleY(0.4); } to { opacity: 1; transform: none; } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+/* style-hover / style-focus conversions (!important beats the inline base styles) */
+.hoverDark:hover { border-color: #6e1f1a !important; color: #6e1f1a !important; }
+.spinBtn:hover { background: #3a1f1a !important; color: #f6ecd9 !important; }
+.redactBtn:hover { background: #6e1f1a !important; color: #f6ecd9 !important; border-color: #6e1f1a !important; }
+.pasteBox:focus { border-color: #6e1f1a !important; }
+.footLink { color: inherit; text-decoration: none; }
+.footLink:hover { color: #3a1f1a; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #f6ecd9; color: #3a1f1a; font-family: 'Space Mono', monospace">
+
+  <div style="background: #6e1f1a; color: #f6ecd9; padding: 40px 40px 34px">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap">
+      <div>
+        <div style="font-size: 11px; letter-spacing: 4px; color: #d9a441; animation: riseIn 480ms ease both"><span style="color: #f6ecd9">[ FIG. 06 ]</span>&nbsp;&nbsp;A MURDER HAS BEEN SELECTED FOR YOU</div>
+        <h1 style="font-family: 'DM Serif Display', serif; font-size: 56px; margin: 8px 0 0; font-weight: 400; line-height: 1; animation: riseIn 520ms ease both; animation-delay: 90ms">Whodunit Roulette</h1>
+      </div>
+      <div id="hdrStats" style="font-size: 11.5px; line-height: 1.9; text-align: right; color: #e6c9a0; animation: riseIn 520ms ease both; animation-delay: 180ms"></div>
+    </div>
+  </div>
+
+  <div style="max-width: 1180px; margin: 0 auto; padding: 36px 40px 80px">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+      <div style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52">TONIGHT'S MOOD</div>
+      <button type="button" id="importToggle" class="hoverDark" style="background: transparent; border: 1px solid #c9b494; color: #8a6f52; padding: 9px 15px; font-size: 11px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">IMPORT GOODREADS / STORYGRAPH</button>
+    </div>
+    <div id="moodRow" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center"></div>
+    <div id="libNote" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #8a6f52; margin-top: 10px"></div>
+
+    <div id="importPanel" style="display: none; margin-top: 22px; border: 1.5px solid #6e1f1a; background: #fdf7ea; padding: 24px 26px">
+      <div style="font-size: 10.5px; letter-spacing: 2px; color: #8a6f52">IMPORT YOUR SHELVES</div>
+      <p style="font-size: 12.5px; line-height: 1.75; margin: 10px 0 0; color: #5c4a3a">Neither Goodreads nor StoryGraph allows a browser to read your account directly, so this reads their export files instead &mdash; nothing is uploaded and no login is involved.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 16px; font-size: 11.5px; line-height: 1.75; color: #6b5643">
+        <div><span style="color: #6e1f1a">GOODREADS</span><br>My Books &rarr; Import/Export &rarr; Export Library. Open the CSV, copy all, paste below.</div>
+        <div><span style="color: #6e1f1a">STORYGRAPH</span><br>Manage Account &rarr; Export StoryGraph Library. Same paste.</div>
+        <div><span style="color: #6e1f1a">OR JUST TYPE</span><br>One title per line, optionally <span style="color: #3a1f1a">Title, 2024-03-11</span> for a finish date.</div>
+      </div>
+      <textarea id="pasteBox" class="pasteBox" rows="6" placeholder="Title,Author,...,Date Read,Exclusive Shelf&#10;The Moving Finger,Agatha Christie,...,2024/03/11,read" style="width: 100%; box-sizing: border-box; margin-top: 16px; background: #fff; border: 1px solid #cfc0a4; padding: 14px; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.6; color: #3a1f1a; outline: none; resize: vertical"></textarea>
+      <div style="display: flex; gap: 12px; margin-top: 12px; align-items: center; flex-wrap: wrap">
+        <button type="button" id="runImportBtn" style="background: #6e1f1a; color: #f6ecd9; border: none; padding: 13px 22px; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">READ MY SHELVES</button>
+        <span id="importNote" style="font-size: 11.5px; color: #6b5643"></span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 46px; margin-top: 40px; align-items: start">
+
+      <div>
+        <div style="width: 288px; margin: 0 auto; perspective: 1100px">
+          <div id="cardBox"></div>
+        </div>
+        <div id="sourceNote" style="margin-top: 20px; text-align: center; font-size: 11px; letter-spacing: 1.4px; color: #8a6f52"></div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52">WHY THIS ONE</div>
+        <p id="blurb" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 28px; line-height: 1.35; margin: 12px 0 0"></p>
+        <p id="because" style="font-size: 12.5px; line-height: 1.75; margin: 16px 0 0; color: #6b5643"></p>
+
+        <div style="margin-top: 26px; border-top: 1.5px solid #d8c6a8; border-bottom: 1.5px solid #d8c6a8; padding: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; font-size: 12.5px">
+          <div><span style="color: #8a6f52">MOOD FIT</span><br><span id="moodFit"></span></div>
+          <div><span style="color: #8a6f52">LENGTH</span><br><span id="lengthVal"></span></div>
+          <div><span style="color: #8a6f52">FAIRNESS</span><br><span id="fairnessVal"></span></div>
+          <div><span style="color: #8a6f52">BODY COUNT</span><br><span id="bodiesCell"></span></div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap">
+          <button type="button" id="spinBtn" class="spinBtn" style="background: transparent; border: 2px solid #3a1f1a; color: #3a1f1a; padding: 16px 24px; font-size: 12.5px; letter-spacing: 1.6px; cursor: pointer">SPIN AGAIN</button>
+          <button type="button" id="acceptBtn" style="background: #6e1f1a; color: #f6ecd9; border: none; padding: 16px 24px; font-size: 12.5px; letter-spacing: 1.6px; cursor: pointer">I'LL READ IT</button>
+          <button type="button" id="rejectBtn" class="hoverDark" style="background: transparent; border: 1px solid #c9b494; color: #8a6f52; padding: 16px 20px; font-size: 12px; letter-spacing: 1.2px; cursor: pointer">NOT TONIGHT</button>
+        </div>
+
+        <div id="tasteWrap"></div>
+
+        <div style="margin-top: 30px">
+          <div style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52">WHAT IT HAS LEARNED</div>
+          <div id="learnedList" style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px"></div>
+        </div>
+
+        <div style="margin-top: 26px">
+          <div style="height: 12px; background: #e0d4bd; border: 1.5px solid #6e1f1a; overflow: hidden">
+            <div id="progressBar" style="height: 100%; width: 0%; background: #6e1f1a"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8a6f52; margin-top: 10px; gap: 12px; flex-wrap: wrap">
+            <span id="progressText"></span>
+            <button type="button" id="resetBtn" style="display: none; background: transparent; border: none; color: #8a6f52; padding: 0; font-size: 11px; letter-spacing: 1px; cursor: pointer; text-decoration: underline">clear my log</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="shelfSection" style="display: none; margin-top: 48px; border-top: 1.5px solid #d8c6a8; padding-top: 22px">
+      <div id="shelfHdr" style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52"></div>
+      <div id="shelfChips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px"></div>
+    </div>
+
+    <div style="margin-top: 52px; border-top: 1.5px solid #d8c6a8; padding-top: 18px; font-size: 10.5px; letter-spacing: 2px; color: #8a6f52; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a href="/" class="footLink">SAMIEVARGAS.COM</a> &middot; <a href="./" class="footLink">MINI APPS</a></span><span>SPOILERS: NONE. EVER.</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const BOOKS = [
+  { t: "The Moving Finger", a: "AGATHA CHRISTIE", y: 1942, d: "MISS MARPLE", m: ["cozy", "mean"], b: "Poison-pen letters in a small village. Everyone is lying and the vicar's wife knows it.", len: "SHORT", f: "SCRUPULOUS", bod: 3 },
+  { t: "And Then There Were None", a: "AGATHA CHRISTIE", y: 1939, d: "NO DETECTIVE", m: ["dread"], b: "Ten strangers, one island, no way off. The one everybody means when they say Christie.", len: "SHORT", f: "BRUTAL BUT FAIR", bod: 10 },
+  { t: "Five Little Pigs", a: "AGATHA CHRISTIE", y: 1942, d: "POIROT", m: ["sad", "clever"], b: "A murder solved sixteen years late, from five accounts of the same afternoon.", len: "MEDIUM", f: "SCRUPULOUS", bod: 1 },
+  { t: "Crooked House", a: "AGATHA CHRISTIE", y: 1949, d: "NO DETECTIVE", m: ["mean", "dread"], b: "A family in one house, all of them awful. Christie said it was her own favourite.", len: "MEDIUM", f: "PLAYS ROUGH", bod: 2 },
+  { t: "A Murder Is Announced", a: "AGATHA CHRISTIE", y: 1950, d: "MISS MARPLE", m: ["cozy", "clever"], b: "An advert in the paper invites the village to a murder. They all show up.", len: "MEDIUM", f: "SCRUPULOUS", bod: 3 },
+  { t: "Death on the Nile", a: "AGATHA CHRISTIE", y: 1937, d: "POIROT", m: ["lush", "mean"], b: "A honeymoon, a steamer, a very rich woman with enemies on every deck.", len: "LONG", f: "SCRUPULOUS", bod: 3 },
+  { t: "Endless Night", a: "AGATHA CHRISTIE", y: 1967, d: "NO DETECTIVE", m: ["dread", "sad"], b: "Late Christie, nastier than her reputation suggests. Slow, then a trapdoor.", len: "SHORT", f: "PLAYS ROUGH", bod: 2 },
+  { t: "The Pale Horse", a: "AGATHA CHRISTIE", y: 1961, d: "NO DETECTIVE", m: ["dread", "clever"], b: "A village that sells death by suggestion. Once saved a real poisoning victim's life.", len: "MEDIUM", f: "SCRUPULOUS", bod: 4 },
+  { t: "After the Funeral", a: "AGATHA CHRISTIE", y: 1953, d: "POIROT", m: ["mean", "clever"], b: "“But he was murdered, wasn't he?” said to the wrong room.", len: "MEDIUM", f: "SCRUPULOUS", bod: 2 },
+  { t: "Sleeping Murder", a: "AGATHA CHRISTIE", y: 1976, d: "MISS MARPLE", m: ["sad", "cozy"], b: "A young wife recognises a house she has never been to.", len: "MEDIUM", f: "SCRUPULOUS", bod: 2 },
+  { t: "Murder on the Orient Express", a: "AGATHA CHRISTIE", y: 1934, d: "POIROT", m: ["lush", "clever"], b: "A snowdrift, a stabbed American, twelve immaculate alibis.", len: "MEDIUM", f: "FAMOUSLY UNFAIR", bod: 1 },
+  { t: "Cat Among the Pigeons", a: "AGATHA CHRISTIE", y: 1959, d: "POIROT", m: ["cozy", "clever"], b: "A girls' boarding school, a revolution abroad, jewels in a tennis racquet.", len: "MEDIUM", f: "SCRUPULOUS", bod: 3 },
+  { t: "The Honjin Murders", a: "SEISHI YOKOMIZO", y: 1946, d: "KOSUKE KINDAICHI", m: ["dread", "clever"], b: "A locked room in a Japanese village, a koto heard in the night, a family with rules.", len: "SHORT", f: "SCRUPULOUS", bod: 2 },
+  { t: "The Inugami Curse", a: "SEISHI YOKOMIZO", y: 1951, d: "KOSUKE KINDAICHI", m: ["dread", "mean"], b: "A will designed to make a family kill each other. It works.", len: "MEDIUM", f: "SCRUPULOUS", bod: 4 },
+  { t: "The Village of Eight Graves", a: "SEISHI YOKOMIZO", y: 1949, d: "KOSUKE KINDAICHI", m: ["dread", "lush"], b: "An inheritance in a village that has been waiting four hundred years to resent you.", len: "LONG", f: "PLAYS ROUGH", bod: 8 },
+  { t: "The Daughter of Time", a: "JOSEPHINE TEY", y: 1951, d: "INSP. GRANT", m: ["clever", "sad"], b: "A detective in a hospital bed re-tries Richard III from a portrait. No bodies, all argument.", len: "SHORT", f: "SCRUPULOUS", bod: 0 },
+  { t: "Gaudy Night", a: "DOROTHY L. SAYERS", y: 1935, d: "HARRIET VANE", m: ["lush", "sad"], b: "Poison-pen again, this time at Oxford, and really a novel about work and love.", len: "LONG", f: "SCRUPULOUS", bod: 0 },
+  { t: "The Nine Tailors", a: "DOROTHY L. SAYERS", y: 1934, d: "LORD PETER", m: ["cozy", "clever"], b: "Church bells, a flooded fen, and a corpse nobody can account for.", len: "LONG", f: "SCRUPULOUS", bod: 2 },
+  { t: "Malice", a: "KEIGO HIGASHINO", y: 1996, d: "DET. KAGA", m: ["mean", "clever"], b: "You know who did it by page thirty. The question is why, and the why is vicious.", len: "MEDIUM", f: "SCRUPULOUS", bod: 1 },
+  { t: "The Devotion of Suspect X", a: "KEIGO HIGASHINO", y: 2005, d: "DET. KUSANAGI", m: ["sad", "clever"], b: "A mathematician helps a neighbour hide a body. Structurally perfect, quietly devastating.", len: "MEDIUM", f: "SCRUPULOUS", bod: 2 },
+  { t: "Guards! Guards!", a: "TERRY PRATCHETT", y: 1989, d: "SAM VIMES", m: ["cozy", "clever"], b: "Not a mystery exactly, but the Watch investigates and it counts. A palate cleanser.", len: "MEDIUM", f: "GENEROUS", bod: 3 },
+  { t: "The Murder of Roger Ackroyd", a: "AGATHA CHRISTIE", y: 1926, d: "POIROT", m: ["clever"], b: "The one that broke the rules and got away with it. Do not read the back cover.", len: "MEDIUM", f: "CONTROVERSIAL", bod: 2 }
+];
+const MOODS = [
+  { key: "cozy", label: "COZY & MEAN" },
+  { key: "clever", label: "OUTSMART ME" },
+  { key: "dread", label: "CREEPING DREAD" },
+  { key: "sad", label: "QUIETLY SAD" },
+  { key: "lush", label: "TRAINS & MONEY" }
+];
+const MYSTERY_AUTHORS = ["christie", "yokomizo", "sayers", "higashino", "tey", "pratchett", "chandler", "hammett", "james", "rendell", "marsh", "carr", "queen", "penny", "french", "horowitz", "mcdonald", "vine", "leon", "nesbo", "mankell", "tursten", "griffiths", "raybourn", "thorogood", "stevenson"];
+
+function norm(s) { return String(s || "").toLowerCase().replace(/\(.*?\)/g, "").replace(/[^a-z0-9 ]/g, "").trim(); }
+
+const OL_SUBJECTS = {
+  cozy: "detective_and_mystery_stories",
+  clever: "locked_room_mysteries",
+  dread: "gothic_fiction",
+  sad: "murder_investigation",
+  lush: "crime_and_the_press"
+};
+const MOOD_HINTS = {
+  cozy: ["village", "cozy", "amateur", "clergy", "cat"],
+  clever: ["locked room", "puzzle", "impossible", "detectives"],
+  dread: ["gothic", "psychological", "suspense", "horror"],
+  sad: ["grief", "family", "domestic", "memory"],
+  lush: ["travel", "wealth", "high society", "voyages"]
+};
+
+// Turn an Open Library work into the same shape as a curated BOOKS entry.
+function fromOpenLibrary(w, mood) {
+  const subs = (w.subject || []).map(x => String(x).toLowerCase());
+  const pages = w.number_of_pages_median || 0;
+  const len = pages ? (pages < 240 ? "SHORT" : (pages > 400 ? "LONG" : "MEDIUM")) : "LENGTH UNKNOWN";
+  const hasDetective = subs.some(x => x.indexOf("detective") !== -1);
+  return {
+    t: w.title,
+    a: ((w.authors || [])[0] || {}).name ? String(((w.authors || [])[0]).name).toUpperCase() : "UNCREDITED",
+    y: w.first_publish_year || "",
+    d: hasDetective ? "A DETECTIVE" : "NO DETECTIVE",
+    m: [mood],
+    b: "From Open Library: catalogued under " + (subs.slice(0, 3).join(", ") || "mystery") + ". No blurb, no reviews, no idea. That's the appeal.",
+    len: len,
+    f: "UNVETTED",
+    bod: null,
+    ol: true,
+    key: w.key || ""
+  };
+}
+
+function splitCsvLine(line) {
+  const out = []; let cur = "", q = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line.charAt(i);
+    if (c === '"') { q = !q; continue; }
+    if (c === "," && !q) { out.push(cur); cur = ""; continue; }
+    cur += c;
+  }
+  out.push(cur);
+  return out.map(x => x.trim());
+}
+
+function esc(x) {
+  return String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// ---------- state ----------
+
+const state = {
+  mood: "cozy", idx: 0, read: [], rejected: [], key: 0,
+  importOpen: false, importNote: "", importOk: true, shelf: [], authorPrefs: {}, showBodies: false,
+  lib: [], libLoading: false, libNote: "22 curated mysteries in the pool. Go deeper to pull real records from Open Library — keyless, no login, ranked against your shelves."
+};
+
+function setState(patch, cb) {
+  Object.assign(state, typeof patch === "function" ? patch(state) : patch);
+  render();
+  if (cb) cb();
+}
+
+function pool() { return state.lib.length ? state.lib : BOOKS; }
+
+function persist(k, v) { try { localStorage.setItem("whodunit." + k, JSON.stringify(v)); } catch (e) {} }
+
+// ---------- actions ----------
+
+const revealBodies = () => setState({ showBodies: true });
+
+const deepen = async () => {
+  if (state.libLoading) return;
+  if (state.lib.length) { setState({ lib: [], libNote: "Back to the curated pool.", idx: 0 }, spin); return; }
+  setState({ libLoading: true, libNote: "Reading Open Library…" });
+  const subject = OL_SUBJECTS[state.mood] || OL_SUBJECTS.cozy;
+  const offset = Math.floor(Math.random() * 400);
+  try {
+    const res = await fetch("https://openlibrary.org/subjects/" + subject + ".json?limit=40&offset=" + offset);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    const works = (json.works || []).filter(w => w.title && (w.authors || []).length);
+    const hints = MOOD_HINTS[state.mood] || [];
+    const scored = works.map(w => {
+      const subs = (w.subject || []).map(x => String(x).toLowerCase()).join(" ");
+      let bonus = 0;
+      hints.forEach(h => { if (subs.indexOf(h) !== -1) bonus += 2; });
+      return { w: w, bonus: bonus };
+    }).sort((a, b) => b.bonus - a.bonus);
+    const lib = scored.slice(0, 24).map(x => fromOpenLibrary(x.w, state.mood));
+    if (!lib.length) { setState({ libLoading: false, libNote: "Open Library returned nothing usable. Try another mood." }); return; }
+    setState({
+      lib: lib, libLoading: false,
+      libNote: "Pulled " + lib.length + " works from Open Library · subject: " + subject.replace(/_/g, " ") + " · " + (json.work_count || "?").toLocaleString() + " in that subject"
+    }, spin);
+  } catch (e) {
+    setState({ libLoading: false, libNote: "Could not reach Open Library." });
+  }
+};
+
+const toggleImport = () => setState(s => ({ importOpen: !s.importOpen, importNote: "" }));
+
+const runImport = () => {
+  const raw = (pasteBox.value || "").trim();
+  if (!raw) { setState({ importNote: "Nothing pasted yet.", importOk: false }); return; }
+  const lines = raw.split(/\r?\n/).filter(l => l.trim());
+  const header = splitCsvLine(lines[0]).map(h => h.toLowerCase());
+  const isCsv = header.indexOf("title") !== -1;
+  const titleIdx = isCsv ? header.indexOf("title") : 0;
+  let authorIdx = -1, shelfIdx = -1;
+  if (isCsv) {
+    header.forEach((h, i) => {
+      if (authorIdx < 0 && h.indexOf("author") !== -1) authorIdx = i;
+      if (shelfIdx < 0 && (h.indexOf("shelf") !== -1 || h.indexOf("read status") !== -1)) shelfIdx = i;
+    });
+  }
+  const found = [], prefs = Object.assign({}, state.authorPrefs);
+  lines.slice(isCsv ? 1 : 0).forEach(line => {
+    const cells = isCsv ? splitCsvLine(line) : line.split(",").map(x => x.trim());
+    const title = cells[titleIdx];
+    if (!title) return;
+    const author = authorIdx >= 0 ? (cells[authorIdx] || "") : "";
+    const shelfVal = shelfIdx >= 0 ? String(cells[shelfIdx] || "").toLowerCase() : "read";
+    if (shelfVal && shelfVal.indexOf("read") === -1) return;
+    const looksMystery = !author || MYSTERY_AUTHORS.some(a => author.toLowerCase().indexOf(a) !== -1);
+    if (looksMystery) {
+      found.push(title);
+      const key = author.toLowerCase().split(/[ ,]+/).pop();
+      if (key) prefs[key] = (prefs[key] || 0) + 1;
+    }
+  });
+  if (!found.length) { setState({ importNote: "No mystery titles recognised in that paste.", importOk: false }); return; }
+  const shelf = found.slice(0, 200);
+  const matchedInPool = BOOKS.filter(b => shelf.some(t => norm(t) === norm(b.t) || norm(t).indexOf(norm(b.t)) === 0)).map(b => b.t);
+  const read = Array.from(new Set(state.read.concat(matchedInPool)));
+  persist("shelf", shelf); persist("read", read); persist("prefs", prefs);
+  pasteBox.value = "";
+  setState({
+    shelf: shelf, read: read, authorPrefs: prefs, importOpen: false, importOk: true,
+    importNote: "Found " + shelf.length + " mysteries, " + matchedInPool.length + " matched the pool."
+  }, spin);
+};
+
+function score(b) {
+  const key = b.a.toLowerCase().split(" ").pop();
+  let s = (state.authorPrefs[key] || 0) * 3;
+  if (b.m.indexOf(state.mood) !== -1) s += 10;
+  if (state.rejected.indexOf(b.t) !== -1) s -= 8;
+  // Rejections teach: an author or length you keep passing on sinks.
+  const rejAuthors = {}, rejLens = {};
+  BOOKS.forEach(x => {
+    if (state.rejected.indexOf(x.t) === -1) return;
+    const k = x.a.toLowerCase().split(" ").pop();
+    rejAuthors[k] = (rejAuthors[k] || 0) + 1;
+    rejLens[x.len] = (rejLens[x.len] || 0) + 1;
+  });
+  s -= (rejAuthors[key] || 0) * 4;
+  s -= (rejLens[b.len] || 0) * 2;
+  return s + Math.random() * 4;
+}
+
+const spin = () => {
+  const active = pool();
+  const unread = active.filter(b => state.read.indexOf(b.t) === -1);
+  const p = unread.length ? unread : active;
+  const best = p.slice().sort((a, b) => score(b) - score(a));
+  const top = best.slice(0, Math.min(4, best.length));
+  const chosen = top[Math.floor(Math.random() * top.length)];
+  setState(s => ({ idx: active.indexOf(chosen), key: s.key + 1, showBodies: false }));
+};
+
+const setMood = key => () => setState({ mood: key, lib: [], libNote: state.lib.length ? "Mood changed — back to the curated pool. Go deeper to re-pull." : state.libNote }, spin);
+
+const accept = () => {
+  const b = pool()[state.idx];
+  if (!b) return;
+  if (state.read.indexOf(b.t) !== -1) return;
+  const read = state.read.concat([b.t]);
+  const key = b.a.toLowerCase().split(" ").pop();
+  const prefs = Object.assign({}, state.authorPrefs);
+  prefs[key] = (prefs[key] || 0) + 2;
+  persist("read", read); persist("prefs", prefs);
+  setState({ read: read, authorPrefs: prefs });
+};
+
+const reject = () => {
+  const b = pool()[state.idx];
+  if (!b) return;
+  const rejected = state.rejected.concat([b.t]).slice(-20);
+  persist("rejected", rejected);
+  setState({ rejected: rejected }, spin);
+};
+
+const reset = () => {
+  ["read", "shelf", "prefs", "rejected"].forEach(k => { try { localStorage.removeItem("whodunit." + k); } catch (e) {} });
+  setState({ read: [], shelf: [], authorPrefs: {}, rejected: [] }, spin);
+};
+
+// ---------- rendering ----------
+
+const $ = id => document.getElementById(id);
+const hdrStats = $("hdrStats"), moodRow = $("moodRow"), libNoteEl = $("libNote"),
+  importToggleBtn = $("importToggle"), importPanel = $("importPanel"), pasteBox = $("pasteBox"),
+  importNoteEl = $("importNote"), cardBox = $("cardBox"), sourceNoteEl = $("sourceNote"),
+  blurbEl = $("blurb"), becauseEl = $("because"), moodFitEl = $("moodFit"), lengthEl = $("lengthVal"),
+  fairnessEl = $("fairnessVal"), bodiesCell = $("bodiesCell"), acceptBtn = $("acceptBtn"),
+  tasteWrap = $("tasteWrap"), learnedList = $("learnedList"), progressBar = $("progressBar"),
+  progressText = $("progressText"), resetBtn = $("resetBtn"), shelfSection = $("shelfSection"),
+  shelfHdr = $("shelfHdr"), shelfChips = $("shelfChips");
+
+let renderedCardKey = -1;
+let tasteSig = null;
+let shelfSig = null;
+
+function cardHTML(b) {
+  return '<div style="position: relative; transform-style: preserve-3d; animation: deal 620ms cubic-bezier(0.34, 1.3, 0.5, 1) both">' +
+    '<div style="background: #274436; border: 4px solid #d9a441; padding: 34px 26px 30px; box-sizing: border-box; text-align: center; box-shadow: 14px 14px 0 #d9a441; backface-visibility: hidden">' +
+      '<div style="font-size: 9.5px; letter-spacing: 3px; color: #d9a441">' + esc(b.a) + '</div>' +
+      '<div style="font-family: \'DM Serif Display\', serif; font-size: 32px; color: #f6ecd9; line-height: 1.12; margin-top: 20px">' + esc(b.t) + '</div>' +
+      '<div style="width: 46px; height: 1px; background: #d9a441; margin: 24px auto"></div>' +
+      '<div style="font-size: 10px; letter-spacing: 2px; color: #9fb8a9; line-height: 2">' + esc(b.y) + '<br>' + esc(b.d) + '</div>' +
+    '</div>' +
+    '<div style="position: absolute; inset: 0; background: repeating-linear-gradient(45deg, #274436 0 9px, #1e3529 9px 18px); border: 4px solid #d9a441; box-sizing: border-box; transform: rotateY(180deg); backface-visibility: hidden; display: flex; align-items: center; justify-content: center">' +
+      '<div style="font-size: 10px; letter-spacing: 4px; color: #d9a441">FACE DOWN</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function tasteHTML() {
+  const s = state;
+  const readBooks = BOOKS.filter(x => s.read.indexOf(x.t) !== -1);
+
+  let tasteLine;
+  if (readBooks.length < 2) tasteLine = "Log a few more and the shape of your taste starts showing.";
+  else {
+    const lens = {}, fairs = {}, bodies = [];
+    readBooks.forEach(x => {
+      lens[x.len] = (lens[x.len] || 0) + 1;
+      fairs[x.f] = (fairs[x.f] || 0) + 1;
+      if (typeof x.bod === "number") bodies.push(x.bod);
+    });
+    const topLen = Object.keys(lens).sort((a, c) => lens[c] - lens[a])[0] || "";
+    const topFair = Object.keys(fairs).sort((a, c) => fairs[c] - fairs[a])[0] || "";
+    const avgBod = bodies.length ? (bodies.reduce((a, c) => a + c, 0) / bodies.length).toFixed(1) : null;
+    const rejLong = BOOKS.filter(x => s.rejected.indexOf(x.t) !== -1 && x.len === "LONG").length;
+    const bits = [];
+    if (topLen) bits.push("you pick " + topLen.toLowerCase() + " books");
+    if (topFair) bits.push("you want them " + topFair.toLowerCase());
+    if (avgBod) bits.push("about " + avgBod + " bodies a book");
+    if (rejLong >= 2) bits.push("and you have passed on " + rejLong + " long ones");
+    tasteLine = "So far: " + bits.join(", ") + ".";
+  }
+
+  const years = readBooks.map(x => x.y).filter(x => x);
+  const avgYear = years.length ? Math.round(years.reduce((a, c) => a + c, 0) / years.length) : null;
+  const tasteStats = [
+    { label: "LOGGED", value: s.read.length },
+    { label: "PASSED ON", value: s.rejected.length },
+    { label: "AVG VINTAGE", value: avgYear || "—" },
+    { label: "SHELVES READ", value: s.shelf.length || "—" }
+  ];
+
+  const hasShelfBars = readBooks.length >= 2;
+  let barsHTML = "";
+  if (hasShelfBars) {
+    const sorted = readBooks.slice().sort((a, c) => a.y - c.y);
+    const bars = sorted.slice(0, 18).map((x, i) =>
+      '<div style="flex: 1; height: ' + (34 + (x.len === "LONG" ? 20 : x.len === "SHORT" ? 0 : 10)) + 'px; background: ' +
+      (x.len === "LONG" ? "#6e1f1a" : (x.len === "SHORT" ? "#d9a441" : "#a8703a")) +
+      '; transform-origin: bottom; animation: shelfIn 460ms ease both; animation-delay: ' + (i * 50) + 'ms" title="' +
+      esc(x.t + " (" + x.y + ", " + x.len.toLowerCase() + ")") + '"></div>'
+    ).join("");
+    barsHTML =
+      '<div style="display: flex; align-items: flex-end; gap: 4px; height: 54px; margin-top: 18px">' + bars + '</div>' +
+      '<div style="font-size: 10.5px; color: #8a6f52; margin-top: 8px">Spines by publication order · height is length · hover for the title</div>';
+  }
+
+  return '<div style="margin-top: 28px; border: 1.5px solid #6e1f1a; background: #fdf7ea; padding: 22px 24px; animation: riseIn 340ms ease both">' +
+    '<div style="font-size: 10.5px; letter-spacing: 2px; color: #8a6f52; white-space: nowrap">YOUR TASTE, ACCORDING TO YOUR LOG</div>' +
+    '<p style="font-family: \'Cormorant Garamond\', serif; font-style: italic; font-size: 23px; line-height: 1.4; margin: 10px 0 0">' + esc(tasteLine) + '</p>' +
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; margin-top: 16px; font-size: 11.5px; line-height: 1.6">' +
+      tasteStats.map(t => '<div style="white-space: nowrap"><span style="color: #8a6f52">' + esc(t.label) + '</span><br>' + esc(t.value) + '</div>').join("") +
+    '</div>' +
+    barsHTML +
+  '</div>';
+}
+
+function render() {
+  const s = state;
+  const active = pool();
+  const b = active[s.idx] || active[0] || BOOKS[0];
+  const logged = s.read.indexOf(b.t) !== -1;
+  const mood = MOODS.filter(m => m.key === s.mood)[0] || MOODS[0];
+  const key = b.a.toLowerCase().split(" ").pop();
+  const affinity = s.authorPrefs[key] || 0;
+  const readCount = s.read.length;
+  const totalCount = active.length;
+  const poolCount = Math.max(0, active.length - s.read.length);
+
+  hdrStats.innerHTML = readCount + " READ · " + poolCount + " IN THE POOL<br>PICKED BY MOOD, NOT PUBLICATION ORDER";
+
+  // Mood buttons + deepen
+  moodRow.innerHTML = MOODS.map(m =>
+    '<button type="button" data-mood="' + m.key + '" style="background: ' + (m.key === s.mood ? "#6e1f1a" : "transparent") +
+    '; color: ' + (m.key === s.mood ? "#f6ecd9" : "#3a1f1a") +
+    '; border: 1.5px solid #6e1f1a; padding: 12px 20px; font-size: 12px; letter-spacing: 1px; white-space: nowrap; cursor: pointer">' + esc(m.label) + '</button>'
+  ).join("") +
+  '<div style="width: 1px; height: 28px; background: #d8c6a8"></div>' +
+  '<button type="button" data-action="deepen" style="background: ' + (s.lib.length ? "#274436" : "transparent") +
+  '; color: ' + (s.lib.length ? "#f6ecd9" : "#3a1f1a") +
+  '; border: 1.5px dashed #6e1f1a; padding: 12px 18px; font-size: 12px; letter-spacing: 1px; white-space: nowrap; cursor: pointer">' +
+  (s.libLoading ? "READING…" : (s.lib.length ? "BACK TO CURATED" : "GO DEEPER → OPEN LIBRARY")) + '</button>';
+
+  libNoteEl.textContent = s.libNote;
+
+  importToggleBtn.textContent = s.importOpen ? "CLOSE IMPORT" : "IMPORT GOODREADS / STORYGRAPH";
+  importPanel.style.display = s.importOpen ? "" : "none";
+  importNoteEl.textContent = s.importNote;
+  importNoteEl.style.color = s.importOk ? "#6b5643" : "#b3372c";
+
+  // Card: remount (restart deal animation) only when the key changes
+  if (renderedCardKey !== s.key) {
+    cardBox.innerHTML = cardHTML(b);
+    renderedCardKey = s.key;
+  }
+  sourceNoteEl.textContent = s.lib.length ? "LIVE FROM OPEN LIBRARY" : (s.shelf.length ? "RANKED AGAINST YOUR SHELVES" : "RANKED ON MOOD ALONE");
+
+  blurbEl.textContent = b.b;
+  let because;
+  if (affinity >= 3) because = "You've read " + affinity + " by this author already, which is the strongest signal it has.";
+  else if (b.m.indexOf(s.mood) !== -1) because = "Chosen for the mood first: this is squarely a " + mood.label.toLowerCase() + " book.";
+  else because = "A stretch pick — nothing in your log points here, which is the argument for it.";
+  becauseEl.textContent = because;
+
+  moodFitEl.textContent = mood.label;
+  lengthEl.textContent = b.len;
+  fairnessEl.textContent = b.f;
+  if (s.showBodies) {
+    const bodies = b.bod === null ? "not catalogued" : (b.bod === 0 ? "0 (a talking mystery)" : (b.bod === 1 ? "1 (efficient)" : b.bod + " (busy)"));
+    bodiesCell.innerHTML = "<span>" + esc(bodies) + "</span>";
+  } else {
+    bodiesCell.innerHTML = '<button type="button" data-action="reveal" class="redactBtn" style="background: repeating-linear-gradient(45deg, #d8c6a8 0 5px, #c9b494 5px 10px); border: 1px solid #8a6f52; color: #3a1f1a; padding: 3px 10px; font-family: \'Space Mono\', monospace; font-size: 11px; letter-spacing: 0.5px; cursor: pointer">redacted · click</button>';
+  }
+
+  acceptBtn.textContent = logged ? "LOGGED ✓" : "I'LL READ IT";
+
+  // Taste panel (mounted when there's enough signal; rebuilt only when its data changes)
+  const hasTaste = (s.read.length + s.rejected.length) >= 3;
+  if (hasTaste) {
+    const sig = JSON.stringify([s.read, s.rejected, s.shelf.length]);
+    if (sig !== tasteSig) { tasteWrap.innerHTML = tasteHTML(); tasteSig = sig; }
+  } else if (tasteSig !== null) {
+    tasteWrap.innerHTML = ""; tasteSig = null;
+  }
+
+  // What it has learned
+  const learned = [];
+  const topAuthors = Object.keys(s.authorPrefs).sort((a, c) => s.authorPrefs[c] - s.authorPrefs[a]).slice(0, 2);
+  if (topAuthors.length) learned.push("You return to " + topAuthors.map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(" and ") + ", so those rank higher.");
+  if (s.read.length) learned.push(s.read.length + " logged as read, so they're out of the pool.");
+  if (s.rejected.length) learned.push(s.rejected.length + " passed on — those sink but never vanish.");
+  if (!learned.length) learned.push("Nothing yet. Import your shelves or log one as read and it starts weighting.");
+  learnedList.innerHTML = learned.map(l =>
+    '<div style="display: flex; gap: 10px; font-size: 12.5px; line-height: 1.6"><span style="color: #6e1f1a">·</span><span>' + esc(l) + '</span></div>'
+  ).join("");
+
+  // Progress
+  progressBar.style.width = Math.min(100, Math.round((s.read.length / Math.max(1, active.length)) * 100)) + "%";
+  progressText.textContent = readCount + " of " + totalCount + " in the pool logged";
+  resetBtn.style.display = (s.read.length > 0 || s.shelf.length > 0) ? "" : "none";
+
+  // Shelf section
+  if (s.shelf.length > 0) {
+    shelfSection.style.display = "";
+    const sig = JSON.stringify(s.shelf);
+    if (sig !== shelfSig) {
+      shelfHdr.textContent = "FROM YOUR SHELVES · " + s.shelf.length + " MYSTERIES FOUND";
+      shelfChips.innerHTML = s.shelf.slice(0, 40).map(t =>
+        '<span style="border: 1px solid #d8c6a8; background: #fdf7ea; padding: 7px 12px; font-size: 11.5px; color: #6b5643">' + esc(t) + '</span>'
+      ).join("");
+      shelfSig = sig;
+    }
+  } else {
+    shelfSection.style.display = "none";
+    shelfSig = null;
+  }
+}
+
+// ---------- event wiring ----------
+
+importToggleBtn.addEventListener("click", toggleImport);
+$("runImportBtn").addEventListener("click", runImport);
+pasteBox.addEventListener("input", () => { if (state.importNote) setState({ importNote: "" }); });
+moodRow.addEventListener("click", e => {
+  const moodBtn = e.target.closest("[data-mood]");
+  if (moodBtn) { setMood(moodBtn.getAttribute("data-mood"))(); return; }
+  if (e.target.closest('[data-action="deepen"]')) deepen();
+});
+bodiesCell.addEventListener("click", e => {
+  if (e.target.closest('[data-action="reveal"]')) revealBodies();
+});
+$("spinBtn").addEventListener("click", spin);
+acceptBtn.addEventListener("click", accept);
+$("rejectBtn").addEventListener("click", reject);
+resetBtn.addEventListener("click", reset);
+
+// ---------- mount ----------
+
+(function init() {
+  let read = [], shelf = [], prefs = {}, rej = [];
+  try {
+    read = JSON.parse(localStorage.getItem("whodunit.read") || "[]");
+    shelf = JSON.parse(localStorage.getItem("whodunit.shelf") || "[]");
+    prefs = JSON.parse(localStorage.getItem("whodunit.prefs") || "{}");
+    rej = JSON.parse(localStorage.getItem("whodunit.rejected") || "[]");
+  } catch (e) {}
+  setState({
+    read: Array.isArray(read) ? read : [],
+    shelf: Array.isArray(shelf) ? shelf : [],
+    rejected: Array.isArray(rej) ? rej : [],
+    authorPrefs: prefs && typeof prefs === "object" ? prefs : {}
+  }, spin);
+})();
+</script>
+</body>
+</html>

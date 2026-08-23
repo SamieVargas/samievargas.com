@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Tarot — Samie Vargas</title>
+<meta name="description" content="A three-card query horoscope: past clause, present clause, and the clause that will ruin Friday — plus the SQL it implies, runnable live against Austin open data.">
+<link rel="canonical" href="https://samievargas.com/apps/sql-tarot">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #100a1c; }
+a { color: #b98cd9; } a:hover { color: #f0e8dc; }
+button { font: inherit; }
+.copy-btn:hover { border-color: #b98cd9; color: #f0e8dc; }
+.footer-link { color: inherit; text-decoration: none; }
+.footer-link:hover { color: #f0e8dc; }
+@keyframes deal { from { opacity: 0; transform: translateY(24px) rotate(-2deg); } to { opacity: 1; transform: none; } }
+@keyframes flipIn { 0% { transform: rotateY(90deg) scale(0.94); opacity: 0; } 60% { opacity: 1; } 100% { transform: none; opacity: 1; } }
+@keyframes flipRev { 0% { transform: rotateY(90deg) scale(0.94); opacity: 0; } 60% { opacity: 1; } 100% { transform: rotate(180deg); opacity: 1; } }
+@keyframes shuffle { 0% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-7px) rotate(-2deg); } 75% { transform: translateX(7px) rotate(2deg); } 100% { transform: none; } }
+@keyframes riseUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 28px rgba(255,202,58,0.16); } 50% { box-shadow: 0 0 46px rgba(255,202,58,0.34); } }
+@keyframes typeQ { from { max-height: 0; opacity: 0; } to { max-height: 400px; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: radial-gradient(820px 560px at 50% -6%, #241539, #100a1c 66%); padding: 54px 40px 90px; box-sizing: border-box; color: #f0e8dc; font-family: 'JetBrains Mono', monospace">
+  <div style="max-width: 1120px; margin: 0 auto">
+
+    <div style="text-align: center">
+      <div style="font-size: 10px; letter-spacing: 5px; color: #9a86b5; animation: riseUp 520ms ease both"><span style="color: #ffca3a">[ FIG. 12 ]</span>&nbsp;&nbsp;A QUERY HOROSCOPE · THREE CARDS</div>
+      <h1 style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 62px; margin: 10px 0 0; line-height: 1; animation: riseUp 560ms ease both; animation-delay: 100ms">SQL Tarot</h1>
+      <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 21px; color: #b9aecb; margin-top: 12px; animation: riseUp 560ms ease both; animation-delay: 200ms">Past clause, present clause, and the clause that will ruin Friday.</div>
+    </div>
+
+    <div id="cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 26px; margin-top: 48px; max-width: 900px; margin-left: auto; margin-right: auto"></div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 40px; margin-top: 46px; align-items: start">
+      <div>
+        <div style="border-top: 1px solid #3d2a52; border-bottom: 1px solid #3d2a52; padding: 26px 0">
+          <div style="font-size: 10px; letter-spacing: 3px; color: #9a86b5">THE READING</div>
+          <p id="reading" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; line-height: 1.45; margin: 14px 0 0"></p>
+        </div>
+
+        <div id="historyWrap" style="display: none; margin-top: 26px; border-top: 1px solid #3d2a52; padding-top: 18px">
+          <div style="font-size: 10px; letter-spacing: 3px; color: #9a86b5; white-space: nowrap">READING HISTORY</div>
+          <div id="historyList" style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px"></div>
+          <div style="font-size: 11px; line-height: 1.7; color: #6f6288; margin-top: 12px">Kept in this browser. Patterns across days are the joke and the point.</div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap">
+          <button type="button" id="drawBtn" style="background: #b98cd9; color: #100a1c; border: none; border-radius: 24px; padding: 16px 28px; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; cursor: pointer">DRAW THREE</button>
+          <button type="button" id="copyBtn" class="copy-btn" style="background: transparent; border: 1px solid #3d2a52; border-radius: 24px; color: #b9aecb; padding: 16px 24px; font-size: 12px; letter-spacing: 1.6px; cursor: pointer">COPY READING</button>
+        </div>
+        <div style="font-size: 11px; color: #6f6288; margin-top: 16px"><span id="drawnCount">0</span> readings drawn on this machine</div>
+      </div>
+
+      <div>
+        <div style="background: #180f2a; border: 1px solid #2f2145; border-radius: 10px; padding: 26px 28px">
+          <div style="font-size: 10px; letter-spacing: 3px; color: #9a86b5">THE QUERY IT IMPLIES</div>
+          <div id="querySlot"></div>
+          <div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center">
+            <button type="button" id="runBtn" style="background: #ffca3a; color: #100a1c; border: none; border-radius: 20px; padding: 12px 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 1.4px; white-space: nowrap; cursor: pointer">RUN IT AGAINST REAL DATA</button>
+            <span id="runNote" style="font-size: 11px; color: #9a86b5">Austin health inspections, live and keyless</span>
+          </div>
+          <div id="rowsWrap" style="display: none; margin-top: 18px; border-top: 1px solid #2f2145; padding-top: 14px; animation: riseUp 320ms ease both">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #9a86b5; white-space: nowrap">WHAT THE SPREAD RETURNED</div>
+            <div id="rowsList" style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px"></div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; margin-top: 24px; font-size: 12px; line-height: 1.7; color: #cdc2dd">
+          <div><span style="color: #6f6288">LUCKY CLAUSE</span><br><span id="lucky"></span></div>
+          <div><span style="color: #6f6288">AVOID</span><br><span id="avoid"></span></div>
+          <div><span style="color: #6f6288">MOON IN</span><br><span id="moon"></span></div>
+          <div><span style="color: #6f6288">RUNTIME OMEN</span><br><span id="omen"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 60px; border-top: 1px solid #2f2145; padding-top: 18px; font-size: 10px; letter-spacing: 2px; color: #6f6288; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="footer-link" href="/">SAMIEVARGAS.COM</a> · <a class="footer-link" href="./">MINI APPS</a></span><span>NOT A SUBSTITUTE FOR EXPLAIN ANALYZE</span>
+    </div>
+  </div>
+</div>
+<script type="module">
+const DECK = [
+  { c: "SELECT *", n: "0", up: "Curiosity without a plan. You will get everything, including the columns you did not want to know about.", rev: "Restraint arrives late. Someone has finally asked what you actually need." },
+  { c: "GROUP BY", n: "III", up: "Clarity through gathering. Things that belonged together find each other.", rev: "You aggregated too early and lost the row that mattered." },
+  { c: "HAVING", n: "VII", up: "A judgment applied after the fact, and correctly.", rev: "A filter applied too late. The work was already done." },
+  { c: "LEFT JOIN", n: "VI", up: "Generosity. You keep everyone, even the ones with nothing to offer.", rev: "Nulls where you expected people. Someone is missing from the table." },
+  { c: "INNER JOIN", n: "V", up: "Only what matches survives. Efficient, and a little cold.", rev: "You have quietly dropped the rows that disagreed with you." },
+  { c: "DISTINCT", n: "IX", up: "A wish for uniqueness that the data will not grant.", rev: "Duplicates were the finding, and you deleted them." },
+  { c: "ORDER BY", n: "II", up: "Priority made visible. Someone will finally see what is on top.", rev: "You sorted by the wrong column and believed the top row." },
+  { c: "WHERE 1=1", n: "XIII", up: "A door propped open for future conditions. Prepared, if superstitious.", rev: "A filter that filters nothing. Comforting and useless." },
+  { c: "LIMIT 10", n: "IV", up: "Wise humility. Look before you load.", rev: "You presented ten rows as though they were the population." },
+  { c: "CROSS JOIN", n: "XVI", up: "The Tower. Every row meets every other row. Cancel the query.", rev: "Averted, narrowly, by someone reading it before you ran it." },
+  { c: "WINDOW", n: "XI", up: "Perspective without losing detail. The rare card.", rev: "A frame drawn so wide that nothing stands out." },
+  { c: "COALESCE", n: "XIV", up: "Patience with missing things. A zero where a null once was.", rev: "You papered over an absence that someone needed to see." },
+  { c: "CTE", n: "VIII", up: "Order out of nesting. Your future self sends thanks.", rev: "Six CTEs deep and no one, including you, can follow it." },
+  { c: "TRUNCATE", n: "XX", up: "Judgment. A clean slate, deliberately chosen.", rev: "A clean slate, not deliberately chosen. Check the backups." }
+];
+const POSITIONS = ["WHAT YOU INHERITED", "WHAT YOU ARE WRITING", "WHAT SHIPS TO PROD"];
+const MOONS = ["Snowflake", "BigQuery", "a Postgres replica", "an untracked CSV", "dbt run at 4:02 AM", "a Looker explore nobody owns"];
+const OMENS = ["47 seconds. Suspiciously fast.", "Nine minutes. Someone will ask why.", "It finishes, but the plan has a full scan in it.", "Cached. You have learned nothing.", "Spills to disk. As foretold."];
+
+function shuffle(a) { const c = a.slice(); for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; }
+
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+const state = { spread: null, drawn: 0, copied: false, history: [], running: false, rows: [], runNote: "" };
+
+const $ = id => document.getElementById(id);
+
+function reading() {
+  const s = state.spread;
+  if (!s) return "";
+  const revs = s.cards.filter(c => c.rev).length;
+  const names = s.cards.map(c => c.card.c);
+  if (names.indexOf("CROSS JOIN") !== -1) return "There is a CROSS JOIN in your spread. Whatever else is true today, read the query aloud before you run it.";
+  if (revs === 0) return "Three upright. You will ask for " + names[0] + ", write " + names[1] + ", and ship " + names[2] + " — and all three will be the same intention.";
+  if (revs === 3) return "Three reversed. Nothing here is wrong exactly, but every one of them is happening in the wrong order.";
+  if (revs === 2) return "Two reversed around " + names[1] + ". The work is sound. The sequence is not.";
+  return "One reversal, in " + s.cards.filter(c => c.rev)[0].card.c + ". A small correction, made early, saves the afternoon.";
+}
+
+function buildQuery(names) {
+  return "SELECT\n  " + (names[0] === "SELECT *" ? "*" : "account_id, arr, renewal_date") +
+    "\nFROM accounts a\n" + (names.indexOf("LEFT JOIN") !== -1 ? "LEFT JOIN" : "JOIN") + " usage u USING (account_id)\nWHERE renewal_date < current_date + 90\n" +
+    (names.indexOf("GROUP BY") !== -1 ? "GROUP BY 1, 2, 3\n" : "") +
+    (names.indexOf("HAVING") !== -1 ? "HAVING sum(u.events) < 100\n" : "") +
+    (names.indexOf("ORDER BY") !== -1 ? "ORDER BY arr DESC\n" : "") +
+    "LIMIT 10;";
+}
+
+function renderCards() {
+  const s = state.spread;
+  if (!s) { $("cards").innerHTML = ""; return; }
+  $("cards").innerHTML = s.cards.map((c, i) => {
+    const delay = (i * 150) + "ms";
+    const flip = c.rev ? "flipRev" : "flipIn";
+    const border = c.rev ? "#c47a7a" : "#ffca3a";
+    const radius = c.rev ? "50%" : "2px";
+    const rotate = c.rev ? "180deg" : "45deg";
+    const anim = i === 1 ? "glow 4.5s ease-in-out infinite" : "none";
+    const meaning = c.rev ? c.card.rev : c.card.up;
+    return '<div style="animation: deal 420ms ease both; animation-delay: ' + delay + '; perspective: 800px">' +
+      '<div style="font-size: 9.5px; letter-spacing: 3px; color: #9a86b5; text-align: center; margin-bottom: 12px">' + esc(POSITIONS[i]) + '</div>' +
+      '<div style="border: 1px solid ' + border + '; border-radius: 10px; background: linear-gradient(170deg, #2a1c40, #180f2a); padding: 30px 22px; min-height: 300px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.45); animation: ' + flip + ' 620ms cubic-bezier(.2,.8,.2,1) both, ' + anim + '; animation-delay: ' + delay + ', 900ms">' +
+        '<div style="font-size: 9px; letter-spacing: 2px; color: ' + border + '">' + esc(c.card.n) + '</div>' +
+        '<div style="width: 40px; height: 40px; border: 1px solid ' + border + '; border-radius: ' + radius + '; transform: rotate(' + rotate + ')"></div>' +
+        '<div>' +
+          '<div style="font-family: \'JetBrains Mono\', monospace; font-size: 17px; font-weight: 700; letter-spacing: 1px; color: ' + border + '">' + esc(c.card.c) + '</div>' +
+          '<div style="font-family: \'Cormorant Garamond\', serif; font-size: 15px; color: #b9aecb; margin-top: 8px">' + (c.rev ? "reversed" : "upright") + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-family: \'Cormorant Garamond\', serif; font-size: 16px; line-height: 1.45; color: #cdc2dd; margin-top: 14px; text-align: center">' + esc(meaning) + '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function renderHistory() {
+  const past = state.history.slice(1);
+  if (state.history.length > 1) {
+    $("historyWrap").style.display = "";
+    $("historyList").innerHTML = past.map(h =>
+      '<div style="display: flex; justify-content: space-between; gap: 14px; font-size: 11.5px; animation: riseUp 300ms ease both">' +
+        '<span style="color: #cdc2dd; min-width: 0">' + esc(h.cards) + '</span>' +
+        '<span style="color: #6f6288; white-space: nowrap; flex: none">' + esc(h.when) + '</span>' +
+      '</div>'
+    ).join("");
+  } else {
+    $("historyWrap").style.display = "none";
+    $("historyList").innerHTML = "";
+  }
+}
+
+function renderQuery() {
+  const s = state.spread;
+  if (!s) { $("querySlot").innerHTML = ""; return; }
+  const names = s.cards.map(c => c.card.c);
+  // Fresh element each draw so the typeQ animation restarts (the prototype's key= remount).
+  $("querySlot").innerHTML = '<pre style="font-family: \'JetBrains Mono\', monospace; font-size: 13.5px; line-height: 1.8; color: #d8ccea; margin: 16px 0 0; white-space: pre-wrap; overflow: hidden; animation: typeQ 900ms ease-out 600ms both">' + esc(buildQuery(names)) + '</pre>';
+}
+
+function renderRows() {
+  if (state.rows.length > 0) {
+    $("rowsWrap").style.display = "none"; // remove the box first so riseUp restarts
+    $("rowsList").innerHTML = state.rows.map(r =>
+      '<div style="display: flex; justify-content: space-between; gap: 14px; font-family: \'JetBrains Mono\', monospace; font-size: 12px">' +
+        '<span style="color: #d8ccea; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">' + esc(r.name) + '</span>' +
+        '<span style="color: #ffca3a; white-space: nowrap; flex: none">' + esc(r.value) + '</span>' +
+      '</div>'
+    ).join("");
+    $("rowsWrap").style.display = "";
+  } else {
+    $("rowsWrap").style.display = "none";
+    $("rowsList").innerHTML = "";
+  }
+}
+
+function renderRun() {
+  $("runBtn").textContent = state.running ? "RUNNING…" : "RUN IT AGAINST REAL DATA";
+  $("runNote").textContent = state.runNote || "Austin health inspections, live and keyless";
+}
+
+function renderSide() {
+  const s = state.spread;
+  if (!s) return;
+  const names = s.cards.map(c => c.card.c);
+  $("reading").textContent = reading();
+  $("lucky").textContent = names.indexOf("LIMIT 10") !== -1 ? "LIMIT 10" : "CTE, named plainly";
+  $("avoid").textContent = names.indexOf("DISTINCT") !== -1 ? "SELECT DISTINCT" : "a second nested subquery";
+  $("moon").textContent = s.moon;
+  $("omen").textContent = s.omen;
+}
+
+function renderCopy() {
+  $("copyBtn").textContent = state.copied ? "COPIED" : "COPY READING";
+}
+
+// The spread's clauses decide what a real query against Austin's open data looks like.
+async function runQuery() {
+  if (state.running) return;
+  state.running = true;
+  state.runNote = "querying data.austintexas.gov…";
+  state.rows = [];
+  renderRun();
+  renderRows();
+  const names = (state.spread ? state.spread.cards : []).map(c => c.card.c);
+  const grouped = names.indexOf("GROUP BY") !== -1 || names.indexOf("HAVING") !== -1;
+  const desc = names.indexOf("ORDER BY") !== -1;
+  try {
+    let url;
+    if (grouped) {
+      url = "https://data.austintexas.gov/resource/ecmv-9xxi.json?$select=zip_code,avg(score) as avg_score,count(1) as inspections" +
+        "&$group=zip_code&$having=count(1) > 40&$order=avg_score " + (desc ? "DESC" : "ASC") + "&$limit=8";
+    } else {
+      url = "https://data.austintexas.gov/resource/ecmv-9xxi.json?$select=restaurant_name,score,inspection_date" +
+        "&$order=inspection_date DESC&$limit=8";
+    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const rows = data.map(r => grouped
+      ? { name: "ZIP " + (r.zip_code || "?").split("-")[0], value: Math.round(parseFloat(r.avg_score) || 0) + " avg · " + r.inspections + " visits" }
+      : { name: (r.restaurant_name || "").trim(), value: Math.round(parseFloat(r.score) || 0) + "" });
+    state.running = false;
+    state.rows = rows;
+    state.runNote = rows.length + " rows returned, live";
+  } catch (e) {
+    state.running = false;
+    state.runNote = "could not reach the portal";
+  }
+  renderRun();
+  renderRows();
+}
+
+function draw() {
+  const picked = shuffle(DECK).slice(0, 3).map(card => ({ card: card, rev: Math.random() < 0.38 }));
+  const n = state.drawn + 1;
+  const entry = {
+    cards: picked.map(c => c.card.c + (c.rev ? " (rev.)" : "")).join(" · "),
+    when: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  };
+  const history = [entry].concat(state.history).slice(0, 6);
+  try {
+    localStorage.setItem("sqltarot.drawn", String(n));
+    localStorage.setItem("sqltarot.history", JSON.stringify(history));
+  } catch (e) {}
+  state.history = history;
+  state.rows = [];
+  state.runNote = "";
+  state.spread = {
+    cards: picked,
+    moon: MOONS[Math.floor(Math.random() * MOONS.length)],
+    omen: OMENS[Math.floor(Math.random() * OMENS.length)]
+  };
+  state.drawn = n;
+  state.copied = false;
+  $("drawnCount").textContent = String(state.drawn);
+  renderCards();
+  renderSide();
+  renderHistory();
+  renderQuery();
+  renderRun();
+  renderRows();
+  renderCopy();
+}
+
+let copyTimer = null;
+function copy() {
+  const s = state.spread;
+  if (!s) return;
+  const text = "SQL Tarot: " + s.cards.map(c => c.card.c + (c.rev ? " (rev.)" : "")).join(" · ") + " — " + reading();
+  try { navigator.clipboard.writeText(text).catch(() => {}); } catch (e) {}
+  state.copied = true;
+  renderCopy();
+  if (copyTimer) clearTimeout(copyTimer);
+  copyTimer = setTimeout(() => { state.copied = false; renderCopy(); }, 1700);
+}
+
+$("drawBtn").addEventListener("click", draw);
+$("copyBtn").addEventListener("click", copy);
+$("runBtn").addEventListener("click", runQuery);
+
+let n = 0, h = [];
+try {
+  n = parseInt(localStorage.getItem("sqltarot.drawn") || "0", 10) || 0;
+  h = JSON.parse(localStorage.getItem("sqltarot.history") || "[]");
+} catch (e) {}
+state.drawn = n;
+state.history = Array.isArray(h) ? h : [];
+draw();
+</script>
+</body>
+</html>

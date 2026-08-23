@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streak Autopsy — Samie Vargas</title>
+<meta name="description" content="A habit tracker that counts the days for you — miss two and the habit coroner opens a case, asks one question, and files the report.">
+<link rel="canonical" href="https://samievargas.com/apps/streak-autopsy">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital@0;1&family=Chivo+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #e6e1d4; }
+a { color: #b3372c; } a:hover { color: #2a2622; }
+input, textarea, button { font: inherit; }
+@keyframes stamp { 0% { opacity: 0; transform: rotate(14deg) scale(2.1); filter: blur(2px); } 55% { opacity: 1; transform: rotate(8deg) scale(0.92); filter: blur(0); } 75% { transform: rotate(8deg) scale(1.05); } 100% { opacity: 1; transform: rotate(8deg) scale(1); } }
+@keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes dotIn { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+@keyframes gap { 0%, 100% { box-shadow: 0 0 0 0 rgba(179,55,44,0); } 50% { box-shadow: 0 0 0 3px rgba(179,55,44,0.35); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+.btn-yesterday:hover { border-color: #2a2622; color: #2a2622; }
+.btn-opencase:hover { background: #b3372c; color: #f2efe6; }
+.btn-remove:hover { color: #b3372c; }
+.btn-resurrect:hover { background: #2a2622; color: #f2efe6; }
+.btn-cert:hover { background: #b3372c; color: #f2efe6; }
+.input-habit:focus { border-color: #2a2622; }
+.textarea-answer:focus { border-color: #2a2622; }
+.case-anim { animation: fadein 300ms ease both; }
+.footer-link { color: inherit; text-decoration: none; }
+.footer-link:hover { color: #2a2622; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #e6e1d4; padding: 52px 40px 90px; box-sizing: border-box; color: #2a2622; font-family: 'Chivo Mono', monospace">
+  <div style="max-width: 1160px; margin: 0 auto; background: #f2efe6; border: 2px solid #2a2622; padding: 40px">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; border-bottom: 2px solid #2a2622; padding-bottom: 22px">
+      <div>
+        <div style="font-size: 10px; letter-spacing: 4px; color: #8c8577; animation: fadein 480ms ease both"><span style="color: #b3372c">[ FIG. 08 ]</span>&nbsp;&nbsp;OFFICE OF THE HABIT CORONER</div>
+        <h1 style="font-family: 'Libre Caslon Text', serif; font-size: 46px; margin: 10px 0 0; font-weight: 400; line-height: 1; animation: fadein 520ms ease both; animation-delay: 90ms">Streak Autopsy</h1>
+        <div style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 18px; color: #6b6357; margin-top: 10px; animation: fadein 520ms ease both; animation-delay: 180ms">It counts the days for you. Miss two and it opens a case.</div>
+      </div>
+      <div style="display: flex; gap: 22px; font-size: 10.5px; line-height: 1.6; color: #8c8577; white-space: nowrap; animation: fadein 520ms ease both; animation-delay: 260ms"><div>TODAY<br><span id="st-today" style="color: #2a2622; font-size: 14px"></span></div><div>ALIVE<br><span id="st-alive" style="color: #2a2622; font-size: 14px"></span></div><div>ON FILE<br><span id="st-deaths" style="color: #b3372c; font-size: 14px"></span></div><div>REVIVED<br><span id="st-res" style="color: #2a2622; font-size: 14px"></span></div></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 44px; margin-top: 34px; align-items: start">
+
+      <div>
+        <div style="font-size: 10px; letter-spacing: 2px; color: #8c8577">UNDER OBSERVATION</div>
+        <div id="habit-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px"></div>
+
+        <div id="forecast-region"></div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; align-items: center">
+          <input type="text" id="new-habit" class="input-habit" placeholder="Name a habit to observe" style="flex: 1; min-width: 200px; background: #fff; border: 1px solid #cfc8b8; padding: 13px 14px; font-size: 13.5px; color: #2a2622; outline: none">
+          <button type="button" id="btn-add" style="background: #2a2622; color: #f2efe6; border: none; padding: 13px 20px; font-size: 11.5px; letter-spacing: 1.6px; cursor: pointer">OBSERVE IT</button>
+        </div>
+        <div style="font-size: 11px; line-height: 1.7; color: #8c8577; margin-top: 14px">A habit is alive while the gap is one day or less. At two days it's declared dead and the coroner opens a case. Everything is counted from your own taps, stored in this browser.</div>
+      </div>
+
+      <div>
+        <div id="case-panel" class="case-anim" style="display: none; border: 2px solid #b3372c; background: #fbf1ef; padding: 26px 28px">
+          <div style="display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap">
+            <div style="font-size: 10px; letter-spacing: 3px; color: #b3372c">CASE NO. <span id="case-no"></span> · AUTOPSY</div>
+            <div id="case-habit" style="font-size: 10.5px; color: #8c8577"></div>
+          </div>
+          <div style="display: flex; gap: 26px; margin-top: 14px; font-size: 11.5px; color: #6b6357">
+            <div>SURVIVED<br><span id="case-days" style="font-family: 'Libre Caslon Text', serif; font-size: 26px; color: #2a2622"></span></div>
+            <div>TIME OF DEATH<br><span id="case-tod" style="font-size: 15px; color: #2a2622"></span></div>
+          </div>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #8c8577; margin-top: 22px">CAUSE OF DEATH · ONE QUESTION ONLY</div>
+          <p id="case-question" style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 23px; line-height: 1.4; margin: 10px 0 0"></p>
+          <textarea id="case-answer" class="textarea-answer" rows="3" placeholder="It rained and I told myself I'd go at lunch. I did not go at lunch." style="width: 100%; box-sizing: border-box; margin-top: 12px; background: #fff; border: 1px solid #cfc8b8; padding: 15px; font-family: 'Chivo Mono', monospace; font-size: 13px; line-height: 1.65; color: #4d463c; outline: none; resize: vertical"></textarea>
+          <div style="font-size: 10px; letter-spacing: 2px; color: #8c8577; margin-top: 16px; margin-bottom: 9px">CONTRIBUTING FACTOR</div>
+          <div id="case-factors" style="display: flex; gap: 8px; flex-wrap: wrap"></div>
+          <div style="display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap">
+            <button type="button" id="btn-file" style="background: #2a2622; color: #f2efe6; border: none; padding: 14px 22px; font-size: 12px; letter-spacing: 1.8px; cursor: pointer">FILE THE REPORT</button>
+            <button type="button" id="btn-resurrect" class="btn-resurrect" style="background: transparent; border: 1.5px solid #2a2622; color: #2a2622; padding: 14px 22px; font-size: 12px; letter-spacing: 1.8px; cursor: pointer">FILE AND RESURRECT</button>
+          </div>
+        </div>
+
+        <div id="finding-region"></div>
+
+        <div style="border: 1.5px solid #2a2622; margin-top: 22px">
+          <div style="font-size: 10px; letter-spacing: 2px; color: #8c8577; padding: 18px 22px 12px">THE FILE · MOST RECENT FIRST</div>
+          <div id="file-body"></div>
+        </div>
+
+        <div id="stats-grid" style="margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; font-size: 12px; line-height: 1.7"></div>
+
+        <div id="pattern-region"></div>
+      </div>
+    </div>
+  </div>
+  <div style="max-width: 1160px; margin: 18px auto 0; font-size: 10px; letter-spacing: 2px; color: #8c8577; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+    <span><a href="/" class="footer-link">SAMIEVARGAS.COM</a> · <a href="./" class="footer-link">MINI APPS</a></span><span>NO ACCOUNTS, NO SYNC, NOTHING LEAVES THIS BROWSER</span>
+  </div>
+</div>
+<script type="module">
+const QUESTIONS = [
+  "What was different about that day?",
+  "Where were you when you decided not to?",
+  "What did you tell yourself instead?",
+  "Who would have noticed if you'd done it?",
+  "What did you do with the time?"
+];
+const FACTORS = ["Rain", "Travel", "Sick", "Work ran late", "Slept badly", "Nobody was watching", "Boredom", "Chose something better"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function key(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function today() { return key(new Date()); }
+function shift(days) { const d = new Date(); d.setDate(d.getDate() + days); return key(d); }
+function pretty(k) { if (!k) return "never"; const p = k.split("-"); return MONTHS[parseInt(p[1], 10) - 1] + " " + parseInt(p[2], 10); }
+function gapDays(k) { if (!k) return 999; const d = new Date(k + "T00:00:00"); const n = new Date(today() + "T00:00:00"); return Math.round((n - d) / 86400000); }
+function streakOf(log) {
+  if (!log.length) return 0;
+  const set = {}; log.forEach(k => set[k] = 1);
+  let n = 0, cursor = set[today()] ? 0 : (set[shift(-1)] ? 1 : -1);
+  if (cursor < 0) return 0;
+  while (set[shift(-cursor - n)]) n++;
+  return n;
+}
+function bestOf(log) {
+  const sorted = log.slice().sort();
+  let best = 0, run = 0, prev = null;
+  sorted.forEach(k => {
+    if (prev) {
+      const diff = Math.round((new Date(k + "T00:00:00") - new Date(prev + "T00:00:00")) / 86400000);
+      run = diff === 1 ? run + 1 : 1;
+    } else run = 1;
+    if (run > best) best = run;
+    prev = k;
+  });
+  return best;
+}
+
+function esc(x) { return String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+const state = {
+  habits: [{ name: "Morning run", log: [shift(-3), shift(-4), shift(-5), shift(-6), shift(-7)] }],
+  caseIdx: null, factor: "Rain", records: [], finding: null, resurrections: 0,
+  forecast: null, showCert: false, lastCert: null
+};
+
+// Entrance-animation bookkeeping: the prototype's binding system only replayed
+// mount animations when an element was freshly mounted; reproduce that here.
+let renderedHabitCards = 0;
+let prevDeadByIndex = [];
+let forecastAnimated = false;
+
+function factorCounts() {
+  const counts = {};
+  state.records.forEach(r => { counts[r.factor] = (counts[r.factor] || 0) + 1; });
+  const top = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+  return { counts: counts, top: top };
+}
+
+function isDeadHabit(h) {
+  const last = (h.log || []).slice().sort().pop();
+  return gapDays(last) >= 2;
+}
+
+function saveHabits(habits) { try { localStorage.setItem("streak.habits", JSON.stringify(habits)); } catch (e) {} state.habits = habits; }
+
+function renderStats() {
+  const now = new Date();
+  document.getElementById("st-today").textContent = MONTHS[now.getMonth()] + " " + now.getDate();
+  document.getElementById("st-alive").textContent = state.habits.filter(h => !isDeadHabit(h)).length;
+  document.getElementById("st-deaths").textContent = state.records.length;
+  document.getElementById("st-res").textContent = state.resurrections;
+}
+
+function renderHabits() {
+  const prevCount = renderedHabitCards;
+  const el = document.getElementById("habit-list");
+  const deadNow = [];
+  el.innerHTML = state.habits.map((h, i) => {
+    const log = h.log || [];
+    const last = log.slice().sort().pop();
+    const gap = gapDays(last);
+    const dead = gap >= 2;
+    deadNow[i] = dead;
+    const doneToday = log.indexOf(today()) !== -1;
+    const isNewCard = i >= prevCount;
+    const wasDead = prevDeadByIndex[i] === true;
+    const statusColor = dead ? "#b3372c" : (doneToday ? "#4f7a4f" : "#8c8577");
+    const dots = [];
+    for (let d = 13; d >= 0; d--) {
+      const k = shift(-d);
+      const on = log.indexOf(k) !== -1;
+      const isGapDay = !on && d < gap;
+      const bg = on ? "#2a2622" : "transparent";
+      const border = on ? "#2a2622" : (isGapDay ? "#b3372c" : "#cfc8b8");
+      const pulse = isGapDay ? "gap 1.8s ease-in-out infinite" : "none";
+      const anim = isNewCard
+        ? "dotIn 300ms ease both " + ((13 - d) * 28) + "ms, " + pulse
+        : pulse;
+      dots.push('<div style="width: 15px; height: 15px; background: ' + bg + '; border: 1px solid ' + border + '; animation: ' + anim + '" title="' + esc(pretty(k)) + '"></div>');
+    }
+    return '<div style="border: 1.5px solid ' + (dead ? "#b3372c" : "#cfc8b8") + '; background: ' + (dead ? "#fbf1ef" : "#fff") + '; padding: 18px 20px; position: relative' + (isNewCard ? '; animation: fadein 420ms ease both; animation-delay: ' + (i * 90) + 'ms' : '') + '">' +
+      '<div style="display: flex; justify-content: space-between; gap: 14px; align-items: baseline; flex-wrap: wrap">' +
+        '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 22px">' + esc(h.name) + '</div>' +
+        '<div style="font-size: 10.5px; letter-spacing: 1.4px; color: ' + statusColor + '">' + (dead ? "DECEASED" : (doneToday ? "ALIVE · DONE TODAY" : "ALIVE · DUE TODAY")) + '</div>' +
+      '</div>' +
+      '<div style="display: flex; gap: 26px; margin-top: 12px; font-size: 11.5px; color: #6b6357">' +
+        '<div>STREAK<br><span style="font-size: 19px; color: #2a2622">' + streakOf(log) + '</span></div>' +
+        '<div>LAST DONE<br><span style="font-size: 15px; color: #2a2622">' + esc(pretty(last)) + '</span></div>' +
+        '<div>GAP<br><span style="font-size: 19px; color: ' + statusColor + '">' + (gap > 30 ? "30+ d" : gap + "d") + '</span></div>' +
+        '<div>BEST<br><span style="font-size: 15px; color: #2a2622">' + bestOf(log) + 'd</span></div>' +
+      '</div>' +
+      '<div style="display: flex; gap: 6px; margin-top: 14px">' + dots.join("") + '</div>' +
+      '<div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap">' +
+        '<button type="button" data-action="today" data-idx="' + i + '" style="border: 1.5px solid #2a2622; background: ' + (doneToday ? "#2a2622" : "transparent") + '; color: ' + (doneToday ? "#f2efe6" : "#2a2622") + '; padding: 10px 16px; font-size: 11.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">' + (doneToday ? "DONE TODAY ✓" : "I DID IT TODAY") + '</button>' +
+        '<button type="button" data-action="yesterday" data-idx="' + i + '" class="btn-yesterday" style="border: 1px solid #cfc8b8; background: transparent; color: #6b6357; padding: 10px 14px; font-size: 11.5px; white-space: nowrap; cursor: pointer">also yesterday</button>' +
+        (dead ? '<button type="button" data-action="case" data-idx="' + i + '" class="btn-opencase" style="border: 1.5px solid #b3372c; background: transparent; color: #b3372c; padding: 10px 16px; font-size: 11.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">OPEN THE CASE</button>' : '') +
+        '<button type="button" data-action="remove" data-idx="' + i + '" class="btn-remove" style="border: none; background: transparent; color: #b0a894; padding: 10px 6px; font-size: 15px; cursor: pointer">×</button>' +
+      '</div>' +
+      (dead ? '<div style="position: absolute; top: 14px; right: 96px; border: 3px solid #b3372c; color: #b3372c; font-size: 11px; letter-spacing: 2.4px; padding: 4px 9px; transform: rotate(8deg)' + (wasDead ? '' : '; animation: stamp 340ms ease both') + '">DECEASED</div>' : '') +
+    '</div>';
+  }).join("");
+  renderedHabitCards = state.habits.length;
+  prevDeadByIndex = deadNow;
+}
+
+function renderForecast() {
+  const el = document.getElementById("forecast-region");
+  const days = state.forecast || [];
+  if (!days.length) { el.innerHTML = ""; return; }
+  const counts = factorCounts().counts;
+  const dayName = d => new Date(d.date + "T00:00:00").toLocaleDateString("en-US", { weekday: "long" });
+  const wetDay = days.filter(d => (d.rain || 0) >= 50)[0];
+  const hotDay = days.filter(d => (d.temp || 0) >= 100)[0];
+  const rainDeaths = counts["Rain"] || 0;
+  let text;
+  if (wetDay && rainDeaths >= 2) text = "Rain has killed " + rainDeaths + " of your habits, and there is a " + wetDay.rain + "% chance of it on " + dayName(wetDay) + ". Consider this notice.";
+  else if (wetDay) text = dayName(wetDay) + " carries a " + wetDay.rain + "% chance of rain. Nothing on file blames the weather yet, but the coroner is watching.";
+  else if (hotDay) text = dayName(hotDay) + " hits " + hotDay.temp + "°. Heat is the Austin excuse and it works on everyone.";
+  else text = "Five clear days ahead. You have no weather to hide behind.";
+  const border = days.some(d => (d.rain || 0) >= 50 || (d.temp || 0) >= 100) ? "#b3372c" : "#cfc8b8";
+  const bg = days.some(d => (d.rain || 0) >= 50) ? "#fbf1ef" : "#f7f4ea";
+  const chips = days.map(d => {
+    const wet = (d.rain || 0) >= 50, hot = (d.temp || 0) >= 100;
+    const label = new Date(d.date + "T00:00:00").toLocaleDateString("en-US", { weekday: "short" }) +
+      " " + (d.rain || 0) + "% · " + d.temp + "°";
+    return '<div style="border: 1px solid ' + (wet || hot ? "#b3372c" : "#cfc8b8") + '; background: ' + (wet || hot ? "#fbf1ef" : "transparent") + '; padding: 8px 11px; font-size: 10.5px; white-space: nowrap; color: ' + (wet || hot ? "#b3372c" : "#6b6357") + '">' + esc(label) + '</div>';
+  }).join("");
+  el.innerHTML = '<div style="margin-top: 22px; border: 1.5px solid ' + border + '; background: ' + bg + '; padding: 18px 20px' + (forecastAnimated ? '' : '; animation: fadein 320ms ease both') + '">' +
+    '<div style="display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: baseline">' +
+      '<div style="font-size: 10px; letter-spacing: 2px; color: #8c8577; white-space: nowrap">EARLY WARNING · AUSTIN FORECAST</div>' +
+      '<div style="font-size: 10.5px; color: #8c8577; white-space: nowrap">open-meteo · no key</div>' +
+    '</div>' +
+    '<p style="font-family: \'Libre Caslon Text\', serif; font-size: 20px; line-height: 1.4; margin: 10px 0 0">' + esc(text) + '</p>' +
+    '<div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap">' + chips + '</div>' +
+  '</div>';
+  forecastAnimated = true;
+}
+
+function renderFactors() {
+  const el = document.getElementById("case-factors");
+  el.innerHTML = FACTORS.map(f => {
+    const sel = f === state.factor;
+    return '<button type="button" data-factor="' + esc(f) + '" style="border: 1px solid ' + (sel ? "#2a2622" : "#cfc8b8") + '; background: ' + (sel ? "#2a2622" : "transparent") + '; color: ' + (sel ? "#f2efe6" : "#6b6357") + '; padding: 8px 13px; font-size: 11px; cursor: pointer">' + esc(f) + '</button>';
+  }).join("");
+}
+
+function renderCase() {
+  const panel = document.getElementById("case-panel");
+  const caseH = state.caseIdx !== null ? state.habits[state.caseIdx] : null;
+  if (!caseH) { panel.style.display = "none"; return; }
+  const wasHidden = panel.style.display === "none";
+  const caseLast = caseH.log.slice().sort().pop();
+  document.getElementById("case-no").textContent = String(state.records.length + 1).padStart(3, "0");
+  document.getElementById("case-habit").textContent = caseH.name;
+  document.getElementById("case-days").textContent = bestOf(caseH.log) + " days";
+  document.getElementById("case-tod").textContent = pretty(caseLast) + ", then nothing";
+  document.getElementById("case-question").textContent = QUESTIONS[(state.records.length + (state.caseIdx || 0)) % QUESTIONS.length];
+  renderFactors();
+  panel.style.display = "block";
+  if (wasHidden) {
+    // Restart the mount animation, as the prototype's sc-if remount did.
+    panel.style.animation = "none";
+    void panel.offsetWidth;
+    panel.style.animation = "";
+  }
+}
+
+function renderFinding() {
+  const el = document.getElementById("finding-region");
+  if (!state.finding) { el.innerHTML = ""; return; }
+  const fc = factorCounts();
+  const note = fc.top && fc.counts[fc.top] > 1
+    ? "“" + fc.top + "” now appears in " + fc.counts[fc.top] + " of " + state.records.length + " deaths on file. The coroner is no longer treating it as coincidence."
+    : "Filed. One more death and the file starts finding patterns.";
+  el.innerHTML = '<div style="border: 1.5px solid #b3372c; background: #fbf1ef; padding: 24px 26px; margin-top: 22px; animation: fadein 300ms ease both">' +
+    '<div style="font-size: 10px; letter-spacing: 3px; color: #b3372c">CORONER\'S FINDING</div>' +
+    '<p style="font-family: \'Libre Caslon Text\', serif; font-size: 23px; line-height: 1.4; margin: 12px 0 0">' + esc(state.finding) + '</p>' +
+    '<p style="font-size: 12.5px; line-height: 1.7; margin: 14px 0 0; color: #6b6357">' + esc(note) + '</p>' +
+    '<button type="button" id="btn-cert" class="btn-cert" style="margin-top: 16px; background: transparent; border: 1.5px solid #b3372c; color: #b3372c; padding: 11px 18px; font-size: 11px; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer">' + (state.showCert ? "HIDE THE CERTIFICATE" : "ISSUE A DEATH CERTIFICATE") + '</button>' +
+  '</div>' +
+  '<div id="cert-region"></div>';
+  renderCert();
+}
+
+function renderCert() {
+  const el = document.getElementById("cert-region");
+  if (!el) return;
+  const btn = document.getElementById("btn-cert");
+  if (btn) btn.textContent = state.showCert ? "HIDE THE CERTIFICATE" : "ISSUE A DEATH CERTIFICATE";
+  const c = state.lastCert;
+  if (!(state.showCert && c)) { el.innerHTML = ""; return; }
+  const now = new Date();
+  el.innerHTML = '<div id="death-certificate" style="margin-top: 22px; border: 6px double #2a2622; background: #f7f4ea; padding: 30px 32px; text-align: center; animation: fadein 340ms ease both">' +
+    '<div style="font-size: 9.5px; letter-spacing: 4px; color: #8c8577">OFFICE OF THE HABIT CORONER · AUSTIN, TX</div>' +
+    '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 28px; margin-top: 12px">Certificate of Death</div>' +
+    '<div style="width: 60px; height: 1px; background: #2a2622; margin: 16px auto"></div>' +
+    '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 34px; line-height: 1.15">' + esc(c.name) + '</div>' +
+    '<div style="font-size: 11.5px; color: #6b6357; margin-top: 10px; line-height: 1.8">SURVIVED ' + esc(c.days + " days") + '<br>TIME OF DEATH · ' + esc(c.tod) + '<br>CAUSE · ' + esc(c.cause) + '</div>' +
+    '<p style="font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 16px; line-height: 1.5; margin: 16px auto 0; max-width: 380px">' + esc("“" + c.statement + "”") + '</p>' +
+    '<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 26px; gap: 20px">' +
+      '<div style="text-align: left; font-size: 9.5px; letter-spacing: 1.6px; color: #8c8577">CASE NO. ' + String(state.records.length + 1).padStart(3, "0") + '<br>FILED ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + '</div>' +
+      '<div style="border: 2.5px solid #b3372c; color: #b3372c; font-size: 10.5px; letter-spacing: 2px; padding: 5px 9px; transform: rotate(-6deg); white-space: nowrap">CERTIFIED</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderFile() {
+  const el = document.getElementById("file-body");
+  if (state.records.length === 0) {
+    el.innerHTML = '<div style="padding: 0 22px 22px; font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 17px; color: #8c8577">No deaths on file. Suspicious, but we\'ll allow it.</div>';
+    return;
+  }
+  el.innerHTML = state.records.map(r =>
+    '<div style="border-top: 1px solid #ddd5c3; padding: 16px 22px">' +
+      '<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">' +
+        '<span style="font-family: \'Libre Caslon Text\', serif; font-size: 19px">' + esc(r.habit) + '</span>' +
+        '<span style="font-size: 11px; color: #8c8577">' + esc(r.days) + ' days · ' + esc(r.factor) + '</span>' +
+      '</div>' +
+      '<div style="font-size: 12.5px; line-height: 1.6; color: #6b6357; margin-top: 6px">' + esc(r.answer) + '</div>' +
+    '</div>'
+  ).join("");
+}
+
+function renderStatsGrid() {
+  const fc = factorCounts();
+  const lifespans = state.records.map(r => r.days || 0);
+  const avg = lifespans.length ? Math.round(lifespans.reduce((a, b) => a + b, 0) / lifespans.length) : 0;
+  const taps = state.habits.reduce((a, h) => a + (h.log || []).length, 0);
+  document.getElementById("stats-grid").innerHTML =
+    '<div><span style="color: #8c8577">LONGEST LIFE</span><br>' + (lifespans.length ? Math.max.apply(null, lifespans) + " days" : "—") + '</div>' +
+    '<div><span style="color: #8c8577">AVERAGE LIFESPAN</span><br>' + (lifespans.length ? avg + " days" : "—") + '</div>' +
+    '<div><span style="color: #8c8577">REPEAT FACTOR</span><br>' + esc(fc.top ? fc.top + " (×" + fc.counts[fc.top] + ")" : "—") + '</div>' +
+    '<div><span style="color: #8c8577">TAPS LOGGED</span><br>' + taps + '</div>';
+}
+
+function renderPattern() {
+  const el = document.getElementById("pattern-region");
+  if (state.records.length < 3) { el.innerHTML = ""; return; }
+  const fc = factorCounts();
+  const pattern = fc.top && fc.counts[fc.top] >= 2
+    ? "Across " + state.records.length + " autopsies, the cause is usually “" + fc.top + ".” The habit isn't the problem. " + fc.top.toLowerCase() + " is."
+    : "Across " + state.records.length + " autopsies, no repeating cause. Every one died in its own way, which is somehow worse.";
+  el.innerHTML = '<p style="font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 19px; line-height: 1.45; margin: 24px 0 0; border-top: 1px solid #ddd5c3; padding-top: 20px">' + esc(pattern) + '</p>';
+}
+
+function renderAll() {
+  renderStats();
+  renderHabits();
+  renderForecast();
+  renderCase();
+  renderFinding();
+  renderFile();
+  renderStatsGrid();
+  renderPattern();
+}
+
+function markHabit(i, k) {
+  const habits = state.habits.map((h, j) => {
+    if (j !== i) return h;
+    if (h.log.indexOf(k) !== -1) return Object.assign({}, h, { log: h.log.filter(x => x !== k) });
+    return Object.assign({}, h, { log: h.log.concat([k]) });
+  });
+  saveHabits(habits);
+  renderStats();
+  renderHabits();
+  renderStatsGrid();
+  renderCase();
+}
+
+function fileReport(resurrect) {
+  const i = state.caseIdx;
+  const h = state.habits[i];
+  if (!h) return;
+  const answerEl = document.getElementById("case-answer");
+  const last = h.log.slice().sort().pop();
+  const days = bestOf(h.log);
+  const rec = { habit: h.name, days: days, factor: state.factor, answer: answerEl.value || "No statement given.", tod: pretty(last) };
+  const records = [rec].concat(state.records).slice(0, 14);
+  try { localStorage.setItem("streak.file", JSON.stringify(records)); } catch (e) {}
+  let finding = "Death by ordinary Tuesday. Nothing dramatic happened. That's the whole finding.";
+  if (days < 14) finding = "Death by early frost. Under two weeks is not a habit, it's an intention with a start date.";
+  else if (days >= 90) finding = "Death after a long life. This one earned an obituary rather than an autopsy.";
+  else if (days >= 30) finding = "Death by success. It survived long enough to feel automatic, and automatic things stop being defended.";
+
+  if (resurrect) {
+    state.resurrections += 1;
+    try { localStorage.setItem("streak.res", String(state.resurrections)); } catch (e) {}
+    saveHabits(state.habits.map((x, j) => j === i ? Object.assign({}, x, { log: [today()] }) : x));
+  }
+  state.records = records;
+  state.finding = finding;
+  state.caseIdx = null;
+  state.lastCert = { name: h.name, days: days, tod: pretty(last), cause: state.factor, statement: rec.answer };
+  state.showCert = false;
+  answerEl.value = "";
+  renderAll();
+}
+
+// Event wiring
+document.getElementById("habit-list").addEventListener("click", e => {
+  const btn = e.target.closest("[data-action]");
+  if (!btn) return;
+  const i = parseInt(btn.getAttribute("data-idx"), 10);
+  const action = btn.getAttribute("data-action");
+  if (action === "today") markHabit(i, today());
+  else if (action === "yesterday") markHabit(i, shift(-1));
+  else if (action === "remove") {
+    saveHabits(state.habits.filter((h, j) => j !== i));
+    state.caseIdx = null;
+    renderStats();
+    renderHabits();
+    renderStatsGrid();
+    renderCase();
+  } else if (action === "case") {
+    state.caseIdx = i;
+    state.finding = null;
+    document.getElementById("case-answer").value = "";
+    renderCase();
+    renderFinding();
+  }
+});
+
+document.getElementById("btn-add").addEventListener("click", () => {
+  const input = document.getElementById("new-habit");
+  const n = (input.value || "").trim();
+  if (!n) return;
+  saveHabits(state.habits.concat([{ name: n, log: [today()] }]));
+  input.value = "";
+  renderStats();
+  renderHabits();
+  renderStatsGrid();
+});
+
+document.getElementById("case-factors").addEventListener("click", e => {
+  const btn = e.target.closest("[data-factor]");
+  if (!btn) return;
+  state.factor = btn.getAttribute("data-factor");
+  renderFactors();
+});
+
+document.getElementById("btn-file").addEventListener("click", () => fileReport(false));
+document.getElementById("btn-resurrect").addEventListener("click", () => fileReport(true));
+
+document.getElementById("finding-region").addEventListener("click", e => {
+  if (!e.target.closest("#btn-cert")) return;
+  state.showCert = !state.showCert;
+  renderCert();
+});
+
+// Open-Meteo needs no key and allows browser requests. Austin coordinates.
+async function loadForecast() {
+  try {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=30.267&longitude=-97.743" +
+      "&daily=precipitation_probability_max,temperature_2m_max&timezone=auto&forecast_days=5&temperature_unit=fahrenheit";
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const j = await res.json();
+    const d = j.daily || {};
+    const days = (d.time || []).map((t, i) => ({
+      date: t,
+      rain: (d.precipitation_probability_max || [])[i],
+      temp: Math.round((d.temperature_2m_max || [])[i])
+    }));
+    state.forecast = days;
+    renderForecast();
+  } catch (e) {}
+}
+
+// Load persisted state, then first paint.
+(function init() {
+  let h = null, r = [], res = 0;
+  try {
+    h = JSON.parse(localStorage.getItem("streak.habits") || "null");
+    r = JSON.parse(localStorage.getItem("streak.file") || "[]");
+    res = parseInt(localStorage.getItem("streak.res") || "0", 10) || 0;
+  } catch (e) {}
+  if (Array.isArray(h) && h.length) state.habits = h;
+  state.records = Array.isArray(r) ? r : [];
+  state.resurrections = res;
+  renderAll();
+  loadForecast();
+})();
+</script>
+</body>
+</html>

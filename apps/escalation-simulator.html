@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escalation Simulator — Samie Vargas</title>
+<meta name="description" content="A terminal-style renewal game: an enterprise account is on fire, you have 41 days and five decisions, and every choice has a real tradeoff.">
+<link rel="canonical" href="https://samievargas.com/apps/escalation-simulator">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #070b07; }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px), radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,0.42) 100%); }
+a { color: #b7ffb7; } a:hover { color: #eaffea; }
+button { font: inherit; }
+.choice-btn { text-align: left; background: transparent; border: 1px solid #2f5c2f; color: #b7ffb7; padding: 14px 16px; font-family: 'VT323', monospace; font-size: 22px; line-height: 1.25; cursor: pointer; }
+.choice-btn:hover { background: #142514; border-color: #b7ffb7; color: #eaffea; }
+.foot-link { color: inherit; text-decoration: none; }
+.foot-link:hover { color: #eaffea; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes tick { from { width: 0; } to { width: 100%; } }
+@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes caret { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes bootline { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #070b07; padding: 50px 40px 80px; box-sizing: border-box; color: #b7ffb7; font-family: 'VT323', monospace">
+  <div style="max-width: 1140px; margin: 0 auto">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; border-bottom: 1px solid #24461f; padding-bottom: 16px">
+      <div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px; color: #6ba86b; animation: fadein 480ms ease both"><span style="color: #eaffea">[ FIG. 14 ]</span>&nbsp;&nbsp;AN ENTERPRISE ACCOUNT IS ON FIRE</div>
+        <h1 style="font-size: 60px; margin: 6px 0 0; font-weight: 400; line-height: 0.95; color: #eaffea; animation: fadein 520ms ease both; animation-delay: 90ms">ESCALATION SIMULATOR</h1>
+      </div>
+      <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.9; color: #6ba86b; text-align: right; animation: fadein 520ms ease both; animation-delay: 180ms">v1.2 · ACCOUNT: MERIDIAN<br>EVERY CHOICE HAS A REAL TRADEOFF</div>
+    </div>
+
+    <div id="app"></div>
+
+    <div style="margin-top: 52px; border-top: 1px solid #24461f; padding-top: 16px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #4d774d; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="foot-link" href="/">SAMIEVARGAS.COM</a> · <a class="foot-link" href="./">MINI APPS</a></span><span>MERIDIAN IS FICTIONAL. THE DECISIONS ARE NOT.</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const SCENES = [
+  {
+    day: 1, phase: "DISCOVERY",
+    text: "09:14. Your champion just left for a competitor. Renewal is in 41 days. The exec sponsor has never opened one of your emails.",
+    choices: [
+      { framework: "Executive alignment: an internal sponsor gives you air cover you cannot buy back later (MEDDICC — Champion + Economic Buyer).", label: "Escalate to your VP today", h: 4, cap: -1, champ: 0, exec: 1, result: "Your VP emails their CRO. It lands, barely.", lesson: "Escalating early costs you internal capital but buys time you can't manufacture later.", },
+      { framework: "Champion development: champions are replaced from inside the account, never from your side of the table (MEDDICC — Champion).", label: "Find the next champion first", h: 10, cap: 0, champ: 1, exec: 0, result: "You map the team and find a senior analyst who has quietly built her workflow on you.", lesson: "Champions are replaced from inside the account, not from your side of the table." },
+      { framework: "Passive account management: reporting is not engagement. Health scores lag behind sentiment by weeks (Gainsight customer-health practice).", label: "Send a usage report and wait", h: -12, cap: 0, champ: 0, exec: 0, result: "The report is never opened. Six days pass.", lesson: "Waiting is a decision. It just isn't one you get credit for." }
+    ]
+  },
+  {
+    day: 8, phase: "TRIAGE",
+    text: "Usage is down 38% in thirty days. Support tickets have gone from chatty to clipped. Procurement has not replied to two emails.",
+    choices: [
+      { framework: "Leading indicators: ticket sentiment moves before usage does, so tone history is the earliest signal you own (customer-health scoring).", label: "Ask support for the tone history", h: 8, cap: 0, champ: 0, exec: 0, result: "Three tickets trace back to one broken export nobody escalated.", lesson: "Tone in tickets is a leading indicator. Usage is a lagging one." },
+      { framework: "Mutual accountability: a meeting you had to chase is a courtesy, not a commitment. Real QBRs are jointly agreed (Success Plan practice).", label: "Push a QBR on the calendar", h: -4, cap: -1, champ: 0, exec: 0, result: "They accept, then move it twice.", lesson: "A meeting you had to push for is not engagement, it's politeness." },
+      { framework: "Value vs price: discounting before the value conversation reframes renewal as a negotiation (Challenger — reframe, don’t concede).", label: "Offer a discount now", h: -8, cap: -2, champ: 0, exec: 0, result: "Procurement replies within an hour. About price. Only price.", lesson: "Discount early and you've taught them the renewal is a negotiation, not a decision." }
+    ]
+  },
+  {
+    day: 17, phase: "THE REAL PROBLEM",
+    text: "Your new champion tells you the truth: a director has already run a competitor pilot. Nobody told you because nobody had to.",
+    choices: [
+      { framework: "Multi-threading: the person running a competitive pilot is the most honest source in the account (MEDDICC — Decision Criteria).", label: "Get in the room with that director", h: 12, cap: -1, champ: 0, exec: 1, result: "She's blunt. Two things don't work. Both are fixable in a quarter.", lesson: "The person running the pilot is the most honest person in the account." },
+      { framework: "Positioning limits: competitive content only works on a buyer still listening to you (Challenger — teach, tailor, take control).", label: "Build a competitive battlecard", h: -2, cap: 0, champ: 0, exec: 0, result: "It's a good deck. It sits in your drive.", lesson: "Positioning solves for a buyer who's still listening." },
+      { framework: "Escalation cost: going over someone’s head transfers narrative control to them (stakeholder-mapping practice).", label: "Escalate to the exec sponsor", h: 2, cap: -2, champ: 0, exec: 1, result: "He replies in four words and forwards it to the director.", lesson: "Going over someone's head hands them the story." }
+    ]
+  },
+  {
+    day: 27, phase: "THE ASK",
+    text: "You have one meeting left before their budget cycle closes. Your champion can get you thirty minutes with whoever you name.",
+    choices: [
+      { framework: "Executive time: you get one question answered, so make it the one only they can answer (MEDDICC — Economic Buyer).", label: "The exec sponsor, alone", h: 6, cap: -1, champ: 0, exec: 2, result: "He shows up for eleven minutes and asks one good question.", lesson: "Exec time is real, but it's short and you only get one question answered." },
+      { framework: "Internal consensus: the strongest meetings are the ones where the account convinces itself (Challenger — mobilizer-led consensus).", label: "The director and your champion, together", h: 14, cap: 0, champ: 1, exec: 0, result: "The two of them argue in front of you, then agree on a scope. You barely talk.", lesson: "The best meetings are the ones where the account convinces itself." },
+      { framework: "Diffusion of accountability: broad audiences dilute ownership. Someone must be able to say yes (MEDDICC — Decision Process).", label: "A full team readout with slides", h: -6, cap: -1, champ: 0, exec: 0, result: "Nine attendees, two cameras on, no decision.", lesson: "Broad audiences dilute accountability. Someone has to be able to say yes." }
+    ]
+  },
+  {
+    day: 36, phase: "THE CLOSE",
+    text: "Legal has the paperwork. The director wants a written commitment on the two fixes. Your product team has not promised a date.",
+    choices: [
+      { framework: "Commitment integrity: the renewal you save with a promise is the one you lose next year (Success Plan practice).", label: "Commit to a date you don't have", h: -14, cap: -2, champ: -1, exec: 0, result: "It signs. In February, it doesn't ship, and you're the person who said it would.", lesson: "The renewal you save with a promise is the one you lose next year." },
+      { framework: "Process over promises: customers accept specific process when a date cannot be honest (QBR / Success Plan cadence).", label: "Commit to a review cadence, not a date", h: 10, cap: 0, champ: 0, exec: 0, result: "Monthly check-ins, named owners, written down. The director accepts.", lesson: "Customers will take process over promises if the process is specific." },
+      { framework: "Ownership: escalation is not a decision-making strategy, and your VP will ask what you recommend anyway.", label: "Send it to your VP to decide", h: -2, cap: -1, champ: 0, exec: 0, result: "Two days pass. Your VP asks what you recommend.", lesson: "Escalation is not a decision-making strategy." }
+    ]
+  }
+];
+
+const state = { step: 0, health: 34, cap: 3, champ: 0, exec: 0, log: [], runs: 0, saved: 0, booting: true };
+
+const app = document.getElementById("app");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function computed() {
+  const s = state;
+  const ended = s.step >= SCENES.length || s.health <= 0;
+  const scene = ended ? SCENES[SCENES.length - 1] : SCENES[s.step];
+  const filled = Math.round(s.health / 12.5);
+  let bar = "";
+  for (let i = 0; i < 8; i++) bar += i < filled ? "▓" : "░";
+
+  let endTitle = "", endText = "", endColor = "#b7ffb7";
+  if (ended) {
+    if (s.health <= 0) { endTitle = "CHURNED."; endText = "Meridian did not renew. The exit interview says “we never felt like a priority,” which is what they always say."; endColor = "#ff8a7a"; }
+    else if (s.health < 45) { endTitle = "RENEWED, SHRUNK."; endText = "One year, 40% fewer seats, a competitor in the building. You bought time and not much else."; endColor = "#ffd98a"; }
+    else if (s.health < 70) { endTitle = "RENEWED, FLAT."; endText = "Same size, same terms, a named plan. Unglamorous and genuinely fine."; endColor = "#b7ffb7"; }
+    else { endTitle = "RENEWED AND GREW."; endText = "Two-year term, the director as your reference, and the fixes on a cadence you can actually hold."; endColor = "#8affc0"; }
+  }
+
+  return {
+    ended, scene, day: scene.day, phase: scene.phase,
+    healthBar: bar, healthPct: s.health + "%",
+    healthColor: s.health < 30 ? "#ff8a7a" : (s.health < 60 ? "#ffd98a" : "#8affc0"),
+    champion: s.champ > 0 ? "FOUND" : "GONE",
+    exec: s.exec >= 2 ? "ENGAGED" : (s.exec === 1 ? "AWARE" : "ABSENT"),
+    capital: s.cap <= 0 ? "SPENT" : s.cap + " LEFT",
+    endTitle, endText, endColor
+  };
+}
+
+function statusHTML() {
+  const v = computed();
+  return '' +
+    '<div style="display: flex; justify-content: space-between; font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 2px; color: #6ba86b">' +
+      '<span>DAY ' + v.day + ' OF 41</span><span>' + esc(v.phase) + '</span>' +
+    '</div>' +
+    '<div style="font-size: 30px; line-height: 1.2; margin-top: 14px; color: #eaffea">HEALTH ' + v.healthBar + ' ' + state.health + '</div>' +
+    '<div style="height: 8px; background: rgba(22,38,20,0.6); border: 1px solid #24461f; margin-top: 12px; overflow: hidden">' +
+      '<div style="height: 100%; width: ' + v.healthPct + '; background: ' + v.healthColor + '; transition: width 900ms cubic-bezier(.2,.9,.2,1)"></div>' +
+    '</div>' +
+    '<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 20px; font-family: \'Space Mono\', monospace; font-size: 11px; color: #8fc98f">' +
+      '<div><span style="color: #6ba86b">CHAMPION</span><br>' + v.champion + '</div>' +
+      '<div><span style="color: #6ba86b">EXEC</span><br>' + v.exec + '</div>' +
+      '<div><span style="color: #6ba86b">YOUR CAPITAL</span><br>' + v.capital + '</div>' +
+    '</div>';
+}
+
+function sceneHTML() {
+  const v = computed();
+  return '&gt; ' + esc(v.scene.text) + '<span style="animation: caret 1s steps(1) infinite">_</span>';
+}
+
+function actionHTML() {
+  const v = computed();
+  if (!v.ended) {
+    const buttons = v.scene.choices.map(function (c, i) {
+      return '<button type="button" class="choice-btn" data-choice="' + i + '">' + (i + 1) + '. ' + esc(c.label) + '</button>';
+    }).join('');
+    return '<div>' +
+      '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 3px; color: #6ba86b; margin-top: 30px">CHOOSE:</div>' +
+      '<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px">' + buttons + '</div>' +
+    '</div>';
+  }
+  return '<div style="margin-top: 30px; border: 1px solid ' + v.endColor + '; padding: 26px 28px; animation: fadein 300ms ease both">' +
+    '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 3px; color: ' + v.endColor + '">OUTCOME</div>' +
+    '<div style="font-size: 40px; line-height: 1.1; margin-top: 10px; color: ' + v.endColor + '">' + esc(v.endTitle) + '</div>' +
+    '<div style="font-size: 22px; line-height: 1.4; margin-top: 14px; color: #eaffea">' + esc(v.endText) + '</div>' +
+    '<button type="button" data-restart style="margin-top: 22px; background: #b7ffb7; color: #070b07; border: none; padding: 14px 24px; font-family: \'Space Mono\', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; cursor: pointer">RUN IT AGAIN</button>' +
+  '</div>';
+}
+
+function logEntryHTML(l) {
+  const color = l.delta.indexOf("-") === 0 ? "#ff8a7a" : "#8affc0";
+  let html = '<div style="animation: fadein 380ms ease both">' +
+    '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 1px; color: #6ba86b">DAY ' + l.day + ' · YOU CHOSE ' + l.choice + '</div>' +
+    '<div style="font-size: 21px; line-height: 1.35; margin-top: 5px; color: #eaffea">' + esc(l.result) + '</div>' +
+    '<div style="font-family: \'Space Mono\', monospace; font-size: 11px; line-height: 1.6; margin-top: 7px; color: ' + color + '">' + esc(l.delta) + ' — ' + esc(l.lesson) + '</div>';
+  if (l.framework) {
+    html += '<div style="font-family: \'Space Mono\', monospace; font-size: 10.5px; line-height: 1.6; margin-top: 6px; color: #6ba86b">WHY IT WORKS — ' + esc(l.framework) + '</div>';
+  }
+  if (l.alts && l.alts.length) {
+    html += '<div style="margin-top: 9px; border-left: 1px solid #2f5c2f; padding-left: 10px; display: flex; flex-direction: column; gap: 5px">' +
+      l.alts.map(function (a) {
+        const ac = a.delta.indexOf("-") === 0 ? "#ff8a7a" : "#8affc0";
+        return '<div style="font-family: \'Space Mono\', monospace; font-size: 10.5px; line-height: 1.5; color: #4d774d">NOT TAKEN · ' + esc(a.label) + ' → <span style="color: ' + ac + '">' + esc(a.delta + ' health') + '</span></div>';
+      }).join('') +
+    '</div>';
+  }
+  return html + '</div>';
+}
+
+function countersHTML() {
+  return 'RUNS PLAYED: ' + state.runs + '<br>ACCOUNTS SAVED: ' + state.saved;
+}
+
+function renderBoot() {
+  app.innerHTML = '' +
+    '<div style="margin-top: 36px; font-size: 22px; line-height: 1.7; color: #8fc98f">' +
+      '<div style="animation: bootline 100ms steps(1) both">&gt; MERIDIAN ACCOUNT TERMINAL v1.2</div>' +
+      '<div style="animation: bootline 100ms steps(1) 350ms both">&gt; LOADING CRM SNAPSHOT… OK</div>' +
+      '<div style="animation: bootline 100ms steps(1) 700ms both">&gt; RENEWAL CLOCK: 41 DAYS</div>' +
+      '<div style="animation: bootline 100ms steps(1) 1050ms both">&gt; 5 DECISIONS QUEUED. GOOD LUCK.<span style="animation: caret 1s steps(1) infinite">_</span></div>' +
+    '</div>';
+}
+
+function renderReady() {
+  app.innerHTML = '' +
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 44px; margin-top: 36px; align-items: start; animation: fadein 360ms ease both">' +
+      '<div>' +
+        '<div id="statusCard" style="border: 1px solid #24461f; background: #0b120b; padding: 26px 28px">' + statusHTML() + '</div>' +
+        '<div id="sceneLine" style="margin-top: 24px; font-size: 24px; line-height: 1.35; color: #eaffea">' + sceneHTML() + '</div>' +
+        '<div id="actionArea">' + actionHTML() + '</div>' +
+      '</div>' +
+      '<div>' +
+        '<div style="border: 1px solid #24461f; background: #0b120b; padding: 24px 26px">' +
+          '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 3px; color: #6ba86b">LOG</div>' +
+          '<div id="logList" style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px"></div>' +
+          '<div id="logEmpty" style="font-size: 21px; color: #4d774d; margin-top: 10px">Nothing yet. Day 1 is above.</div>' +
+        '</div>' +
+        '<div style="margin-top: 24px; border: 1px dashed #2f5c2f; padding: 22px 26px">' +
+          '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 3px; color: #6ba86b">WHY THIS EXISTS</div>' +
+          '<div style="font-size: 21px; line-height: 1.4; margin-top: 10px; color: #8fc98f">Eight years of renewals, compressed into six decisions. The wrong answer is usually the comfortable one: send a report and wait.</div>' +
+        '</div>' +
+        '<div id="counters" style="margin-top: 24px; font-family: \'Space Mono\', monospace; font-size: 11px; color: #4d774d; line-height: 1.8">' + countersHTML() + '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+function updateRegions() {
+  document.getElementById("statusCard").innerHTML = statusHTML();
+  document.getElementById("sceneLine").innerHTML = sceneHTML();
+  document.getElementById("actionArea").innerHTML = actionHTML();
+  document.getElementById("counters").innerHTML = countersHTML();
+}
+
+function choose(i) {
+  const scene = SCENES[state.step];
+  const c = scene.choices[i];
+  const health = Math.max(0, Math.min(100, state.health + c.h));
+  const alts = scene.choices.map(function (x, j) {
+    return { label: x.label, delta: (x.h > 0 ? "+" : "") + x.h, taken: j === i };
+  }).filter(function (x) { return !x.taken; });
+  const entry = {
+    day: scene.day, choice: i + 1, result: c.result, lesson: c.lesson,
+    framework: c.framework || "", alts: alts,
+    delta: (c.h > 0 ? "+" : "") + c.h + " health"
+  };
+  state.log = state.log.concat([entry]);
+  state.step = state.step + 1;
+  state.health = health;
+  state.cap = state.cap + c.cap;
+  state.champ = state.champ + c.champ;
+  state.exec = state.exec + c.exec;
+  const done = state.step >= SCENES.length || health <= 0;
+  if (done) {
+    state.runs = state.runs + 1;
+    state.saved = state.saved + (health >= 55 ? 1 : 0);
+    try {
+      localStorage.setItem("escalation.runs", String(state.runs));
+      localStorage.setItem("escalation.saved", String(state.saved));
+    } catch (e) {}
+  }
+  const logList = document.getElementById("logList");
+  logList.insertAdjacentHTML("afterbegin", logEntryHTML(entry));
+  document.getElementById("logEmpty").style.display = "none";
+  updateRegions();
+}
+
+function restart() {
+  state.step = 0; state.health = 34; state.cap = 3; state.champ = 0; state.exec = 0; state.log = [];
+  document.getElementById("logList").innerHTML = "";
+  document.getElementById("logEmpty").style.display = "";
+  updateRegions();
+}
+
+app.addEventListener("click", function (e) {
+  const btn = e.target.closest("[data-choice]");
+  if (btn) { choose(parseInt(btn.getAttribute("data-choice"), 10)); return; }
+  if (e.target.closest("[data-restart]")) restart();
+});
+
+try {
+  state.runs = parseInt(localStorage.getItem("escalation.runs") || "0", 10) || 0;
+  state.saved = parseInt(localStorage.getItem("escalation.saved") || "0", 10) || 0;
+} catch (e) {}
+
+const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+renderBoot();
+setTimeout(function () { state.booting = false; renderReady(); }, reduce ? 0 : 1600);
+</script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six Degrees of Anything — Samie Vargas</title>
+<meta name="description" content="Two things, one path between them — graph search over 100M+ Wikidata statements connecting people, films, bands, companies, and towns.">
+<link rel="canonical" href="https://samievargas.com/apps/six-degrees">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0b0f14; }
+a { color: #5ee0c0; } a:hover { color: #d8fff5; }
+input, button { font: inherit; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes draw { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+@keyframes drawline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes nodeIn { from { opacity: 0; transform: translateY(14px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes countGlow { from { color: #d8fff5; text-shadow: 0 0 18px rgba(94,224,192,0.6); } to { color: #5ee0c0; text-shadow: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+.term-input { width: 100%; box-sizing: border-box; background: transparent; border: none; border-bottom: 1.5px solid #2b3b47; padding: 10px 0; font-size: 25px; color: #e6eef2; outline: none; }
+.term-input:focus { border-color: #5ee0c0; }
+.btn-daily { background: transparent; border: 1px solid #5ee0c0; color: #5ee0c0; padding: 9px 16px; font-family: 'Space Mono', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 1.4px; white-space: nowrap; cursor: pointer; }
+.btn-daily:hover { background: #5ee0c0; color: #0b0f14; }
+.btn-ex { background: transparent; border: 1px solid #23313b; color: #8ba3af; padding: 8px 13px; font-family: 'Space Mono', monospace; font-size: 10.5px; white-space: nowrap; cursor: pointer; }
+.btn-ex:hover { border-color: #5ee0c0; color: #5ee0c0; }
+.btn-alt { text-align: left; background: transparent; border: 1px solid #23313b; color: #b8ccd4; padding: 11px 15px; font-family: 'Space Mono', monospace; font-size: 11px; cursor: pointer; }
+.btn-alt:hover { border-color: #5ee0c0; color: #5ee0c0; }
+.footer-link { color: inherit; text-decoration: none; }
+.footer-link:hover { color: #d8fff5; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: radial-gradient(900px 500px at 20% -5%, #14202b, #0b0f14 70%); color: #e6eef2; font-family: 'Space Grotesk', sans-serif; padding: 0 0 90px">
+
+  <div style="border-bottom: 1px solid #1e2a33; padding: 46px 44px 32px">
+    <div style="max-width: 1240px; margin: 0 auto">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap">
+        <div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 5px; color: #6f8794; animation: rise 480ms ease both"><span style="color: #5ee0c0">[ FIG. 01 ]</span>&nbsp;&nbsp;GRAPH SEARCH OVER 100M+ WIKIDATA STATEMENTS</div>
+          <h1 style="font-size: 52px; font-weight: 700; letter-spacing: -1.5px; margin: 12px 0 0; line-height: 1; animation: rise 520ms ease both; animation-delay: 90ms">Six Degrees of Anything</h1>
+        </div>
+        <p style="font-family: 'Space Mono', monospace; font-size: 11.5px; line-height: 1.9; color: #6f8794; text-align: right; max-width: 300px; animation: rise 520ms ease both; animation-delay: 180ms">TWO THINGS, ONE PATH BETWEEN THEM<br>PEOPLE · FILMS · BANDS · COMPANIES · TOWNS</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 40px 1fr auto; gap: 16px; margin-top: 34px; align-items: end; animation: rise 520ms ease both; animation-delay: 260ms">
+        <div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">FROM</div>
+          <input id="inputA" type="text" value="Agatha Christie" placeholder="Anything in Wikidata" class="term-input">
+          <div id="statusA" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #5ee0c0; margin-top: 8px; min-height: 16px">&nbsp;</div>
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 22px; color: #3d5563; text-align: center; padding-bottom: 34px">→</div>
+        <div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">TO</div>
+          <input id="inputB" type="text" value="Stardew Valley" placeholder="Anything else" class="term-input">
+          <div id="statusB" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #5ee0c0; margin-top: 8px; min-height: 16px">&nbsp;</div>
+        </div>
+        <button id="connectBtn" type="button" style="background: #5ee0c0; color: #0b0f14; border: none; padding: 17px 28px; font-family: 'Space Mono', monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 1.8px; white-space: nowrap; cursor: pointer; margin-bottom: 26px">FIND THE PATH</button>
+      </div>
+
+      <div style="display: flex; gap: 14px; margin-top: 4px; flex-wrap: wrap; align-items: center">
+        <button id="hardBtn" type="button" style="background: #5ee0c0; color: #0b0f14; border: 1px solid #5ee0c0; padding: 9px 16px; font-family: 'Space Mono', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer">HARD MODE ON</button>
+        <span id="hardNote" style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.6; color: #6f8794; max-width: 620px">Generic bridges (shared language, country, class of thing) are rejected. If that leaves nothing, it pays for a third hop.</span>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; align-items: center">
+        <button id="dailyBtn" type="button" class="btn-daily">TODAY'S PAIR</button>
+        <span id="dailyNote" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #6f8794"></span>
+      </div>
+
+      <div id="examples" style="display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap"></div>
+    </div>
+  </div>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 0 44px">
+
+    <div id="main"></div>
+
+    <div style="border-top: 1px solid #1e2a33; padding: 22px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #4a6472">
+      <span><a href="/" class="footer-link">SAMIEVARGAS.COM</a> · <a href="./" class="footer-link">MINI APPS</a></span>
+      <button id="howBtn" type="button" style="background: transparent; border: none; color: #5ee0c0; padding: 0; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; cursor: pointer; border-bottom: 1px solid #5ee0c0">HOW IT WORKS</button>
+    </div>
+
+    <div id="howPanel" style="display: none">
+      <div style="border: 1px solid #1e2a33; padding: 28px 30px; margin-top: 4px">
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">HOW IT FINDS A PATH</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; margin-top: 18px; font-size: 14px; line-height: 1.7; color: #b8ccd4">
+          <div><span style="color: #5ee0c0">1 · Resolve</span><br>Each box of text goes to the Wikidata search API and comes back as a QID. No guessing at identifiers.</div>
+          <div><span style="color: #5ee0c0">2 · Expand</span><br>One SPARQL query per endpoint pulls every item it links to or from, in both directions, with the property that joins them.</div>
+          <div><span style="color: #5ee0c0">3 · Intersect</span><br>Bidirectional search: the two neighbour sets are intersected in the browser. Anything in both is a two-degree bridge.</div>
+          <div><span style="color: #5ee0c0">4 · Rank</span><br>Bridges are scored by how specific the connecting property is, so “married to” beats “country of citizenship.”</div>
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.7; color: #6f8794; margin-top: 20px">Two queries, not six. Bidirectional intersection means a path of length 2 costs two expansions instead of walking the graph outward one hop at a time.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// ---------- Wikidata access layer (inlined from the shared helper) ----------
+const SPARQL_URL = "https://query.wikidata.org/sparql";
+const API = "https://www.wikidata.org/w/api.php";
+
+async function sparql(query, timeoutMs = 25000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(SPARQL_URL + "?format=json&query=" + encodeURIComponent(query), {
+      headers: { Accept: "application/sparql-results+json" },
+      signal: ctrl.signal
+    });
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    return json.results.bindings || [];
+  } catch (e) {
+    if (e.name === "AbortError") throw new Error("TIMEOUT");
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function searchEntity(term, limit = 8) {
+  if (!term || !term.trim()) return [];
+  const url = API + "?action=wbsearchentities&format=json&origin=*&language=en&uselang=en&type=item&limit=" +
+    limit + "&search=" + encodeURIComponent(term.trim());
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const json = await res.json();
+  return (json.search || []).map(s => ({
+    id: s.id,
+    label: s.label || s.id,
+    description: s.description || "",
+    match: s.match && s.match.text ? s.match.text : s.label
+  }));
+}
+
+function v(row, key) { return row && row[key] ? row[key].value : ""; }
+function qid(uri) { return String(uri || "").split("/").pop(); }
+
+// ---------- App data ----------
+const DAILY_PAIRS = [["Agatha Christie","Dolly Parton"],["Terry Pratchett","Austin, Texas"],["Stardew Valley","Nintendo"],["Willie Nelson","Instacart"],["Ada Lovelace","Charlie Chaplin"],["Julia Child","Texas"],["Ingmar Bergman","Sofia Coppola"]];
+
+const EXAMPLES = [
+  { a: "Agatha Christie", b: "Stardew Valley" },
+  { a: "Dolly Parton", b: "Austin, Texas" },
+  { a: "Terry Pratchett", b: "Nintendo" },
+  { a: "Instacart", b: "Peter Jackson" }
+];
+
+// Generic properties make for boring bridges; specific ones make good stories.
+const BORING = {
+  P31: 1, P279: 1, P17: 1, P27: 1, P495: 1, P37: 1, P131: 1, P625: 1,
+  P1412: 1, P407: 1, P364: 1, P136: 1, P106: 1, P21: 1, P641: 1,
+  P103: 1, P2936: 1, P1705: 1, P910: 1, P921: 1, P1343: 1, P972: 1, P6886: 1,
+  P279x: 1, P1269: 1, P2579: 1, P361: 1, P30: 1, P1071: 1, P276: 1
+};
+// A bridge is only worth showing if at least one side is a specific relationship.
+function isJunk(aLinks, bLinks) {
+  const aAll = aLinks.every(l => BORING[l.pid]);
+  const bAll = bLinks.every(l => BORING[l.pid]);
+  return aAll && bAll;
+}
+const PROP_NAMES = {
+  P26: "married", P451: "partner of", P40: "parent of", P22: "father", P25: "mother",
+  P3373: "sibling of", P1038: "relative of", P108: "employed by", P69: "studied at",
+  P463: "member of", P102: "member of party", P527: "includes", P138: "named after",
+  P737: "influenced by", P802: "taught", P1066: "student of", P170: "created by",
+  P50: "author of", P57: "directed by", P161: "cast member", P86: "composer of",
+  P175: "performer on", P264: "record label", P54: "played for", P39: "held position",
+  P19: "born in", P20: "died in", P937: "worked in", P1441: "appears in",
+  P144: "based on", P123: "published by", P178: "developed by", P400: "released on",
+  P155: "follows", P156: "followed by", P361: "part of", P749: "parent org",
+  P1830: "owns", P127: "owned by", P710: "participant", P710x: "participant"
+};
+
+function propName(pid) { return PROP_NAMES[pid] || pid; }
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// ---------- State ----------
+const state = {
+  a: null, b: null, aStatus: "", bStatus: "", aOk: true, bOk: true,
+  searching: false, steps: [], progress: "", result: null, alternates: [],
+  message: "Two boxes, two things, and one path between them. Try one of the pairs below — the graph almost always finds something.",
+  msgTag: "READY", msgOk: true, showHow: false, scanned: 0, hardMode: true, wiki: {}, dailyPlayed: false
+};
+
+// ---------- Static elements ----------
+const inputA = document.getElementById("inputA");
+const inputB = document.getElementById("inputB");
+const statusA = document.getElementById("statusA");
+const statusB = document.getElementById("statusB");
+const connectBtn = document.getElementById("connectBtn");
+const hardBtn = document.getElementById("hardBtn");
+const hardNoteEl = document.getElementById("hardNote");
+const dailyBtn = document.getElementById("dailyBtn");
+const dailyNoteEl = document.getElementById("dailyNote");
+const examplesEl = document.getElementById("examples");
+const mainEl = document.getElementById("main");
+const howBtn = document.getElementById("howBtn");
+const howPanel = document.getElementById("howPanel");
+
+// ---------- UI updates ----------
+function updateStatus() {
+  statusA.textContent = state.aStatus || " ";
+  statusA.style.color = state.aOk ? "#5ee0c0" : "#e08a6f";
+  statusB.textContent = state.bStatus || " ";
+  statusB.style.color = state.bOk ? "#5ee0c0" : "#e08a6f";
+}
+function updateConnect() {
+  connectBtn.textContent = state.searching ? "SEARCHING" : "FIND THE PATH";
+}
+function updateHard() {
+  hardBtn.textContent = state.hardMode ? "HARD MODE ON" : "HARD MODE OFF";
+  hardBtn.style.background = state.hardMode ? "#5ee0c0" : "transparent";
+  hardBtn.style.color = state.hardMode ? "#0b0f14" : "#8ba3af";
+  hardNoteEl.textContent = state.hardMode
+    ? "Generic bridges (shared language, country, class of thing) are rejected. If that leaves nothing, it pays for a third hop."
+    : "Any shared neighbour counts, including lazy ones like a common language.";
+}
+function dailyPair() {
+  const day = Math.floor(Date.now() / 86400000);
+  return DAILY_PAIRS[day % DAILY_PAIRS.length];
+}
+function updateDaily() {
+  const p = dailyPair();
+  dailyNoteEl.textContent = state.dailyPlayed
+    ? "Today's pair was " + p[0] + " → " + p[1] + ". Guess the bridge before you look."
+    : p[0] + " → " + p[1] + " · same pair for everyone today";
+}
+function updateHow() {
+  howBtn.textContent = state.showHow ? "HIDE THE METHOD" : "HOW IT WORKS";
+  howPanel.style.display = state.showHow ? "" : "none";
+}
+
+function startSearchUI() {
+  mainEl.innerHTML =
+    '<div style="padding: 44px 0">' +
+      '<div style="font-family: \'Space Mono\', monospace; font-size: 11px; letter-spacing: 2px; color: #5ee0c0"><span id="progressText"></span><span style="display: inline-block; width: 8px; height: 13px; background: #5ee0c0; margin-left: 8px; vertical-align: -2px; animation: blink 900ms step-end infinite"></span></div>' +
+      '<div id="stepsList" style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px"></div>' +
+    '</div>';
+  setProgress(state.progress);
+}
+function setProgress(text) {
+  state.progress = text;
+  const el = document.getElementById("progressText");
+  if (el) el.textContent = text;
+}
+function step(label, mark, color) {
+  state.steps.push({ label: label, mark: mark || "✓", color: color || "#8ba3af" });
+  const list = document.getElementById("stepsList");
+  if (!list) return;
+  const row = document.createElement("div");
+  row.setAttribute("style", "display: flex; gap: 14px; align-items: center; font-family: 'Space Mono', monospace; font-size: 12px; color: " + (color || "#8ba3af") + "; animation: rise 280ms ease both");
+  row.innerHTML = '<span style="width: 16px">' + esc(mark || "✓") + '</span><span>' + esc(label) + '</span>';
+  list.appendChild(row);
+}
+
+function renderMain() {
+  const s = state, r = s.result;
+  if (s.searching) { startSearchUI(); return; }
+
+  if (r) {
+    let nodes, tags, edges;
+    if (r.degrees === 3) {
+      nodes = [r.a].concat(r.hops).concat([r.b]);
+      tags = ["FROM", "BRIDGE 1", "BRIDGE 2", "TO"];
+      edges = r.links;
+    } else if (r.mid) {
+      nodes = [r.a, r.mid, r.b]; tags = ["FROM", "THE BRIDGE", "TO"]; edges = [r.link1, r.link2];
+    } else {
+      nodes = [r.a, r.b]; tags = ["FROM", "TO"]; edges = [r.link1];
+    }
+
+    let chainHtml = "";
+    nodes.forEach((n, i) => {
+      const isMid = i > 0 && i < nodes.length - 1;
+      const d = n.desc || n.description || "";
+      const art = s.wiki[n.id] || "";
+      const hasEdge = i < nodes.length - 1;
+      const edge = i < edges.length && edges[i] ? propName(edges[i].pid) : "";
+      const edgeProp = i < edges.length && edges[i] ? edges[i].pid : "";
+      chainHtml +=
+        '<div style="display: flex; align-items: stretch; flex: none">' +
+          '<div style="border: 1px solid ' + (isMid ? "#5ee0c0" : "#2b3b47") + '; background: ' + (isMid ? "#12241f" : "transparent") + '; padding: 20px 22px; width: 220px; box-sizing: border-box; animation: nodeIn 480ms ease both; animation-delay: ' + (i * 160) + 'ms">' +
+            '<div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 1.6px; color: ' + (isMid ? "#5ee0c0" : "#6f8794") + '">' + esc(tags[i]) + '</div>' +
+            '<div style="font-size: 19px; font-weight: 500; line-height: 1.2; margin-top: 8px; color: #e6eef2">' + esc(n.label) + '</div>' +
+            '<div style="font-family: \'Space Mono\', monospace; font-size: 10.5px; line-height: 1.5; margin-top: 8px; color: #7f97a3">' + esc(d ? d.slice(0, 70) : "no description on file") + '</div>' +
+            (art ? '<a href="' + esc(art) + '" target="_blank" rel="noopener" style="display: inline-block; margin-top: 12px; font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 1.4px; border-bottom: 1px solid #5ee0c0">WIKIPEDIA ↗</a>' : '') +
+          '</div>' +
+          (hasEdge ?
+            '<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 4px; min-width: 130px">' +
+              '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; color: #5ee0c0; text-align: center; line-height: 1.4; padding-bottom: 6px">' + esc(edge) + '</div>' +
+              '<div style="width: 100%; height: 1px; background: #5ee0c0; transform-origin: left; animation: drawline 520ms ease both; animation-delay: ' + (i * 160 + 240) + 'ms"></div>' +
+              '<div style="font-family: \'Space Mono\', monospace; font-size: 9px; color: #4a6472; padding-top: 6px">' + esc(edgeProp) + '</div>' +
+            '</div>' : '') +
+        '</div>';
+    });
+
+    let sentence = "";
+    if (r.degrees === 3) sentence = r.a.label + " → " + r.hops[0].label + " → " + r.hops[1].label + " → " + r.b.label + ". Hard mode threw out the lazy connection and paid for a third hop to get a real one.";
+    else if (r.degrees === 1) sentence = r.a.label + " links straight to " + r.b.label + " — one degree, no bridge needed.";
+    else if (r.weak) sentence = "The only thing " + r.a.label + " and " + r.b.label + " share is " + r.mid.label + ", and only as a generic attribute rather than a real relationship. Technically two degrees. Honestly, a coincidence.";
+    else sentence = r.a.label + " → " + r.mid.label + " → " + r.b.label + ". Two degrees, found by intersecting " + s.scanned.toLocaleString() + " neighbour statements in your browser.";
+
+    const method = r.degrees === 1 ? "Direct statement between the two items"
+      : (r.degrees === 3 ? "Hard mode · batched third-hop expansion after rejecting generic bridges"
+      : (r.weak ? "Only generic attributes shared — weak bridge" : "Bidirectional neighbour expansion, intersected client-side"));
+
+    const hasAlternates = s.alternates.length > 0 && r.degrees === 2;
+    let altHtml = "";
+    if (hasAlternates) {
+      altHtml =
+        '<div style="margin-top: 40px; border-top: 1px solid #1e2a33; padding-top: 26px">' +
+          '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">OTHER ROUTES THROUGH THE GRAPH</div>' +
+          '<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px">' +
+            s.alternates.map((alt, i) => '<button type="button" data-alt="' + i + '" class="btn-alt">' + esc(alt.label) + '</button>').join('') +
+          '</div>' +
+        '</div>';
+    }
+
+    mainEl.innerHTML =
+      '<div style="padding: 42px 0; animation: rise 320ms ease both">' +
+        '<div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: baseline; border-bottom: 1px solid #1e2a33; padding-bottom: 24px">' +
+          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">DEGREES</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px; color: #5ee0c0; animation: countGlow 900ms ease both">' + esc(r.degrees) + '</div></div>' +
+          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">NEIGHBOURS SCANNED</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(s.scanned ? s.scanned.toLocaleString() : "0") + '</div></div>' +
+          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">SHARED LINKS FOUND</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(r.shared) + '</div></div>' +
+          '<div style="flex: 1; min-width: 240px"><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">METHOD</div><div style="font-family: \'Space Mono\', monospace; font-size: 12px; line-height: 1.6; margin-top: 8px; color: #8ba3af">' + esc(method) + '</div></div>' +
+        '</div>' +
+        '<div style="margin-top: 40px; display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding-bottom: 10px">' + chainHtml + '</div>' +
+        '<p style="font-family: \'Space Grotesk\', sans-serif; font-size: 25px; line-height: 1.45; margin: 44px 0 0; max-width: 840px; color: #cfe0e7; animation: rise 600ms ease both; animation-delay: ' + (nodes.length * 160 + 300) + 'ms">' + esc(sentence) + '</p>' +
+        altHtml +
+      '</div>';
+    return;
+  }
+
+  if (s.message) {
+    const msgColor = s.msgOk ? "#5ee0c0" : "#e08a6f";
+    mainEl.innerHTML =
+      '<div style="padding: 44px 0">' +
+        '<div style="border-left: 2px solid ' + msgColor + '; padding-left: 20px; max-width: 700px">' +
+          '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; letter-spacing: 2px; color: ' + msgColor + '">' + esc(s.msgTag) + '</div>' +
+          '<p style="font-size: 22px; line-height: 1.5; margin: 10px 0 0">' + esc(s.message) + '</p>' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+
+  mainEl.innerHTML = "";
+}
+
+// ---------- Async logic ----------
+
+// One cheap query for the English Wikipedia article of each node on the path.
+async function articles(ids) {
+  const values = ids.map(id => "wd:" + id).join(" ");
+  const q = 'SELECT ?item ?article WHERE { VALUES ?item { ' + values + ' } ' +
+    '?article schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> . }';
+  try {
+    const rows = await sparql(q, 15000);
+    const map = {};
+    rows.forEach(r => { map[qid(v(r, "item"))] = v(r, "article"); });
+    return map;
+  } catch (e) { return {}; }
+}
+
+// Third hop: expand the most specific neighbours of A in one batched query,
+// then intersect that frontier with B's neighbour set.
+async function thirdDegree(an, bn) {
+  const seeds = Object.keys(an)
+    .filter(id => an[id].links.some(l => !BORING[l.pid] && PROP_NAMES[l.pid]))
+    .slice(0, 14);
+  if (!seeds.length) return null;
+  step("Expanding " + seeds.length + " specific neighbours for a third hop", "→", "#8ba3af");
+  const values = seeds.map(id => "wd:" + id).join(" ");
+  const q = 'SELECT ?seed ?other ?otherLabel ?otherDescription ?p WHERE { ' +
+    'VALUES ?seed { ' + values + ' } ' +
+    '{ ?seed ?prop ?other } UNION { ?other ?prop ?seed } ' +
+    'FILTER(STRSTARTS(STR(?prop), "http://www.wikidata.org/prop/direct/")) ' +
+    'FILTER(STRSTARTS(STR(?other), "http://www.wikidata.org/entity/Q")) ' +
+    'BIND(STRAFTER(STR(?prop), "prop/direct/") AS ?p) ' +
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } LIMIT 6000';
+  const rows = await sparql(q, 40000);
+  const found = [];
+  rows.forEach(r => {
+    const seed = qid(v(r, "seed"));
+    const id = qid(v(r, "other"));
+    const pid = v(r, "p");
+    if (!bn[id] || BORING[pid]) return;
+    const bLinks = bn[id].links.filter(l => !BORING[l.pid]);
+    if (!bLinks.length) return;
+    found.push({
+      seedId: seed,
+      seed: an[seed],
+      mid: { id: id, label: v(r, "otherLabel") || id, desc: v(r, "otherDescription") || "" },
+      link2: { pid: pid },
+      link3: pickLink(bn[id].links)
+    });
+  });
+  if (!found.length) return null;
+  found.sort((x, y) => (PROP_NAMES[y.link2.pid] ? 1 : 0) - (PROP_NAMES[x.link2.pid] ? 1 : 0));
+  return found[0];
+}
+
+async function resolve(term, side) {
+  const hits = await searchEntity(term, 1);
+  if (!hits.length) throw new Error("NO_ENTITY:" + term);
+  const ent = hits[0];
+  if (side === "a") {
+    state.a = ent; state.aStatus = ent.id + " · " + (ent.description || "no description"); state.aOk = true;
+  } else {
+    state.b = ent; state.bStatus = ent.id + " · " + (ent.description || "no description"); state.bOk = true;
+  }
+  updateStatus();
+  return ent;
+}
+
+// Every item linked to or from this QID, with the property that joins them.
+// Neighbour sets are expensive; cache them for the session so a repeat start is instant.
+function cacheGet(id) {
+  try {
+    const raw = sessionStorage.getItem("sixdeg." + id);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function cacheSet(id, map) {
+  try { sessionStorage.setItem("sixdeg." + id, JSON.stringify(map)); } catch (e) {}
+}
+
+async function neighbours(id) {
+  const hit = cacheGet(id);
+  if (hit) { step("Neighbours of " + id + " served from cache", "⚡", "#5ee0c0"); return hit; }
+  const q = 'SELECT ?other ?otherLabel ?otherDescription ?p ?dir WHERE { ' +
+    '{ wd:' + id + ' ?prop ?other . BIND("out" AS ?dir) } UNION ' +
+    '{ ?other ?prop wd:' + id + ' . BIND("in" AS ?dir) } ' +
+    'FILTER(STRSTARTS(STR(?prop), "http://www.wikidata.org/prop/direct/")) ' +
+    'FILTER(STRSTARTS(STR(?other), "http://www.wikidata.org/entity/Q")) ' +
+    'BIND(STRAFTER(STR(?prop), "prop/direct/") AS ?p) ' +
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } LIMIT 2500';
+  const rows = await sparql(q, 30000);
+  const map = {};
+  rows.forEach(r => {
+    const oid = qid(v(r, "other"));
+    const pid = v(r, "p");
+    if (!map[oid]) map[oid] = { id: oid, label: v(r, "otherLabel") || oid, desc: v(r, "otherDescription") || "", links: [] };
+    map[oid].links.push({ pid: pid, dir: v(r, "dir") });
+  });
+  cacheSet(id, map);
+  return map;
+}
+
+function scoreBridge(aLinks, bLinks) {
+  let best = 0;
+  aLinks.forEach(la => bLinks.forEach(lb => {
+    let s = 10;
+    if (BORING[la.pid]) s -= 6;
+    if (BORING[lb.pid]) s -= 6;
+    if (PROP_NAMES[la.pid]) s += 3;
+    if (PROP_NAMES[lb.pid]) s += 3;
+    if (s > best) best = s;
+  }));
+  return best;
+}
+
+function pickLink(links) {
+  const good = links.filter(l => !BORING[l.pid] && PROP_NAMES[l.pid]);
+  const ok = good.length ? good : links.filter(l => !BORING[l.pid]);
+  return (ok.length ? ok : links)[0];
+}
+
+function finish(patch) {
+  Object.assign(state, patch);
+  updateConnect();
+  renderMain();
+}
+
+async function connect() {
+  if (state.searching) return;
+  const aTerm = inputA.value;
+  const bTerm = inputB.value;
+  Object.assign(state, { searching: true, steps: [], result: null, alternates: [], progress: "RESOLVING BOTH ENDS…", message: "" });
+  updateConnect();
+  startSearchUI();
+  try {
+    const a = await resolve(aTerm, "a");
+    step("Resolved “" + aTerm + "” → " + a.id, "✓", "#5ee0c0");
+    const b = await resolve(bTerm, "b");
+    step("Resolved “" + bTerm + "” → " + b.id, "✓", "#5ee0c0");
+
+    if (a.id === b.id) {
+      finish({ searching: false, message: "Those resolve to the same item, which is zero degrees and no fun.", msgTag: "SAME THING", msgOk: false });
+      return;
+    }
+
+    setProgress("EXPANDING NEIGHBOURS OF " + a.id + "…");
+    const an = await neighbours(a.id);
+    step(Object.keys(an).length.toLocaleString() + " neighbours around " + a.label, "✓", "#8ba3af");
+
+    // Direct link?
+    if (an[b.id]) {
+      const link = pickLink(an[b.id].links);
+      const wiki = await articles([a.id, b.id]);
+      finish({
+        searching: false, scanned: Object.keys(an).length, wiki: wiki,
+        result: { degrees: 1, a: a, b: b, mid: null, link1: link, link2: null, shared: 1 }
+      });
+      return;
+    }
+
+    setProgress("EXPANDING NEIGHBOURS OF " + b.id + "…");
+    const bn = await neighbours(b.id);
+    step(Object.keys(bn).length.toLocaleString() + " neighbours around " + b.label, "✓", "#8ba3af");
+
+    setProgress("INTERSECTING THE TWO SETS…");
+    const bridges = [];
+    Object.keys(an).forEach(id => {
+      if (bn[id]) bridges.push({
+        id: id, label: an[id].label, desc: an[id].desc || bn[id].desc,
+        aLinks: an[id].links, bLinks: bn[id].links,
+        score: scoreBridge(an[id].links, bn[id].links)
+      });
+    });
+    step(bridges.length + " items appear in both sets", bridges.length ? "✓" : "×", bridges.length ? "#5ee0c0" : "#e08a6f");
+
+    if (!bridges.length) {
+      finish({
+        searching: false,
+        message: a.label + " and " + b.label + " share no direct neighbour. They are connected somewhere further out — this tool stops at two degrees on purpose, because three would mean tens of thousands of queries against a public endpoint.",
+        msgTag: "NO TWO-DEGREE PATH", msgOk: false, scanned: Object.keys(an).length + Object.keys(bn).length
+      });
+      return;
+    }
+
+    const good = bridges.filter(x => !isJunk(x.aLinks, x.bLinks));
+
+    // Hard mode refuses a junk bridge and pays for a third hop instead.
+    if (!good.length && state.hardMode) {
+      step("Every shared neighbour is a generic attribute — rejecting", "×", "#e08a6f");
+      setProgress("HARD MODE · SEARCHING FOR A THREE-DEGREE PATH…");
+      let three = null;
+      try { three = await thirdDegree(an, bn); } catch (e) { three = null; }
+      if (three) {
+        const wiki = await articles([a.id, three.seedId, three.mid.id, b.id]);
+        finish({
+          searching: false, scanned: Object.keys(an).length + Object.keys(bn).length, wiki: wiki,
+          result: {
+            degrees: 3, a: a, b: b, hops: [three.seed, three.mid],
+            links: [pickLink(three.seed.links), three.link2, three.link3],
+            shared: bridges.length, weak: false
+          },
+          alternates: []
+        });
+        return;
+      }
+      finish({
+        searching: false, scanned: Object.keys(an).length + Object.keys(bn).length,
+        message: a.label + " and " + b.label + " share only generic attributes — a language, a country, a class of thing — and no three-degree path came back either. Hard mode refuses to call that a connection. Turn hard mode off to see the weak bridge anyway.",
+        msgTag: "HARD MODE · REJECTED", msgOk: false
+      });
+      return;
+    }
+
+    const ranked = (good.length ? good : bridges).sort((x, y) => y.score - x.score);
+    const top = ranked[0];
+    const wiki = await articles([a.id, top.id, b.id]);
+    finish({
+      searching: false, wiki: wiki,
+      scanned: Object.keys(an).length + Object.keys(bn).length,
+      result: {
+        degrees: 2, a: a, b: b, mid: top,
+        link1: pickLink(top.aLinks), link2: pickLink(top.bLinks),
+        shared: bridges.length, weak: good.length === 0
+      },
+      alternates: ranked.slice(1, 9)
+    });
+  } catch (e) {
+    let msg, tag = "FAILED";
+    if (String(e.message).indexOf("NO_ENTITY") === 0) {
+      msg = "Wikidata has nothing called “" + String(e.message).split(":")[1] + ".” Try the fuller name, or the thing it is best known as.";
+      tag = "NOT FOUND";
+    } else if (e.message === "TIMEOUT") {
+      msg = "The public query service timed out expanding one of those. Very well-connected things (countries, big companies) blow past the limit — try something more specific.";
+      tag = "TIMED OUT";
+    } else if (e.message === "RATE_LIMIT") {
+      msg = "Wikidata is rate-limiting this browser. Give it a minute.";
+      tag = "RATE LIMITED";
+    } else {
+      msg = "Something went wrong reaching Wikidata: " + e.message;
+    }
+    finish({ searching: false, message: msg, msgTag: tag, msgOk: false });
+  }
+}
+
+function useAlternate(br) {
+  const r = state.result;
+  if (!r) return;
+  const rest = state.alternates.filter(x => x.id !== br.id).concat(r.mid ? [r.mid] : []);
+  state.result = Object.assign({}, r, { mid: br, link1: pickLink(br.aLinks), link2: pickLink(br.bLinks) });
+  state.alternates = rest.slice(0, 9);
+  renderMain();
+}
+
+// ---------- Wiring ----------
+inputA.addEventListener("input", () => { state.a = null; state.aStatus = ""; updateStatus(); });
+inputB.addEventListener("input", () => { state.b = null; state.bStatus = ""; updateStatus(); });
+inputA.addEventListener("keydown", e => { if (e.key === "Enter") connect(); });
+inputB.addEventListener("keydown", e => { if (e.key === "Enter") connect(); });
+connectBtn.addEventListener("click", connect);
+
+hardBtn.addEventListener("click", () => { state.hardMode = !state.hardMode; updateHard(); });
+
+dailyBtn.addEventListener("click", () => {
+  const p = dailyPair();
+  inputA.value = p[0];
+  inputB.value = p[1];
+  state.a = null; state.b = null; state.aStatus = ""; state.bStatus = ""; state.result = null; state.dailyPlayed = true;
+  updateStatus(); updateDaily();
+  connect();
+});
+
+EXAMPLES.forEach(ex => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "btn-ex";
+  btn.textContent = ex.a + " → " + ex.b;
+  btn.addEventListener("click", () => {
+    inputA.value = ex.a;
+    inputB.value = ex.b;
+    state.a = null; state.b = null; state.aStatus = ""; state.bStatus = ""; state.result = null;
+    updateStatus();
+    connect();
+  });
+  examplesEl.appendChild(btn);
+});
+
+mainEl.addEventListener("click", e => {
+  const btn = e.target.closest("[data-alt]");
+  if (!btn) return;
+  const alt = state.alternates[parseInt(btn.getAttribute("data-alt"), 10)];
+  if (alt) useAlternate(alt);
+});
+
+howBtn.addEventListener("click", () => { state.showHow = !state.showHow; updateHow(); });
+
+// ---------- Initial paint ----------
+updateStatus();
+updateHard();
+updateDaily();
+renderMain();
+</script>
+</body>
+</html>

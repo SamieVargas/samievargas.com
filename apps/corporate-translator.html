@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Translator — Samie Vargas</title>
+<meta name="description" content="One input, one slider, one output: rewrite a work email anywhere from passive-aggressive to Texan warm, or read the subtext of the one they sent you — rule-based, nothing leaves your browser.">
+<link rel="canonical" href="https://samievargas.com/apps/corporate-translator">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #14121f; }
+a { color: #ffbf7f; } a:hover { color: #eeeaff; }
+textarea, button, input { font: inherit; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes morph { from { opacity: 0; transform: translateY(-4px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes readout { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+.src-ta:focus { border-color: #8a83b8; }
+.chip-btn:hover { border-color: #8a83b8; color: #eeeaff; }
+.ghost-btn:hover { border-color: #8a83b8; }
+.footer-link { color: inherit; text-decoration: none; }
+.footer-link:hover { color: #eeeaff; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: radial-gradient(1100px 600px at 15% 0%, #241f3d, #14121f 70%); padding: 54px 40px 80px; box-sizing: border-box; color: #eeeaff; font-family: 'Space Grotesk', sans-serif">
+  <div style="max-width: 1160px; margin: 0 auto">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid #332d52; padding-bottom: 20px">
+      <div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 4px; color: #8a83b8; animation: fadein 480ms ease both"><span style="color: #ffbf7f">[ FIG. 15 ]</span>&nbsp;&nbsp;ONE INPUT · ONE SLIDER · ONE OUTPUT</div>
+        <h1 style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 52px; margin: 10px 0 0; line-height: 1; animation: fadein 520ms ease both; animation-delay: 90ms">Corporate Translator</h1>
+      </div>
+      <div style="font-family: 'Space Mono', monospace; font-size: 11.5px; line-height: 1.9; color: #8a83b8; text-align: right; animation: fadein 520ms ease both; animation-delay: 180ms">FROM PASSIVE-AGGRESSIVE<br>TO TEXAN WARM</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 46px; margin-top: 42px; align-items: start">
+
+      <div>
+        <div id="modeBtns" style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap">
+          <button type="button" data-mode="write" style="background: transparent; color: #b9b3d9; border: 1px solid #3d3763; border-radius: 20px; padding: 9px 16px; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">REWRITE MINE</button>
+          <button type="button" data-mode="read" style="background: transparent; color: #b9b3d9; border: 1px solid #3d3763; border-radius: 20px; padding: 9px 16px; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">READ THEIRS</button>
+        </div>
+        <div id="inputLabel" style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8; white-space: nowrap">PASTE THE EMAIL</div>
+        <textarea id="src" class="src-ta" rows="7" placeholder="Per my last email…" style="width: 100%; box-sizing: border-box; margin-top: 12px; padding: 20px; background: #201c33; border: 1px solid #3d3763; border-radius: 12px; color: #eeeaff; font-family: 'Space Grotesk', sans-serif; font-size: 15px; line-height: 1.6; outline: none; resize: vertical"></textarea>
+
+        <div id="sampleBtns" style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap"></div>
+
+        <div id="readSection" style="display: none"></div>
+
+        <div style="margin-top: 40px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8">TONE</div>
+            <div id="toneName" style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: #ffbf7f">TEXAN WARM</div>
+          </div>
+          <input id="toneSlider" type="range" min="0" max="4" step="1" value="4" style="width: 100%; margin-top: 18px; accent-color: #ffbf7f; height: 8px; cursor: pointer">
+          <div style="display: flex; justify-content: space-between; margin-top: 10px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 1px; color: #6f6899">
+            <span>PASSIVE-<br>AGGRESSIVE</span><span>NEUTRAL</span><span style="text-align: right">TEXAN<br>WARM</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 36px; border-top: 1px solid #332d52; padding-top: 20px">
+          <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8; margin-bottom: 12px">WHAT CHANGED</div>
+          <div id="movesList" style="display: flex; flex-direction: column; gap: 9px"></div>
+        </div>
+      </div>
+
+      <div>
+        <div id="cardWrap"></div>
+
+        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap">
+          <button id="copyBtn" type="button" style="background: #eeeaff; color: #14121f; border: none; border-radius: 10px; padding: 15px 24px; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1.4px; cursor: pointer">COPY TRANSLATION</button>
+          <button id="clearBtn" type="button" class="ghost-btn" style="background: transparent; border: 1px solid #3d3763; border-radius: 10px; color: #b9b3d9; padding: 15px 24px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 1.4px; cursor: pointer">CLEAR</button>
+        </div>
+
+        <div style="margin-top: 26px; border: 1px solid #332d52; border-radius: 14px; padding: 24px 26px">
+          <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8">READING</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin-top: 14px; font-family: 'Space Mono', monospace; font-size: 12px; color: #b9b3d9">
+            <div><span style="color: #6f6899">WORDS</span><br><span id="statWords">0</span></div>
+            <div><span style="color: #6f6899">HEDGES</span><br><span id="statHedges">0</span></div>
+            <div><span style="color: #6f6899">PASSIVE TELLS</span><br><span id="statTells">0</span></div>
+            <div><span style="color: #6f6899">EXCLAMATIONS</span><br><span id="statBangs">0</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 26px; background: #201c33; border-radius: 14px; padding: 22px 26px">
+          <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8">THE HONEST SUBTEXT</div>
+          <p id="subtext" style="font-family: 'Syne', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.45; margin: 10px 0 0"></p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px; border-top: 1px solid #332d52; padding-top: 18px; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #6f6899; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="footer-link" href="/">SAMIEVARGAS.COM</a> · <a class="footer-link" href="./">MINI APPS</a></span><span>RULE-BASED. NOTHING LEAVES YOUR BROWSER.</span>
+    </div>
+  </div>
+</div>
+<script type="module">
+const SAMPLES = [
+  { label: "per my last email", text: "Per my last email, I'm still waiting on the file you said would be ready Monday." },
+  { label: "circling back", text: "Just circling back on this. Not sure if you saw my message below. Let me know either way." },
+  { label: "as discussed", text: "As discussed on the call, this was owned by your team. I'd like to understand what happened here." },
+  { label: "friendly reminder", text: "Friendly reminder that the deadline was Friday. Happy to jump on a call if that's easier for you." }
+];
+
+const TONES = [
+  { name: "PASSIVE-AGGRESSIVE", bg: "#6b5cff", fg: "#f2f0ff" },
+  { name: "CLIPPED", bg: "#4d5cc7", fg: "#eef1ff" },
+  { name: "NEUTRAL", bg: "#dedbf0", fg: "#1a1730" },
+  { name: "WARM", bg: "#ffd9a8", fg: "#2a1c10" },
+  { name: "TEXAN WARM", bg: "#ffbf7f", fg: "#1d1b2e" }
+];
+
+const SWAPS = [
+  [/per my last email,?\s*/gi, ["Per my last email, ", "Following up: ", "Checking in on this — ", "Hey — quick nudge on this. ", "Hey! Just floating this back up. "]],
+  [/just circling back( on this)?\.?\s*/gi, ["Circling back again. ", "Following up. ", "Checking in. ", "Wanted to check in on this. ", "Hey, no rush at all, just checking in. "]],
+  [/not sure if you saw my message below\.?\s*/gi, ["Not sure if you saw my message below. ", "In case it got buried: ", "It may have gotten buried. ", "It might've gotten buried in your inbox. ", "Totally possible it got buried — inboxes are a mess. "]],
+  [/i'?m still waiting on/gi, ["I'm still waiting on", "I still need", "I'm looking for", "I'd love to get", "Whenever you get a sec, I'd love to grab"]],
+  [/you said would be ready/gi, ["you said would be ready", "that was due", "we'd targeted for", "we'd talked about for", "we'd loosely aimed at for"]],
+  [/let me know either way\.?/gi, ["Let me know either way.", "A yes or no works.", "Either way is fine.", "Either way works — just let me know.", "Either way's fine by me, just holler."]],
+  [/as discussed on the call,?\s*/gi, ["As discussed on the call, ", "From the call: ", "Coming out of the call, ", "One thing from our call — ", "Hey! Circling back on something from our call. "]],
+  [/i'?d like to understand what happened here\.?/gi, ["I'd like to understand what happened here.", "I want to understand what happened.", "Can you walk me through what happened?", "Would you walk me through it when you get a chance?", "Would love to hear how it played out, no blame at all."]],
+  [/friendly reminder that/gi, ["Friendly reminder that", "A reminder that", "Noting that", "Quick note that", "Real quick — I think"]],
+  [/happy to jump on a call if that'?s easier for you\.?/gi, ["Happy to jump on a call if that's easier for you.", "A call works if that's easier.", "Happy to hop on a call.", "Happy to hop on a call if that's easier.", "Happy to hop on a call, or we can keep it right here — whatever's easiest."]],
+  [/this was owned by your team\.?/gi, ["this was owned by your team.", "your team owned this.", "this sat with your team.", "I think this one sat with your team.", "I had this one down as your team's, though I could be off."]],
+  [/the deadline was friday\.?/gi, ["the deadline was Friday.", "Friday was the deadline.", "Friday was the date.", "Friday was the date we'd set.", "Friday was the date we'd landed on."]]
+];
+
+const CLOSERS = ["", "", "", "\n\nThanks!", "\n\nThanks so much — appreciate you."];
+
+const TELLS_INBOUND = [
+  { re: /per my last email/i, reading: "They have a record of asking and they are showing it to you." },
+  { re: /just circling back|following up again/i, reading: "This is not the first ask. It is the one they decided to make visible." },
+  { re: /not sure if you saw/i, reading: "A polite fiction. They know you saw it." },
+  { re: /as discussed|as we agreed/i, reading: "They are establishing a shared record before making a claim against it." },
+  { re: /friendly reminder|gentle reminder/i, reading: "The word doing the work is not ‘friendly.’" },
+  { re: /i'?d like to understand|help me understand/i, reading: "This is an audit opening, phrased as curiosity." },
+  { re: /going forward/i, reading: "Something happened that they do not want repeated." },
+  { re: /looping in|adding|cc'?ing/i, reading: "The audience just changed, and that is the message." },
+  { re: /when you get a chance|whenever you can/i, reading: "Genuinely soft, or a deadline in disguise. Check whether a date follows." },
+  { re: /any update|status/i, reading: "They are asking for a number and will accept a date instead." },
+  { re: /happy to jump on a call/i, reading: "They want it out of writing. Consider why." },
+  { re: /no rush/i, reading: "There is a rush." }
+];
+
+const WORRY = ["Not at all", "Barely", "A little", "Somewhat", "Quite", "Yes"];
+const WORRY_NOTE = [
+  "Nothing loaded in here. It is a normal email.",
+  "One soft tell. Probably just how they write.",
+  "There is a subtext, but it is not aimed at you yet.",
+  "They are building a record. Reply in writing, with a date.",
+  "This is a documented ask. Answer it precisely and keep the thread.",
+  "Every sentence is doing double duty. Reply carefully, and to everyone on it."
+];
+
+const state = { tone: 4, copied: false, mode: "write" };
+
+const ta = document.getElementById("src");
+const slider = document.getElementById("toneSlider");
+const modeBtns = document.getElementById("modeBtns");
+const inputLabel = document.getElementById("inputLabel");
+const sampleBtns = document.getElementById("sampleBtns");
+const readSection = document.getElementById("readSection");
+const toneNameEl = document.getElementById("toneName");
+const movesList = document.getElementById("movesList");
+const cardWrap = document.getElementById("cardWrap");
+const copyBtn = document.getElementById("copyBtn");
+const clearBtn = document.getElementById("clearBtn");
+const statWords = document.getElementById("statWords");
+const statHedges = document.getElementById("statHedges");
+const statTells = document.getElementById("statTells");
+const statBangs = document.getElementById("statBangs");
+const subtextEl = document.getElementById("subtext");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function translate() {
+  const t = state.tone;
+  let out = ta.value || "";
+  SWAPS.forEach(pair => { out = out.replace(pair[0], pair[1][t]); });
+  if (t >= 3) out = out.replace(/\bASAP\b/g, "when you can");
+  if (t === 0) out = out.replace(/\.\s*$/, ".");
+  out = out.trim();
+  if (out) out += CLOSERS[t];
+  return out;
+}
+
+// Inbound mode: read the subtext of an email you received, phrase by phrase.
+function readInbound() {
+  const src = ta.value || "";
+  const hits = [];
+  TELLS_INBOUND.forEach(t => {
+    const m = src.match(t.re);
+    if (m) hits.push({ phrase: m[0], reading: t.reading });
+  });
+  return hits.slice(0, 5);
+}
+
+function outWordsHTML(out) {
+  return (out || "Paste something on the left.").split(/\s+/).map((w, i) =>
+    `<span style="display: inline-block; animation: morph 420ms ease both; animation-delay: ${Math.min(i * 26, 900)}ms">${esc(w)}&nbsp;</span>`
+  ).join("");
+}
+
+let lastTone = null;
+let lastOut = null;
+let lastReadKey = null;
+
+function render() {
+  const src = ta.value || "";
+  const tone = TONES[state.tone];
+  const out = translate();
+  const words = src.trim() ? src.trim().split(/\s+/).length : 0;
+  const hedges = (src.match(/just|maybe|perhaps|possibly|kind of|sort of|a bit/gi) || []).length;
+  const tells = (src.match(/per my last|circling back|as discussed|friendly reminder|not sure if you saw|as previously|going forward/gi) || []).length;
+  const bangs = (out.match(/!/g) || []).length;
+
+  // Mode buttons
+  for (const b of modeBtns.querySelectorAll("button[data-mode]")) {
+    const active = state.mode === b.dataset.mode;
+    b.style.background = active ? "#6f5fd6" : "transparent";
+    b.style.color = active ? "#f0ecff" : "#b9b3d9";
+  }
+  inputLabel.textContent = state.mode === "read" ? "PASTE WHAT THEY SENT YOU" : "PASTE THE EMAIL";
+
+  // Read-inbound section
+  if (state.mode === "read") {
+    const readings = readInbound();
+    const worryScore = Math.min(5, readings.length + (tells >= 2 ? 1 : 0));
+    const worryColor = worryScore >= 4 ? "#ff8a7a" : (worryScore >= 2 ? "#ffbf7f" : "#9be8c8");
+    const readKey = JSON.stringify([readings, worryScore]);
+    if (readKey !== lastReadKey) {
+      lastReadKey = readKey;
+      readSection.innerHTML = `
+        <div style="margin-top: 34px; border-top: 1px solid #332d52; padding-top: 22px">
+          <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #8a83b8; white-space: nowrap">WHAT THEY ARE ACTUALLY SAYING</div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">
+            ${readings.map((r, i) => `
+              <div style="display: grid; grid-template-columns: 18px 1fr; gap: 12px; animation: readout 340ms ease both; animation-delay: ${i * 90}ms">
+                <div style="color: #ffbf7f; font-family: 'Space Mono', monospace; font-size: 12px">0${i + 1}</div>
+                <div>
+                  <div style="font-size: 14.5px; line-height: 1.5; color: #eeeaff">${esc(r.reading)}</div>
+                  <div style="font-family: 'Space Mono', monospace; font-size: 11px; color: #8a83b8; margin-top: 4px">triggered by “${esc(r.phrase)}”</div>
+                </div>
+              </div>`).join("")}
+          </div>
+          <div style="margin-top: 20px; background: #201c33; border-radius: 12px; padding: 18px 20px">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #8a83b8; white-space: nowrap">HOW WORRIED TO BE</div>
+            <div style="display: flex; align-items: baseline; gap: 10px; margin-top: 8px">
+              <span style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 30px; color: ${worryColor}">${esc(WORRY[worryScore])}</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 11.5px; color: #b9b3d9">${esc(WORRY_NOTE[worryScore])}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+    readSection.style.display = "";
+  } else {
+    readSection.style.display = "none";
+    readSection.innerHTML = "";
+    lastReadKey = null;
+  }
+
+  // Tone label
+  toneNameEl.textContent = tone.name;
+
+  // What changed
+  const moves = [];
+  if (state.tone <= 1) moves.push("Nothing softened. The subtext stays visible on purpose.");
+  if (state.tone === 2) moves.push("Passive tells removed, no warmth added.");
+  if (state.tone >= 3) { moves.push("Blame language traded for shared uncertainty (“I could be off”)."); moves.push("Deadline stated as a decision you both made, not a rule they broke."); }
+  if (state.tone === 4) moves.push("Closing line gives them an out. That's the whole trick.");
+  if (tells > 0) moves.push(tells + " passive tell" + (tells === 1 ? "" : "s") + " detected in the original.");
+  movesList.innerHTML = moves.map(m =>
+    `<div style="display: flex; gap: 12px; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.5; color: #b9b3d9"><span style="color: #ffbf7f">→</span><span>${esc(m)}</span></div>`
+  ).join("");
+
+  // Output card: remount (restarting fadein) when tone changes, like key="{{ tone }}"
+  if (state.tone !== lastTone) {
+    lastTone = state.tone;
+    lastOut = out;
+    cardWrap.innerHTML = `
+      <div style="background: ${tone.bg}; color: ${tone.fg}; border-radius: 16px; padding: 32px; animation: fadein 240ms ease both">
+        <div style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 3px; opacity: 0.65">TRANSLATED · ${esc(tone.name)}</div>
+        <p id="outWords" style="font-size: 19px; line-height: 1.6; margin: 16px 0 0">${outWordsHTML(out)}</p>
+      </div>`;
+  } else if (out !== lastOut) {
+    lastOut = out;
+    document.getElementById("outWords").innerHTML = outWordsHTML(out);
+  }
+
+  copyBtn.textContent = state.copied ? "COPIED" : "COPY TRANSLATION";
+
+  // Reading stats
+  statWords.textContent = words;
+  statHedges.textContent = hedges;
+  statTells.textContent = tells;
+  statBangs.textContent = bangs;
+
+  // Honest subtext
+  let subtext;
+  if (tells >= 2) subtext = "“I have written this down and I will bring it up again.”";
+  else if (tells === 1) subtext = "“I have noticed, and I want you to know I noticed.”";
+  else if (hedges >= 3) subtext = "“I am asking for something and hoping you won't notice I'm asking.”";
+  else if (!words) subtext = "Nothing to read yet.";
+  else subtext = "“This is a normal email.” Rare. Send it.";
+  subtextEl.textContent = subtext;
+}
+
+// Sample buttons (static list, built once)
+sampleBtns.innerHTML = SAMPLES.map((s, i) =>
+  `<button type="button" class="chip-btn" data-sample="${i}" style="background: transparent; border: 1px solid #3d3763; border-radius: 20px; color: #b9b3d9; padding: 9px 16px; font-family: 'Space Mono', monospace; font-size: 11px; cursor: pointer">${esc(s.label)}</button>`
+).join("");
+
+// Events
+ta.addEventListener("input", () => { state.copied = false; render(); });
+slider.addEventListener("input", () => { state.tone = parseInt(slider.value, 10); state.copied = false; render(); });
+modeBtns.addEventListener("click", e => {
+  const b = e.target.closest("button[data-mode]");
+  if (!b) return;
+  state.mode = b.dataset.mode;
+  state.copied = false;
+  render();
+});
+sampleBtns.addEventListener("click", e => {
+  const b = e.target.closest("button[data-sample]");
+  if (!b) return;
+  ta.value = SAMPLES[parseInt(b.dataset.sample, 10)].text;
+  state.copied = false;
+  render();
+});
+clearBtn.addEventListener("click", () => { ta.value = ""; state.copied = false; render(); });
+copyBtn.addEventListener("click", () => {
+  try { navigator.clipboard.writeText(translate()); } catch (e) {}
+  state.copied = true;
+  render();
+  setTimeout(() => { state.copied = false; render(); }, 1700);
+});
+
+// Initial state
+ta.value = SAMPLES[0].text;
+render();
+</script>
+</body>
+</html>

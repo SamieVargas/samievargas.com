@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backlog Reaper — Samie Vargas</title>
+<meta name="description" content="The Backlog Reaper picks one unplayed game from your pile, makes the case against it, and dares you to delete it forever. One must go. You chose this.">
+<link rel="canonical" href="https://samievargas.com/apps/backlog-reaper">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0c0c0f; }
+a { color: #ff4d6d; } a:hover { color: #e4e4ea; }
+input, button { font: inherit; }
+@keyframes toll { 0% { opacity: 0; transform: scale(0.94); } 60% { opacity: 1; transform: scale(1.02); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes strike { from { background-size: 0 2px; } to { background-size: 100% 2px; } }
+@keyframes rowRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes buried { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+.row-x:hover { color: #ff4d6d !important; }
+.btn-pale:hover { border-color: #b0b0be !important; }
+.btn-dim:hover { border-color: #7a7a88 !important; }
+.btn-side:hover { border-color: #b0b0be !important; color: #b0b0be !important; }
+#pasteBox:focus { border-color: #ff4d6d !important; }
+.footlink { color: inherit; text-decoration: none; }
+.footlink:hover { color: #e4e4ea; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #0c0c0f; padding: 54px 40px 90px; box-sizing: border-box; color: #e4e4ea; font-family: 'Space Mono', monospace">
+  <div style="max-width: 1140px; margin: 0 auto">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid #26262e; padding-bottom: 20px">
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 4px; color: #7a7a88; animation: rowRise 480ms ease both"><span style="color: #ff4d6d">[ FIG. 07 ]</span>&nbsp;&nbsp;ONE MUST GO. YOU CHOSE THIS.</div>
+        <h1 style="font-family: 'Bungee', cursive; font-size: 50px; margin: 10px 0 0; line-height: 1; color: #ff4d6d; animation: rowRise 520ms ease both; animation-delay: 90ms">THE BACKLOG REAPER</h1>
+      </div>
+      <div style="display: flex; gap: 26px; font-size: 11px; line-height: 1.6; color: #7a7a88; text-align: right; white-space: nowrap; animation: rowRise 520ms ease both; animation-delay: 180ms">
+        <div>UNPLAYED<br><span id="statCount" style="color: #e4e4ea; font-size: 17px"></span></div>
+        <div>HOURS OWED<br><span id="statHours" style="color: #e4e4ea; font-size: 17px"></span></div>
+        <div>PILE VALUE<br><span id="statPile" style="color: #ffd166; font-size: 17px"></span></div>
+        <div>REAPED<br><span id="statReaped" style="color: #ff4d6d; font-size: 17px"></span></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 44px; margin-top: 40px; align-items: start">
+
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: 2px; color: #7a7a88">THE CONDEMNED</div>
+        <div id="rows" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px"></div>
+        <div style="display: grid; grid-template-columns: 1fr 66px 62px 62px 30px; gap: 10px; margin-top: 8px; font-size: 9px; letter-spacing: 1.4px; color: #56566a; padding: 0 14px; white-space: nowrap">
+          <div>TITLE</div><div style="text-align: right">OWNED</div><div style="text-align: right">HRS</div><div style="text-align: right">PAID $</div><div></div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap">
+          <button type="button" id="btnAdd" class="btn-pale" style="border: 1px solid #33333d; border-radius: 8px; background: transparent; color: #b0b0be; padding: 13px 20px; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">+ ADD TO THE PILE</button>
+          <button type="button" id="btnToggleImport" class="btn-pale" style="border: 1px solid #33333d; border-radius: 8px; background: transparent; color: #b0b0be; padding: 13px 20px; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">IMPORT FROM STEAM</button>
+          <button type="button" id="btnDemo" class="btn-dim" style="border: 1px solid #26262e; border-radius: 8px; background: transparent; color: #7a7a88; padding: 13px 20px; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">RESET THE PILE</button>
+        </div>
+
+        <div id="importPanel" style="display: none; margin-top: 22px; border: 1px solid #33333d; border-radius: 10px; background: #14141a; padding: 22px 24px">
+          <div style="font-size: 10.5px; letter-spacing: 2px; color: #7a7a88">IMPORT YOUR OWN LIBRARY</div>
+          <p style="font-size: 12.5px; line-height: 1.75; color: #b0b0be; margin: 12px 0 0">Steam blocks browsers from calling its API directly, so nothing here can log into your account — which also means nothing here can leak it. Fetch the JSON yourself and paste it in:</p>
+          <div style="background: #0c0c0f; border: 1px solid #26262e; border-radius: 6px; padding: 12px 14px; margin-top: 12px; font-size: 11px; line-height: 1.7; color: #8f8f9e; word-break: break-all">1. Get a key at steamcommunity.com/dev/apikey<br>2. Open: api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=YOURKEY&amp;steamid=YOURID&amp;include_appinfo=1&amp;include_played_free_games=1<br>3. Copy the whole page, paste below.</div>
+          <p style="font-size: 12px; line-height: 1.7; color: #7a7a88; margin: 12px 0 0">Or paste plain lines instead: <span style="color: #b0b0be">Title, 2y, 0.4</span> (title, owned, hours played) — one per line. Works for any platform.</p>
+          <textarea id="pasteBox" rows="6" placeholder='{"response":{"games":[...]}}   —   or   —   Persona 5 Royal, 4y, 0.4' style="width: 100%; box-sizing: border-box; margin-top: 14px; background: #0c0c0f; border: 1px solid #33333d; border-radius: 8px; color: #e4e4ea; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.6; padding: 14px; outline: none; resize: vertical"></textarea>
+          <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center">
+            <button type="button" id="btnRunImport" style="background: #ff4d6d; color: #0c0c0f; border: none; border-radius: 8px; padding: 13px 22px; font-size: 11.5px; font-weight: 700; letter-spacing: 1.4px; cursor: pointer">IMPORT THE PILE</button>
+            <span id="importNote" style="font-size: 11.5px; color: #8f8f9e"></span>
+          </div>
+          <p style="font-size: 11px; line-height: 1.7; color: #56566a; margin: 14px 0 0">Unplayed and barely-played titles are kept; anything over 20 hours is treated as played and left out of the pile. Your key is never typed into this page and nothing is uploaded anywhere.</p>
+        </div>
+      </div>
+
+      <div>
+        <div id="verdictCard" style="border: 1px solid #ff4d6d; border-radius: 12px; background: linear-gradient(180deg, #1c0e16, #120a10); padding: 32px; text-align: center; animation: toll 420ms ease both">
+          <div style="font-size: 10px; letter-spacing: 4px; color: #7a7a88">THE REAPER HAS CHOSEN</div>
+          <div id="chosenTitle" style="font-family: 'Bungee', cursive; font-size: 32px; line-height: 1.12; margin-top: 14px; color: #ff4d6d"></div>
+          <div id="chosenCase" style="font-size: 12.5px; line-height: 1.7; margin-top: 16px; color: #b0b0be"></div>
+          <div id="sparedLine" style="display: none; font-size: 12px; line-height: 1.6; margin-top: 14px; color: #ffd166; border-top: 1px solid #3a2430; padding-top: 12px"></div>
+          <div style="display: flex; gap: 22px; justify-content: center; margin-top: 22px; font-size: 11px; color: #7a7a88">
+            <div>OWNED<br><span id="chosenOwned" style="color: #e4e4ea; font-size: 14px"></span></div>
+            <div>PLAYED<br><span id="chosenPlayed" style="color: #e4e4ea; font-size: 14px"></span></div>
+            <div>PAID<br><span id="chosenPrice" style="color: #ffd166; font-size: 14px"></span></div>
+            <div>GUILT SCORE<br><span id="chosenScore" style="color: #ff4d6d; font-size: 14px"></span></div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 22px">
+          <button type="button" id="btnReap" style="background: #ff4d6d; color: #0c0c0f; border: none; border-radius: 10px; padding: 17px 0; font-family: 'Bungee', cursive; font-size: 15px; letter-spacing: 1px; cursor: pointer">DELETE FOREVER</button>
+          <div style="display: flex; gap: 10px">
+            <button type="button" id="btnSpare" class="btn-side" style="flex: 1; background: transparent; border: 1px solid #33333d; border-radius: 10px; color: #7a7a88; padding: 14px 0; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">spare it (coward)</button>
+            <button type="button" id="btnReroll" class="btn-side" style="flex: 1; background: transparent; border: 1px solid #33333d; border-radius: 10px; color: #7a7a88; padding: 14px 0; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">choose another</button>
+          </div>
+        </div>
+
+        <div id="graveWrap" style="display: none; margin-top: 30px; border-top: 1px solid #26262e; padding-top: 20px">
+          <div style="font-size: 10.5px; letter-spacing: 2px; color: #7a7a88; margin-bottom: 14px">THE GRAVEYARD</div>
+          <div id="graveList" style="display: flex; flex-direction: column; gap: 9px"></div>
+        </div>
+
+        <div id="closing" style="margin-top: 30px; font-size: 12px; line-height: 1.7; color: #7a7a88"></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px; border-top: 1px solid #26262e; padding-top: 18px; font-size: 10.5px; letter-spacing: 2px; color: #56566a; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="footlink" href="/">SAMIEVARGAS.COM</a> · <a class="footlink" href="./">MINI APPS</a></span><span>THE REAPER DOES NOT ACCEPT APPEALS</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const DEMO = [
+  { title: "Persona 5 Royal", owned: "4y", played: 0.4, length: 104, price: 60 },
+  { title: "Disco Elysium", owned: "2y", played: 3.1, length: 40, price: 40 },
+  { title: "Hades II", owned: "8mo", played: 6.0, length: 45, price: 30 },
+  { title: "Outer Wilds", owned: "1y", played: 1.2, length: 22, price: 25 },
+  { title: "Baldur's Gate 3", owned: "2y", played: 11.0, length: 130, price: 60 },
+  { title: "Stardew Valley (again)", owned: "6y", played: 240, length: 60, price: 15 }
+];
+const CASES = [
+  "Owned {owned}. Played {played}. It is {length} hours long. You were never going to.",
+  "You have owned this longer than most people keep a car. The save file is from a different apartment.",
+  "{played} hours in {owned}. That is not a backlog entry, that is a monument.",
+  "Every year you say this is the year. It is not the year.",
+  "You bought this on sale for the version of you who has weekends."
+];
+
+const state = {
+  items: DEMO.map(d => Object.assign({}, d)),
+  chosen: 0,
+  graveyard: [],
+  key: 0,
+  reaped: 0,
+  importOpen: false,
+  importNote: "",
+  importOk: true,
+  reaping: null,
+  buried: 0
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function score(g) {
+  const yrs = parseFloat(String(g.owned).replace(/[^0-9.]/g, "")) || 0;
+  const asYears = /mo/i.test(String(g.owned)) ? yrs / 12 : yrs;
+  const played = parseFloat(g.played) || 0;
+  const spared = (g.spared || 0) * 14;
+  return Math.round((asYears * 22) + Math.max(0, (g.length || 30) - played) / 2 - played * 3 + spared);
+}
+
+function renderRows() {
+  $("rows").innerHTML = state.items.map((g, i) => {
+    const isChosen = i === state.chosen;
+    const bg = isChosen ? "#1c0e16" : "#14141a";
+    const border = isChosen ? "#ff4d6d" : "#22222b";
+    const fg = isChosen ? "#ff4d6d" : "#e4e4ea";
+    const delay = Math.min(i * 45, 700) + "ms";
+    return `<div data-row="${i}" style="display: grid; grid-template-columns: 1fr 66px 62px 62px 30px; gap: 10px; align-items: center; background: ${bg}; border: 1px solid ${border}; border-radius: 8px; padding: 12px 14px; opacity: 1; text-decoration: none; transform: translateX(0px) rotate(0deg); filter: none; transition: opacity 460ms ease, transform 460ms cubic-bezier(0.5, 0, 0.75, 0), filter 460ms ease; animation: rowRise 380ms ease both; animation-delay: ${delay}">
+      <input type="text" value="${esc(g.title)}" data-i="${i}" data-f="title" style="background: transparent; border: none; color: ${fg}; font-family: 'Space Mono', monospace; font-size: 13.5px; outline: none; min-width: 0; padding: 2px 0">
+      <input type="text" value="${esc(g.owned)}" data-i="${i}" data-f="owned" style="background: transparent; border: none; color: #8f8f9e; font-family: 'Space Mono', monospace; font-size: 12px; outline: none; min-width: 0; text-align: right" placeholder="2y">
+      <input type="number" value="${esc(g.played)}" data-i="${i}" data-f="played" style="background: transparent; border: none; color: #8f8f9e; font-family: 'Space Mono', monospace; font-size: 12px; outline: none; min-width: 0; text-align: right" placeholder="0.4">
+      <input type="number" value="${esc(g.price)}" data-i="${i}" data-f="price" style="background: transparent; border: none; color: #8f8f9e; font-family: 'Space Mono', monospace; font-size: 12px; outline: none; min-width: 0; text-align: right" placeholder="60">
+      <button type="button" class="row-x" data-remove="${i}" style="background: transparent; border: none; color: #4d4d5a; font-size: 16px; cursor: pointer; padding: 0">×</button>
+    </div>`;
+  }).join("");
+}
+
+function updateRowStyles() {
+  $("rows").querySelectorAll("[data-row]").forEach(row => {
+    const i = parseInt(row.getAttribute("data-row"), 10);
+    const isChosen = i === state.chosen;
+    const isReaping = state.reaping === i;
+    row.style.background = isChosen ? "#1c0e16" : "#14141a";
+    row.style.borderColor = isChosen ? "#ff4d6d" : "#22222b";
+    const title = row.querySelector('input[data-f="title"]');
+    if (title) title.style.color = isChosen ? "#ff4d6d" : "#e4e4ea";
+    if (isReaping) {
+      // release the rowRise fill so the reaping transition can run
+      row.style.animation = "none";
+      row.style.opacity = "0.1";
+      row.style.textDecoration = "line-through";
+      row.style.transform = "translateX(64px) rotate(1.5deg)";
+      row.style.filter = "grayscale(1) blur(1px)";
+    }
+  });
+}
+
+function renderStats() {
+  const hours = state.items.reduce((a, g) => a + Math.max(0, (g.length || 30) - (parseFloat(g.played) || 0)), 0);
+  $("statCount").textContent = state.items.length;
+  $("statHours").textContent = Math.round(hours);
+  $("statPile").textContent = "$" + Math.round(state.items.reduce((a, g) => a + (parseFloat(g.price) || 0), 0)).toLocaleString();
+  $("statReaped").textContent = state.reaped;
+}
+
+function renderVerdict() {
+  const chosen = state.items[state.chosen];
+  let caseText = "Nothing left to reap. The pile is clean and you are suspicious of it.";
+  if (chosen) {
+    const t = CASES[(state.key + state.chosen) % CASES.length];
+    caseText = t.replace("{owned}", chosen.owned).replace("{played}", (parseFloat(chosen.played) || 0) + " hours").replace("{length}", chosen.length || 30);
+  }
+  $("chosenTitle").textContent = chosen ? chosen.title : "NOTHING LEFT";
+  $("chosenCase").textContent = caseText;
+  const sparedEl = $("sparedLine");
+  if (chosen && chosen.spared) {
+    sparedEl.style.display = "block";
+    sparedEl.textContent = chosen.spared === 1
+      ? "You spared this one already. It is back, and the guilt score went up."
+      : "You have spared this " + chosen.spared + " times. At some point the sparing is the decision.";
+  } else {
+    sparedEl.style.display = "none";
+    sparedEl.textContent = "";
+  }
+  $("chosenOwned").textContent = chosen ? chosen.owned : "—";
+  $("chosenPlayed").textContent = chosen ? (parseFloat(chosen.played) || 0) + "h" : "—";
+  $("chosenPrice").textContent = chosen && parseFloat(chosen.price) ? "$" + Math.round(parseFloat(chosen.price)) : "—";
+  $("chosenScore").textContent = chosen ? score(chosen) : "—";
+}
+
+function restartToll() {
+  const card = $("verdictCard");
+  card.style.animation = "none";
+  void card.offsetWidth;
+  card.style.animation = "toll 420ms ease both";
+}
+
+function renderGraveyard() {
+  const wrap = $("graveWrap");
+  if (!state.graveyard.length) { wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  $("graveList").innerHTML = state.graveyard.slice().reverse().map(d =>
+    `<div style="display: flex; justify-content: space-between; gap: 14px; font-size: 12.5px; color: #56566a; animation: buried 420ms ease both"><span style="text-decoration: line-through; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">${esc(d.title)}</span><span style="white-space: nowrap; flex: none">${esc(d.note)}</span></div>`
+  ).join("");
+}
+
+function renderClosing() {
+  $("closing").textContent = state.reaped === 0
+    ? "Guilt score weighs years owned against hours played, and rises every time you spare something. Add what you paid and the pile starts talking in money."
+    : "You have reaped " + state.reaped + (state.buried ? ", burying $" + Math.round(state.buried).toLocaleString() + " of unplayed games" : "") + ". Nothing bad has happened to you yet.";
+}
+
+function renderImportUI() {
+  $("importPanel").style.display = state.importOpen ? "block" : "none";
+  $("btnToggleImport").textContent = state.importOpen ? "CLOSE IMPORT" : "IMPORT FROM STEAM";
+  const note = $("importNote");
+  note.textContent = state.importNote;
+  note.style.color = state.importOk ? "#8f8f9e" : "#ff4d6d";
+}
+
+function reroll() {
+  const items = state.items;
+  if (!items.length) {
+    state.chosen = 0;
+    state.key += 1;
+  } else {
+    const scored = items.map((g, i) => ({ i: i, s: score(g) })).sort((a, b) => b.s - a.s);
+    const top = scored.slice(0, Math.min(3, scored.length));
+    const pick = top[Math.floor(Math.random() * top.length)];
+    state.chosen = pick.i;
+    state.key += 1;
+  }
+  updateRowStyles();
+  renderVerdict();
+  restartToll();
+}
+
+// The reaping animates: strike through, grey out, slide off, then delete.
+function reap() {
+  const idx = state.chosen;
+  const g = state.items[idx];
+  if (!g || state.reaping !== null) return;
+  state.reaping = idx;
+  updateRowStyles();
+  setTimeout(() => {
+    const price = parseFloat(g.price) || 0;
+    const grave = state.graveyard.concat([{
+      title: g.title,
+      note: "reaped after " + g.owned + (price ? " · $" + Math.round(price) : "")
+    }]).slice(-8);
+    state.graveyard = grave;
+    state.reaped += 1;
+    state.buried += price;
+    try {
+      localStorage.setItem("reaper.graveyard", JSON.stringify(grave));
+      localStorage.setItem("reaper.count", String(state.reaped));
+      localStorage.setItem("reaper.buried", String(state.buried));
+    } catch (e) {}
+    state.items = state.items.filter((x, j) => j !== idx);
+    state.reaping = null;
+    renderRows();
+    renderStats();
+    renderGraveyard();
+    renderClosing();
+    reroll();
+  }, 460);
+}
+
+// Reprieves are remembered, and the reaper brings them up.
+function spare() {
+  const g = state.items[state.chosen];
+  if (!g) return;
+  g.spared = (g.spared || 0) + 1;
+  reroll();
+}
+
+function runImport() {
+  const raw = ($("pasteBox").value || "").trim();
+  if (!raw) { state.importNote = "Nothing pasted yet."; state.importOk = false; renderImportUI(); return; }
+  let parsed = [];
+  if (raw.charAt(0) === "{" || raw.charAt(0) === "[") {
+    try {
+      const json = JSON.parse(raw);
+      const games = (json.response && json.response.games) || json.games || (Array.isArray(json) ? json : []);
+      if (!games.length) { state.importNote = "Parsed, but found no games array."; state.importOk = false; renderImportUI(); return; }
+      const now = Date.now() / 1000;
+      parsed = games.map(g => {
+        const hrs = Math.round(((g.playtime_forever || 0) / 60) * 10) / 10;
+        let owned = "unknown";
+        if (g.rtime_last_played) {
+          const yrs = (now - g.rtime_last_played) / 31557600;
+          owned = yrs >= 1 ? Math.round(yrs) + "y" : Math.max(1, Math.round(yrs * 12)) + "mo";
+        }
+        return { title: g.name || ("App " + g.appid), owned: owned, played: hrs, length: 30, price: 0 };
+      }).filter(g => g.played <= 20);
+    } catch (e) { state.importNote = "That isn't valid JSON — copy the whole page."; state.importOk = false; renderImportUI(); return; }
+  } else {
+    parsed = raw.split(/\n+/).map(line => {
+      const p = line.split(",").map(x => x.trim());
+      if (!p[0]) return null;
+      return { title: p[0], owned: p[1] || "1y", played: parseFloat(p[2]) || 0, length: parseFloat(p[3]) || 30, price: parseFloat(p[4]) || 0 };
+    }).filter(Boolean);
+  }
+  if (!parsed.length) { state.importNote = "Nothing importable found."; state.importOk = false; renderImportUI(); return; }
+  parsed = parsed.slice(0, 60);
+  state.items = parsed;
+  state.importNote = "Imported " + parsed.length + " unplayed titles.";
+  state.importOk = true;
+  state.importOpen = false;
+  $("pasteBox").value = "";
+  renderImportUI();
+  renderRows();
+  renderStats();
+  reroll();
+}
+
+// --- event wiring ---
+
+$("rows").addEventListener("change", e => {
+  const input = e.target.closest("input[data-f]");
+  if (!input) return;
+  const i = parseInt(input.getAttribute("data-i"), 10);
+  const f = input.getAttribute("data-f");
+  if (!state.items[i]) return;
+  state.items[i][f] = input.value;
+  renderStats();
+  renderVerdict();
+});
+
+$("rows").addEventListener("click", e => {
+  const btn = e.target.closest("[data-remove]");
+  if (!btn) return;
+  const i = parseInt(btn.getAttribute("data-remove"), 10);
+  state.items = state.items.filter((g, j) => j !== i);
+  renderRows();
+  renderStats();
+  reroll();
+});
+
+$("btnAdd").addEventListener("click", () => {
+  state.items.push({ title: "Something you bought on sale", owned: "1y", played: 0, length: 30, price: 0 });
+  renderRows();
+  renderStats();
+});
+
+$("btnDemo").addEventListener("click", () => {
+  state.items = DEMO.map(d => Object.assign({}, d));
+  renderRows();
+  renderStats();
+  reroll();
+});
+
+$("btnToggleImport").addEventListener("click", () => {
+  state.importOpen = !state.importOpen;
+  state.importNote = "";
+  renderImportUI();
+});
+
+$("pasteBox").addEventListener("input", () => {
+  state.importNote = "";
+  renderImportUI();
+});
+
+$("btnRunImport").addEventListener("click", runImport);
+$("btnReap").addEventListener("click", reap);
+$("btnSpare").addEventListener("click", spare);
+$("btnReroll").addEventListener("click", reroll);
+
+// --- init (componentDidMount) ---
+
+(function init() {
+  let g = [], r = 0, b = 0;
+  try {
+    g = JSON.parse(localStorage.getItem("reaper.graveyard") || "[]");
+    r = parseInt(localStorage.getItem("reaper.count") || "0", 10) || 0;
+    b = parseFloat(localStorage.getItem("reaper.buried") || "0") || 0;
+  } catch (e) {}
+  state.graveyard = Array.isArray(g) ? g : [];
+  state.reaped = r;
+  state.buried = b;
+  renderRows();
+  renderStats();
+  renderGraveyard();
+  renderClosing();
+  renderImportUI();
+  reroll();
+})();
+</script>
+</body>
+</html>
