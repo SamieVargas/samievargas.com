@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Died Doing What — Samie Vargas</title>
+<meta name="description" content="Pick a line of work and Wikidata reports how the people who did it actually died.">
+<link rel="canonical" href="https://samievargas.com/apps/died-doing-what">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #efece3; }
+a { color: #7a2e26; } a:hover { color: #241f1c; }
+input, button { font: inherit; }
+[hidden] { display: none !important; }
+.preset { background: transparent; border: none; color: #8b8377; padding: 0; font-size: 11px; white-space: nowrap; cursor: pointer; border-bottom: 1px solid transparent; }
+.preset:hover { color: #7a2e26; border-color: #7a2e26; }
+.cause-row { text-align: left; background: transparent; border: none; border-bottom: 1px solid #ddd8cb; padding: 15px 12px; cursor: pointer; display: grid; grid-template-columns: 1fr 54px; gap: 14px; align-items: center; }
+.cause-row:hover, .cause-row.selected { background: #e5e0d4; }
+.footlink { color: inherit; text-decoration: none; }
+.footlink:hover { color: #241f1c; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes riseBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes shim { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.65; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #efece3; color: #241f1c; font-family: 'Space Mono', monospace; padding: 0 0 90px">
+
+  <div style="border-bottom: 2px solid #241f1c; padding: 46px 44px 30px">
+    <div style="max-width: 1200px; margin: 0 auto">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap">
+        <div>
+          <div style="font-size: 10px; letter-spacing: 5px; color: #8b8377; animation: rise 480ms ease both"><span style="color: #7a2e26">[ FIG. 02 ]</span>&nbsp;&nbsp;CAUSE OF DEATH, BY TRADE</div>
+          <h1 style="font-family: 'Libre Caslon Text', serif; font-size: 54px; margin: 12px 0 0; font-weight: 400; line-height: 1; animation: rise 520ms ease both; animation-delay: 90ms">Died Doing What</h1>
+        </div>
+        <p style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 19px; line-height: 1.45; color: #6b6459; max-width: 330px; margin: 0; animation: rise 520ms ease both; animation-delay: 180ms">Pick a line of work. Wikidata reports how the people who did it actually died.</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; align-items: flex-end; animation: rise 520ms ease both; animation-delay: 260ms">
+        <div style="flex: 1; min-width: 260px">
+          <div style="font-size: 10px; letter-spacing: 2px; color: #8b8377">OCCUPATION</div>
+          <input type="text" id="occInput" value="poet" placeholder="poet, boxer, astronaut, chef" style="width: 100%; box-sizing: border-box; background: transparent; border: none; border-bottom: 1.5px solid #241f1c; padding: 10px 0; font-family: 'Libre Caslon Text', serif; font-size: 28px; color: #241f1c; outline: none">
+        </div>
+        <button type="button" id="runBtn" style="background: #241f1c; color: #efece3; border: none; padding: 16px 26px; font-size: 11.5px; letter-spacing: 1.8px; white-space: nowrap; cursor: pointer">QUERYING</button>
+      </div>
+      <div id="eraRow" style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center">
+        <button type="button" class="era-btn" data-era="all" style="background: transparent; color: #4a443b; border: 1.5px solid #241f1c; padding: 9px 15px; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">ALL TIME</button>
+        <button type="button" class="era-btn" data-era="pre1900" style="background: transparent; color: #4a443b; border: 1.5px solid #241f1c; padding: 9px 15px; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">BEFORE 1900</button>
+        <button type="button" class="era-btn" data-era="c20" style="background: transparent; color: #4a443b; border: 1.5px solid #241f1c; padding: 9px 15px; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">1900&#8211;1980</button>
+        <button type="button" class="era-btn" data-era="modern" style="background: transparent; color: #4a443b; border: 1.5px solid #241f1c; padding: 9px 15px; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">SINCE 1980</button>
+        <span id="eraNote" style="font-size: 11px; color: #8b8377"></span>
+      </div>
+
+      <div id="presetRow" style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap"></div>
+      <div id="statusLine" style="font-size: 11px; color: #6b6459; margin-top: 14px; min-height: 16px"></div>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 44px">
+
+    <div id="skeletonBlock" style="padding: 40px 0">
+      <div id="skeletonRows" style="display: flex; flex-direction: column; gap: 14px"></div>
+    </div>
+
+    <div id="dataBlock" hidden style="padding: 36px 0; animation: rise 300ms ease both">
+
+      <div id="statsRow" style="display: flex; gap: 44px; flex-wrap: wrap; border-bottom: 1px solid #cfc9ba; padding-bottom: 26px"></div>
+
+      <div id="comparePanel" hidden style="margin-top: 28px; border: 1.5px solid #241f1c; background: #f7f5ef; padding: 24px 26px"></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 320px; gap: 44px; margin-top: 32px; align-items: start">
+        <div>
+          <div style="font-size: 10px; letter-spacing: 3px; color: #8b8377">CAUSES, MOST COMMON FIRST</div>
+          <div id="causesList" style="display: flex; flex-direction: column; gap: 0; margin-top: 18px"></div>
+          <div id="coverage" style="font-size: 11px; line-height: 1.7; color: #8b8377; margin-top: 18px"></div>
+        </div>
+
+        <div style="position: sticky; top: 24px">
+          <div id="selCard" style="border: 1.5px solid #241f1c; background: #f7f5ef; padding: 24px; animation: rise 240ms ease both"></div>
+
+          <div style="border: 1px solid #cfc9ba; padding: 20px 22px; margin-top: 16px">
+            <div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377; white-space: nowrap">COMPARE WITH ANOTHER TRADE</div>
+            <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap">
+              <input type="text" id="cmpInput" value="boxer" placeholder="boxer" style="flex: 1; min-width: 110px; background: #fff; border: 1px solid #cfc9ba; padding: 10px 12px; font-family: 'Chivo Mono', monospace; font-size: 13px; color: #241f1c; outline: none">
+              <button type="button" id="cmpBtn" style="background: #241f1c; color: #efece3; border: none; padding: 10px 14px; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">COMPARE</button>
+            </div>
+          </div>
+
+          <div style="border: 1px solid #cfc9ba; padding: 20px 22px; margin-top: 16px">
+            <div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">THE FINDING</div>
+            <p id="findingText" style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 18px; line-height: 1.45; margin: 8px 0 0"></p>
+          </div>
+
+          <div style="border: 1px solid #cfc9ba; padding: 20px 22px; margin-top: 16px">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px">
+              <div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">THE QUERY</div>
+              <button type="button" id="queryBtn" style="background: transparent; border: none; color: #7a2e26; padding: 0; font-size: 10.5px; letter-spacing: 1.2px; cursor: pointer; border-bottom: 1px solid #7a2e26">SHOW SPARQL</button>
+            </div>
+            <pre id="queryPre" hidden style="font-size: 10.5px; line-height: 1.6; color: #4d463e; margin: 12px 0 0; white-space: pre-wrap; word-break: break-word"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="failedBlock" hidden style="padding: 40px 0">
+      <div style="border-left: 2px solid #7a2e26; padding-left: 18px; max-width: 640px">
+        <div style="font-size: 10px; letter-spacing: 2px; color: #7a2e26">NOTHING RETURNED</div>
+        <p id="failedMsg" style="font-family: 'Libre Caslon Text', serif; font-size: 22px; line-height: 1.45; margin: 8px 0 0"></p>
+      </div>
+    </div>
+
+    <div style="border-top: 2px solid #241f1c; padding-top: 18px; font-size: 10px; letter-spacing: 2px; color: #8b8377; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="footlink" href="/">SAMIEVARGAS.COM</a> &#183; <a class="footlink" href="./">MINI APPS</a></span><span>WIKIDATA IS INCOMPLETE AND SKEWED TOWARD THE FAMOUS. READ IT THAT WAY.</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// ---- Wikidata access layer (keyless public endpoints) ----
+const SPARQL_URL = "https://query.wikidata.org/sparql";
+const API = "https://www.wikidata.org/w/api.php";
+
+async function sparql(query, timeoutMs = 25000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(SPARQL_URL + "?format=json&query=" + encodeURIComponent(query), {
+      headers: { Accept: "application/sparql-results+json" },
+      signal: ctrl.signal
+    });
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    return json.results.bindings || [];
+  } catch (e) {
+    if (e.name === "AbortError") throw new Error("TIMEOUT");
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function searchEntity(term, limit = 8) {
+  if (!term || !term.trim()) return [];
+  const url = API + "?action=wbsearchentities&format=json&origin=*&language=en&uselang=en&type=item&limit=" +
+    limit + "&search=" + encodeURIComponent(term.trim());
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const json = await res.json();
+  return (json.search || []).map(s => ({
+    id: s.id,
+    label: s.label || s.id,
+    description: s.description || "",
+    match: s.match && s.match.text ? s.match.text : s.label
+  }));
+}
+
+function v(row, key) { return row && row[key] ? row[key].value : ""; }
+function qid(uri) { return String(uri || "").split("/").pop(); }
+
+function year(iso) {
+  if (!iso) return "";
+  const m = String(iso).match(/^(-?\d{1,4})/);
+  return m ? String(parseInt(m[1], 10)) : "";
+}
+
+function age(birthIso, deathIso) {
+  if (!birthIso || !deathIso) return null;
+  const b = new Date(birthIso), d = new Date(deathIso);
+  if (isNaN(b) || isNaN(d)) return null;
+  const a = Math.floor((d - b) / 31557600000);
+  return a > 0 && a < 130 ? a : null;
+}
+
+// ---- App ----
+const PRESETS = ["poet", "boxer", "astronaut", "chef", "racing driver", "mountaineer", "journalist", "comedian"];
+const PALETTE = ["#7a2e26", "#8a6a2f", "#3f6362", "#4a5a7a", "#6b4a6b", "#5a6b3f", "#8b5a3f", "#3f5a5a"];
+const SKELETON = [{ w: "72%", delay: "0ms" }, { w: "58%", delay: "110ms" }, { w: "44%", delay: "220ms" }, { w: "38%", delay: "330ms" }, { w: "30%", delay: "440ms" }, { w: "24%", delay: "550ms" }, { w: "18%", delay: "660ms" }];
+const ERAS = [
+  { k: "all", l: "ALL TIME" },
+  { k: "pre1900", l: "BEFORE 1900" },
+  { k: "c20", l: "1900–1980" },
+  { k: "modern", l: "SINCE 1980" }
+];
+
+const state = {
+  occ: null, rows: [], people: [], loading: true, failed: false,
+  status: "Resolving “poet”…", statusOk: true, selected: 0, showQuery: false, query: "",
+  era: "all", compareOcc: null, compareRows: [], comparing: false
+};
+
+const $ = id => document.getElementById(id);
+const occInput = $("occInput"), runBtn = $("runBtn"), eraNote = $("eraNote"), presetRow = $("presetRow"),
+  statusLine = $("statusLine"), skeletonBlock = $("skeletonBlock"), skeletonRows = $("skeletonRows"),
+  dataBlock = $("dataBlock"), statsRow = $("statsRow"), comparePanel = $("comparePanel"),
+  causesList = $("causesList"), coverage = $("coverage"),
+  cmpInput = $("cmpInput"), cmpBtn = $("cmpBtn"), findingText = $("findingText"),
+  queryBtn = $("queryBtn"), queryPre = $("queryPre"), failedBlock = $("failedBlock"), failedMsg = $("failedMsg");
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Era filter as a SPARQL date bound on death, so tuberculosis stops dominating everything.
+function eraClause() {
+  const e = state.era;
+  if (e === "all") return "";
+  const bounds = { pre1900: ["1000", "1900"], c20: ["1900", "1980"], modern: ["1980", "2100"] }[e];
+  if (!bounds) return "";
+  return '  ?p wdt:P570 ?d .\n  FILTER(YEAR(?d) >= ' + bounds[0] + ' && YEAR(?d) < ' + bounds[1] + ')\n';
+}
+
+function countQuery(q) {
+  return 'SELECT ?cod ?codLabel (COUNT(DISTINCT ?p) AS ?n) WHERE {\n' +
+    '  ?p wdt:P106 wd:' + q + ' ;\n' +
+    '     wdt:P509 ?cod .\n' +
+    eraClause() +
+    '  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }\n' +
+    '}\n' +
+    'GROUP BY ?cod ?codLabel\n' +
+    'ORDER BY DESC(?n)\n' +
+    'LIMIT 14';
+}
+
+function peopleQuery(q) {
+  return 'SELECT ?p ?pLabel ?cod ?birth ?death WHERE { ' +
+    '?p wdt:P106 wd:' + q + ' ; wdt:P509 ?cod . ' +
+    'OPTIONAL { ?p wdt:P569 ?birth } OPTIONAL { ?p wdt:P570 ?death } ' +
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } LIMIT 400';
+}
+
+function compute() {
+  const s = state;
+  const causes = s.rows.map((r, i) => ({
+    label: v(r, "codLabel") || "unrecorded",
+    qid: qid(v(r, "cod")),
+    n: parseInt(v(r, "n"), 10) || 0,
+    i: i
+  }));
+  const total = causes.reduce((a, c) => a + c.n, 0);
+  const max = causes.length ? causes[0].n : 1;
+
+  const byCause = {};
+  const ages = [];
+  (s.people || []).forEach(r => {
+    const cq = qid(v(r, "cod"));
+    const a = age(v(r, "birth"), v(r, "death"));
+    if (a) ages.push(a);
+    if (!byCause[cq]) byCause[cq] = [];
+    if (byCause[cq].length < 6) byCause[cq].push({
+      name: v(r, "pLabel"),
+      url: v(r, "p") || "#",
+      meta: year(v(r, "birth")) + "–" + year(v(r, "death")) + (a ? " · aged " + a : "")
+    });
+  });
+  ages.sort((a, b) => a - b);
+  const median = ages.length ? ages[Math.floor(ages.length / 2)] : null;
+
+  // The hazard: the most common cause that isn't a generic natural death.
+  const GENERIC = /natural causes|old age|myocardial|cardiovascular|cancer|stroke|pneumonia|heart failure|disease/i;
+  const hazardCause = causes.filter(c => !GENERIC.test(c.label))[0];
+  const occLabel = s.occ ? s.occ.label : "";
+
+  let finding = "";
+  if (causes.length && total) {
+    const topShare = Math.round((causes[0].n / total) * 100);
+    if (hazardCause && hazardCause.i > 0) {
+      finding = "Most " + occLabel + "s die the way everyone does. The one that stands out is " + hazardCause.label.toLowerCase() + " — " + hazardCause.n + " of " + total + " recorded deaths.";
+    } else if (hazardCause) {
+      finding = "For " + occLabel + "s, the leading recorded cause is " + hazardCause.label.toLowerCase() + " at " + Math.round((hazardCause.n / total) * 100) + "% of deaths on file. That is the job showing up in the data.";
+    } else {
+      finding = topShare + "% of recorded " + occLabel + " deaths fall under one cause, and it's an ordinary one. No occupational hazard visible here.";
+    }
+  }
+
+  return { causes, total, max, byCause, median, hazardCause, finding };
+}
+
+let derived = null;
+
+function updateStatus() {
+  statusLine.textContent = state.status;
+  statusLine.style.color = state.statusOk ? "#6b6459" : "#7a2e26";
+}
+
+function updateRunBtn() {
+  runBtn.textContent = state.loading ? "QUERYING" : "RUN THE QUERY";
+}
+
+function updateCompareBtn() {
+  cmpBtn.textContent = state.comparing ? "…" : "COMPARE";
+}
+
+function updateEras() {
+  document.querySelectorAll(".era-btn").forEach(btn => {
+    const on = btn.dataset.era === state.era;
+    btn.style.background = on ? "#241f1c" : "transparent";
+    btn.style.color = on ? "#efece3" : "#4a443b";
+  });
+  eraNote.textContent = state.era === "all"
+    ? "All eras together. Tuberculosis wins almost any trade this way — narrow the era to see the job itself."
+    : "Filtered by year of death, so the cause reflects that era's medicine rather than all of history.";
+}
+
+function renderSelCard() {
+  const d = derived;
+  if (!d) return;
+  const sel = d.causes[state.selected] || d.causes[0];
+  const selPeople = sel ? (d.byCause[sel.qid] || []) : [];
+  // Fresh node each time so the rise animation restarts (prototype remounts on key change).
+  const old = document.getElementById("selCard");
+  const selCard = old.cloneNode(false);
+  selCard.innerHTML =
+    '<div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">' + (sel ? "CAUSE " + (state.selected + 1) + " OF " + d.causes.length : "") + '</div>' +
+    '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 26px; line-height: 1.15; margin-top: 8px">' + esc(sel ? sel.label : "") + '</div>' +
+    '<div style="font-size: 11.5px; color: #6b6459; margin-top: 8px">' + esc(sel && d.total ? sel.n + " deaths · " + Math.round((sel.n / d.total) * 100) + "% of those on record" : "") + '</div>' +
+    '<div style="border-top: 1px solid #ddd8cb; margin-top: 18px; padding-top: 14px">' +
+      '<div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377; margin-bottom: 10px">WHO</div>' +
+      '<div style="display: flex; flex-direction: column; gap: 10px">' +
+        selPeople.map(p =>
+          '<div style="font-size: 12.5px; line-height: 1.5">' +
+            '<a href="' + esc(p.url) + '" target="_blank" rel="noopener" style="font-family: \'Libre Caslon Text\', serif; font-size: 16px">' + esc(p.name) + '</a>' +
+            '<div style="color: #8b8377; font-size: 11px; margin-top: 2px">' + esc(p.meta) + '</div>' +
+          '</div>'
+        ).join("") +
+      '</div>' +
+      (selPeople.length === 0
+        ? '<div style="font-size: 12px; color: #8b8377; line-height: 1.6">Names for this cause weren’t in the sample. Click another bar.</div>'
+        : "") +
+    '</div>';
+  old.parentNode.replaceChild(selCard, old);
+}
+
+function renderCauses() {
+  const d = derived;
+  causesList.innerHTML = d.causes.map((c, i) =>
+    '<button type="button" class="cause-row' + (i === state.selected ? ' selected' : '') + '" data-i="' + i + '" ' +
+      'style="animation: rise 360ms ease both; animation-delay: ' + (i * 55) + 'ms">' +
+      '<div>' +
+        '<div style="display: flex; justify-content: space-between; gap: 12px; align-items: baseline">' +
+          '<span style="font-family: \'Libre Caslon Text\', serif; font-size: 19px; color: #241f1c">' + esc(c.label) + '</span>' +
+        '</div>' +
+        '<div style="height: 9px; margin-top: 9px; background: #ddd8cb">' +
+          '<div style="height: 100%; width: ' + Math.max(2, Math.round((c.n / d.max) * 100)) + '%; background: ' + PALETTE[i % PALETTE.length] + '; transform-origin: left; animation: grow 640ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: ' + (i * 55 + 180) + 'ms"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-size: 15px; text-align: right; color: #6b6459">' + esc(c.n.toLocaleString()) + '</div>' +
+    '</button>'
+  ).join("");
+}
+
+function renderComparePanel() {
+  const s = state;
+  const hasCompare = !!s.compareOcc && s.compareRows.length > 0;
+  comparePanel.hidden = !hasCompare;
+  if (!hasCompare) { comparePanel.innerHTML = ""; return; }
+
+  const mine = {}, theirs = {};
+  let mineTotal = 0, theirsTotal = 0;
+  s.rows.forEach(r => { const k = v(r, "codLabel"); const n = parseInt(v(r, "n"), 10) || 0; mine[k] = n; mineTotal += n; });
+  s.compareRows.forEach(r => { const k = v(r, "codLabel"); const n = parseInt(v(r, "n"), 10) || 0; theirs[k] = n; theirsTotal += n; });
+  const keys = Object.keys(mine).concat(Object.keys(theirs).filter(k => !mine[k])).slice(0, 8);
+  const rows = keys.map(k => {
+    const a = mineTotal ? (mine[k] || 0) / mineTotal * 100 : 0;
+    const b = theirsTotal ? (theirs[k] || 0) / theirsTotal * 100 : 0;
+    return {
+      label: k,
+      meta: Math.round(a) + "% · " + Math.round(b) + "%",
+      aPct: Math.max(1, Math.round(a * 2)) + "%",
+      bPct: Math.max(1, Math.round(b * 2)) + "%"
+    };
+  });
+
+  const compareTitle = s.occ && s.compareOcc ? (s.occ.label.toUpperCase() + " ■ vs ■ " + s.compareOcc.label.toUpperCase()) : "";
+  const top = s.rows.length ? v(s.rows[0], "codLabel") : "";
+  const theirTop = v(s.compareRows[0], "codLabel");
+  const compareFinding = !s.occ ? "" : (top === theirTop
+    ? "Both trades lead with " + top + ", which usually means you are looking at the era rather than the job. Narrow the years."
+    : s.occ.label + "s lead with " + top + "; " + s.compareOcc.label + "s with " + theirTop + ". That difference is the job showing up.");
+
+  comparePanel.innerHTML =
+    '<div style="display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: baseline">' +
+      '<div style="font-size: 10px; letter-spacing: 2px; color: #8b8377; white-space: nowrap">' + esc(compareTitle) + '</div>' +
+      '<button type="button" data-action="clear" style="background: transparent; border: none; color: #7a2e26; font-size: 10.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer; border-bottom: 1px solid #7a2e26; padding: 0">CLEAR</button>' +
+    '</div>' +
+    '<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">' +
+      rows.map(c =>
+        '<div>' +
+          '<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; white-space: nowrap">' +
+            '<span style="min-width: 0; overflow: hidden; text-overflow: ellipsis">' + esc(c.label) + '</span>' +
+            '<span style="color: #6b6459; flex: none">' + esc(c.meta) + '</span>' +
+          '</div>' +
+          '<div style="display: flex; gap: 4px; margin-top: 6px">' +
+            '<div style="flex: 1; height: 9px; background: #ddd8cb"><div style="height: 100%; width: ' + esc(c.aPct) + '; background: #7a2e26; transform-origin: left; animation: grow 460ms ease both"></div></div>' +
+            '<div style="flex: 1; height: 9px; background: #ddd8cb"><div style="height: 100%; width: ' + esc(c.bPct) + '; background: #3f6362; transform-origin: left; animation: grow 460ms ease both"></div></div>' +
+          '</div>' +
+        '</div>'
+      ).join("") +
+    '</div>' +
+    '<div style="font-size: 11.5px; line-height: 1.7; color: #4a443b; margin-top: 16px">' + esc(compareFinding) + '</div>';
+}
+
+function renderData() {
+  derived = compute();
+  const d = derived;
+
+  statsRow.innerHTML =
+    '<div style="animation: rise 420ms ease both"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">DEATHS ON RECORD</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.total.toLocaleString()) + '</div></div>' +
+    '<div style="animation: rise 420ms ease both; animation-delay: 80ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">DISTINCT CAUSES</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.causes.length + (d.causes.length === 14 ? "+" : "")) + '</div></div>' +
+    '<div style="animation: rise 420ms ease both; animation-delay: 160ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">MEDIAN AGE AT DEATH</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.median ? d.median : "—") + '</div></div>' +
+    '<div style="flex: 1; min-width: 240px; align-self: flex-end; animation: rise 420ms ease both; animation-delay: 240ms">' +
+      '<div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">THE OCCUPATIONAL HAZARD</div>' +
+      '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 20px; margin-top: 6px; color: #7a2e26">' + esc(d.hazardCause ? d.hazardCause.label : "nothing unusual") + '</div>' +
+    '</div>';
+
+  renderCauses();
+  coverage.textContent = (state.people || []).length
+    ? "Names sampled from " + (state.people || []).length + " individual records; counts above come from a separate aggregate query over the whole dataset."
+    : "Counts are aggregate; individual names were not returned for this trade.";
+  renderSelCard();
+  findingText.textContent = d.finding;
+  queryPre.textContent = state.query;
+  queryBtn.textContent = state.showQuery ? "HIDE" : "SHOW SPARQL";
+  queryPre.hidden = !state.showQuery;
+  renderComparePanel();
+}
+
+function render() {
+  const hasData = !state.loading && !state.failed && state.rows.length > 0;
+  updateRunBtn();
+  updateCompareBtn();
+  updateEras();
+  updateStatus();
+  skeletonBlock.hidden = !state.loading;
+  dataBlock.hidden = !hasData;
+  failedBlock.hidden = !state.failed;
+  if (state.failed) failedMsg.textContent = state.status;
+  if (hasData) renderData();
+}
+
+async function run() {
+  const term = (occInput.value || "").trim();
+  if (!term) return;
+  state.loading = true; state.failed = false; state.selected = 0;
+  state.status = "Resolving “" + term + "” against Wikidata…"; state.statusOk = true;
+  render();
+  try {
+    const hits = await searchEntity(term, 5);
+    if (!hits.length) throw new Error("NO_ENTITY");
+    const occ = hits[0];
+    state.occ = occ;
+    state.status = "Counting causes of death for " + occ.label + " (" + occ.id + ")…";
+    state.query = countQuery(occ.id);
+    updateStatus();
+
+    const counts = await sparql(countQuery(occ.id), 30000);
+    if (!counts.length) {
+      state.loading = false; state.failed = true;
+      state.status = "Wikidata records no causes of death for " + occ.label + ". Try a broader trade — “poet” rather than “lyric poet.”";
+      render();
+      return;
+    }
+    const people = await sparql(peopleQuery(occ.id), 30000).catch(() => []);
+    state.loading = false; state.failed = false;
+    state.rows = counts; state.people = people;
+    state.status = occ.label + " · " + occ.id + (occ.description ? " · " + occ.description : "");
+    state.statusOk = true;
+    render();
+  } catch (e) {
+    let msg = "Could not reach the Wikidata query service.";
+    if (e.message === "NO_ENTITY") msg = "Wikidata has no occupation called “" + term + ".” Try a plainer word.";
+    else if (e.message === "TIMEOUT") msg = "The public endpoint timed out. Very large occupations (“writer”, “politician”) sometimes do that — try something narrower.";
+    else if (e.message === "RATE_LIMIT") msg = "Wikidata is rate-limiting this browser. Wait a moment.";
+    state.loading = false; state.failed = true; state.status = msg; state.statusOk = false;
+    render();
+  }
+}
+
+async function runCompare() {
+  const term = (cmpInput.value || "").trim();
+  if (!term || state.comparing) return;
+  state.comparing = true;
+  updateCompareBtn();
+  try {
+    const hits = await searchEntity(term, 3);
+    if (!hits.length) throw new Error("NO_ENTITY");
+    const occ = hits[0];
+    const rows = await sparql(countQuery(occ.id), 30000);
+    state.comparing = false; state.compareOcc = occ; state.compareRows = rows;
+  } catch (e) {
+    state.comparing = false; state.compareOcc = null; state.compareRows = [];
+  }
+  updateCompareBtn();
+  renderComparePanel();
+}
+
+// ---- Static wiring ----
+runBtn.addEventListener("click", run);
+occInput.addEventListener("keydown", e => { if (e.key === "Enter") run(); });
+cmpBtn.addEventListener("click", runCompare);
+cmpInput.addEventListener("keydown", e => { if (e.key === "Enter") runCompare(); });
+
+document.querySelectorAll(".era-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.era = btn.dataset.era;
+    updateEras();
+    run();
+  });
+});
+
+presetRow.innerHTML = PRESETS.map(p =>
+  '<button type="button" class="preset" data-term="' + esc(p) + '">' + esc(p) + '</button>'
+).join("");
+presetRow.addEventListener("click", e => {
+  const btn = e.target.closest("[data-term]");
+  if (!btn) return;
+  occInput.value = btn.dataset.term;
+  run();
+});
+
+causesList.addEventListener("click", e => {
+  const btn = e.target.closest("[data-i]");
+  if (!btn) return;
+  state.selected = parseInt(btn.dataset.i, 10) || 0;
+  causesList.querySelectorAll(".cause-row").forEach(r =>
+    r.classList.toggle("selected", parseInt(r.dataset.i, 10) === state.selected));
+  renderSelCard();
+});
+
+comparePanel.addEventListener("click", e => {
+  const btn = e.target.closest('[data-action="clear"]');
+  if (!btn) return;
+  state.compareOcc = null; state.compareRows = [];
+  renderComparePanel();
+});
+
+queryBtn.addEventListener("click", () => {
+  state.showQuery = !state.showQuery;
+  queryBtn.textContent = state.showQuery ? "HIDE" : "SHOW SPARQL";
+  queryPre.hidden = !state.showQuery;
+});
+
+skeletonRows.innerHTML = SKELETON.map(k =>
+  '<div style="display: flex; gap: 16px; align-items: center; animation: shim 1.5s ease-in-out infinite; animation-delay: ' + k.delay + '">' +
+    '<div style="width: 150px; height: 14px; background: #ddd8cb"></div>' +
+    '<div style="width: ' + k.w + '; height: 26px; background: #e5e0d4"></div>' +
+  '</div>'
+).join("");
+
+updateEras();
+updateStatus();
+run();
+</script>
+</body>
+</html>

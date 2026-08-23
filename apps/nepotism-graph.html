@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Nepotism Graph — Samie Vargas</title>
+<meta name="description" content="Name a trade and it finds the families inside it, then follows the longest parent-to-child line as far as the record goes.">
+<link rel="canonical" href="https://samievargas.com/apps/nepotism-graph">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #101418; }
+a { color: #d9b36a; } a:hover { color: #f6ecd8; }
+input, button { font: inherit; }
+#profession-input:focus { border-color: #d9b36a; }
+.preset-btn { background: transparent; border: none; color: #85908f; padding: 0; font-size: 11px; white-space: nowrap; cursor: pointer; border-bottom: 1px solid transparent; }
+.preset-btn:hover { color: #d9b36a; border-color: #d9b36a; }
+.sug-btn { background: transparent; border: 1px solid #d9b36a; color: #d9b36a; padding: 10px 16px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer; }
+.sug-btn:hover { background: #d9b36a; color: #101418; }
+.dyn-card:hover { border-color: #d9b36a !important; }
+.foot-link { color: inherit; text-decoration: none; }
+.foot-link:hover { color: #f6ecd8; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes portrait { from { opacity: 0; transform: translateY(20px) scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes thread { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes shim { 0%, 100% { opacity: 0.22; } 50% { opacity: 0.55; } }
+@keyframes sweep { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes develop { from { filter: grayscale(1) contrast(0.8) blur(7px); opacity: 0.4; } to { filter: grayscale(0.35) contrast(1.06) blur(0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: #101418; color: #f0ece4; font-family: 'Space Mono', monospace; padding: 0 0 90px">
+
+  <div style="border-bottom: 1px solid #242c33; padding: 46px 44px 30px">
+    <div style="max-width: 1280px; margin: 0 auto">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap">
+        <div>
+          <div style="font-size: 10px; letter-spacing: 5px; color: #85908f; animation: rise 480ms ease both"><span style="color: #d9b36a">[ FIG. 03 ]</span>&nbsp;&nbsp;WHO GOT THERE ON THEIR OWN</div>
+          <h1 style="font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; margin: 12px 0 0; line-height: 1; animation: rise 520ms ease both; animation-delay: 90ms">The Nepotism Graph</h1>
+        </div>
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; line-height: 1.45; color: #a8b1b0; max-width: 330px; margin: 0; animation: rise 520ms ease both; animation-delay: 180ms">Name a trade. It finds the families inside it, then follows the longest line as far as the record goes.</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; align-items: flex-end; animation: rise 520ms ease both; animation-delay: 260ms">
+        <div style="flex: 1; min-width: 250px">
+          <div style="font-size: 10px; letter-spacing: 2px; color: #85908f">PROFESSION</div>
+          <input type="text" id="profession-input" value="actor" placeholder="actor, conductor, racing driver" style="width: 100%; box-sizing: border-box; background: transparent; border: none; border-bottom: 1.5px solid #343d44; padding: 10px 0; font-family: 'Playfair Display', serif; font-size: 29px; color: #f0ece4; outline: none">
+        </div>
+        <button type="button" id="run-btn" style="background: #d9b36a; color: #101418; border: none; padding: 16px 26px; font-size: 11.5px; font-weight: 700; letter-spacing: 1.8px; white-space: nowrap; cursor: pointer">QUERYING</button>
+      </div>
+      <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap">
+        <button type="button" class="preset-btn" data-pick="actor">actor</button>
+        <button type="button" class="preset-btn" data-pick="conductor">conductor</button>
+        <button type="button" class="preset-btn" data-pick="film director">film director</button>
+        <button type="button" class="preset-btn" data-pick="racing driver">racing driver</button>
+        <button type="button" class="preset-btn" data-pick="politician">politician</button>
+        <button type="button" class="preset-btn" data-pick="chef">chef</button>
+        <button type="button" class="preset-btn" data-pick="circus performer">circus performer</button>
+        <button type="button" class="preset-btn" data-pick="economist">economist</button>
+      </div>
+      <div id="status-line" style="font-size: 11px; color: #a8b1b0; margin-top: 14px; min-height: 16px">Resolving &ldquo;actor&rdquo;&hellip;</div>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 44px">
+
+    <div id="view"></div>
+
+    <div style="border-top: 1px solid #242c33; padding-top: 18px; font-size: 10px; letter-spacing: 2px; color: #5f6a6c; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span><a class="foot-link" href="/">SAMIEVARGAS.COM</a> · <a class="foot-link" href="./">MINI APPS</a></span><span>PORTRAITS VIA WIKIMEDIA COMMONS · STATED FACTS ONLY</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// ---- Wikidata access (no keys, browser-friendly endpoints) ----
+const SPARQL = "https://query.wikidata.org/sparql";
+const API = "https://www.wikidata.org/w/api.php";
+
+async function sparql(query, timeoutMs = 25000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(SPARQL + "?format=json&query=" + encodeURIComponent(query), {
+      headers: { Accept: "application/sparql-results+json" },
+      signal: ctrl.signal
+    });
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    return json.results.bindings || [];
+  } catch (e) {
+    if (e.name === "AbortError") throw new Error("TIMEOUT");
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function searchEntity(term, limit = 8) {
+  if (!term || !term.trim()) return [];
+  const url = API + "?action=wbsearchentities&format=json&origin=*&language=en&uselang=en&type=item&limit=" +
+    limit + "&search=" + encodeURIComponent(term.trim());
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const json = await res.json();
+  return (json.search || []).map(s => ({
+    id: s.id,
+    label: s.label || s.id,
+    description: s.description || "",
+    match: s.match && s.match.text ? s.match.text : s.label
+  }));
+}
+
+function v(row, key) { return row && row[key] ? row[key].value : ""; }
+function qid(uri) { return String(uri || "").split("/").pop(); }
+function year(iso) {
+  if (!iso) return "";
+  const m = String(iso).match(/^(-?\d{1,4})/);
+  return m ? String(parseInt(m[1], 10)) : "";
+}
+
+// ---- App logic ----
+const SUFFIX = /^(?:[ivxlc]+|jr\.?|sr\.?|younger|elder)$/i;
+
+function surnameOf(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  while (parts.length > 1 && SUFFIX.test(parts[parts.length - 1].replace(/[(),.]/g, ""))) parts.pop();
+  return parts.length ? parts[parts.length - 1] : "";
+}
+
+function esc(x) {
+  return String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+const state = {
+  term: "actor", occ: null, pairs: [], totalInTrade: null,
+  loading: true, failed: false, status: "Resolving “actor”…", statusOk: true,
+  progress: "RESOLVING…", failTag: "NOTHING RETURNED", failMessage: "", suggestions: [],
+  filter: "deep", showQuery: false, query: "", chosen: null, wiki: {}
+};
+
+let lastGraph = null;
+let lastLineIds = [];
+
+const input = document.getElementById("profession-input");
+const runBtn = document.getElementById("run-btn");
+const statusEl = document.getElementById("status-line");
+const view = document.getElementById("view");
+
+// Portraits (P18) come back as Commons FilePath URLs, which are directly loadable.
+function pairQuery(q) {
+  return 'SELECT ?p ?pLabel ?pBirth ?pDeath ?pImg ?rel ?relLabel ?relBirth ?relDeath ?relImg ?rp WHERE {\n' +
+    '  VALUES ?rp { wdt:P22 wdt:P25 wdt:P40 }\n' +
+    '  ?p wdt:P106 wd:' + q + ' ;\n' +
+    '     ?rp ?rel .\n' +
+    '  ?rel wdt:P106 wd:' + q + ' .\n' +
+    '  OPTIONAL { ?p wdt:P569 ?pBirth }   OPTIONAL { ?p wdt:P570 ?pDeath }\n' +
+    '  OPTIONAL { ?p wdt:P18 ?pImg }\n' +
+    '  OPTIONAL { ?rel wdt:P569 ?relBirth } OPTIONAL { ?rel wdt:P570 ?relDeath }\n' +
+    '  OPTIONAL { ?rel wdt:P18 ?relImg }\n' +
+    '  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }\n' +
+    '}\n' +
+    'LIMIT 1200';
+}
+
+function totalQuery(q) { return 'SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE { ?p wdt:P106 wd:' + q + ' }'; }
+
+async function articles(ids) {
+  if (!ids.length) return {};
+  const q = 'SELECT ?item ?article WHERE { VALUES ?item { ' + ids.map(i => "wd:" + i).join(" ") + ' } ' +
+    '?article schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> . }';
+  try {
+    const rows = await sparql(q, 15000);
+    const map = {};
+    rows.forEach(r => { map[qid(v(r, "item"))] = v(r, "article"); });
+    return map;
+  } catch (e) { return {}; }
+}
+
+// Build a parent -> child graph from the pair rows, then find the longest chain.
+function buildGraph(rows) {
+  const people = {};
+  const childOf = {};
+  // Commons P18 values come back as http:// — force https or the browser blocks them as mixed content.
+  const https = u => (u ? String(u).replace(/^http:\/\//, "https://") : "");
+  const put = (id, label, birth, death, img) => {
+    if (!id) return;
+    const src = https(img);
+    if (!people[id]) people[id] = { id: id, label: label || id, birth: birth || "", death: death || "", img: src };
+    else if (!people[id].img && src) people[id].img = src;
+  };
+  rows.forEach(r => {
+    const pid = qid(v(r, "p")), rid = qid(v(r, "rel"));
+    const prop = qid(v(r, "rp"));
+    put(pid, v(r, "pLabel"), year(v(r, "pBirth")), year(v(r, "pDeath")), v(r, "pImg"));
+    put(rid, v(r, "relLabel"), year(v(r, "relBirth")), year(v(r, "relDeath")), v(r, "relImg"));
+    if (!pid || !rid || pid === rid) return;
+    // P22/P25: rel is the parent of p. P40: p is the parent of rel.
+    const parent = (prop === "P22" || prop === "P25") ? rid : pid;
+    const child = (prop === "P22" || prop === "P25") ? pid : rid;
+    childOf[parent] = childOf[parent] || {};
+    childOf[parent][child] = 1;
+  });
+
+  // Longest downward chain from each person, memoised.
+  const memo = {};
+  const chainFrom = id => {
+    if (memo[id]) return memo[id];
+    memo[id] = [id];
+    let best = [id];
+    const kids = Object.keys(childOf[id] || {});
+    kids.forEach(k => {
+      if (k === id) return;
+      const sub = chainFrom(k);
+      if (sub.length + 1 > best.length) best = [id].concat(sub);
+    });
+    memo[id] = best;
+    return best;
+  };
+
+  let longest = [];
+  Object.keys(people).forEach(id => {
+    const c = chainFrom(id);
+    if (c.length > longest.length) longest = c;
+  });
+
+  // Connected components, as families.
+  const adj = {};
+  Object.keys(childOf).forEach(p => Object.keys(childOf[p]).forEach(c => {
+    (adj[p] = adj[p] || {})[c] = 1;
+    (adj[c] = adj[c] || {})[p] = 1;
+  }));
+  const seen = {}, groups = [];
+  Object.keys(people).forEach(id => {
+    if (seen[id]) return;
+    const stack = [id], members = [];
+    seen[id] = 1;
+    while (stack.length) {
+      const cur = stack.pop();
+      members.push(cur);
+      Object.keys(adj[cur] || {}).forEach(n => { if (!seen[n]) { seen[n] = 1; stack.push(n); } });
+    }
+    if (members.length > 1) groups.push(members);
+  });
+
+  groups.forEach(g => g.sort((a, b) => (parseInt(people[a].birth, 10) || 9999) - (parseInt(people[b].birth, 10) || 9999)));
+  groups.sort((a, b) => b.length - a.length);
+  return { people: people, childOf: childOf, longest: longest, groups: groups, chainFrom: chainFrom };
+}
+
+// ---- Rendering ----
+function renderLoading() {
+  const cells = [0, 1, 2, 3, 4].map(i =>
+    '<div style="width: 150px; animation: shim 1.6s ease-in-out infinite; animation-delay: ' + (i * 110) + 'ms">' +
+      '<div style="height: 168px; background: linear-gradient(100deg, #191f24 30%, #232a30 50%, #191f24 70%); background-size: 200% 100%; animation: sweep 1.8s linear infinite"></div>' +
+      '<div style="height: 12px; background: #191f24; margin-top: 12px; width: 78%"></div>' +
+      '<div style="height: 9px; background: #171c21; margin-top: 8px; width: 52%"></div>' +
+    '</div>').join('');
+  return '<div style="padding: 44px 0">' +
+    '<div id="progress-line" style="font-size: 10.5px; letter-spacing: 3px; color: #d9b36a; animation: breathe 1.4s ease-in-out infinite">' + esc(state.progress) + '</div>' +
+    '<div style="display: flex; gap: 18px; margin-top: 28px; flex-wrap: wrap">' + cells + '</div>' +
+  '</div>';
+}
+
+function renderFailed() {
+  const sugs = (state.suggestions || []).map(t =>
+    '<button type="button" class="sug-btn" data-pick="' + esc(t) + '">' + esc(t) + '</button>').join('');
+  return '<div style="padding: 40px 0">' +
+    '<div style="border-left: 2px solid #c9714f; padding-left: 18px; max-width: 660px; animation: rise 300ms ease both">' +
+      '<div style="font-size: 10px; letter-spacing: 2px; color: #c9714f">' + esc(state.failTag) + '</div>' +
+      '<p style="font-family: \'Playfair Display\', serif; font-size: 22px; line-height: 1.45; margin: 8px 0 0">' + esc(state.failMessage || state.status) + '</p>' +
+      ((state.suggestions || []).length ? '<div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap">' + sugs + '</div>' : '') +
+    '</div>' +
+  '</div>';
+}
+
+function faceHtml(f) {
+  return '<div style="width: 42px; height: 52px; background: #191f24; border: 1px solid #2b333a; overflow: hidden; flex: none">' +
+    (f.img
+      ? '<img src="' + esc(f.img) + '" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(0.4)" loading="lazy">'
+      : '<div style="width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #171c21 0 5px, #1b2126 5px 10px)"></div>') +
+  '</div>';
+}
+
+function filterRowHtml() {
+  return [
+    { k: "deep", l: "DEEPEST FIRST" },
+    { k: "big", l: "LARGEST FIRST" },
+    { k: "old", l: "OLDEST FIRST" }
+  ].map(f =>
+    '<button type="button" data-filter="' + f.k + '" style="background: ' + (state.filter === f.k ? '#d9b36a' : 'transparent') + '; color: ' + (state.filter === f.k ? '#101418' : '#a8b1b0') + '; border: 1px solid #343d44; padding: 8px 14px; font-size: 10px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">' + f.l + '</button>'
+  ).join('');
+}
+
+function dynastyCardsHtml(g, ids) {
+  const P = g.people;
+  let groups = g.groups.slice();
+  if (state.filter === "deep") groups.sort((a, b) => g.chainFrom(b[0]).length - g.chainFrom(a[0]).length || b.length - a.length);
+  else if (state.filter === "big") groups.sort((a, b) => b.length - a.length);
+  else groups.sort((a, b) => (parseInt(P[a[0]].birth, 10) || 9999) - (parseInt(P[b[0]].birth, 10) || 9999));
+
+  return groups.slice(0, 12).map((members, i) => {
+    const counts = {};
+    members.forEach(id => { const sn = surnameOf(P[id].label); if (sn) counts[sn] = (counts[sn] || 0) + 1; });
+    const name = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || P[members[0]].label;
+    const depth = Math.max.apply(null, members.map(id => g.chainFrom(id).length));
+    const years = members.map(id => parseInt(P[id].birth, 10)).filter(x => x);
+    const isOn = ids.indexOf(members[0]) !== -1;
+    const summary = members.slice(0, 3).map(id => P[id].label).join(", ") + (members.length > 3 ? " and " + (members.length - 3) + " more" : "") +
+      (years.length > 1 ? " · " + Math.min.apply(null, years) + "–" + Math.max.apply(null, years) : "");
+    const faces = members.slice(0, 5).map(id => faceHtml({ img: P[id].img })).join('');
+    return '<button type="button" class="dyn-card" data-choose="' + esc(members[0]) + '" style="text-align: left; background: ' + (isOn ? '#1a1c18' : 'transparent') + '; border: 1px solid ' + (isOn ? '#d9b36a' : '#242c33') + '; padding: 16px 18px; cursor: pointer; animation: rise 420ms ease both; animation-delay: ' + (i * 55) + 'ms">' +
+      '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px">' +
+        '<span style="font-family: \'Playfair Display\', serif; font-size: 21px; color: #f0ece4; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">' + esc(name) + '</span>' +
+        '<span style="font-size: 9.5px; letter-spacing: 1.2px; color: #d9b36a; white-space: nowrap; flex: none">' + members.length + ' people · ' + depth + ' deep</span>' +
+      '</div>' +
+      '<div style="display: flex; gap: 6px; margin-top: 12px">' + faces + '</div>' +
+      '<div style="font-size: 11px; line-height: 1.6; color: #a8b1b0; margin-top: 12px">' + esc(summary) + '</div>' +
+    '</button>';
+  }).join('');
+}
+
+function wikiLinkHtml(url) {
+  return '<a data-wiki href="' + esc(url) + '" target="_blank" rel="noopener" style="display: inline-block; font-size: 9px; letter-spacing: 1.2px; margin-top: 8px; color: #85908f; border-bottom: 1px solid #3a4249">WIKIPEDIA ↗</a>';
+}
+
+function queryPreHtml() {
+  return '<pre style="font-size: 10.5px; line-height: 1.6; color: #a8b1b0; margin: 12px 0 0; white-space: pre-wrap; word-break: break-word">' + esc(state.query) + '</pre>';
+}
+
+function renderData() {
+  const s = state;
+  const g = buildGraph(s.pairs);
+  lastGraph = g;
+  const P = g.people;
+
+  // Which chain is on show: the global longest, or a dynasty the user clicked.
+  let ids = g.longest;
+  if (s.chosen && g.people[s.chosen]) {
+    const alt = g.chainFrom(s.chosen);
+    if (alt.length > 1) ids = alt;
+  }
+  lastLineIds = ids;
+
+  const occLabel = s.occ ? s.occ.label : "";
+  const lineSurname = (function () {
+    const counts = {};
+    ids.forEach(id => { const sn = surnameOf(P[id].label); if (sn) counts[sn] = (counts[sn] || 0) + 1; });
+    const k = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+    return k || "";
+  })();
+
+  const lineHtml = ids.map((id, i) => {
+    const p = P[id];
+    const years = p.birth ? p.birth + (p.death ? "–" + p.death : "–") : "no dates";
+    const delay = (i * 130) + "ms";
+    const threadDelay = (i * 130 + 220) + "ms";
+    const wikiUrl = s.wiki[id] || "";
+    return '<div style="display: flex; align-items: flex-start; flex: none">' +
+      '<div data-mid="' + esc(id) + '" style="width: 172px; animation: portrait 520ms ease both; animation-delay: ' + delay + '">' +
+        '<div style="height: 196px; background: #191f24; border: 1px solid #2b333a; overflow: hidden; position: relative">' +
+          (p.img
+            ? '<img src="' + esc(p.img) + '" alt="' + esc(p.label) + '" style="width: 100%; height: 100%; object-fit: cover; display: block; animation: develop 900ms ease both; animation-delay: ' + delay + '" loading="lazy">'
+            : '<div style="width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #171c21 0 7px, #1b2126 7px 14px); display: flex; align-items: flex-end; padding: 12px; box-sizing: border-box"><span style="font-size: 9.5px; letter-spacing: 1.4px; color: #5f6a6c">NO PORTRAIT</span></div>') +
+          '<div style="position: absolute; top: 0; left: 0; background: #d9b36a; color: #101418; font-size: 9.5px; font-weight: 700; letter-spacing: 1.2px; padding: 4px 8px">GEN ' + (i + 1) + '</div>' +
+        '</div>' +
+        '<a href="https://www.wikidata.org/wiki/' + esc(id) + '" target="_blank" rel="noopener" style="display: block; font-family: \'Playfair Display\', serif; font-size: 17px; line-height: 1.2; margin-top: 12px">' + esc(p.label) + '</a>' +
+        '<div style="font-size: 10px; color: #85908f; margin-top: 5px">' + esc(years) + '</div>' +
+        (wikiUrl ? wikiLinkHtml(wikiUrl) : '') +
+      '</div>' +
+      (i < ids.length - 1
+        ? '<div style="min-width: 86px; padding: 96px 10px 0; display: flex; flex-direction: column; align-items: center">' +
+            '<div style="font-size: 9px; letter-spacing: 1.2px; color: #d9b36a; padding-bottom: 6px; white-space: nowrap">PARENT OF</div>' +
+            '<div style="width: 100%; height: 1px; background: #6b5c3a; transform-origin: left; animation: thread 480ms ease both; animation-delay: ' + threadDelay + '"></div>' +
+          '</div>'
+        : '') +
+    '</div>';
+  }).join('');
+
+  const birthYears = ids.map(id => parseInt(P[id].birth, 10)).filter(x => x);
+  const firstYear = birthYears[0];
+  const lastYear = birthYears[birthYears.length - 1];
+
+  const nepoCount = Object.keys(P).length;
+  const share = s.totalInTrade ? ((nepoCount / s.totalInTrade) * 100).toFixed(1) + "%" : "—";
+
+  let finding;
+  if (ids.length >= 4) finding = "The " + lineSurname + " line runs " + ids.length + " generations deep in this trade. Whatever being " + (occLabel ? "an " + occLabel : "in it") + " takes, it is being handed down at the dinner table.";
+  else if (s.totalInTrade && nepoCount / s.totalInTrade > 0.03) finding = "At least " + share + " of recorded " + occLabel + "s had a parent or child in the same work. For a trade nobody calls hereditary, that is a number.";
+  else finding = g.groups.length + " families appear twice or more among " + occLabel + "s. Wikidata only knows the households somebody recorded, so read this as a floor.";
+
+  const lineName = lineSurname ? "The " + lineSurname + "s" : "One family";
+  const lineSpan = (firstYear && lastYear ? firstYear + " → " + lastYear + " · " : "") + ids.length + " generations · click any dynasty below to follow it instead";
+
+  return '<div style="padding: 34px 0">' +
+
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 28px; border-bottom: 1px solid #242c33; padding-bottom: 26px">' +
+      '<div style="animation: rise 420ms ease both"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">IN THE TRADE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + (s.totalInTrade ? s.totalInTrade.toLocaleString() : "—") + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 70ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">WITH A RELATIVE IN IT</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + nepoCount.toLocaleString() + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 140ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">SHARE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + share + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 210ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">GENERATIONS DEEP</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.longest.length + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 280ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">DYNASTIES FOUND</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.groups.length + '</div></div>' +
+    '</div>' +
+
+    '<div style="margin-top: 36px">' +
+      '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap">' +
+        '<div>' +
+          '<div style="font-size: 10px; letter-spacing: 3px; color: #85908f">THE DEEPEST LINE</div>' +
+          '<div style="font-family: \'Playfair Display\', serif; font-size: 34px; margin-top: 8px">' + esc(lineName) + '</div>' +
+        '</div>' +
+        '<div style="font-size: 11px; line-height: 1.7; color: #85908f; text-align: right">' + esc(lineSpan) + '</div>' +
+      '</div>' +
+      '<div style="display: flex; align-items: flex-start; gap: 0; margin-top: 26px; overflow-x: auto; padding-bottom: 14px">' + lineHtml + '</div>' +
+    '</div>' +
+
+    '<div style="margin-top: 42px; border-top: 1px solid #242c33; padding-top: 26px">' +
+      '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap">' +
+        '<div style="font-size: 10px; letter-spacing: 3px; color: #85908f">OTHER DYNASTIES IN THIS TRADE</div>' +
+        '<div id="filter-row" style="display: flex; gap: 8px; flex-wrap: wrap">' + filterRowHtml() + '</div>' +
+      '</div>' +
+      '<div id="dyn-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 22px">' + dynastyCardsHtml(g, ids) + '</div>' +
+    '</div>' +
+
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 42px; border-top: 1px solid #242c33; padding-top: 26px">' +
+      '<div>' +
+        '<div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">THE FINDING</div>' +
+        '<p style="font-family: \'Playfair Display\', serif; font-style: italic; font-size: 22px; line-height: 1.45; margin: 10px 0 0">' + esc(finding) + '</p>' +
+      '</div>' +
+      '<div>' +
+        '<div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">HOW TO READ IT</div>' +
+        '<p style="font-size: 12.5px; line-height: 1.75; color: #a8b1b0; margin: 10px 0 0">Family relations are stated facts in Wikidata, not inferences. Generation chains are built by walking parent edges, so a five-deep line means five recorded parent-child links in the same trade. Coverage is thin outside the famous, so every number here is a floor.</p>' +
+        '<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px; border-top: 1px solid #242c33; padding-top: 14px">' +
+          '<div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">THE QUERY</div>' +
+          '<button type="button" id="query-toggle" style="background: transparent; border: none; color: #d9b36a; padding: 0; font-size: 10.5px; letter-spacing: 1.2px; cursor: pointer; border-bottom: 1px solid #d9b36a">' + (state.showQuery ? 'HIDE' : 'SHOW SPARQL') + '</button>' +
+        '</div>' +
+        '<div id="query-wrap">' + (state.showQuery ? queryPreHtml() : '') + '</div>' +
+      '</div>' +
+    '</div>' +
+
+  '</div>';
+}
+
+function render() {
+  runBtn.textContent = state.loading ? "QUERYING" : "RUN THE QUERY";
+  statusEl.textContent = state.status;
+  statusEl.style.color = state.statusOk ? "#a8b1b0" : "#c9714f";
+  if (state.loading) {
+    const p = document.getElementById("progress-line");
+    if (p) p.textContent = state.progress;
+    else view.innerHTML = renderLoading();
+  } else if (state.failed) {
+    view.innerHTML = renderFailed();
+  } else if (state.pairs.length) {
+    view.innerHTML = renderData();
+  } else {
+    view.innerHTML = "";
+  }
+}
+
+function applyWikiLinks() {
+  view.querySelectorAll("[data-mid]").forEach(el => {
+    const id = el.getAttribute("data-mid");
+    const url = state.wiki[id];
+    if (url && !el.querySelector("[data-wiki]")) el.insertAdjacentHTML("beforeend", wikiLinkHtml(url));
+  });
+}
+
+async function run() {
+  const term = (input.value || "").trim();
+  if (!term) return;
+  Object.assign(state, {
+    term: term, loading: true, failed: false,
+    progress: "RESOLVING “" + term.toUpperCase() + "”…",
+    status: "", statusOk: true, filter: "deep", failMessage: "", suggestions: [], chosen: null
+  });
+  render();
+  try {
+    const hits = await searchEntity(term, 5);
+    if (!hits.length) throw new Error("NO_ENTITY");
+    const occ = hits[0];
+
+    const kind = await sparql(
+      'SELECT ?isHuman ?occ ?occLabel WHERE { ' +
+      'OPTIONAL { wd:' + occ.id + ' wdt:P31 wd:Q5 . BIND(true AS ?isHuman) } ' +
+      'OPTIONAL { wd:' + occ.id + ' wdt:P106 ?occ } ' +
+      'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } LIMIT 8', 15000
+    ).catch(() => []);
+    if (kind.some(r => v(r, "isHuman") === "true")) {
+      const trades = [];
+      kind.forEach(r => { const l = v(r, "occLabel"); if (l && trades.indexOf(l) === -1) trades.push(l); });
+      Object.assign(state, {
+        loading: false, failed: true, suggestions: trades, statusOk: false,
+        status: "NOT A PROFESSION · " + occ.id, failTag: "WRONG KIND OF THING",
+        failMessage: "“" + occ.label + "” is a person, not a profession. Give it a trade and it will find the families inside it — " + (trades.length ? "try one of theirs." : "try “film director.”")
+      });
+      render();
+      return;
+    }
+
+    Object.assign(state, { occ: occ, query: pairQuery(occ.id), progress: "WALKING FAMILY EDGES AMONG " + occ.label.toUpperCase() + "S…" });
+    render();
+    const pairs = await sparql(pairQuery(occ.id), 40000);
+    if (!pairs.length) {
+      Object.assign(state, {
+        loading: false, failed: true, failTag: "NO FAMILIES ON RECORD",
+        status: occ.label + " · " + occ.id, statusOk: false,
+        failMessage: "No " + occ.label + " in Wikidata has a recorded parent or child in the same trade. Try a larger or more dynastic profession."
+      });
+      render();
+      return;
+    }
+
+    let total = null;
+    try {
+      const t = await sparql(totalQuery(occ.id), 25000);
+      total = t.length ? parseInt(v(t[0], "n"), 10) : null;
+    } catch (e) { total = null; }
+
+    Object.assign(state, {
+      loading: false, failed: false, pairs: pairs, totalInTrade: total, wiki: {},
+      status: occ.label + " · " + occ.id + (occ.description ? " · " + occ.description : ""),
+      statusOk: true, progress: ""
+    });
+    render();
+    // Fetch Wikipedia articles for the deepest line only — cheap and useful.
+    const ids = lastLineIds || [];
+    if (ids.length) {
+      const wiki = await articles(ids.slice(0, 8));
+      state.wiki = wiki;
+      applyWikiLinks();
+    }
+  } catch (e) {
+    let msg = "Could not reach the Wikidata query service.", tag = "FAILED";
+    if (e.message === "NO_ENTITY") { msg = "Wikidata has no profession called “" + term + ".” Try a plainer word."; tag = "NOT FOUND"; }
+    else if (e.message === "TIMEOUT") { msg = "The public endpoint timed out. Enormous trades sometimes do — try “conductor” or “racing driver.”"; tag = "TIMED OUT"; }
+    else if (e.message === "RATE_LIMIT") { msg = "Wikidata is rate-limiting this browser. Wait a moment."; tag = "RATE LIMITED"; }
+    Object.assign(state, { loading: false, failed: true, failMessage: msg, failTag: tag, status: msg, statusOk: false });
+    render();
+  }
+}
+
+// ---- Event wiring ----
+runBtn.addEventListener("click", run);
+input.addEventListener("keydown", e => { if (e.key === "Enter") run(); });
+input.addEventListener("change", () => { state.term = input.value; });
+
+document.addEventListener("click", e => {
+  const pick = e.target.closest("[data-pick]");
+  if (pick) {
+    input.value = pick.getAttribute("data-pick");
+    state.term = input.value;
+    run();
+    return;
+  }
+  const f = e.target.closest("[data-filter]");
+  if (f) {
+    state.filter = f.getAttribute("data-filter");
+    if (lastGraph) {
+      const row = document.getElementById("filter-row");
+      const grid = document.getElementById("dyn-grid");
+      if (row) row.innerHTML = filterRowHtml();
+      if (grid) grid.innerHTML = dynastyCardsHtml(lastGraph, lastLineIds);
+    }
+    return;
+  }
+  const c = e.target.closest("[data-choose]");
+  if (c) {
+    state.chosen = c.getAttribute("data-choose");
+    if (!state.loading && !state.failed && state.pairs.length) view.innerHTML = renderData();
+    return;
+  }
+  const t = e.target.closest("#query-toggle");
+  if (t) {
+    state.showQuery = !state.showQuery;
+    t.textContent = state.showQuery ? "HIDE" : "SHOW SPARQL";
+    const w = document.getElementById("query-wrap");
+    if (w) w.innerHTML = state.showQuery ? queryPreHtml() : "";
+    return;
+  }
+});
+
+// ---- Boot ----
+render();
+run();
+</script>
+</body>
+</html>
