@@ -154,27 +154,12 @@
       <p class="label label--accent" style="letter-spacing:.14em">The Instacart pipeline · sources through marts · 35 tests passing</p>
       <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Data flowing left to right</span>
     </div>
-    <div class="dag" id="dag">
-      <span class="dag__tier" style="left:2%;top:6%">Source</span>
-      <span class="dag__node dag__node--src" style="left:2%;top:79%">instacart.orders</span>
-      <span class="dag__tier" style="left:25%;top:6%">Staging · 5 models</span>
-      <span class="dag__node" style="left:25%;top:14%">stg_order_products</span>
-      <span class="dag__node" style="left:25%;top:29%">stg_products</span>
-      <span class="dag__node" style="left:25%;top:44%">stg_aisles</span>
-      <span class="dag__node" style="left:25%;top:59%">stg_departments</span>
-      <span class="dag__node" style="left:25%;top:79%">stg_orders</span>
-      <span class="dag__tier" style="left:52%;top:24%">Intermediate</span>
-      <span class="dag__node dag__node--int" style="left:52%;top:32%">int_order_products_joined</span>
-      <span class="dag__node dag__node--int" style="left:52%;top:79%">fct_orders</span>
-      <span class="dag__tier" style="left:82%;top:24%">Marts</span>
-      <span class="dag__node dag__node--mart" style="left:82%;top:32%">dim_products</span>
-      <span class="dag__node dag__node--mart" style="left:82%;top:79%">dim_users</span>
-    </div>
+    <div class="dag" id="dag"></div>
   </div>
 
   <div id="annotated"></div>
 
-  <div class="also">
+  <div class="also" id="alsobuilt">
     <p class="label label--mid" style="margin:0">Also built</p>
     <div>
       <p>A random-forest reorder model on the same Instacart data — 0.9886 AUC for veterans against 0.8566 for new users, which is what confirmed the segment split was real and not an artifact of the pipeline. <a href="https://github.com/SamieVargas/instacart-project">Model and notebook ↗</a></p>
@@ -217,7 +202,7 @@
   <div class="skills rule-top" style="padding-top:26px">
     <div>
       <div class="skill-tabs" role="tablist" id="skill-tabs"></div>
-      <p class="skill-line" id="skill-line"></p>
+      <p class="skill-line" id="skill-line"><span id="skill-typed"></span><span class="sig-cursor" id="skill-cursor" hidden>▍</span></p>
     </div>
     <div>
       <div id="certs"></div>
@@ -256,7 +241,7 @@
 <!-- ── LIFE TEASER ─────────────────────────────────────────── -->
 <section class="section" id="life" style="padding-top:56px;padding-bottom:56px">
   <div class="life-teaser">
-    <div>
+    <div id="life-intro">
       <p class="section__num" style="display:block;margin-bottom:10px">05</p>
       <h2>The rest of it lives on <em>/life</em>.</h2>
       <p class="life-teaser__blurb">The noticing field, the tarot tracker, seven decks, the Greenbelt at fifteen of twenty-one miles, Agatha Christie in order, and what I have been listening to. Same instinct, no résumé pressure.</p>

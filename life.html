@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>The rest of it — Samie Vargas</title>
-  <meta name="description" content="The personal half: the noticing field, the raccoon invoice, seven tarot decks, the Greenbelt at 15 of 21 miles, and where I actually eat in Austin.">
+  <meta name="description" content="The personal half: the noticing field, the raccoon invoice, the record shelf, the Christie ledger, and where I actually eat in Austin.">
   <link rel="canonical" href="https://samievargas.com/life">
   <meta name="theme-color" content="#1a6b5a">
 
@@ -44,8 +44,13 @@
 <nav class="nav">
   <a class="nav__name" href="/">Samie Vargas</a>
   <div class="nav__links">
-    <a href="/">← The work</a>
-    <span class="is-here label label--mid" style="color:var(--accent)">/life</span>
+    <a href="/#signal">Signal</a>
+    <a href="/#work">Work</a>
+    <a href="/#experience">Experience</a>
+    <a href="/#notes">Notes</a>
+    <span class="is-here label label--mid" style="color:var(--accent)">Life</span>
+    <a href="/apps/">Apps</a>
+    <a class="nav__cta" href="/resume">Résumé</a>
   </div>
 </nav>
 
@@ -86,7 +91,7 @@
 </section>
 
 <!-- ── IN PROGRESS ─────────────────────────────────────────── -->
-<section class="section section--alt">
+<section class="section section--alt" id="progress">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">02</span>
@@ -94,11 +99,11 @@
     </div>
     <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Nothing here is finished, which is the point</span>
   </div>
-  <div class="progress-grid" id="progress"></div>
+  <div class="progress-grid" id="progress-rows"></div>
 </section>
 
 <!-- ── THE RACCOON INVOICE ─────────────────────────────────── -->
-<section class="section">
+<section class="section" id="raccoon">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">03</span>
@@ -110,12 +115,22 @@
     <div>
       <p class="lead">For five nights I slept badly and could not explain it. I blamed podcasts. I cancelled plans. Then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.</p>
       <p class="raccoon__note">The wearable had the whole story before I did. What surprised me was the tail: the raccoons left on May 3 and it took eight more days to get back to baseline. The nervous system does not get the memo.</p>
-      <div class="invoice">
-        <div class="invoice__head">
-          <span>Itemized · Apr 24 – May 11</span>
-          <span>Balance due · nothing</span>
+      <div class="receipt">
+        <div class="receipt__perf"></div>
+        <div class="receipt__head">
+          <p class="receipt__title">The Raccoon Invoice</p>
+          <p class="receipt__meta">Tenant: Samie Vargas · Austin, TX<br>Period: Apr 23 – May 10, 2026<br>Issued by: The Raccoon (unauthorized occupant)</p>
         </div>
         <div id="invoice-rows"></div>
+        <div class="receipt__totals">
+          <div><span>Total disruption</span><span class="bad">17 days</span></div>
+          <div><span>Recovery lag after removal</span><span class="bad">8 days</span></div>
+          <div class="receipt__due"><span>Balance due</span><span>$0 — paid in raccoon</span></div>
+        </div>
+        <div class="receipt__foot">
+          <p>Thank you for your unauthorized tenancy.<br>Please do not return.</p>
+          <p class="receipt__norefunds">*** NO REFUNDS ***</p>
+        </div>
       </div>
     </div>
     <div>
@@ -130,22 +145,11 @@
   </div>
 </section>
 
-<!-- ── INTERESTS ───────────────────────────────────────────── -->
-<section class="section">
+<!-- ── EATING HERE ─────────────────────────────────────────── -->
+<section class="section section--alt" id="eating">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">04</span>
-      <h2>Beyond the résumé</h2>
-    </div>
-  </div>
-  <div class="interests-grid" id="interests"></div>
-</section>
-
-<!-- ── EATING HERE ─────────────────────────────────────────── -->
-<section class="section section--alt">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">05</span>
       <h2>Eating here</h2>
     </div>
     <span class="label label--mid" style="white-space:nowrap">Hover a place · scores are real</span>
@@ -158,58 +162,102 @@
   </div>
 </section>
 
+<!-- ── THE RECORD SHELF ────────────────────────────────────── -->
+<section class="section section--dark" id="records">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">05</span>
+      <h2>The record shelf</h2>
+    </div>
+    <span class="label" style="white-space:nowrap;color:var(--dark-faint)">Sixteen and counting · dig through the crate</span>
+  </div>
+  <div class="rule-top crate-grid">
+    <div>
+      <div class="crate">
+        <div class="crate__row" id="rec-crate"></div>
+        <div class="crate__base"><span>THE&nbsp;CRATE&nbsp;·&nbsp;16&nbsp;LPs</span></div>
+      </div>
+      <p class="crate__readout" id="rec-readout"></p>
+    </div>
+    <div>
+      <div class="deck" id="turntable">
+        <div class="deck__platter">
+          <div class="deck__label" id="deck-label">
+            <span class="deck__label-t" id="deck-label-t"></span>
+            <span class="deck__label-hole"></span>
+            <span class="deck__label-sub">33⅓ RPM · SIDE A</span>
+          </div>
+          <div class="deck__sheen"></div>
+        </div>
+        <div class="deck__spindlecap"></div>
+        <div class="deck__arm" id="deck-arm"><i class="deck__arm-weight"></i><i class="deck__arm-head"></i></div>
+        <div class="deck__controls">
+          <i class="deck__power" id="deck-power"></i>
+          <span class="deck__speed deck__speed--on">33⅓</span>
+          <span class="deck__speed">45</span>
+        </div>
+        <span class="deck__index" id="deck-index"></span>
+        <div class="deck__sleeve" id="deck-sleeve"><span id="deck-sleeve-t"></span></div>
+      </div>
+      <p class="deck__caption" id="deck-caption"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE CHRISTIE LEDGER ─────────────────────────────────── -->
+<section class="section section--dark" id="christie">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">06</span>
+      <h2>The Christie ledger</h2>
+    </div>
+    <span class="label" style="white-space:nowrap;color:var(--dark-faint)">33 read · avg 3.9 · 17 more on the shelf</span>
+  </div>
+  <div class="rule-top ledger-grid">
+    <div>
+      <div class="crate">
+        <div class="crate__row crate__row--books" id="chr-shelf"></div>
+        <div class="crate__base"><span>CHRISTIE&nbsp;·&nbsp;33&nbsp;DOWN&nbsp;·&nbsp;17&nbsp;TO&nbsp;GO</span></div>
+      </div>
+      <div class="ledger-legend">
+        <span><i style="background:#0f6e56"></i><span>5 stars</span></span>
+        <span><i style="background:#4daa91"></i><span>4 stars</span></span>
+        <span><i style="background:#d97706"></i><span>3 stars</span></span>
+        <span><i style="background:#b4552f"></i><span>2 stars</span></span>
+      </div>
+    </div>
+    <div>
+      <div class="libcard" id="libcard"></div>
+      <p class="label" style="display:block;margin-top:14px;letter-spacing:.12em;color:var(--dark-faint)">Pull a spine · the two-star shelf is load-bearing</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── ON ROTATION ─────────────────────────────────────────── -->
-<section class="section">
+<section class="section" id="rotation">
   <div class="rotation">
     <div>
       <div class="rotation__head">
-        <span class="section__num">06</span>
+        <span class="section__num">07</span>
         <h2>On rotation</h2>
       </div>
       <div id="facts"></div>
     </div>
     <div class="rotation__main">
-      <div class="rotation__top">
-        <a class="np" href="https://open.spotify.com/playlist/3oLN1CsU4GEi8N3q6SbhbE">
-          <div class="np__head">
-            <span>Now playing</span>
-            <span>Spotify ↗</span>
-          </div>
-          <p class="np__title">The one I keep coming back to</p>
-          <p class="np__blurb">Built over a couple of years, mostly for walking the Greenbelt and for the hour before I start writing anything.</p>
-          <div class="np__eq" id="eq"></div>
-          <div class="np__foot">
-            <span class="np__play">▶</span>
-            <span class="np__track"><i></i></span>
-            <span>open in Spotify</span>
-          </div>
-        </a>
-        <div class="media-lists">
-          <div>
-            <span class="label label--mid">Reading</span>
-            <div id="reading"></div>
-          </div>
-          <div>
-            <span class="label label--mid">Playing</span>
-            <div id="playing"></div>
-          </div>
+      <a class="np" href="https://open.spotify.com/playlist/3oLN1CsU4GEi8N3q6SbhbE">
+        <div class="np__head">
+          <span>Now playing</span>
+          <span>Spotify ↗</span>
         </div>
-      </div>
-      <p class="label label--mid" style="display:block;margin-bottom:14px;letter-spacing:.13em">Things I built for myself</p>
-      <div class="thumbs">
-        <figure>
-          <div class="frame"><img src="assets/life-os/lifeos_today.png" alt="Life OS — the daily dashboard"></div>
-          <figcaption>Life OS · fifteen charts about me</figcaption>
-        </figure>
-        <figure>
-          <div class="frame"><img src="assets/tarot-tracker/deck.png" alt="The tarot tracker"></div>
-          <figcaption>Tarot tracker · seven decks logged</figcaption>
-        </figure>
-        <figure>
-          <div class="frame"><img src="assets/pixels-rag/pixels-rag-1.png" alt="Life in Pixels"></div>
-          <figcaption>Life in Pixels · ask my data anything</figcaption>
-        </figure>
-      </div>
+        <p class="np__title">The one I keep coming back to</p>
+        <p class="np__blurb">Built over a couple of years, mostly for walking the Greenbelt and for the hour before I start writing anything.</p>
+        <div class="np__eq np__eq--tall" id="eq"></div>
+        <div class="np__foot">
+          <span class="np__play">▶</span>
+          <span class="np__track"><i></i></span>
+          <span>open in Spotify</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>

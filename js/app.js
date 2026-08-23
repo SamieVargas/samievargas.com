@@ -15,6 +15,22 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 
+// Sections choreograph their entrance when they scroll into view.
+const gates = { workIn: false, skillsIn: false, notesIn: false, lifeIn: false, alsoIn: false };
+
+function watchGate(id, key, onIn) {
+  const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
+  if (REDUCED || !HAS_IO) { fire(); return; }
+  const el = document.getElementById(id);
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  if (r.height > 0 && r.bottom > 60 && r.top < (window.innerHeight || 800) - 60) { fire(); return; }
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { io.disconnect(); fire(); } });
+  }, { threshold: 0.18 });
+  io.observe(el);
+}
+
 // ── Hero ─────────────────────────────────────────────────────
 function renderHeroStats() {
   $('#hero-stats').innerHTML = HERO_STATS.map((s) =>
@@ -110,10 +126,25 @@ function wireBrainDump() {
   });
 }
 
-// ── dbt DAG edges ────────────────────────────────────────────
-function renderDagEdges() {
-  const stgRight = 47, intLeft = 52, intRight = 78, martLeft = 82;
-  const y = { src: 82, sop: 17, sp: 32, sa: 47, sd: 62, so: 82, int: 36, fct: 82, dimP: 36, dimU: 82 };
+// ── dbt DAG: nodes tile in by tier, edges draw then flow ─────
+const DAG_NODES = [
+  { x: '2%', y: '6%', t: 'lab', d: 0, text: 'Source' },
+  { x: '2%', y: '79%', t: 'src', d: 0.05, text: 'instacart.orders' },
+  { x: '25%', y: '6%', t: 'lab', d: 0.3, text: 'Staging · 5 models' },
+  { x: '25%', y: '14%', t: 'stg', d: 0.35, text: 'stg_order_products' },
+  { x: '25%', y: '29%', t: 'stg', d: 0.41, text: 'stg_products' },
+  { x: '25%', y: '44%', t: 'stg', d: 0.47, text: 'stg_aisles' },
+  { x: '25%', y: '59%', t: 'stg', d: 0.53, text: 'stg_departments' },
+  { x: '25%', y: '79%', t: 'stg', d: 0.59, text: 'stg_orders' },
+  { x: '52%', y: '24%', t: 'lab', d: 1.0, text: 'Intermediate' },
+  { x: '52%', y: '32%', t: 'int', d: 1.05, text: 'int_order_products_joined' },
+  { x: '52%', y: '79%', t: 'int', d: 1.12, text: 'fct_orders' },
+  { x: '82%', y: '24%', t: 'lab', d: 1.5, text: 'Marts' },
+  { x: '82%', y: '32%', t: 'mart', d: 1.55, text: 'dim_products' },
+  { x: '82%', y: '79%', t: 'mart', d: 1.62, text: 'dim_users' },
+];
+
+function renderDag(on) {
   const curve = (x1, y1, x2, y2) => {
     const mx = (x1 + x2) / 2;
     return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
@@ -121,15 +152,24 @@ function renderDagEdges() {
   // The real lineage: orders → stg_orders; four staging models → int;
   // int → dim_products; stg_orders + int → fct_orders → dim_users.
   const edges = [
-    [22, y.src, 25, y.so], [stgRight, y.sop, intLeft, y.int], [stgRight, y.sp, intLeft, y.int],
-    [stgRight, y.sa, intLeft, y.int], [stgRight, y.sd, intLeft, y.int],
-    [intRight, y.int, martLeft, y.dimP], [stgRight, y.so, intLeft, y.fct],
-    [intRight - 10, y.int + 4, intLeft, y.fct - 2], [intRight, y.fct, martLeft, y.dimU],
+    [11.5, 82, 24, 82, 0],
+    [36, 17, 51, 36, 1], [36, 32, 51, 36, 1], [36, 47, 51, 36, 1], [36, 62, 51, 36, 1], [36, 82, 51, 82, 1],
+    [64.5, 36, 81, 36, 2], [62, 41, 52.5, 77, 2], [58.5, 82, 81, 82, 2],
   ];
-  const paths = edges.map((e, i) =>
-    `<path d="${curve(e[0], e[1], e[2], e[3])}" fill="none" stroke="#1a6b5a" stroke-width="0.28" opacity="0.55" stroke-dasharray="1.6 1.2" style="--d:${(i * 0.08).toFixed(2)}s"/>`).join('');
-  $('#dag').insertAdjacentHTML('afterbegin',
-    `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${paths}</svg>`);
+  const paths = edges.map((e, i) => {
+    const d = curve(e[0], e[1], e[2], e[3]);
+    const delay = 0.45 + e[4] * 0.35 + i * 0.04;
+    return `<g>
+      <path d="${d}" fill="none" stroke="#1a6b5a" stroke-width="0.34" pathLength="1" stroke-dasharray="1" style="${on ? `animation:dagdraw 1s ease ${delay.toFixed(2)}s both` : 'opacity:0'}"/>
+      <path d="${d}" fill="none" stroke="#1a6b5a" stroke-width="0.28" opacity="0.55" stroke-dasharray="1.6 1.2" style="${on ? `animation:fadein .4s ease ${(delay + 0.8).toFixed(2)}s both,dagflow 1.4s linear ${(delay + 0.8).toFixed(2)}s infinite` : 'opacity:0'}"/>
+    </g>`;
+  }).join('');
+  const kindClass = { lab: 'dag__tier', src: 'dag__node dag__node--src', stg: 'dag__node', int: 'dag__node dag__node--int', mart: 'dag__node dag__node--mart' };
+  const nodes = DAG_NODES.map((n) => `
+    <span class="${kindClass[n.t]}" style="left:${n.x};top:${n.y};${on
+      ? `animation:${n.t === 'lab' ? 'fadein .5s ease ' : 'tilein .5s cubic-bezier(.34,1.15,.64,1) '}${n.d.toFixed(2)}s both`
+      : 'opacity:0'}">${n.text}</span>`).join('');
+  $('#dag').innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${paths}</svg>${nodes}`;
 }
 
 // ── ATX choropleth ───────────────────────────────────────────
@@ -317,15 +357,18 @@ function wireRoles() {
   });
 }
 
-// ── Skills: measured tab indicator ───────────────────────────
+// ── Skills: staggered reveal, typed line, auto-cycle ─────────
 let skillTab = 0;
+let skillsAuto = true;
 let tabEls = [];
+let skillTypeTimer;
 
-function renderSkillTabs() {
+function renderSkillTabs(on) {
   const host = $('#skill-tabs');
   host.innerHTML = SKILLS.map((g, i) =>
-    `<button type="button" role="tab" class="${i === skillTab ? 'is-on' : ''}" data-tab="${i}" aria-selected="${i === skillTab}">${esc(g.label)}</button>`).join('')
-    + '<i class="indicator"></i>';
+    `<button type="button" role="tab" class="${i === skillTab ? 'is-on' : ''}" data-tab="${i}" aria-selected="${i === skillTab}"
+      style="${on ? `animation:driftup .5s ease ${(i * 0.07).toFixed(2)}s both` : 'opacity:0'}">${esc(g.label)}</button>`).join('')
+    + `<i class="indicator" style="${on ? 'animation:fadein .4s ease .35s both' : 'opacity:0'}"></i>`;
   tabEls = [...host.querySelectorAll('button')];
   measureTab();
 }
@@ -339,34 +382,53 @@ function measureTab() {
   ind.style.transform = `translateX(${el.offsetLeft}px)`;
 }
 
-function renderSkillLine() {
-  const line = $('#skill-line');
-  line.textContent = SKILLS[skillTab].line;
-  line.style.animation = 'none';
-  void line.offsetHeight; // restart the crossfade
-  line.style.animation = '';
+function typeSkillLine() {
+  clearInterval(skillTypeTimer);
+  const typed = $('#skill-typed');
+  const cursor = $('#skill-cursor');
+  const full = SKILLS[skillTab].line;
+  if (!gates.skillsIn) { typed.textContent = ''; cursor.hidden = true; return; }
+  if (REDUCED) { typed.textContent = full; cursor.hidden = true; return; }
+  let len = 0;
+  typed.textContent = '';
+  cursor.hidden = false;
+  skillTypeTimer = setInterval(() => {
+    len = Math.min(full.length, len + 2);
+    typed.textContent = full.slice(0, len);
+    if (len >= full.length) { clearInterval(skillTypeTimer); cursor.hidden = true; }
+  }, 30);
+}
+
+function setSkillTab(i) {
+  skillTab = i;
+  tabEls.forEach((t, ti) => {
+    t.classList.toggle('is-on', ti === skillTab);
+    t.setAttribute('aria-selected', String(ti === skillTab));
+  });
+  measureTab();
+  typeSkillLine();
 }
 
 function wireSkills() {
   $('#skill-tabs').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-tab]');
     if (!btn) return;
-    skillTab = Number(btn.dataset.tab);
-    tabEls.forEach((t, i) => {
-      t.classList.toggle('is-on', i === skillTab);
-      t.setAttribute('aria-selected', String(i === skillTab));
-    });
-    measureTab();
-    renderSkillLine();
+    skillsAuto = false;
+    setSkillTab(Number(btn.dataset.tab));
   });
   window.addEventListener('resize', measureTab);
   // Re-measure once the mono font loads and tab widths settle.
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureTab);
+  if (!REDUCED) {
+    setInterval(() => {
+      if (skillsAuto && gates.skillsIn) setSkillTab((skillTab + 1) % SKILLS.length);
+    }, 5000);
+  }
 }
 
-function renderCerts() {
-  $('#certs').innerHTML = CERTS.map((c) => `
-    <div class="cert">
+function renderCerts(on) {
+  $('#certs').innerHTML = CERTS.map((c, i) => `
+    <div class="cert" style="${on ? `animation:crossfade .5s ease ${(0.15 + i * 0.12).toFixed(2)}s both` : 'opacity:0'}">
       <div>
         <h4>${esc(c.name)}</h4>
         <p>${esc(c.issuer)}</p>
@@ -378,13 +440,49 @@ function renderCerts() {
 // ── Notes / observations ─────────────────────────────────────
 let obsIdx = 0;
 let dayIdx = -1;
+let obsAuto = true;
+let scrubTimer, scrubEndTimer, scrubActive = false, scrubbed = false;
+
+function stopScrub() {
+  clearInterval(scrubTimer);
+  clearTimeout(scrubEndTimer);
+  scrubActive = false;
+}
+
+// Once the section is in view, walk the chart's days by itself, then let go.
+function maybeAutoScrub() {
+  if (REDUCED || scrubbed || !gates.notesIn || !OBSERVATIONS[obsIdx].chart) return;
+  scrubbed = true;
+  scrubActive = true;
+  const days = OBSERVATIONS[obsIdx].chart.days.length;
+  scrubTimer = setInterval(() => {
+    const n = dayIdx + 1;
+    if (n >= days) {
+      clearInterval(scrubTimer);
+      scrubActive = false;
+      scrubEndTimer = setTimeout(() => { dayIdx = -1; updateChartReadout(); }, 1400);
+      return;
+    }
+    dayIdx = n;
+    updateChartReadout();
+  }, 650);
+}
+
+function reanimate(el, anim) {
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = gates.notesIn && !REDUCED ? anim : '';
+  if (!gates.notesIn && !REDUCED) el.style.opacity = '0';
+  else el.style.opacity = '';
+}
 
 function renderObs() {
   const o = OBSERVATIONS[obsIdx];
   $('#obs-tag').textContent = o.tag;
   $('#obs-title').textContent = o.title;
+  reanimate($('#obs-title'), 'crossfade .45s ease both');
   $('#obs-counter').textContent = `${obsIdx + 1} of ${OBSERVATIONS.length}`;
-  $('#obs-body').innerHTML = o.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('');
+  $('#obs-body').innerHTML = o.paragraphs.map((p, i) => `<p style="${gates.notesIn ? `animation:driftup .55s ease ${(0.1 + i * 0.12).toFixed(2)}s both` : 'opacity:0'}">${esc(p)}</p>`).join('');
   $('#obs-src').innerHTML = o.linkText
     ? `${esc(o.sourceText)} <a href="${o.linkHref}">${esc(o.linkText)}</a>`
     : esc(o.sourceText);
@@ -398,7 +496,7 @@ function renderChart() {
   const host = $('#obs-chart');
   if (!chart) { host.innerHTML = ''; return; }
   host.innerHTML = `
-    <div class="chart">
+    <div class="chart" style="${gates.notesIn ? 'animation:crossfade .5s ease both' : 'opacity:0'}">
       <div class="chart__head">
         <span class="label label--accent">${esc(chart.title)}</span>
         <span class="label label--mid">${esc(chart.hint)}</span>
@@ -406,7 +504,7 @@ function renderChart() {
       <div class="chart__bars">
         ${chart.days.map((d, i) => `
           <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}" class="${d.v <= 10 ? 'is-low' : ''}">
-            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;--d:${(i * 0.07).toFixed(2)}s"></i>
+            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;${gates.notesIn ? `--d:${(i * 0.07).toFixed(2)}s` : 'opacity:0;animation:none'}"></i>
           </button>`).join('')}
       </div>
       <div class="chart__scale">
@@ -429,37 +527,75 @@ function updateChartReadout() {
 }
 
 function wireObs() {
-  const step = (dir) => {
+  const step = (dir, manual) => {
+    if (manual) { stopScrub(); obsAuto = false; }
     obsIdx = (obsIdx + dir + OBSERVATIONS.length) % OBSERVATIONS.length;
     dayIdx = -1;
     renderObs();
+    maybeAutoScrub();
   };
-  $('#obs-prev').addEventListener('click', () => step(-1));
-  $('#obs-next').addEventListener('click', () => step(1));
+  $('#obs-prev').addEventListener('click', () => step(-1, true));
+  $('#obs-next').addEventListener('click', () => step(1, true));
   $('#obs-dots').addEventListener('click', (e) => {
     const dot = e.target.closest('[data-obs]');
     if (!dot) return;
+    stopScrub();
+    obsAuto = false;
     obsIdx = Number(dot.dataset.obs);
     dayIdx = -1;
     renderObs();
+    maybeAutoScrub();
   });
   const scrub = (e) => {
     const bar = e.target.closest('[data-day]');
     if (!bar) return;
+    stopScrub();
+    obsAuto = false;
     dayIdx = Number(bar.dataset.day);
     updateChartReadout();
   };
   $('#obs-chart').addEventListener('mouseover', scrub);
   $('#obs-chart').addEventListener('click', scrub);
   $('#obs-chart').addEventListener('mouseleave', () => {
-    if (dayIdx > -1) { dayIdx = -1; updateChartReadout(); }
+    if (dayIdx > -1 && !scrubActive) { dayIdx = -1; updateChartReadout(); }
   });
+  if (!REDUCED) {
+    setInterval(() => {
+      if (obsAuto && gates.notesIn && !scrubActive) step(1, false);
+    }, 8000);
+  }
 }
 
 // ── Life teaser + contact ────────────────────────────────────
-function renderLifeTeasers() {
-  $('#life-teasers').innerHTML = LIFE_TEASERS.map((l) => `
-    <div><span class="label">${esc(l.k)}</span><p>${esc(l.v)}</p></div>`).join('');
+let lifeT = 0;
+let lifeCountTimer;
+
+function teaserValue(l) {
+  if (l.k === 'Running') return `${Math.round(15 * lifeT)} of 21 miles on the Greenbelt`;
+  if (l.k === 'Tarot') return `Seven decks, every pull logged across ${Math.round(78 * lifeT)} cards`;
+  return l.v;
+}
+
+function renderLifeTeasers(on) {
+  $('#life-teasers').innerHTML = LIFE_TEASERS.map((l, i) => `
+    <div style="${on ? `animation:tilein .5s cubic-bezier(.34,1.15,.64,1) ${(0.15 + i * 0.1).toFixed(2)}s both` : 'opacity:0'}">
+      <span class="label">${esc(l.k)}</span><p data-teaser="${i}">${esc(teaserValue(l))}</p>
+    </div>`).join('');
+  $('#life-intro').style.cssText = on ? 'animation:driftup .6s ease both' : (REDUCED ? '' : 'opacity:0');
+}
+
+// The Greenbelt miles and the 78 cards count up as the section arrives.
+function startLifeCount() {
+  if (REDUCED) { lifeT = 1; }
+  clearInterval(lifeCountTimer);
+  lifeCountTimer = setInterval(() => {
+    if (lifeT >= 1) { clearInterval(lifeCountTimer); return; }
+    lifeT = Math.min(1, lifeT + 0.06);
+    LIFE_TEASERS.forEach((l, i) => {
+      const el = document.querySelector(`[data-teaser="${i}"]`);
+      if (el) el.textContent = teaserValue(l);
+    });
+  }, 45);
 }
 
 function renderContactLinks() {
@@ -533,16 +669,16 @@ renderSignal();
 renderDumpBits();
 renderStates();
 renderPiles();
-renderDagEdges();
+renderDag(false);
 renderAnnotated();
 renderRailTicks();
 renderRoles();
-renderSkillTabs();
-renderSkillLine();
-renderCerts();
+renderSkillTabs(false);
+renderCerts(false);
 renderObs();
-renderLifeTeasers();
+renderLifeTeasers(false);
 renderContactLinks();
+if (!REDUCED) { const ab = $('#alsobuilt'); if (ab) ab.style.opacity = '0'; }
 
 wireBrainDump();
 wireRoles();
@@ -553,3 +689,13 @@ wireArcadeTicker();
 wireKonami();
 watchSignal();
 watchExperience();
+
+watchGate('work', 'workIn', () => renderDag(true));
+watchGate('skills', 'skillsIn', () => { renderSkillTabs(true); renderCerts(true); typeSkillLine(); });
+watchGate('notes', 'notesIn', () => { renderObs(); maybeAutoScrub(); });
+watchGate('life', 'lifeIn', () => { renderLifeTeasers(true); startLifeCount(); });
+watchGate('alsobuilt', 'alsoIn', () => {
+  const ab = $('#alsobuilt');
+  ab.style.opacity = '';
+  ab.style.animation = REDUCED ? '' : 'driftup .6s ease .1s both';
+});
