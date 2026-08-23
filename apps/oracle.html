@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One-Question Oracle — Samie Vargas</title>
+<meta name="description" content="Bring it a question. It keeps the question and returns a harder one.">
+<link rel="canonical" href="https://samievargas.com/apps/oracle">
+<meta name="theme-color" content="#1a6b5a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7B7NDTKEL');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #050309; }
+a { color: #8f7dff; } a:hover { color: #efe9ff; }
+input, button { font: inherit; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes shake { 0%, 100% { transform: none; } 30% { transform: scale(1.015); } 60% { transform: scale(0.995); } }
+@keyframes swim { 0%, 100% { opacity: 0.3; letter-spacing: 3px; } 50% { opacity: 0.75; letter-spacing: 0.5px; } }
+@keyframes surface { from { opacity: 0; filter: blur(6px); transform: translateY(6px); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes smoke { 0% { transform: rotate(0deg) scale(1); opacity: 0.7; } 50% { transform: rotate(180deg) scale(1.14); opacity: 1; } 100% { transform: rotate(360deg) scale(1); opacity: 0.7; } }
+@keyframes aura { 0%, 100% { opacity: 0.5; transform: scale(0.97); } 50% { opacity: 1; transform: scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; } }
+#q-input:focus { border-color: #8f7dff; }
+.btn-ghost:hover { border-color: #8f7dff; color: #efe9ff; }
+.btn-deeper:hover { background: #efe9ff; color: #0a0812; }
+.footer-links a { color: inherit; text-decoration: none; }
+.footer-links a:hover { color: #efe9ff; }
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; background: radial-gradient(760px 520px at 50% -10%, #1b1435 0%, #0a0714 58%, #050309 100%); padding: 54px 40px 90px; box-sizing: border-box; color: #efe9ff; font-family: 'Space Mono', monospace">
+  <div style="max-width: 1020px; margin: 0 auto">
+
+    <div style="text-align: center">
+      <div style="font-size: 10.5px; letter-spacing: 5px; color: #8b82b8; animation: rise 520ms ease both"><span style="color: #8f7dff">[ FIG. 11 ]</span>&nbsp;&nbsp;IT HAS NEVER ONCE ANSWERED</div>
+      <h1 style="font-family: 'Instrument Serif', serif; font-size: 60px; margin: 12px 0 0; font-weight: 400; line-height: 1; animation: rise 560ms ease both; animation-delay: 100ms">One-Question Oracle</h1>
+      <div style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 21px; color: #b3a9d9; margin-top: 14px; animation: rise 560ms ease both; animation-delay: 200ms">Bring it a question. It keeps the question and returns a harder one.</div>
+    </div>
+
+    <div style="max-width: 620px; margin: 44px auto 0">
+      <div id="input-label" style="font-size: 10px; letter-spacing: 3px; color: #6b6395; text-align: center; margin-bottom: 6px">WHAT YOU CAME WITH</div>
+      <input type="text" id="q-input" placeholder="Should we build the integration or the reporting layer first?" style="width: 100%; box-sizing: border-box; padding: 18px 0; border: none; border-bottom: 1.5px solid #3a3160; background: transparent; font-family: 'Instrument Serif', serif; font-size: 26px; color: #efe9ff; text-align: center; outline: none">
+      <div style="display: flex; gap: 12px; margin-top: 22px; justify-content: center; flex-wrap: wrap">
+        <button type="button" id="ask-btn" style="background: #6f5fd6; color: #f0ecff; border: none; border-radius: 30px; padding: 16px 30px; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; white-space: nowrap; cursor: pointer">CONSULT THE STONE</button>
+        <button type="button" id="surprise-btn" class="btn-ghost" style="background: transparent; border: 1px solid #4a3f7a; border-radius: 30px; color: #b3a9d9; padding: 16px 26px; font-size: 12px; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer">BRING IT A REAL DILEMMA</button>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 54px">
+      <div style="position: relative; width: 400px; height: 400px; display: flex; align-items: center; justify-content: center">
+        <div id="aura" style="position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(120,100,225,0.16), transparent 62%)"></div>
+        <div style="position: absolute; bottom: 26px; width: 250px; height: 26px; border-radius: 50%; background: radial-gradient(ellipse, rgba(0,0,0,0.75), transparent 72%)"></div>
+        <div id="sphere" style="width: 306px; height: 306px; border-radius: 50%; position: relative; overflow: hidden; background: radial-gradient(circle at 36% 28%, #3b3452 0%, #191428 34%, #0b0814 68%, #050309 100%); box-shadow: inset -22px -26px 70px rgba(0,0,0,0.9), inset 14px 16px 50px rgba(143,125,255,0.10), 0 30px 70px rgba(0,0,0,0.7), 0 0 0 1px #241d3d">
+          <div id="smoke" style="position: absolute; inset: 0; background: radial-gradient(circle at 62% 68%, rgba(143,125,255,0.30), transparent 46%), radial-gradient(circle at 38% 56%, rgba(64,180,190,0.16), transparent 40%)"></div>
+          <div style="position: absolute; top: 30px; left: 58px; width: 108px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.16); filter: blur(12px)"></div>
+          <div style="position: absolute; top: 42px; right: 66px; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.55)"></div>
+          <div style="position: absolute; bottom: 74px; left: 88px; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.35)"></div>
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 62px; box-sizing: border-box">
+            <div id="window-text" style="text-align: center; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 19px; line-height: 1.4; color: #efe9ff; text-shadow: 0 0 22px rgba(143,125,255,0.9)">speak, and it will keep it</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="answer-region"></div>
+
+    <div id="history-region"></div>
+
+    <div style="margin-top: 70px; border-top: 1px solid #2a2440; padding-top: 18px; font-size: 10.5px; letter-spacing: 2px; color: #5a5180; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px">
+      <span class="footer-links"><a href="/">SAMIEVARGAS.COM</a> · <a href="./">MINI APPS</a></span><span>IT IS A JOKE ABOUT DISCOVERY CALLS</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+const DILEMMAS = [
+  "Should we build the integration or the reporting layer first?",
+  "Do I take the bigger title at the smaller company?",
+  "Should I tell my manager the roadmap date is fiction?",
+  "Is it worth rebuilding the dashboard or should we patch it again?",
+  "Should I hire a second analyst or buy the tool?",
+  "Do we sunset the legacy plan this year?"
+];
+
+const RULES = [
+  { test: /or\b/i, tag: "it sees a fork", q: ["Which one has a customer already waiting for it?", "If you could only ship one and never the other, which absence would you have to explain?", "Which of the two are you avoiding because it's harder?"], why: "You framed a fork. Forks are usually a hidden ranking problem." },
+  { test: /should i (tell|say|mention|raise)/i, tag: "it asks who knows", q: ["What happens to you if they find out later, from someone else?", "Who else already knows?", "What are you hoping they'll do with it?"], why: "You asked about disclosure, which means the information already feels like a liability." },
+  { test: /worth it|worth (the|a)/i, tag: "compared to what?", q: ["Compared to doing nothing for six months, what actually changes?", "What would have to be true for it to obviously not be worth it?", "Who pays if you're wrong?"], why: "“Worth it” is a comparison with the other half missing." },
+  { test: /hire|headcount|team|backfill/i, tag: "it asks what stops", q: ["What work stops the day they start?", "If the role were frozen for a year, what would you stop doing?", "Who trains them, and what do they stop doing?"], why: "Headcount questions are almost always sequencing questions." },
+  { test: /should we (sunset|kill|deprecate|shut)/i, tag: "it asks who remains", q: ["Who is still using it, and what do they use it for?", "What breaks that you don't currently see?", "What are you actually trying to free up?"], why: "Endings are easy to decide and hard to schedule." },
+  { test: /take the (job|role|offer)|bigger title|new (job|role)/i, tag: "it sees a wager", q: ["Which version of yourself is this a bet on?", "What would make you regret staying?", "In two years, which one gives you a better story about your judgment?"], why: "Career forks are rarely about the two options on the table." },
+  { test: /rebuild|refactor|patch|rewrite/i, tag: "it asks who inherits", q: ["How many more times can you patch it before the patch is the system?", "What do you learn from the rebuild that you can't learn now?", "Who owns it after it's rebuilt?"], why: "The question is not whether to rebuild but who inherits it." },
+  { test: /when|deadline|timeline|by (friday|monday|q[1-4])/i, tag: "it doubts the date", q: ["What is actually happening on that date?", "Who chose that date, and were they in the room for the work?", "What would you cut to make it true?"], why: "A date question is usually a scope question in costume." },
+  { test: /how do i|how can i|how should i/i, tag: "it looks for the near-miss", q: ["What have you already tried that almost worked?", "Who has solved this in front of you?", "What's the smallest version of this you could do today?"], why: "You asked for method. Method usually already exists nearby." },
+  { test: /\?/, tag: "it goes to the base", q: ["What would you do if nobody would ever ask you to justify it?", "Which part of this have you already decided?", "What are you actually afraid of here?"], why: "Nothing specific to grab, so the oracle went for the base of it." }
+];
+const GENERIC = { tag: "it finds nothing to hold", q: ["What would you decide if you had to answer in the next ten minutes?", "Which part have you already decided and are looking for permission on?", "What information would actually change your mind?"], why: "The oracle found nothing to hold onto, which is itself informative." };
+
+const DESCENT = [
+  { tag: "it asks who decides", q: ["Who else would have to agree with that answer?"], why: "Your first answer belongs to someone. The stone wants to know who." },
+  { tag: "it asks for the cost", q: ["And what does that cost you, specifically, this quarter?"], why: "Every honest answer has a price attached. This is where it shows up." },
+  { tag: "it asks what you avoided", q: ["What did you leave out of that answer on purpose?"], why: "By the third descent, the omissions are more interesting than the answers." },
+  { tag: "it asks the real one", q: ["So what is the question you came here actually wanting asked?"], why: "The stone has taken four questions off you. It is returning the one underneath." }
+];
+const HEARD = [
+  "It is holding your first answer now. It will not give that back.",
+  "You are answering the stone's questions, not your own. That is the point.",
+  "Four questions in. Whatever you started with has changed shape.",
+  "This is the floor. Nothing under it but the thing you came in with."
+];
+
+const state = { answer: null, heard: "", why: "", tag: "", turn: 0, shaking: false, history: [], askedText: "", used: [], copied: false };
+
+const $ = id => document.getElementById(id);
+const input = $("q-input");
+const askBtn = $("ask-btn");
+const answerRegion = $("answer-region");
+const historyRegion = $("history-region");
+
+const esc = str => String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+input.value = DILEMMAS[0];
+
+function setAnim(el, value) {
+  if (el.dataset.anim !== value) { el.dataset.anim = value; el.style.animation = value; }
+}
+
+function updateOrb() {
+  const s = state;
+  const qLen = (input.value || "").length;
+  setAnim($("aura"), s.shaking ? "aura 1.5s ease-in-out infinite" : "aura 7s ease-in-out infinite");
+  setAnim($("sphere"), s.shaking ? "shake 1.15s ease-in-out" : "none");
+  setAnim($("smoke"), s.shaking
+    ? "smoke " + Math.max(2.5, 7 - (qLen / 22)).toFixed(1) + "s linear infinite"
+    : "smoke " + Math.max(14, 34 - (qLen / 4)).toFixed(0) + "s linear infinite");
+  const win = $("window-text");
+  setAnim(win, s.shaking ? "swim 1.1s ease-in-out infinite" : "none");
+  win.textContent = s.shaking ? "something is moving in it" : (s.answer ? s.tag : "speak, and it will keep it");
+}
+
+function updateInput() {
+  const s = state;
+  $("input-label").textContent = s.turn === 0 ? "WHAT YOU CAME WITH" : "WHAT THE STONE GAVE YOU BACK · DESCENT " + s.turn;
+  askBtn.textContent = s.turn >= 5 ? "LEAVE THE STONE" : "CONSULT THE STONE";
+}
+
+function renderAnswer() {
+  const s = state;
+  const hasAnswer = !!s.answer && !s.shaking;
+  if (!hasAnswer) { answerRegion.innerHTML = ""; return; }
+  const answerWords = (s.answer || "").split(" ").map((w, i) => ({ text: w, delay: (i * 62) + "ms" }));
+  const turnsLeft = s.turn >= 5 ? "The stone has gone dark. It is finished with you." : "It keeps your question. You will not get it back.";
+  const deeperLabel = s.turn >= 5 ? "THE STONE HAS GONE DARK" : "PUT THAT QUESTION TO THE STONE";
+  const copyLabel = s.copied ? "COPIED" : "SAVE THE DESCENT";
+  answerRegion.innerHTML = `
+      <div style="animation: rise 340ms ease both; text-align: center; margin-top: 46px">
+        <div style="font-size: 10.5px; letter-spacing: 3px; color: #8b82b8">IT RETURNS</div>
+        <p style="font-family: 'Instrument Serif', serif; font-size: 46px; line-height: 1.18; margin: 16px auto 0; max-width: 860px; text-wrap: pretty">${answerWords.map(w => `<span style="display: inline-block; animation: surface 620ms ease both; animation-delay: ${w.delay}">${esc(w.text)}&nbsp;</span>`).join("")}</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; margin-top: 48px; border-top: 1px solid #2a2440; padding-top: 26px; text-align: left">
+          <div>
+            <div style="font-size: 10.5px; letter-spacing: 2px; color: #8b82b8">WHAT THE STONE HEARD</div>
+            <p style="font-size: 13px; line-height: 1.7; margin: 10px 0 0; color: #b3a9d9">${esc(s.heard)}</p>
+          </div>
+          <div>
+            <div style="font-size: 10.5px; letter-spacing: 2px; color: #8b82b8">WHAT IT WITHHELD</div>
+            <p style="font-size: 13px; line-height: 1.7; margin: 10px 0 0; color: #b3a9d9">${esc(s.why)}</p>
+          </div>
+          <div>
+            <div style="font-size: 10.5px; letter-spacing: 2px; color: #8b82b8">DESCENT</div>
+            <p style="font-size: 13px; line-height: 1.7; margin: 10px 0 0; color: #b3a9d9">${esc(s.turn)} of 5.<br>${esc(turnsLeft)}</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; justify-content: center">
+          <button type="button" data-action="deeper" class="btn-deeper" style="background: transparent; border: 1px solid #efe9ff; border-radius: 30px; color: #efe9ff; padding: 15px 28px; font-size: 12px; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer">${esc(deeperLabel)}</button>
+          <button type="button" data-action="copy" class="btn-ghost" style="background: transparent; border: 1px solid #4a3f7a; border-radius: 30px; color: #b3a9d9; padding: 15px 24px; font-size: 12px; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer">${esc(copyLabel)}</button>
+          <button type="button" data-action="reset" style="background: transparent; border: none; color: #8b82b8; padding: 15px 4px; font-size: 12px; letter-spacing: 1.6px; white-space: nowrap; cursor: pointer; text-decoration: underline">LEAVE THE STONE</button>
+        </div>
+      </div>`;
+}
+
+function renderHistory() {
+  const s = state;
+  if (s.history.length === 0) { historyRegion.innerHTML = ""; return; }
+  const rows = s.history.slice().reverse().map((h, i) => ({ n: String(s.history.length - i).padStart(2, "0"), asked: h.asked, replied: h.replied }));
+  historyRegion.innerHTML = `
+      <div style="margin-top: 66px; border-top: 1px solid #2a2440; padding-top: 26px">
+        <div style="font-size: 10.5px; letter-spacing: 2px; color: #8b82b8; margin-bottom: 18px">THE DESCENT SO FAR</div>
+        <div style="display: flex; flex-direction: column; gap: 18px">${rows.map(h => `
+            <div style="display: grid; grid-template-columns: 26px 1fr; gap: 16px">
+              <div style="font-size: 11px; color: #5a5180">${esc(h.n)}</div>
+              <div>
+                <div style="font-family: 'Instrument Serif', serif; font-size: 18px; color: #8b82b8; line-height: 1.35">${esc(h.asked)}</div>
+                <div style="font-family: 'Instrument Serif', serif; font-size: 22px; line-height: 1.35; margin-top: 4px">${esc(h.replied)}</div>
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`;
+}
+
+function render() {
+  updateInput();
+  updateOrb();
+  renderAnswer();
+  renderHistory();
+}
+
+function updateCopyLabel() {
+  const btn = answerRegion.querySelector('[data-action="copy"]');
+  if (btn) btn.textContent = state.copied ? "COPIED" : "SAVE THE DESCENT";
+}
+
+function surprise() {
+  input.value = DILEMMAS[Math.floor(Math.random() * DILEMMAS.length)];
+  state.answer = null;
+  render();
+}
+
+function reset() {
+  Object.assign(state, { answer: null, turn: 0, history: [], tag: "", used: [], copied: false });
+  input.value = DILEMMAS[Math.floor(Math.random() * DILEMMAS.length)];
+  render();
+}
+
+// The whole descent, as text worth pasting somewhere.
+function copyDescent() {
+  const lines = state.history.concat([{ asked: state.askedText, replied: state.answer }])
+    .filter(h => h.asked && h.replied)
+    .map((h, i) => (i + 1) + ". I asked: " + h.asked + "\n   It asked: " + h.replied);
+  const text = "ONE-QUESTION ORACLE — a descent\n\n" + lines.join("\n\n") + "\n\nIt never answered. samievargas.com";
+  try { navigator.clipboard.writeText(text); } catch (e) {}
+  state.copied = true;
+  updateCopyLabel();
+  setTimeout(() => { state.copied = false; updateCopyLabel(); }, 1800);
+}
+
+function ask() {
+  const text = (input.value || "").trim();
+  if (!text || state.shaking || state.turn >= 5) return;
+  const prevQ = state.askedText, prevA = state.answer;
+  state.shaking = true;
+  state.answer = null;
+  render();
+  setTimeout(() => {
+    const turn = Math.min(5, state.turn + 1);
+    const rule = turn === 1 ? (RULES.filter(r => r.test.test(text))[0] || GENERIC) : DESCENT[turn - 2];
+    let q = rule.q[0];
+    if (turn === 1) {
+      const fresh = rule.q.filter(x => state.used.indexOf(x) === -1);
+      q = (fresh.length ? fresh : rule.q)[0];
+    }
+    const words = text.split(/\s+/).length;
+    const joints = (text.match(/,|and|but/gi) || []).length;
+    let heard;
+    if (turn > 1) heard = HEARD[Math.min(HEARD.length - 1, turn - 2)];
+    else if (words < 6) heard = "Six words or fewer. Short questions hide their constraint.";
+    else if (joints === 0) heard = "A " + words + "-word question with one clean clause. Rarer than it sounds.";
+    else heard = "A " + words + "-word question with " + joints + " joint" + (joints === 1 ? "" : "s") + " in it. That makes it more than one question.";
+    Object.assign(state, {
+      shaking: false, answer: q, heard: heard, why: rule.why, tag: rule.tag, turn: turn, askedText: text,
+      used: state.used.concat([q]),
+      history: prevA ? state.history.concat([{ asked: prevQ, replied: prevA }]) : state.history
+    });
+    input.value = q;
+    render();
+  }, 1150);
+}
+
+function deeper() { if (state.turn >= 5) { reset(); return; } ask(); }
+
+askBtn.addEventListener("click", () => { if (state.turn >= 5) reset(); else ask(); });
+$("surprise-btn").addEventListener("click", surprise);
+input.addEventListener("input", updateOrb);
+answerRegion.addEventListener("click", e => {
+  const btn = e.target.closest("[data-action]");
+  if (!btn) return;
+  const action = btn.getAttribute("data-action");
+  if (action === "deeper") deeper();
+  else if (action === "copy") copyDescent();
+  else if (action === "reset") reset();
+});
+
+render();
+</script>
+</body>
+</html>
