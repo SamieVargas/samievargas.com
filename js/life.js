@@ -300,26 +300,41 @@ function renderPlaces(on) {
 
 // ── The record shelf + turntable ─────────────────────────────
 let selRec = 0;
+const RINGWEAR = 'radial-gradient(circle at 50% 52%,rgba(0,0,0,0) 56%,rgba(255,255,255,.07) 58%,rgba(255,255,255,.07) 61%,rgba(0,0,0,0) 63%)';
+const SPINE_EDGE = 'linear-gradient(90deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%,rgba(0,0,0,.3))';
 
+// The spines render once; selection only mutates styles in place, so the
+// crate's entrance animation never replays on hover.
 function renderCrate(on) {
-  const ringwear = 'radial-gradient(circle at 50% 52%,rgba(0,0,0,0) 56%,rgba(255,255,255,.07) 58%,rgba(255,255,255,.07) 61%,rgba(0,0,0,0) 63%)';
-  const edge = 'linear-gradient(90deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%,rgba(0,0,0,.3))';
-  $('#rec-crate').innerHTML = RECORDS.map((r, i) => {
-    const isOn = selRec === i;
-    const h = isOn ? 226 : 200 + ((i * 17) % 16);
-    return `
+  $('#rec-crate').innerHTML = RECORDS.map((r, i) => `
     <button type="button" data-rec="${i}" aria-label="${esc(`${r.t} — ${r.a}`)}"
-      style="position:relative;height:${h}px;flex:${isOn ? '0 1 226px' : '1 1 22px'};min-width:0;border:none;padding:0;cursor:pointer;overflow:hidden;text-align:left;background-color:${r.c};background-image:${isOn ? `${r.g},${ringwear}` : edge};box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)${isOn ? ',0 14px 24px -10px rgba(0,0,0,.85)' : ''};transition:flex-basis .5s cubic-bezier(.4,0,.2,1),height .5s cubic-bezier(.4,0,.2,1);${on ? `animation:growup .6s cubic-bezier(.4,0,.2,1) ${(i * 0.05).toFixed(2)}s both` : 'opacity:0'}">
-      <span style="position:absolute;left:0;top:0;bottom:0;width:100%;display:flex;justify-content:flex-start;padding:10px 0;writing-mode:vertical-rl;font:400 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:rgba(251,249,243,.85);white-space:nowrap;overflow:hidden;transition:opacity .25s ease;opacity:${isOn ? 0 : 1}">${esc(r.t)}</span>
-      <span style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:14px 16px;transition:opacity .4s ease ${isOn ? '.18s' : '0s'};opacity:${isOn ? 1 : 0}">
+      style="position:relative;min-width:0;border:none;padding:0;cursor:pointer;overflow:hidden;text-align:left;background-color:${r.c};box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);transition:flex-basis .5s cubic-bezier(.4,0,.2,1),height .5s cubic-bezier(.4,0,.2,1);${on ? `animation:growup .6s cubic-bezier(.4,0,.2,1) ${(i * 0.05).toFixed(2)}s both` : 'opacity:0'}">
+      <span class="spine-label" style="position:absolute;left:0;top:0;bottom:0;width:100%;display:flex;justify-content:flex-start;padding:10px 0;writing-mode:vertical-rl;font:400 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:rgba(251,249,243,.85);white-space:nowrap;overflow:hidden;transition:opacity .25s ease">${esc(r.t)}</span>
+      <span class="spine-cover" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:14px 16px;transition:opacity .4s ease">
         <span style="display:flex;justify-content:space-between;gap:8px;min-width:180px">
           <span style="font:400 8.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,249,243,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.a)}</span>
           <span style="font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:rgba(251,249,243,.45);white-space:nowrap">${r.cat}</span>
         </span>
         <span style="font:italic 300 23px/1.05 Newsreader,Georgia,serif;color:rgba(251,249,243,.96);display:block">${esc(r.t)}</span>
       </span>
-    </button>`;
-  }).join('');
+    </button>`).join('');
+  updateCrateSel();
+}
+
+function updateCrateSel() {
+  $('#rec-crate').querySelectorAll('[data-rec]').forEach((b, i) => {
+    const r = RECORDS[i];
+    const isOn = selRec === i;
+    b.style.height = `${isOn ? 226 : 200 + ((i * 17) % 16)}px`;
+    b.style.flex = isOn ? '0 1 226px' : '1 1 22px';
+    b.style.backgroundImage = isOn ? `${r.g},${RINGWEAR}` : SPINE_EDGE;
+    b.style.boxShadow = `inset 0 0 0 1px rgba(0,0,0,.35)${isOn ? ',0 14px 24px -10px rgba(0,0,0,.85)' : ''}`;
+    const label = b.querySelector('.spine-label');
+    const cover = b.querySelector('.spine-cover');
+    label.style.opacity = isOn ? '0' : '1';
+    cover.style.opacity = isOn ? '1' : '0';
+    cover.style.transitionDelay = isOn ? '.18s' : '0s';
+  });
   updateDeck();
 }
 
@@ -346,7 +361,7 @@ function wireCrate() {
     const b = e.target.closest('[data-rec]');
     if (!b || Number(b.dataset.rec) === selRec) return;
     selRec = Number(b.dataset.rec);
-    renderCrate(gates.recIn);
+    updateCrateSel();
   };
   $('#rec-crate').addEventListener('mouseover', pick);
   $('#rec-crate').addEventListener('click', pick);
@@ -355,19 +370,30 @@ function wireCrate() {
 // ── The Christie ledger ──────────────────────────────────────
 let selChr = 5;
 
+// Spines render once; selection only mutates transform and box-shadow, so
+// the shelf's entrance animation never replays on hover.
 function renderChristie(on) {
   $('#chr-shelf').innerHTML = CHRISTIE.map((c, i) => {
-    const isOn = selChr === i;
     const col = c.cur ? '#2e5c4e' : c.u ? '#3c403b' : RATING_COLORS[c.r];
     const h = 152 + ((i * 13) % 38);
-    const lean = (((i % 4) - 1.5) * 0.6).toFixed(1);
     return `
     <button type="button" data-chr="${i}" aria-label="${esc(c.t + (c.u ? ': on the list' : c.cur ? ': currently reading' : `: ${c.r} stars`))}"
-      style="position:relative;height:${h}px;flex:1 1 20px;min-width:0;border:none;cursor:pointer;padding:9px 0 7px;overflow:hidden;writing-mode:vertical-rl;display:flex;justify-content:space-between;align-items:center;background-color:${col};background-image:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0) 38%,rgba(0,0,0,.3)),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px),linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px);box-shadow:inset 0 0 0 1px rgba(0,0,0,.3)${isOn ? ',inset 0 0 0 2px rgba(251,249,243,.4)' : ''}${c.cur ? ',inset 0 0 0 2px rgba(63,174,143,.55)' : ''};transform-origin:bottom center;transition:transform .28s cubic-bezier(.34,1.3,.64,1);transform:${isOn ? 'translateY(-12px)' : `rotate(${lean}deg)`};${on ? `animation:growup .55s cubic-bezier(.4,0,.2,1) ${(i * 0.03).toFixed(2)}s both` : 'opacity:0'}">
+      style="position:relative;height:${h}px;flex:1 1 20px;min-width:0;border:none;cursor:pointer;padding:9px 0 7px;overflow:hidden;writing-mode:vertical-rl;display:flex;justify-content:space-between;align-items:center;background-color:${col};background-image:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0) 38%,rgba(0,0,0,.3)),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px),linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px);transform-origin:bottom center;transition:transform .28s cubic-bezier(.34,1.3,.64,1);${on ? `animation:growup .55s cubic-bezier(.4,0,.2,1) ${(i * 0.03).toFixed(2)}s both` : 'opacity:0'}">
       <span style="font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(251,249,243,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:74%">${esc(c.t)}</span>
       <span style="font:400 7.5px 'IBM Plex Mono',monospace;letter-spacing:.04em;color:rgba(251,249,243,.6);white-space:nowrap">${c.cur ? 'now' : c.u ? '·' : `${c.r}★`}</span>
     </button>`;
   }).join('');
+  updateChristieSel(on);
+}
+
+function updateChristieSel(on) {
+  $('#chr-shelf').querySelectorAll('[data-chr]').forEach((b, i) => {
+    const c = CHRISTIE[i];
+    const isOn = selChr === i;
+    const lean = (((i % 4) - 1.5) * 0.6).toFixed(1);
+    b.style.boxShadow = `inset 0 0 0 1px rgba(0,0,0,.3)${isOn ? ',inset 0 0 0 2px rgba(251,249,243,.4)' : ''}${c.cur ? ',inset 0 0 0 2px rgba(63,174,143,.55)' : ''}`;
+    b.style.transform = isOn ? 'translateY(-12px)' : `rotate(${lean}deg)`;
+  });
   renderLibCard(on);
 }
 
@@ -398,7 +424,7 @@ function wireChristie() {
     const b = e.target.closest('[data-chr]');
     if (!b || Number(b.dataset.chr) === selChr) return;
     selChr = Number(b.dataset.chr);
-    renderChristie(gates.chrIn);
+    updateChristieSel(gates.chrIn);
   };
   $('#chr-shelf').addEventListener('mouseover', pick);
   $('#chr-shelf').addEventListener('click', pick);
