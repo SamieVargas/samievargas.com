@@ -122,9 +122,9 @@ function fieldViz(sel) {
         <p style="margin:0;text-align:center;font:italic 400 9.5px Newsreader,Georgia,serif;color:rgba(251,249,243,.7)">*legally, this means almost nothing</p></div>`
         + vizCap('THE RABBIT HOLE, SUMMARIZED'));
     case 'records':
-      return wrapViz(`<div style="display:flex;align-items:flex-end;gap:3px;height:92px">${RECORDS.map((r, i) =>
-        `<i style="width:11px;height:${78 + ((i * 29) % 22)}%;display:block;background:${r.c}"></i>`).join('')}</div>`
-        + vizCap('SIXTEEN LPs · THE CRATE IS BELOW ↓'));
+      return wrapViz(`<div style="display:flex;align-items:flex-end;gap:2px;height:92px;width:86%">${RECORDS.map((r, i) =>
+        `<i style="flex:1;height:${78 + ((i * 29) % 22)}%;display:block;background:${r.c}"></i>`).join('')}</div>`
+        + vizCap('THIRTY-FIVE LPs · THE CRATE IS BELOW ↓'));
     case 'stickers':
       return wrapViz(`<div style="position:relative;width:240px;height:130px">${[
         ['PAPRIKA', '#b4552f', 6, 8, -6], ['DESNUDO', '#16150f', 120, 2, 4], ['TERRIBLE LOVE', '#7c3444', 44, 48, 3],
@@ -342,14 +342,14 @@ function updateDeck() {
   const r = RECORDS[selRec];
   $('#rec-readout').textContent = r
     ? `${r.t} — ${r.a}${r.n ? ` · ${r.n}` : ''}`
-    : 'Sixteen and counting. The soundtracks outnumber everything else, which tracks.';
+    : 'Thirty-five and counting. The soundtracks outnumber everything else, which tracks.';
   const label = $('#deck-label');
   label.style.background = r ? r.c : '';
   label.classList.toggle('is-spinning', !REDUCED && gates.recIn && selRec > -1);
   $('#deck-label-t').textContent = r ? r.t : '';
   $('#deck-arm').classList.toggle('is-on', gates.recIn && selRec > -1);
   $('#deck-power').classList.toggle('is-on', gates.recIn && selRec > -1);
-  $('#deck-index').textContent = `${`0${selRec + 1}`.slice(-2)} / 16`;
+  $('#deck-index').textContent = `${`0${selRec + 1}`.slice(-2)} / ${RECORDS.length}`;
   const sleeve = $('#deck-sleeve');
   sleeve.style.backgroundColor = r ? r.c : '';
   $('#deck-sleeve-t').textContent = r ? r.t : '';
