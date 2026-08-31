@@ -50,7 +50,7 @@ function fieldViz(sel) {
         <circle cx="20" cy="180" r="4" fill="#16150f"/>
         <circle cx="258" cy="76" r="6" fill="#1a6b5a" style="animation:pulsegreen 2s ease-out infinite"/>
         <text x="16" y="204" fill="#77735f" style="font:400 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em">MILE 0 · ZILKER</text>
-        <text x="196" y="58" fill="#1a6b5a" style="font:500 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em">MILE 15 — HERE</text>
+        <text x="196" y="58" fill="#1a6b5a" style="font:500 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em">MILE 15 · HERE</text>
         <text x="296" y="40" fill="#77735f" style="font:400 8.5px 'IBM Plex Mono',monospace;letter-spacing:.08em">MILE 21</text>
         <text x="30" y="152" fill="#8fb9b0" style="font:italic 400 9px Newsreader,Georgia,serif">Barton Creek</text>
       </svg></div>`;
@@ -132,7 +132,7 @@ function fieldViz(sel) {
       ].map((p) => `<span style="position:absolute;left:${p[2]}px;top:${p[3]}px;transform:rotate(${p[4]}deg);background:${p[1]};padding:7px 12px;border-radius:14px;${MONO(8.5, '#fbf9f3')};box-shadow:0 3px 8px -3px rgba(22,21,15,.4)">${p[0]}</span>`).join('')}</div>`
         + vizCap('LAPTOP REAL ESTATE · EARNED, NOT BOUGHT'));
     default:
-      return `<p style="margin:0;${MONO(10, '#8d8975')};text-align:center;max-width:30ch;line-height:1.9;padding:0 20px">Nothing to open — this one is just something I noticed</p>`;
+      return `<p style="margin:0;${MONO(10, '#8d8975')};text-align:center;max-width:30ch;line-height:1.9;padding:0 20px">Nothing to open, this one is just something I noticed</p>`;
   }
 }
 
@@ -239,7 +239,7 @@ function renderBattery(on) {
 function updateReadout() {
   $('#battery-readout').textContent = dayIdx > -1
     ? `${RACCOON_LIFE[dayIdx].d} — ${RACCOON_LIFE[dayIdx].v} — ${RACCOON_LIFE[dayIdx].note}`
-    : 'Six days pinned at the floor, then eight more to climb back after the raccoons were already gone.';
+    : 'Six days pinned at the floor, and then eight more to climb back after the raccoons were already gone.';
   $('#battery').querySelectorAll('[data-day]').forEach((b, i) =>
     b.classList.toggle('is-on', i === dayIdx));
 }
@@ -342,7 +342,7 @@ function updateDeck() {
   const r = RECORDS[selRec];
   $('#rec-readout').textContent = r
     ? `${r.t} — ${r.a}${r.n ? ` · ${r.n}` : ''}`
-    : 'Thirty-five and counting. The soundtracks outnumber everything else, which tracks.';
+    : 'Thirty-five and counting, and the soundtracks outnumber everything else, which tracks.';
   const label = $('#deck-label');
   label.style.background = r ? r.c : '';
   label.classList.toggle('is-spinning', !REDUCED && gates.recIn && selRec > -1);
@@ -353,7 +353,7 @@ function updateDeck() {
   const sleeve = $('#deck-sleeve');
   sleeve.style.backgroundColor = r ? r.c : '';
   $('#deck-sleeve-t').textContent = r ? r.t : '';
-  $('#deck-caption').textContent = r ? `Now spinning · Side A · ${r.t}` : 'Pull a spine to put it on';
+  $('#deck-caption').textContent = r ? `Now spinning · Side A · ${r.t}` : 'Pull a spine and I will put it on';
 }
 
 function wireCrate() {

@@ -30,10 +30,25 @@ const SIGNAL_OUT = [
 ];
 
 const SIGNAL_NOTES = [
-  { n: '1', title: 'Ranked, not listed', body: 'Accounts come back in risk order, so the first thing you read is the thing to act on.' },
+  { n: '1', title: 'Ranked by risk', body: 'Accounts come back in risk order, so the first thing you read is the thing to act on.' },
   { n: '2', title: 'One line per account', body: 'The read is a sentence you can paste into Slack without editing it.' },
-  { n: '3', title: 'The contact read', body: 'Second-order sentiment — the gap between what someone says and what their behavior says.' },
-  { n: '4', title: 'One action', body: 'Not a list of options. A single "do this today," which is what makes it usable before a call.' },
+  { n: '3', title: 'The contact read', body: 'Second-order sentiment, meaning the gap between what someone says and what their behavior says.' },
+  { n: '4', title: 'One action', body: 'It ends in a single "do this today" instead of a list of options, which is what makes it usable before a call.' },
+];
+
+// The contact read — verbatim Signal output for one account, typed
+// back in live rather than screenshotted.
+const READ_ROWS = [
+  { k: 'Primary contact', v: 'Marcus Webb, VP Strategy & Analytics' },
+  { k: 'Comm style', v: 'In Q3, Marcus was concise, technically engaged, and responsive same-day — he communicated with specificity and named deliverables. By Q4, his language became vague ("the team uses it when we use it"), he delegated substantive work to Tom without follow-through, and he stopped responding entirely. His current communication style is avoidance through silence, not explicit pushback.' },
+  { k: 'Decision style', v: 'Data-driven when bought in — he cited specific metrics (6-hour savings) to his CPO and asked retroactive-cohort technical questions. But his decisions appear to also be politically influenced: the board deck win suggested he was using Veridian to build internal credibility. When that internal momentum stalled or his priorities shifted, his engagement dropped in lockstep.' },
+  { k: 'Says vs means', v: 'Says: "Not off the table… not the right timing right now" (re: Export API). Means: I am not prioritizing this and I am not going to tell you why. Says nothing (silence since Nov 7). Means: either I have lost internal support for this tool, my priorities have materially changed, or I am already evaluating alternatives and do not want to have the renewal conversation yet.' },
+  { k: 'How to engage', v: 'Do not re-pitch features to Marcus — he has heard the pitches and is not responding. The only approach likely to move him is a peer-level executive touchpoint that re-anchors to the outcome he already claimed as a win (board deck, CPO visibility). If that re-engage fails within 2 weeks, treat Marcus as lost and shift renewal strategy entirely to Priya Nair as the signing-authority path.' },
+];
+
+const SEC_CONTACTS = [
+  { name: 'Priya Nair, Director of Research Operations', body: 'Operational admin and de facto day-to-day owner — 14 logins in 30 days, attended Q4 QBR as Marcus\'s substitute, highest platform engagement of any user. She is not the budget decision-maker but is the closest active stakeholder to the renewal and the most viable path to internal influence if Marcus remains unreachable.' },
+  { name: 'Tom Gillis, Senior Analyst', body: 'Technical power user with the highest average session time (12.4 min) and substantive product engagement — evaluated Attribution v2 but reported being "slammed." An important adoption driver, but with no budget authority and limited bandwidth.' },
 ];
 
 const DUMP_BITS = [
@@ -49,13 +64,13 @@ const DUMP_BITS = [
 ];
 
 const BRAIN_STATES = {
-  Foggy: { note: 'Foggy gets one physical task and warmer wording. Decision work is pushed down the list, not surfaced.',
+  Foggy: { note: 'Foggy gets one physical task and warmer wording, and decision work is pushed down the list instead of surfaced.',
     piles: [
       { k: 'Energy for today', v: 'Eat something. That is the whole task.' },
       { k: 'Real but not now', v: 'Thursday deck · vendor callback' },
       { k: 'Worth keeping', v: 'Learn Snowflake properly — park it, it is a good one' },
       { k: 'Put it down', v: 'The Q2 thing. It is closed and you are still carrying it.' } ] },
-  Low: { note: 'Low energy blocks decision work entirely. Nothing needing a judgement call reaches the first pile.',
+  Low: { note: 'Low energy blocks decision work entirely, so nothing needing a judgement call reaches the first pile.',
     piles: [
       { k: 'Energy for today', v: 'Laundry. Low stakes, visible progress.' },
       { k: 'Real but not now', v: 'Thursday deck — needs a clear head, not this one' },
@@ -67,13 +82,13 @@ const BRAIN_STATES = {
       { k: 'Real but not now', v: 'Greenbelt run — schedule it, do not do it today' },
       { k: 'Worth keeping', v: 'Snowflake, properly, with a project attached' },
       { k: 'Put it down', v: 'The Q2 thing' } ] },
-  Wired: { note: 'Wired gets a hard cap. Two items, because the failure mode here is starting six things.',
+  Wired: { note: 'Wired gets a hard cap of two items, because the failure mode here is starting six things.',
     piles: [
       { k: 'Energy for today', v: 'Thursday deck, all the way through' },
       { k: 'Real but not now', v: 'Vendor callback · laundry' },
       { k: 'Worth keeping', v: 'Snowflake — write the plan down, do not open it tonight' },
       { k: 'Put it down', v: 'The Q2 thing' } ] },
-  Heavy: { note: 'Heavy reorders around the weight first. The thing you are carrying gets named before anything is asked of you.',
+  Heavy: { note: 'Heavy reorders around the weight first, and the thing you are carrying gets named before anything is asked of you.',
     piles: [
       { k: 'Put it down', v: 'The Q2 thing. You have thought about it for weeks and it is finished.' },
       { k: 'Energy for today', v: 'Eat. Then the vendor callback if it still feels possible.' },
@@ -82,27 +97,26 @@ const BRAIN_STATES = {
 };
 
 const ANNOTATED = [
-  { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'One cited number, rebuilt until it split in half.',
+  { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'I rebuilt one cited number until it split in half.',
     cta: 'See the models ↗', href: 'https://github.com/SamieVargas/instacart-project',
-    img: 'assets/instacart-dbt/find_03_looker_page-1.png', alt: 'Looker Studio — reorder behaviour by shopper segment',
-    cols: '1.2fr 1fr', imgFirst: true,
+    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true,
     inputLine: 'In: raw order tables · out: five staging models, one join, three marts, 35 passing tests',
     notes: [
       { n: '1', title: 'Lineage you can follow', body: 'Every mart traces back to a named staging model, so a number can be argued with.' },
-      { n: '2', title: '35 tests, not null checks', body: 'The tests encode business rules — grain, valid segments, plausible ranges.' },
-      { n: '3', title: 'Segmented, then compared', body: 'Reorder rate recomputed per shopper tenure instead of pooled.' },
+      { n: '2', title: '35 tests that mean something', body: 'The tests encode business rules like grain, valid segments, and plausible ranges.' },
+      { n: '3', title: 'Segmented, then compared', body: 'I recomputed reorder rate per shopper tenure instead of pooling it.' },
       { n: '4', title: 'Confirmed with a model', body: 'Random forest AUC 0.989 for veterans against 0.857 for new users.' } ],
-    finding: 'new shoppers reorder at 0.221, veterans at 0.670. The 0.60 everyone cites describes neither.' },
-  { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'A pest-sighting post, turned into an audit of where I eat.',
+    finding: 'new shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither.' },
+  { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'I turned a pest-sighting post into an audit of where I eat.',
     cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: null, cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
+    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
     inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
     notes: [
-      { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name — the question I actually had.' },
-      { n: '2', title: 'Scored per visit type', body: 'Routine visits separated from follow-ups, which is where the pattern lives.' },
-      { n: '3', title: '84 brands compared', body: 'A compliance scorecard across local restaurant groups, not single locations.' },
+      { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name, because that was the question I actually had.' },
+      { n: '2', title: 'Scored per visit type', body: 'I separated routine visits from follow-ups, which is where the pattern lives.' },
+      { n: '3', title: '84 brands compared', body: 'A compliance scorecard across whole local restaurant groups rather than single locations.' },
       { n: '4', title: 'Mapped by zip', body: 'A choropleth of Austin, so a neighborhood answer replaces an anecdote.' } ],
-    finding: 'scores drift about two points worse across a venue\'s inspection history — 90.5 at the first visit, 92.6 by the fourteenth. Being flagged is not what fixes it.' },
+    finding: 'scores drift about two points worse across a venue\'s inspection history, 90.5 at the first visit and 92.6 by the fourteenth, and being flagged is not what fixes it.' },
 ];
 
 // Real per-zip averages from assets/atx-foodie-inspection — lower score = fewer violations.
@@ -163,7 +177,7 @@ const SKILLS = [
 ];
 
 const CERTS = [
-  { name: 'Anthropic AI Fluency — full credential set', issuer: 'Anthropic Academy · Jun 2026', href: 'https://www.anthropic.com/learn' },
+  { name: 'Anthropic AI Fluency — full credential set', issuer: 'Anthropic Academy · Jun 2026 · Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities & Limitations · AI Fluency Framework', href: 'https://www.anthropic.com/learn' },
   { name: 'Google Advanced Data Analytics', issuer: 'Google / Coursera · ID 4REOBHKQJ0DS · Jun 2026', href: 'https://coursera.org/verify/professional-cert/4REOBHKQJ0DS' },
   { name: 'dbt Fundamentals', issuer: 'dbt Labs · May 2026', href: 'https://credentials.getdbt.com/5470c199-7753-4f90-99a3-07e8f8c6fe51' },
   { name: 'PSM I — Professional Scrum Master', issuer: 'Scrum.org · May 2026', href: 'https://scrum.org/certificates/1318010' },
@@ -188,33 +202,33 @@ const RACCOON_DAYS = [
 const OBSERVATIONS = [
   { tag: 'May 2026 · Instacart · 3.4M orders', title: 'The 0.60 reorder rate is technically correct and also meaningless',
     paragraphs: [
-      'The Instacart dataset gets cited constantly: 60% of items in a typical order are things the shopper has bought before. I spent a week building a transformation layer on top of it to make the data trustworthy. First real query and the number fell apart.',
-      'New shoppers reorder at 0.221. Veterans at 0.670. Same metric, same platform, same dataset, a threefold difference. The average is not wrong. It is four different behavioral profiles compressed into one number that describes none of them.',
-      'Also: I am in this dataset. I ordered groceries the day I ran the query. Dairy and produce came back as my top two reorder departments. That was just my cart.'],
+      'The Instacart dataset gets cited constantly: 60% of items in a typical order are things the shopper has bought before. I spent a week building a transformation layer on top of it to make the data trustworthy, and the first real query I ran made the number fall apart.',
+      'New shoppers reorder at 0.221 and veterans at 0.670, which is the same metric on the same platform in the same dataset with a threefold difference, and the average turns out to be four different behavioral profiles compressed into one number that describes none of them.',
+      'Also, I am in this dataset, I ordered groceries the day I ran the query, and dairy and produce came back as my top two reorder departments, which was just my cart.'],
     sourceText: 'Built in dbt on BigQuery ·', linkText: 'Full project ↗', linkHref: 'https://github.com/SamieVargas/instacart-project' },
   { tag: 'Apr–May 2026 · personal biometric data', title: 'My nervous system knew about the raccoon before I did',
     paragraphs: [
-      'For several nights I slept badly and could not explain it. I blamed podcasts. I cancelled plans. Then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.',
-      'The wearable data told the story better than I could. Five consecutive days at a body battery of 5 out of 100 — the floor — before I knew what the threat was. Sleep score fell from a baseline of 81 to 53.',
-      'The part that surprised me was after. The raccoons were removed on May 3. It took eight days to return to baseline. The nervous system does not get the memo. That lag, not the disruption, is what the data made visible.'],
+      'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans, and then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.',
+      'The wearable data told the story better than I could, five consecutive days at a body battery of 5 out of 100, which is the floor, before I knew what the threat was, and my sleep score fell from a baseline of 81 to 53.',
+      'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice ↗', linkHref: 'https://samievargas.com/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_DAYS } },
   { tag: 'May 2026 · 21,160 inspection records', title: 'Being flagged does not fix it',
     paragraphs: [
-      'I started by querying every restaurant I actually eat at against the city health inspection API. Places that failed and were sent for a follow-up visit scored eight points lower on average than routine visits. Not higher. Lower.',
-      'A second pattern across 84 local brands: scores decay measurably by the fifth or sixth inspection cycle. Repeat offenders are identifiable before it gets bad. The city already has the data. The question is whether anyone has built the workflow to act on it.'],
+      'I started by querying every restaurant I actually eat at against the city health inspection API, and places that failed and were sent for a follow-up visit scored eight points lower on average than routine visits, which is the opposite direction of what I expected.',
+      'A second pattern showed up across 84 local brands, scores decay measurably by the fifth or sixth inspection cycle, so repeat offenders are identifiable before it gets bad, and the city already has the data, the question is whether anyone has built the workflow to act on it.'],
     sourceText: 'City of Austin open data ·', linkText: 'Full analysis ↗', linkHref: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection' },
   { tag: 'May 2026 · systems', title: 'Every productivity system I have built has the same failure mode',
     paragraphs: [
-      'I have a very good system. I have rebuilt it roughly four times. Each rebuild improves on the last and shares the same core problem: it requires me to want to use it at the exact moment I am least capable of wanting to use anything.',
-      'I do not think this is a failure. This is what maintenance looks like when your brain does not do it automatically. You rebuild, and the rebuilt version is smarter because you know more.'],
+      'I have a very good system that I have rebuilt roughly four times, and each rebuild improves on the last while sharing the same core problem, it requires me to want to use it at the exact moment I am least capable of wanting to use anything.',
+      'I do not think this is a failure, this is what maintenance looks like when your brain does not do it automatically, and each rebuilt version is smarter because you know more.'],
     sourceText: 'Currently running on Todoist and Drive', linkText: '', linkHref: '#' },
 ];
 
 const LIFE_TEASERS = [
   { k: 'The field', v: 'Everything I noticed, plotted by whether I built something about it' },
   { k: 'Running', v: '15 of 21 miles on the Greenbelt' },
-  { k: 'Reading', v: 'The complete Christie, in order. Stalled on late Poirot.' },
+  { k: 'Reading', v: 'The complete Christie in order, currently stalled on late Poirot.' },
   { k: 'Tarot', v: 'Seven decks, every pull logged across 78 cards' },
 ];
 
@@ -230,25 +244,25 @@ const CONTACT_LINKS = [
 // ── Life page ────────────────────────────────────────────────
 
 const LIFE_FIELD = [
-  { id: 'walk', short: 'A walk is worth half a point', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language. Hot yoga plus walking beat everything else for sleep and recovery.' },
-  { id: 'lifeos', short: 'Life OS', kind: 'Built', title: 'Life OS', x: '88%', y: '30%', year: '2025–26', art: 'assets/life-os/lifeos_today.png', href: 'https://samievargas.com', linkLabel: 'See the dashboard ↗', line: 'A daily dashboard pulling from two of my own data endpoints — fifteen charts across health, habits, and whatever I said I would do.' },
-  { id: 'tarot', short: 'Tarot tracker', kind: 'Built', title: 'Seven decks and a tracker', x: '76%', y: '58%', year: '2025', art: 'assets/tarot-tracker/deck.png', href: 'https://samievargas.com', linkLabel: 'Open the tracker ↗', line: 'Every pull logged across all 78 cards, with the ones that keep coming back. Built because I pull most mornings anyway.' },
-  { id: 'journal', short: 'Journaling since 2020', kind: 'Built', title: 'My own journaling app', x: '70%', y: '80%', year: '2020–26', line: 'Daily since 2020, in an app I built so the prompts are exactly what I want. The patterns across months are different from what shows up in a single day.' },
-  { id: 'raccoon', short: 'The raccoon', kind: 'Noticed', title: 'Why I could not sleep', x: '24%', y: '26%', year: '2026', line: 'Five bad nights I blamed on podcasts. My recovery score had been pinned at the floor for days before I found a raccoon nesting on my balcony.' },
-  { id: 'toothbrush', short: 'The toothbrush', kind: 'Noticed', title: 'Sixteen tooth zones', x: '14%', y: '44%', year: '2026', line: 'A brush that maps sixteen zones told me in 45 seconds what years of appointments had not. I was not getting my back molars. Showing someone the gap is the whole job.' },
+  { id: 'walk', short: 'A walk is worth half a point', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language, and hot yoga plus walking beat everything else for sleep and recovery.' },
+  { id: 'lifeos', short: 'Life OS', kind: 'Built', title: 'Life OS', x: '88%', y: '30%', year: '2025–26', art: 'assets/life-os/lifeos_today.png', href: 'https://samievargas.com', linkLabel: 'See the dashboard ↗', line: 'A daily dashboard pulling from two of my own data endpoints, fifteen charts across health, habits, and whatever I said I would do.' },
+  { id: 'tarot', short: 'Tarot tracker', kind: 'Built', title: 'Seven decks and a tracker', x: '76%', y: '58%', year: '2025', art: 'assets/tarot-tracker/deck.png', href: 'https://samievargas.com', linkLabel: 'Open the tracker ↗', line: 'Every pull logged across all 78 cards, including the ones that keep coming back, and I built it because I pull most mornings anyway.' },
+  { id: 'journal', short: 'Journaling since 2020', kind: 'Built', title: 'My own journaling app', x: '70%', y: '80%', year: '2020–26', line: 'Daily since 2020, in an app I built so the prompts are exactly what I want, and the patterns across months are different from what shows up in a single day.' },
+  { id: 'raccoon', short: 'The raccoon', kind: 'Noticed', title: 'Why I could not sleep', x: '24%', y: '26%', year: '2026', line: 'Five bad nights that I blamed on podcasts, and my recovery score had been pinned at the floor for days before I found a raccoon nesting on my balcony.' },
+  { id: 'toothbrush', short: 'The toothbrush', kind: 'Noticed', title: 'Sixteen tooth zones', x: '14%', y: '44%', year: '2026', line: 'A brush that maps sixteen zones told me in 45 seconds what years of appointments had not, which is that I was not getting my back molars, and showing someone the gap is the whole job.' },
   { id: 'poirot', short: 'Paused on Poirot', kind: 'Noticed', title: 'Why I stopped reading', x: '20%', y: '68%', year: 'Ongoing', line: 'I am reading the complete Christie in order and I have stalled in the late Poirot books, because he is getting old in them and I am not ready.' },
-  { id: 'caesar', short: 'The Caesar search', kind: 'Noticed', title: 'The perfect Caesar salad', x: '34%', y: '86%', year: 'Ongoing', line: 'An ongoing and possibly doomed search. Paprika, Desnudo, and Terrible Love are the current favorites for everything else.' },
-  { id: 'knee', short: 'The knee', kind: 'Noticed', title: 'What the knee actually allows', x: '30%', y: '10%', year: 'Ongoing', line: 'Hot yoga and pilates are for the knee and the nervous system. It is the gating factor on the Greenbelt, not fitness.' },
-  { id: 'greenbelt', short: '15 of 21 miles', kind: 'In progress', title: 'The full Greenbelt', x: '48%', y: '92%', year: 'Ongoing', line: 'The trail runs 21 miles out and back and I am at fifteen. The Greenbelt in October, water still warm, is one of the best things about living here.' },
-  { id: 'flipper', short: 'The medieval problem', kind: 'Built, sort of', title: 'Half-timbering in House Flipper', x: '86%', y: '72%', year: '2026', line: 'I spent an unreasonable amount of time getting the half-timbering right. Cobblestone base, old plaster, steep pitched roof. It served no purpose and I loved every minute.' },
-  { id: 'matcha', short: 'The Desnudo order', kind: 'Noticed', title: 'The standing order', x: '46%', y: '66%', year: 'Ongoing', line: 'Brown sugar miso, or the strawberry matcha, from Desnudo — the same Desnudo that is on the eating list.' },
-  { id: 'bobs', short: "Bob's Burgers, again", kind: 'Noticed', title: 'The comfort rewatch', x: '7%', y: '88%', year: 'Ongoing', line: "Bob's Burgers. It has been Bob's Burgers for a while, and there is no reason for that to change." },
-  { id: 'karaoke', short: 'The karaoke rotation', kind: 'Noticed', title: 'The karaoke rotation', x: '38%', y: '53%', year: 'Ongoing', line: 'Dancing Queen or Voulez-Vous when it is an ABBA night. Fishing in the Dark when it is not.' },
-  { id: 'podcasts', short: '100% Eat · Regulation', kind: 'Noticed', title: 'The comedy rotation', x: '6%', y: '22%', year: 'Ongoing', line: '100% Eat — the podcast formerly known as Face Jam — and the Regulation Podcast, formerly known as something I cannot print here.' },
-  { id: 'truecrime', short: 'That Chapter · Crime Junkie', kind: 'Noticed', title: 'True crime, done right', x: '5%', y: '33%', year: 'Ongoing', line: 'That Chapter and Crime Junkie — true crime that treats victims as humans first. Also: falsely accused in the raccoon incident, since fully exonerated.' },
-  { id: 'leather', short: '"Genuine leather"', kind: 'Rabbit hole', title: 'The genuine-leather rabbit hole', x: '50%', y: '32%', year: 'Current', line: 'Current rabbit hole: "genuine leather" is a marketing ploy — and how much of what we buy is presentation rather than quality.' },
-  { id: 'records', short: 'The record shelf', kind: 'Collected', title: 'The record shelf', x: '58%', y: '76%', year: 'Ongoing', line: 'Thirty-five and counting — the 1969 Santana with the print, the purple Purple Rain 12-inch, the 1977 Star Wars double LP, thirteen Bond themes plus the 1965 mono comp, three Strokes, two Selenas, and a John Mulaney comedy record. The full crate is below.' },
-  { id: 'stickers', short: 'Austin stickers', kind: 'Collected', title: 'Stickers from local places', x: '8%', y: '58%', year: 'Ongoing', line: 'Stickers from local Austin places — the other collection. If a spot is good enough to go back to, it is good enough to keep the sticker.' },
+  { id: 'caesar', short: 'The Caesar search', kind: 'Noticed', title: 'The perfect Caesar salad', x: '34%', y: '86%', year: 'Ongoing', line: 'An ongoing and possibly doomed search, and Paprika, Desnudo, and Terrible Love are the current favorites for everything else.' },
+  { id: 'knee', short: 'The knee', kind: 'Noticed', title: 'What the knee actually allows', x: '30%', y: '10%', year: 'Ongoing', line: 'Hot yoga and pilates are for the knee and the nervous system, and the knee is the gating factor on the Greenbelt rather than fitness.' },
+  { id: 'greenbelt', short: '15 of 21 miles', kind: 'In progress', title: 'The full Greenbelt', x: '48%', y: '92%', year: 'Ongoing', line: 'The trail runs 21 miles out and back and I am at fifteen, and the Greenbelt in October with the water still warm is one of the best things about living here.' },
+  { id: 'flipper', short: 'The medieval problem', kind: 'Built, sort of', title: 'Half-timbering in House Flipper', x: '86%', y: '72%', year: '2026', line: 'I spent an unreasonable amount of time getting the half-timbering right, with a cobblestone base and old plaster and a steep pitched roof, and it served no purpose and I loved every minute.' },
+  { id: 'matcha', short: 'The Desnudo order', kind: 'Noticed', title: 'The standing order', x: '46%', y: '66%', year: 'Ongoing', line: 'Brown sugar miso, or the strawberry matcha, from Desnudo, which is the same Desnudo that is on the eating list.' },
+  { id: 'bobs', short: "Bob's Burgers, again", kind: 'Noticed', title: 'The comfort rewatch', x: '7%', y: '88%', year: 'Ongoing', line: "Bob's Burgers, and it has been Bob's Burgers for a while, and there is no reason for that to change." },
+  { id: 'karaoke', short: 'The karaoke rotation', kind: 'Noticed', title: 'The karaoke rotation', x: '38%', y: '53%', year: 'Ongoing', line: 'Dancing Queen or Voulez-Vous when it is an ABBA night, and Fishing in the Dark when it is not.' },
+  { id: 'podcasts', short: '100% Eat · Regulation', kind: 'Noticed', title: 'The comedy rotation', x: '6%', y: '22%', year: 'Ongoing', line: '100% Eat, the podcast formerly known as Face Jam, and the Regulation Podcast, formerly known as something I cannot print here.' },
+  { id: 'truecrime', short: 'That Chapter · Crime Junkie', kind: 'Noticed', title: 'True crime, done right', x: '5%', y: '33%', year: 'Ongoing', line: 'That Chapter and Crime Junkie, which is true crime that treats victims as humans first, and both were falsely accused in the raccoon incident and have since been fully exonerated.' },
+  { id: 'leather', short: '"Genuine leather"', kind: 'Rabbit hole', title: 'The genuine-leather rabbit hole', x: '50%', y: '32%', year: 'Current', line: 'The current rabbit hole is that "genuine leather" is a marketing ploy, and how much of what we buy is presentation rather than quality.' },
+  { id: 'records', short: 'The record shelf', kind: 'Collected', title: 'The record shelf', x: '58%', y: '76%', year: 'Ongoing', line: 'Thirty-five and counting, including the 1969 Santana with the print, the purple Purple Rain 12-inch, the 1977 Star Wars double LP, thirteen Bond themes plus the 1965 mono comp, three Strokes, two Selenas, and a John Mulaney comedy record, and the full crate is below.' },
+  { id: 'stickers', short: 'Austin stickers', kind: 'Collected', title: 'Stickers from local places', x: '8%', y: '58%', year: 'Ongoing', line: 'Stickers from local Austin places, which is the other collection, and if a spot is good enough to go back to then it is good enough to keep the sticker.' },
 ];
 
 const LIFE_RELATED = {
@@ -370,9 +384,19 @@ const CHRISTIE = [
 ];
 
 const RACCOON_LIFE = [
-  RACCOON_DAYS[0], RACCOON_DAYS[1], RACCOON_DAYS[2], RACCOON_DAYS[3], RACCOON_DAYS[4],
-  { d: 'Apr 29', v: 5, note: 'Still the floor. Sleep score 53 against a baseline of 81.' },
-  RACCOON_DAYS[6], RACCOON_DAYS[7], RACCOON_DAYS[8], RACCOON_DAYS[9], RACCOON_DAYS[10], RACCOON_DAYS[11], RACCOON_DAYS[12],
+  { d: 'Apr 24', v: 62, note: 'A normal week, and I had no idea anything was coming.' },
+  { d: 'Apr 25', v: 41, note: 'First bad night, which I blamed on the podcast.' },
+  { d: 'Apr 26', v: 18, note: 'Cancelled plans.' },
+  { d: 'Apr 27', v: 5, note: 'The floor, five out of a hundred.' },
+  { d: 'Apr 28', v: 5, note: 'Still the floor.' },
+  { d: 'Apr 29', v: 5, note: 'Still the floor, with a sleep score of 53 against a baseline of 81.' },
+  { d: 'Apr 30', v: 5, note: 'HRV 26ms, my worst on record.' },
+  { d: 'May 1', v: 5, note: 'Found them, a mother raccoon and babies on the balcony.' },
+  { d: 'May 3', v: 5, note: 'Raccoons removed and I expected instant relief, but body battery was still 5.' },
+  { d: 'May 5', v: 22, note: 'First movement in ten days.' },
+  { d: 'May 7', v: 44, note: 'Climbing.' },
+  { d: 'May 9', v: 58, note: 'Almost back.' },
+  { d: 'May 11', v: 74, note: 'Back to baseline, eight days after the threat was gone.' },
 ];
 
 const PROGRESS = [
@@ -381,14 +405,14 @@ const PROGRESS = [
   { title: 'Snowflake hands-on badges', note: '1 of 3', pct: 33 },
   { title: 'dbt Certified Developer', note: 'fundamentals done', pct: 45 },
   { title: 'Steam review-bombing detection', note: '31M+ reviews, modeling', pct: 30 },
-  { title: 'Solo travel — London first', note: 'neighborhoods mapped', pct: 20 },
+  { title: 'Solo travel, London first', note: 'neighborhoods mapped', pct: 20 },
 ];
 
 const PLACES = [
-  { name: 'Paprika', note: 'The standing default. Patio, late.', zip: '78757', score: 91.6 },
+  { name: 'Paprika', note: 'The standing default, on the patio, late.', zip: '78757', score: 91.6 },
   { name: 'Desnudo', note: 'Coffee that turns into something else by evening.', zip: '78702', score: 89.3 },
-  { name: 'Terrible Love', note: 'Named like a warning, eats like a favourite.', zip: '78704', score: 88.7 },
-  { name: 'Barton Springs, before the crowd', note: 'Not food. Still part of the rotation.', zip: '78704', score: 88.7 },
+  { name: 'Terrible Love', note: 'Named like a warning and eats like a favourite.', zip: '78704', score: 88.7 },
+  { name: 'Barton Springs, before the crowd', note: 'Not food, but still part of the rotation.', zip: '78704', score: 88.7 },
   { name: 'The Caesar salad, still hypothetical', note: 'Cold plate, no anchovy, croutons that were bread yesterday.', zip: 'anywhere', score: null },
 ];
 
@@ -431,17 +455,17 @@ const TK_NOTES = [
 
 const TK_META = [
   { name: 'Tab title', attr: '<title>', current: 'Samie Vargas — applied AI & enablement', status: 'Live · 38 chars',
-    why: 'My name on its own loses to every other Samie Vargas in a search result, and says nothing in a tab strip of twelve. This says what I do in the space I have.' },
+    why: 'My name on its own loses to every other Samie Vargas in a search result, and it says nothing in a tab strip of twelve, so this says what I do in the space I have.' },
   { name: 'Social title', attr: 'og:title · twitter:title', current: 'I ship AI tools that replace work I used to do by hand', status: 'Live · 54 chars',
-    why: 'This is the line that shows up in someone\'s Slack, which is how most people get here. It should be the claim — my name is already on the card as the domain.' },
+    why: 'This is the line that shows up in someone\'s Slack, which is how most people get here, so it should be the claim, since my name is already on the card as the domain.' },
   { name: 'Social description', attr: 'og:description', current: 'Signal reads messy account files in a minute. 3.4M orders modeled in dbt. 21,160 inspection records. Eight years running a $14M+ enterprise book.', status: 'Live · 146 chars',
-    why: 'The title makes the claim, so this carries proof instead of repeating it. Every number here is one I can walk someone through.' },
+    why: 'The title makes the claim, so this carries proof instead of repeating it, and every number here is one I can walk someone through.' },
   { name: 'Search description', attr: 'meta name="description"', current: 'Applied-AI operator in enterprise customer success. I build the LLM workflows and ship the tools — Signal, Brain Dump, dbt pipelines. Austin, remote.', status: 'Live · 150 chars',
-    why: 'Google cuts around 155, and my old one was 197, so the part being dropped was the location. This ends on the strongest clause and still keeps Austin.' },
+    why: 'Google cuts around 155 and my old one was 197, so the part being dropped was the location, and this ends on the strongest clause while still keeping Austin.' },
   { name: 'Card alt text', attr: 'og:image:alt', current: 'Samie Vargas — applied AI and enablement. Austin, remote.', status: 'Live',
-    why: 'Some clients and every screen reader get this instead of the image. It was missing entirely.' },
+    why: 'Some clients and every screen reader get this instead of the image, and it was missing entirely.' },
   { name: 'Canonical + theme', attr: 'link canonical · meta theme-color', current: 'https://samievargas.com/ · #1a6b5a', status: 'Live',
-    why: 'The site answers on two domains, so one of them has to be the real one. The theme colour tints mobile browser chrome to the same green as everything else.' },
+    why: 'The site answers on two domains, so one of them has to be the real one, and the theme colour tints mobile browser chrome to the same green as everything else.' },
 ];
 
 const TK_HEAD = [
@@ -482,21 +506,21 @@ const TK_TOKENS = [
 // ── The arcade (/apps) ───────────────────────────────────────
 
 const ARCADE_APPS = [
-  { slug: 'six-degrees', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things — people, films, bands, towns — and the shortest path between them. Dolly Parton reaches Austin through Willie Nelson.' },
-  { slug: 'died-doing-what', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died. Poets: tuberculosis leads, median age 58.' },
-  { slug: 'taco-coin-flip', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants — and if one scored worse on the city's real inspection records, the coin defers to the cleaner option." },
-  { slug: 'corporate-translator', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm. The slider genuinely rewrites the text.' },
-  { slug: 'streak-autopsy', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail. Two missed days and it stamps the habit DECEASED and opens a case file.' },
-  { slug: 'whodunit-roulette', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood. Import your Goodreads or StoryGraph export and it learns which authors you return to.' },
-  { slug: 'nepotism-graph', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families — of 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
+  { slug: 'six-degrees', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things, whether people or films or bands or towns, and the shortest path between them, so Dolly Parton reaches Austin through Willie Nelson.' },
+  { slug: 'died-doing-what', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died, so for poets tuberculosis leads at a median age of 58.' },
+  { slug: 'taco-coin-flip', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants, and if one scored worse on the city's real inspection records then the coin defers to the cleaner option." },
+  { slug: 'corporate-translator', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm, and the slider genuinely rewrites the text.' },
+  { slug: 'streak-autopsy', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail, so two missed days and it stamps the habit DECEASED and opens a case file.' },
+  { slug: 'whodunit-roulette', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood, and if you import your Goodreads or StoryGraph export it learns which authors you return to.' },
+  { slug: 'nepotism-graph', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families, so of the 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
   { slug: 'same-name', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
-  { slug: 'backlog-reaper', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt, and one title condemned. Delete it forever or spare it like a coward.' },
-  { slug: 'was-it-worth-it', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase; thirty days later it asks whether you still care. Keeps your lifetime regret rate.' },
-  { slug: 'sample-size-roast', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences. Real margin-of-error math, plus an honest rewrite of the stat.' },
-  { slug: 'oracle', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers — ask it anything and it hands back a harder question.' },
+  { slug: 'backlog-reaper', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt with one title condemned, and you can delete it forever or spare it like a coward.' },
+  { slug: 'was-it-worth-it', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase and thirty days later it asks whether you still care, and it keeps your lifetime regret rate.' },
+  { slug: 'sample-size-roast', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences, which is real margin-of-error math plus an honest rewrite of the stat.' },
+  { slug: 'oracle', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers, so you ask it anything and it hands back a harder question.' },
   { slug: 'sql-tarot', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
-  { slug: 'locked-room', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, one impossible exit — a fresh locked-room mystery generated every time.' },
-  { slug: 'escalation-simulator', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions. Every choice moves account health, and none of them are free.' },
+  { slug: 'locked-room', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, and one impossible exit, with a fresh locked-room mystery generated every time.' },
+  { slug: 'escalation-simulator', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions, and every choice moves account health and none of them are free.' },
 ];
 
 // Ticker order on the work page differs deliberately from the arcade's curated order.
@@ -504,6 +528,7 @@ const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin 
 
 export {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
+  READ_ROWS, SEC_CONTACTS,
   ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
