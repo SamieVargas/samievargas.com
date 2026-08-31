@@ -62,8 +62,8 @@
   <div class="hero__body">
     <p class="status"><i class="status__dot"></i><span>Exploring applied-AI and enablement roles · Austin, TX · remote</span></p>
     <h1>I ship AI tools that replace work I used to do <em>by hand</em>.</h1>
-    <p class="lead">Eight years inside an enterprise customer-facing team at GLG, running a $14M+ portfolio. I was the AI person on a non-AI team: I built the LLM workflows, drove the adoption, then started shipping the tools myself.</p>
-    <p class="hero__note">Two of them are live below and you can use them right now. Every project on this page started as a problem I actually had.</p>
+    <p class="lead">I spent eight years inside an enterprise customer-facing team at GLG running a $14M+ portfolio, and I was the AI person on a non-AI team, so I built the LLM workflows, drove the adoption, and then started shipping the tools myself.</p>
+    <p class="hero__note">Two of them are live below and you can use them right now, and every project on this page started as a problem I actually had.</p>
     <div class="hero__actions">
       <a class="btn btn--solid" href="#signal">See what I built</a>
       <a class="btn btn--ghost" href="/resume">Résumé ↓</a>
@@ -78,7 +78,7 @@
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">Start here</span>
-      <h2>Messy documents in. A read you can act on out.</h2>
+      <h2>Messy documents go in and a read you can act on comes out.</h2>
     </div>
     <a class="label label--mid" href="https://samievargas.com/signal/">samievargas.com/signal ↗</a>
   </div>
@@ -86,7 +86,7 @@
     <div>
       <p class="label label--accent">AI agent · in use · built solo</p>
       <h3>Signal</h3>
-      <p class="lead">A multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs. I spent eight years doing that hour of digging by hand.</p>
+      <p class="lead">A multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs, which is the hour of digging I spent eight years doing by hand.</p>
       <div class="sig-flow">
         <div class="sig-in" id="sig-in">
           <p class="panel-label">What you paste in</p>
@@ -94,7 +94,7 @@
         </div>
         <div class="sig-flow__arrow">→</div>
         <div class="sig-out" id="sig-out">
-          <p class="panel-label">What comes back — 51 seconds</p>
+          <p class="panel-label">What comes back, 51 seconds later</p>
           <div id="sig-rows"></div>
         </div>
       </div>
@@ -104,9 +104,21 @@
       </div>
     </div>
     <div>
-      <div class="sig-shot"><img src="assets/signal/signal-3.png" alt="Signal output — the contact read: comm style, decision style, says vs means, how to engage"></div>
+      <div class="sig-shot" id="viz-read">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--rule)">
+          <span class="label label--mid" style="color:var(--ink)">Contact read</span>
+          <span class="label" style="font-size:9px;color:var(--faint)">Signal output · one account</span>
+        </div>
+        <div style="padding:4px 18px 16px">
+          <div id="read-rows"></div>
+          <div style="padding-top:12px">
+            <p id="read-sec-hd" style="margin:0 0 8px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);opacity:0">Secondary contacts</p>
+            <div id="read-sec"></div>
+          </div>
+        </div>
+      </div>
       <div class="callouts" id="sig-notes"></div>
-      <p class="finding"><strong>What it found — </strong>the contact read is the sleeper feature. It makes explicit what experienced managers do instinctively.</p>
+      <p class="finding"><strong>What it found: </strong>the contact read is the sleeper feature, it makes explicit what experienced managers do instinctively.</p>
     </div>
   </div>
 </section>
@@ -116,15 +128,15 @@
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">Try it here</span>
-      <h2>Five minutes in. Four piles out.</h2>
+      <h2>Five minutes in, four piles out.</h2>
     </div>
     <a class="label" href="https://samievargas.com/brain-dump">samievargas.com/brain-dump ↗</a>
   </div>
   <div class="bd rule-top">
     <div>
       <h3>Brain Dump</h3>
-      <p class="bd__lead">An AI agent that turns an unstructured dump into an energy-state-aware plan. Structured JSON out of a Cloudflare proxy to the Anthropic API, with branching logic on the state you say you are in.</p>
-      <p class="bd__note">The sorting is not the product. Matching the output to the state someone is actually in is the product — so change the state below and watch the same dump re-sort.</p>
+      <p class="bd__lead">An AI agent that turns an unstructured dump into an energy-state-aware plan, structured JSON out of a Cloudflare proxy to the Anthropic API with branching logic on the state you say you are in.</p>
+      <p class="bd__note">The part I care about is matching the output to the state someone is actually in, so change the state below and watch the same dump re-sort.</p>
       <div class="bd-dump">
         <p class="panel-label">Raw dump · five minutes, no editing</p>
         <div class="bd-dump__stage" id="bd-bits"></div>
@@ -162,8 +174,8 @@
   <div class="also" id="alsobuilt">
     <p class="label label--mid" style="margin:0">Also built</p>
     <div>
-      <p>A random-forest reorder model on the same Instacart data — 0.9886 AUC for veterans against 0.8566 for new users, which is what confirmed the segment split was real and not an artifact of the pipeline. <a href="https://github.com/SamieVargas/instacart-project">Model and notebook ↗</a></p>
-      <p class="also__more">In progress: review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game. The personal tools — Life OS, Life in Pixels, the tarot tracker — live on <a href="/life">/life</a>, and fifteen small single-purpose toys live on <a href="/apps/">/apps</a>.</p>
+      <p>I ran a random-forest reorder model on the same Instacart data, 0.9886 AUC for veterans against 0.8566 for new users, which is what confirmed the segment split was real rather than an artifact of the pipeline. <a href="https://github.com/SamieVargas/instacart-project">Model and notebook ↗</a></p>
+      <p class="also__more">In progress right now is review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game, and the personal tools (Life OS, Life in Pixels, the tarot tracker) live on <a href="/life">/life</a>, while fifteen small single-purpose toys live on <a href="/apps/">/apps</a>.</p>
     </div>
   </div>
 </section>
@@ -206,7 +218,7 @@
     </div>
     <div>
       <div id="certs"></div>
-      <p class="certs-more">Plus the full Anthropic AI Fluency set — Claude 101, Claude Code 101, Agent Skills, Claude Cowork, AI Capabilities &amp; Limitations, AI Fluency Framework — Google Data Analytics, Google Business Intelligence, GA4, Databricks Fundamentals, PMI, Six Sigma White Belt.</p>
+      <p class="certs-more">Also: Google Business Intelligence, GA4, Databricks Fundamentals, PMI, Six Sigma White Belt.</p>
     </div>
   </div>
 </section>
@@ -244,7 +256,7 @@
     <div id="life-intro">
       <p class="section__num" style="display:block;margin-bottom:10px">05</p>
       <h2>The rest of it lives on <em>/life</em>.</h2>
-      <p class="life-teaser__blurb">The noticing field, the tarot tracker, seven decks, the Greenbelt at fifteen of twenty-one miles, Agatha Christie in order, and what I have been listening to. Same instinct, no résumé pressure.</p>
+      <p class="life-teaser__blurb">The noticing field, the tarot tracker, seven decks, the Greenbelt at fifteen of twenty-one miles, Agatha Christie in order, and what I have been listening to, same instinct with none of the résumé pressure.</p>
       <a class="btn btn--ghost btn--md" href="/life">Go to /life →</a>
     </div>
     <div class="tile-grid" id="life-teasers"></div>
@@ -256,7 +268,7 @@
   <div class="arcade-strip">
     <p>
       <span class="label" style="letter-spacing:.16em;color:var(--faint-deco)">Meanwhile, in the arcade</span>
-      <span class="arcade-strip__line">Fifteen mini apps, all in the browser — right now someone could be playing</span>
+      <span class="arcade-strip__line">Fifteen mini apps, all in the browser, and right now someone could be playing</span>
       <span class="arcade-strip__ticker" id="arcade-ticker">Six Degrees of Anything.</span>
     </p>
     <a class="btn btn--ghost" style="padding:12px 20px" href="/apps/">All fifteen →</a>
@@ -282,9 +294,12 @@
 </section>
 
 <!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer class="footer footer--dark">
+<footer class="footer footer--dark" style="align-items:center">
   <span class="label">© 2026 Samie Vargas</span>
-  <span class="label">Austin, TX · Remote · no framework, no build step</span>
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <span class="label">Austin, TX · Remote · no framework, no build step</span>
+    <a class="footer__toolkit" href="/toolkit">Site toolkit ↗</a>
+  </div>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
