@@ -80,10 +80,16 @@
         <span class="plot__mid-h"></span>
         <span class="plot__mid-v"></span>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" id="plot-lines"></svg>
+        <span class="plot__count" id="plot-count"></span>
       </div>
       <div class="plot-key">
         <div><i></i><span class="label label--mid">Something you can open</span></div>
         <div><i></i><span class="label label--mid">A note, no artifact</span></div>
+        <span class="plot-key__lens label label--mid" id="plot-lens">Move to magnify</span>
+      </div>
+      <div class="plot-modes">
+        <button type="button" class="chip is-on" data-mode="scatter" aria-pressed="true">Scatter</button>
+        <button type="button" class="chip" data-mode="cluster" aria-pressed="false">Cluster</button>
       </div>
     </div>
     <article class="field__card" id="field-card"></article>
@@ -218,6 +224,13 @@
       <div class="crate">
         <div class="crate__row crate__row--books" id="chr-shelf"></div>
         <div class="crate__base"><span>CHRISTIE&nbsp;·&nbsp;33&nbsp;DOWN&nbsp;·&nbsp;17&nbsp;TO&nbsp;GO</span></div>
+      </div>
+      <div class="chr-foot">
+        <div>
+          <p class="chr-foot__title" id="chr-title">Hover a spine</p>
+          <p class="chr-foot__meta" id="chr-meta">Arrow keys walk the shelf</p>
+        </div>
+        <span class="chr-foot__prog" id="chr-progress"></span>
       </div>
       <div class="ledger-legend">
         <span><i style="background:#0f6e56"></i><span>5 stars</span></span>
