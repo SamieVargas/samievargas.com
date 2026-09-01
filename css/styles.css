@@ -34,6 +34,9 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+/* A component that sets display would otherwise outrank the UA rule for
+   [hidden], leaving "hidden" elements on screen. */
+[hidden] { display: none !important; }
 
 body {
   background: var(--paper);

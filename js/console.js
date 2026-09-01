@@ -13,7 +13,7 @@
 // the one thing this component must not do.
 // ============================================================
 
-import { CONSOLE_QUERIES } from '../data/content.js?v=20260901';
+import { CONSOLE_QUERIES } from '../data/content.js?v=20260901b';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
