@@ -171,6 +171,18 @@
 
   <div id="annotated"></div>
 
+  <div class="qconsole" id="qconsole">
+    <div class="qconsole__head">
+      <span class="label label--mid" style="color:#8fd6bf">Run one of these against the marts</span>
+      <span class="label" style="font-size:9px;color:#6d6a5c">read only · cached result sets</span>
+    </div>
+    <div class="qc-presets" id="qc-presets"></div>
+    <pre class="qc-sql" id="qc-sql"></pre>
+    <p class="qc-meta" id="qc-meta"></p>
+    <div class="qc-table" id="qc-table"></div>
+    <p class="qc-note" id="qc-note"></p>
+  </div>
+
   <div class="also" id="alsobuilt">
     <p class="label label--mid" style="margin:0">Also built</p>
     <div>
@@ -305,5 +317,6 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="module" src="js/app.js?v=20260901"></script>
+<script type="module" src="js/console.js?v=20260901"></script>
 </body>
 </html>

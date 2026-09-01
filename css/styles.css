@@ -323,6 +323,33 @@ em { font-style: italic; color: var(--accent); }
 .choro-legend .swatch i { width: 14px; height: 14px; display: block; }
 .choro-legend .swatch span { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
 .choro__src { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+/* Item 07 — the query console */
+.qconsole { background: var(--dark); border: 1px solid var(--rule); padding: 24px 26px; margin-top: 40px; }
+.qconsole__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+.qc-presets { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.qc-preset {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .08em; padding: 8px 13px;
+  background: transparent; border: 1px solid var(--dark-rule); color: #8fd6bf; cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.qc-preset:hover { border-color: #8fd6bf; }
+.qc-preset.is-on { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.qc-sql {
+  font-family: var(--mono); font-size: 12px; line-height: 1.75; color: #8fd6bf;
+  white-space: pre-wrap; margin: 0 0 14px; overflow-x: auto;
+}
+.qc-caret { display: inline-block; width: 7px; height: 13px; background: #8fd6bf; margin-left: 3px;
+  vertical-align: -2px; animation: blink 1s step-end infinite; }
+.qc-meta {
+  border-top: 1px solid var(--dark-rule); padding-top: 12px; margin: 0 0 14px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.qc-table { display: flex; flex-direction: column; gap: 1px; background: var(--dark-rule); border: 1px solid var(--dark-rule); }
+.qc-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1px; background: var(--dark-rule); }
+.qc-row > span { background: var(--dark); padding: 8px 11px; font-family: var(--mono); font-size: 11.5px; color: #c8ccbd; }
+.qc-row--head > span { color: var(--faint); }
+.qc-note { margin: 14px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--dark-body); max-width: 78ch; }
+@media (prefers-reduced-motion: reduce) { .qc-caret { animation: none; } }
 .zipmap-link { display: block; max-width: 432px; margin: 0 auto; padding: 16px 16px 12px; text-decoration: none; cursor: pointer; }
 .zipmap-link svg { display: block; width: 100%; transition: filter .3s ease; }
 .zipmap-link:hover svg { filter: saturate(1.15); }

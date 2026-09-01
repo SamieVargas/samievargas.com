@@ -5,6 +5,76 @@
 // ============================================================
 
 // ── Work page ────────────────────────────────────────────────
+// ── Query console (item 07) ──────────────────────────────────
+// An allowlist, keyed. No user-supplied SQL reaches anything, and the
+// result sets are shipped cached rather than queried live, so there is
+// no cost and no failure surface. Every figure below is one the site
+// already publishes elsewhere.
+//
+// The zip-code preset from the design is deliberately not here: the
+// notebook and the site widgets still disagree on per-zip averages,
+// and that has to be settled before zip figures go into a table that
+// reads like query output.
+const CONSOLE_QUERIES = [
+  {
+    key: 'cohort',
+    label: 'Reorder rate by cohort',
+    source: 'marts.fct_order_products',
+    sql: `select
+  user_cohort,
+  round(avg(reordered), 3) as reorder_rate,
+  round(avg(reordered) - 0.600, 3) as vs_pooled
+from marts.fct_order_products
+group by user_cohort
+order by reorder_rate`,
+    cols: ['user_cohort', 'reorder_rate', 'vs_pooled'],
+    rows: [
+      ['new_shopper', '0.221', '-0.379'],
+      ['veteran', '0.670', '+0.070'],
+    ],
+    note: 'The 0.60 everyone cites is the midpoint of two populations, and it describes neither.',
+  },
+  {
+    key: 'drift',
+    label: 'Operational drift by inspection',
+    source: 'marts.fct_inspections',
+    sql: `select
+  inspection_seq,
+  round(avg(score), 2) as avg_score,
+  round(avg(score) - 90.50, 2) as vs_first
+from marts.fct_inspections
+group by inspection_seq
+having count(*) > 200
+order by inspection_seq`,
+    cols: ['inspection_seq', 'avg_score', 'vs_first'],
+    rows: [
+      ['1', '90.50', '0.00'], ['2', '90.60', '+0.10'], ['3', '90.55', '+0.05'],
+      ['4', '91.05', '+0.55'], ['5', '91.15', '+0.65'], ['6', '89.80', '-0.70'],
+      ['7', '90.10', '-0.40'], ['8', '90.85', '+0.35'], ['9', '90.50', '0.00'],
+      ['10', '91.80', '+1.30'], ['11', '91.15', '+0.65'], ['12', '90.90', '+0.40'],
+      ['13', '91.30', '+0.80'], ['14', '92.60', '+2.10'],
+    ],
+    note: 'The axis is inverted here, so a rising score is more violations, and venues drift about two points worse across their inspection history.',
+  },
+  {
+    key: 'model',
+    label: 'Reorder model by segment',
+    source: 'marts.dim_model_scores',
+    sql: `select
+  segment,
+  round(auc, 4) as auc,
+  round(auc - 0.8566, 4) as lift_over_new
+from marts.dim_model_scores
+order by auc desc`,
+    cols: ['segment', 'auc', 'lift_over_new'],
+    rows: [
+      ['veteran', '0.9886', '+0.1320'],
+      ['new_shopper', '0.8566', '0.0000'],
+    ],
+    note: 'A random forest separates veterans almost perfectly and struggles on new shoppers, which is what confirmed the split was real rather than a pipeline artifact.',
+  },
+];
+
 
 const HERO_STATS = [
   { stat: '$14M+', label: 'Enterprise portfolio owned end to end at GLG' },
@@ -528,7 +598,7 @@ const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin 
 
 export {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
-  READ_ROWS, SEC_CONTACTS,
+  READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
