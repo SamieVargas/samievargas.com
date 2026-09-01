@@ -59,6 +59,7 @@ button, textarea, input { font: inherit; }
     </div>
     <div id="moodRow" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center"></div>
     <div id="libNote" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #8a6f52; margin-top: 10px"></div>
+    <div id="a3-stages" hidden style="margin-top:14px;--sl-accent:#6e1f1a;--sl-track:#e0d4bd;--sl-ink:#3a1f1a;--sl-faint:#8a6f52;--sl-alert:#c34a3a"></div>
 
     <div id="importPanel" style="display: none; margin-top: 22px; border: 1.5px solid #6e1f1a; background: #fdf7ea; padding: 24px 26px">
       <div style="font-size: 10.5px; letter-spacing: 2px; color: #8a6f52">IMPORT YOUR SHELVES</div>
@@ -133,6 +134,8 @@ button, textarea, input { font: inherit; }
 </div>
 
 <script type="module">
+import { stagedLoader } from '../js/staged-loader.js?v=20260831';
+
 const BOOKS = [
   { t: "The Moving Finger", a: "AGATHA CHRISTIE", y: 1942, d: "MISS MARPLE", m: ["cozy", "mean"], b: "Poison-pen letters in a small village. Everyone is lying and the vicar's wife knows it.", len: "SHORT", f: "SCRUPULOUS", bod: 3 },
   { t: "And Then There Were None", a: "AGATHA CHRISTIE", y: 1939, d: "NO DETECTIVE", m: ["dread"], b: "Ten strangers, one island, no way off. The one everybody means when they say Christie.", len: "SHORT", f: "BRUTAL BUT FAIR", bod: 10 },
@@ -248,11 +251,16 @@ const deepen = async () => {
   setState({ libLoading: true, libNote: "Reading Open Library…" });
   const subject = OL_SUBJECTS[state.mood] || OL_SUBJECTS.cozy;
   const offset = Math.floor(Math.random() * 400);
+  const stagesEl = document.getElementById("a3-stages");
+  stagesEl.hidden = false;
+  const loader = stagedLoader(stagesEl, { source: "Open Library", budgetMs: 18000 });
+  loader.request();
   try {
     const res = await fetch("https://openlibrary.org/subjects/" + subject + ".json?limit=40&offset=" + offset);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const json = await res.json();
     const works = (json.works || []).filter(w => w.title && (w.authors || []).length);
+    loader.parse(works.length);
     const hints = MOOD_HINTS[state.mood] || [];
     const scored = works.map(w => {
       const subs = (w.subject || []).map(x => String(x).toLowerCase()).join(" ");
@@ -261,12 +269,21 @@ const deepen = async () => {
       return { w: w, bonus: bonus };
     }).sort((a, b) => b.bonus - a.bonus);
     const lib = scored.slice(0, 24).map(x => fromOpenLibrary(x.w, state.mood));
-    if (!lib.length) { setState({ libLoading: false, libNote: "Open Library returned nothing usable. Try another mood." }); return; }
+    if (!lib.length) {
+      loader.fail("Open Library returned nothing usable");
+      setState({ libLoading: false, libNote: "Open Library returned nothing usable. Try another mood." });
+      return;
+    }
+    loader.render();
     setState({
       lib: lib, libLoading: false,
       libNote: "Pulled " + lib.length + " works from Open Library · subject: " + subject.replace(/_/g, " ") + " · " + (json.work_count || "?").toLocaleString() + " in that subject"
     }, spin);
+    loader.done();
+    stagesEl.hidden = true;
   } catch (e) {
+    // The note below carries the recovery copy.
+    loader.fail("Open Library did not respond");
     setState({ libLoading: false, libNote: "Could not reach Open Library." });
   }
 };
