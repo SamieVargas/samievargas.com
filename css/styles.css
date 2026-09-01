@@ -993,6 +993,31 @@ em { font-style: italic; color: var(--accent); }
 .fcard__marquee i { flex: none; width: 7px; height: 7px; border-radius: 50%; display: block; }
 .fcard__shot { display: block; padding: 10px 10px 0; background: var(--paper-alt); }
 .fcard__shot img { width: 100%; display: block; border: 1px solid var(--rule); }
+/* A1 — a live frozen frame per app instead of a dead screenshot.
+   Paused at a representative frame; fifteen running at once is the
+   thing to watch, so only the hovered or focused tile animates. */
+.prev {
+  height: 42px; border: 1px solid var(--rule); background: var(--paper);
+  display: flex; align-items: center; justify-content: center; gap: 4px; padding: 5px 10px;
+}
+.prev--bars { align-items: flex-end; gap: 5px; }
+.prev--bars i { flex: 1; max-width: 12px; background: var(--pa); height: 22%; animation: prevbars 1.6s ease-in-out infinite; }
+@keyframes prevbars { 0%, 100% { height: 22%; } 50% { height: 78%; } }
+.prev--ring i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--pa); display: block; animation: prevring 1.4s ease-in-out infinite; }
+@keyframes prevring { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.prev--grid { gap: 4px; }
+.prev--grid i { width: 12px; height: 8px; display: block; }
+.prev--term { justify-content: flex-start; font-family: var(--mono); font-size: 10px; color: var(--pa); }
+.prev--term u { width: 6px; height: 12px; background: var(--pa); display: block; text-decoration: none; animation: blink 1s step-end infinite; }
+/* After the archetypes: the animation shorthand above resets
+   play-state, so these have to come last to win. */
+.prev i, .prev u { animation-play-state: paused; }
+.fcard:hover .prev i, .fcard:focus-within .prev i,
+.fcard:hover .prev u, .fcard:focus-within .prev u { animation-play-state: running; }
+/* A2 — filter chips */
+.acat { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+.fcard { transform: none; }
+@media (prefers-reduced-motion: reduce) { .prev i, .prev u { animation: none !important; } }
 .fcard__body { display: block; padding: 14px 16px 16px; background: var(--paper-alt); }
 .fcard__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .fcard__title { font-family: var(--serif); font-size: 20px; color: var(--ink); }
