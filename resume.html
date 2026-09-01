@@ -105,11 +105,40 @@
     .comp { grid-template-columns: 1fr; gap: 3px; }
   }
 
+  .sheet { position: relative; }
+
+  /* R1 — the page box, inset by the real @page margin read at runtime. */
+  .guide {
+    position: absolute; inset: var(--page-margin, 0.6in);
+    border: 1px dashed #1a6b5a; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .guide.is-off { opacity: 0; }
+  .guide__lab {
+    position: absolute; right: 0; top: -13px;
+    font: 400 8.5px 'IBM Plex Mono', monospace; letter-spacing: .1em;
+    text-transform: uppercase; color: #1a6b5a;
+  }
+
+  /* R3 — freshness stamp; renders only when the commit lookup succeeds. */
+  .stamp {
+    max-width: 8.5in; margin: 0 auto 34px; background: #f4f1e8;
+    border: 1px solid #e2ddce; padding: 16px 20px;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  /* display:flex would otherwise beat the hidden attribute. */
+  .stamp[hidden] { display: none; }
+  .stamp__file { font: 400 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #9a9686; }
+  .stamp__age { font: 500 15px 'IBM Plex Mono', monospace; color: #16150f; }
+  .stamp__sha { font: 400 10.5px 'IBM Plex Mono', monospace; color: #1a6b5a; }
+
   @page { size: letter; margin: 0.6in; }
   @media print {
     body { background: #fff; }
     .bar { display: none; }
     .sheet { max-width: none; margin: 0; padding: 0; border: none; box-shadow: none; }
+    /* Screen-only, both of them. */
+    .guide, .stamp { display: none !important; }
   }
 </style>
 </head>
@@ -119,11 +148,13 @@
   <a class="brand" href="/">Samie Vargas</a>
   <div class="actions">
     <a class="btn ghost" href="/">← Back to the site</a>
+    <button type="button" class="btn ghost" id="guide-btn" aria-pressed="true">Hide page box</button>
     <a class="btn solid" href="/Resume.pdf" download>Download PDF ↓</a>
   </div>
 </div>
 
 <main class="sheet">
+  <div class="guide" id="guide" aria-hidden="true"><span class="guide__lab">margin</span></div>
   <header class="doc-head">
     <h1>Samie Vargas</h1>
     <p>Austin, TX · Remote<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
@@ -226,6 +257,92 @@
     <p class="edu">B.S. Biochemistry · The University of Texas at Austin</p>
   </section>
 </main>
+
+<aside class="stamp" id="stamp" hidden></aside>
+
+<script type="module">
+import { TK_REPO } from './data/content.js?v=20260901';
+
+// ── R1 ── The guide has to sit on the real print margin, so read the
+// @page rule rather than hardcoding a percentage; it then stays honest
+// if the print CSS changes.
+function pageMargin() {
+  for (const sheet of document.styleSheets) {
+    let rules;
+    try { rules = sheet.cssRules; } catch (err) { continue; }
+    for (const rule of rules) {
+      if (rule.type === CSSRule.PAGE_RULE && rule.style && rule.style.margin) {
+        return rule.style.margin;
+      }
+    }
+  }
+  return null;
+}
+
+const guide = document.getElementById('guide');
+const guideBtn = document.getElementById('guide-btn');
+const margin = pageMargin();
+if (margin) document.documentElement.style.setProperty('--page-margin', margin);
+
+// Default on: someone landing here should see that it fits.
+let guideOn = true;
+guideBtn.addEventListener('click', () => {
+  guideOn = !guideOn;
+  guide.classList.toggle('is-off', !guideOn);
+  guideBtn.textContent = guideOn ? 'Hide page box' : 'Show page box';
+  guideBtn.setAttribute('aria-pressed', String(guideOn));
+});
+
+// ── R3 ── Freshness stamp. A wrong date here is worse than no date, so
+// anything short of a clean answer renders nothing at all.
+const STAMP_KEY = 'resume-stamp';
+const STAMP_TTL = 12 * 60 * 60 * 1000;
+
+function relativeAge(iso) {
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (!Number.isFinite(days) || days < 0) return null;
+  if (days === 0) return 'Updated today';
+  if (days === 1) return 'Updated yesterday';
+  if (days < 30) return `Updated ${days} days ago`;
+  const months = Math.floor(days / 30);
+  return months === 1 ? 'Updated last month' : `Updated ${months} months ago`;
+}
+
+function renderStamp(data) {
+  const age = relativeAge(data.date);
+  if (!age || !data.sha) return;
+  const el = document.getElementById('stamp');
+  el.innerHTML = `
+    <span class="stamp__file">resume.html</span>
+    <span class="stamp__age">${age}</span>
+    <span class="stamp__sha">${data.sha.slice(0, 7)} · committed to ${TK_REPO}</span>`;
+  el.hidden = false;
+}
+
+function loadStamp() {
+  try {
+    const raw = localStorage.getItem(STAMP_KEY);
+    if (raw) {
+      const cached = JSON.parse(raw);
+      if (Date.now() - cached.at < STAMP_TTL) { renderStamp(cached); return; }
+    }
+  } catch (err) { /* private mode, just fetch */ }
+
+  fetch(`https://api.github.com/repos/${TK_REPO}/commits?path=resume.html&per_page=1`)
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((list) => {
+      const c = list && list[0];
+      const date = c && c.commit && c.commit.committer && c.commit.committer.date;
+      if (!date || !c.sha) return;
+      const data = { at: Date.now(), date, sha: c.sha };
+      try { localStorage.setItem(STAMP_KEY, JSON.stringify(data)); } catch (err) { /* private mode */ }
+      renderStamp(data);
+    })
+    .catch(() => { /* render nothing */ });
+}
+
+loadStamp();
+</script>
 
 </body>
 </html>

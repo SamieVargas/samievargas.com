@@ -74,6 +74,7 @@ input, button { font: inherit; }
         <button type="button" class="preset-btn" data-pick="economist">economist</button>
       </div>
       <div id="status-line" style="font-size: 11px; color: #a8b1b0; margin-top: 14px; min-height: 16px">Resolving &ldquo;actor&rdquo;&hellip;</div>
+      <div id="a3-stages" hidden style="margin-top:16px;--sl-accent:#d9b36a;--sl-track:#2a3238;--sl-ink:#f0ece4;--sl-faint:#85908f;--sl-alert:#e0715c"></div>
     </div>
   </div>
 
@@ -88,6 +89,8 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
+import { stagedLoader } from '../js/staged-loader.js?v=20260901';
+
 // ---- Wikidata access (no keys, browser-friendly endpoints) ----
 const SPARQL = "https://query.wikidata.org/sparql";
 const API = "https://www.wikidata.org/w/api.php";
@@ -161,6 +164,7 @@ let lastLineIds = [];
 const input = document.getElementById("profession-input");
 const runBtn = document.getElementById("run-btn");
 const statusEl = document.getElementById("status-line");
+const stagesEl = document.getElementById("a3-stages");
 const view = document.getElementById("view");
 
 // Portraits (P18) come back as Commons FilePath URLs, which are directly loadable.
@@ -490,6 +494,9 @@ async function run() {
     status: "", statusOk: true, filter: "deep", failMessage: "", suggestions: [], chosen: null
   });
   render();
+  stagesEl.hidden = false;
+  const loader = stagedLoader(stagesEl, { source: "Wikidata", budgetMs: 30000 });
+  loader.request();
   try {
     const hits = await searchEntity(term, 5);
     if (!hits.length) throw new Error("NO_ENTITY");
@@ -532,12 +539,16 @@ async function run() {
       total = t.length ? parseInt(v(t[0], "n"), 10) : null;
     } catch (e) { total = null; }
 
+    loader.parse(pairs.length);
     Object.assign(state, {
       loading: false, failed: false, pairs: pairs, totalInTrade: total, wiki: {},
       status: occ.label + " · " + occ.id + (occ.description ? " · " + occ.description : ""),
       statusOk: true, progress: ""
     });
+    loader.render();
     render();
+    loader.done();
+    stagesEl.hidden = true;
     // Fetch Wikipedia articles for the deepest line only — cheap and useful.
     const ids = lastLineIds || [];
     if (ids.length) {
@@ -551,6 +562,8 @@ async function run() {
     else if (e.message === "TIMEOUT") { msg = "The public endpoint timed out. Enormous trades sometimes do — try “conductor” or “racing driver.”"; tag = "TIMED OUT"; }
     else if (e.message === "RATE_LIMIT") { msg = "Wikidata is rate-limiting this browser. Wait a moment."; tag = "RATE LIMITED"; }
     Object.assign(state, { loading: false, failed: true, failMessage: msg, failTag: tag, status: msg, statusOk: false });
+    // The app's own panel carries the recovery copy.
+    loader.fail("Wikidata did not respond");
     render();
   }
 }

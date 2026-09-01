@@ -70,11 +70,14 @@ input, button { font: inherit; }
     </div>
   </div>
 
+  <div id="a3-stages" hidden style="max-width:1240px;margin:0 auto;padding:44px 44px 0;--sl-accent:#c9a227;--sl-track:#2e2a24;--sl-ink:#f2e9d8;--sl-faint:#8a8071;--sl-alert:#b2543f"></div>
   <div id="status"></div>
   <div id="results"></div>
 </div>
 
 <script type="module">
+import { stagedLoader } from '../js/staged-loader.js?v=20260901';
+
 const PRESETS = ["Peter Jackson", "John Williams", "Mary Shelley", "David Jones", "Grace Lee", "Michael Jordan"];
 const SPARQL_URL = "https://query.wikidata.org/sparql";
 
@@ -131,6 +134,7 @@ const versusBtn = document.getElementById("versus-btn");
 const presetsEl = document.getElementById("presets");
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
+const stagesEl = document.getElementById("a3-stages");
 
 function buildQuery(name) {
   const escd = name.replace(/["\\]/g, "");
@@ -472,8 +476,12 @@ async function run() {
   runBtn.textContent = "QUERYING";
   renderStatus();
   renderResults();
+  stagesEl.hidden = false;
+  const loader = stagedLoader(stagesEl, { source: "Wikidata", budgetMs: 26000 });
+  loader.request();
   try {
     const rows = await sparql(query);
+    loader.parse(rows.length);
     if (!rows.length) {
       Object.assign(state, { loading: false, failed: true, rows: [], note: "No human in Wikidata carries \u201c" + name + "\u201d as an exact English label. Try a more common spelling, or a full name with a middle initial removed." });
     } else {
@@ -483,10 +491,17 @@ async function run() {
     const msg = e.message === "TIMEOUT" ? "The public query service timed out. It does that \u2014 run it again."
       : (e.message === "RATE_LIMIT" ? "Wikidata is rate-limiting this browser. Wait a moment and retry." : "Could not reach the Wikidata query service.");
     Object.assign(state, { loading: false, failed: true, note: msg });
+    // The app's own panel carries the recovery copy; the stage row only
+    // has to say which stage broke.
+    loader.fail("Wikidata did not respond");
   }
   runBtn.textContent = state.loading ? "QUERYING" : "RUN THE QUERY";
+  // fail() is a no-op once settled, so the catch path above still wins.
+  if (state.failed) { loader.fail("Wikidata returned nothing usable"); }
+  else { loader.render(); }
   renderStatus();
   renderResults();
+  if (!state.failed) { loader.done(); stagesEl.hidden = true; }
 }
 
 async function runB() {

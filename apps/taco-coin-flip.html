@@ -62,6 +62,7 @@ input, button { font: inherit; }
         <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #a8758a">OPTION ONE</div>
         <input type="text" id="q-0" class="slot-input" placeholder="Search a restaurant name" style="width: 100%; box-sizing: border-box; margin-top: 10px; background: #fff; border: 2px solid #f0c9d8; border-radius: 10px; padding: 13px 14px; font-family: 'Karla', sans-serif; font-size: 15px; color: #b31f5b; outline: none">
         <button type="button" id="search-0" style="width: 100%; margin-top: 10px; background: #b31f5b; color: #fff7ec; border: none; border-radius: 10px; padding: 12px 0; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">SEARCH THE CITY DATA</button>
+        <div id="a3-stages-0" hidden style="margin-top:12px;--sl-accent:#b31f5b;--sl-track:#f0dfe6;--sl-ink:#3a1020;--sl-faint:#a8758a;--sl-alert:#c34a3a"></div>
         <div id="results-0"></div>
         <div id="pick-0"></div>
       </div>
@@ -69,6 +70,7 @@ input, button { font: inherit; }
         <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #a8758a">OPTION TWO</div>
         <input type="text" id="q-1" class="slot-input" placeholder="Search a restaurant name" style="width: 100%; box-sizing: border-box; margin-top: 10px; background: #fff; border: 2px solid #f0c9d8; border-radius: 10px; padding: 13px 14px; font-family: 'Karla', sans-serif; font-size: 15px; color: #b31f5b; outline: none">
         <button type="button" id="search-1" style="width: 100%; margin-top: 10px; background: #b31f5b; color: #fff7ec; border: none; border-radius: 10px; padding: 12px 0; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 1.4px; cursor: pointer">SEARCH THE CITY DATA</button>
+        <div id="a3-stages-1" hidden style="margin-top:12px;--sl-accent:#b31f5b;--sl-track:#f0dfe6;--sl-ink:#3a1020;--sl-faint:#a8758a;--sl-alert:#c34a3a"></div>
         <div id="results-1"></div>
         <div id="pick-1"></div>
       </div>
@@ -101,6 +103,8 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
+import { stagedLoader } from '../js/staged-loader.js?v=20260901';
+
 const ENDPOINT = "https://data.austintexas.gov/resource/ecmv-9xxi.json";
 
 function esc(s) {
@@ -306,12 +310,17 @@ async function search(i) {
   if (!term) return;
   const loading = state.loading.slice(); loading[i] = true;
   setState({ loading: loading, status: "SEARCHING…" });
+  const stagesEl = document.getElementById("a3-stages-" + i);
+  stagesEl.hidden = false;
+  const loader = stagedLoader(stagesEl, { source: "City of Austin", budgetMs: 20000 });
+  loader.request();
   const safe = term.replace(/'/g, "''").toUpperCase();
   const url = ENDPOINT + "?$where=upper(restaurant_name) like '%25" + encodeURIComponent(safe) + "%25'&$order=inspection_date DESC&$limit=200";
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const rows = await res.json();
+    loader.parse(rows.length);
     const byName = {};
     rows.forEach(r => {
       const k = (r.facility_id || (r.restaurant_name || "").trim() + "|" + (r.zip_code || ""));
@@ -333,9 +342,13 @@ async function search(i) {
     }).sort((a, b) => String(b.date).localeCompare(String(a.date)));
     const all = state.results.slice(); all[i] = results;
     const l2 = state.loading.slice(); l2[i] = false;
+    if (results.length) { loader.render(); } else { loader.fail("no venue matched that name"); }
     setState({ results: all, loading: l2, status: results.length ? "LIVE · " + rows.length + " RECORDS READ" : "NO MATCHES" });
+    if (results.length) { loader.done(); stagesEl.hidden = true; }
   } catch (e) {
     const l2 = state.loading.slice(); l2[i] = false;
+    // The status readout carries the recovery copy.
+    loader.fail("the city portal did not respond");
     setState({ loading: l2, status: "COULD NOT REACH THE PORTAL" });
   }
 }

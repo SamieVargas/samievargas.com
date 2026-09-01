@@ -5,6 +5,76 @@
 // ============================================================
 
 // ── Work page ────────────────────────────────────────────────
+// ── Query console (item 07) ──────────────────────────────────
+// An allowlist, keyed. No user-supplied SQL reaches anything, and the
+// result sets are shipped cached rather than queried live, so there is
+// no cost and no failure surface. Every figure below is one the site
+// already publishes elsewhere.
+//
+// The zip-code preset from the design is deliberately not here: the
+// notebook and the site widgets still disagree on per-zip averages,
+// and that has to be settled before zip figures go into a table that
+// reads like query output.
+const CONSOLE_QUERIES = [
+  {
+    key: 'cohort',
+    label: 'Reorder rate by cohort',
+    source: 'marts.fct_order_products',
+    sql: `select
+  user_cohort,
+  round(avg(reordered), 3) as reorder_rate,
+  round(avg(reordered) - 0.600, 3) as vs_pooled
+from marts.fct_order_products
+group by user_cohort
+order by reorder_rate`,
+    cols: ['user_cohort', 'reorder_rate', 'vs_pooled'],
+    rows: [
+      ['new_shopper', '0.221', '-0.379'],
+      ['veteran', '0.670', '+0.070'],
+    ],
+    note: 'The 0.60 everyone cites is the midpoint of two populations, and it describes neither.',
+  },
+  {
+    key: 'drift',
+    label: 'Operational drift by inspection',
+    source: 'marts.fct_inspections',
+    sql: `select
+  inspection_seq,
+  round(avg(score), 2) as avg_score,
+  round(avg(score) - 90.50, 2) as vs_first
+from marts.fct_inspections
+group by inspection_seq
+having count(*) > 200
+order by inspection_seq`,
+    cols: ['inspection_seq', 'avg_score', 'vs_first'],
+    rows: [
+      ['1', '90.50', '0.00'], ['2', '90.60', '+0.10'], ['3', '90.55', '+0.05'],
+      ['4', '91.05', '+0.55'], ['5', '91.15', '+0.65'], ['6', '89.80', '-0.70'],
+      ['7', '90.10', '-0.40'], ['8', '90.85', '+0.35'], ['9', '90.50', '0.00'],
+      ['10', '91.80', '+1.30'], ['11', '91.15', '+0.65'], ['12', '90.90', '+0.40'],
+      ['13', '91.30', '+0.80'], ['14', '92.60', '+2.10'],
+    ],
+    note: 'The axis is inverted here, so a rising score is more violations, and venues drift about two points worse across their inspection history.',
+  },
+  {
+    key: 'model',
+    label: 'Reorder model by segment',
+    source: 'marts.dim_model_scores',
+    sql: `select
+  segment,
+  round(auc, 4) as auc,
+  round(auc - 0.8566, 4) as lift_over_new
+from marts.dim_model_scores
+order by auc desc`,
+    cols: ['segment', 'auc', 'lift_over_new'],
+    rows: [
+      ['veteran', '0.9886', '+0.1320'],
+      ['new_shopper', '0.8566', '0.0000'],
+    ],
+    note: 'A random forest separates veterans almost perfectly and struggles on new shoppers, which is what confirmed the split was real rather than a pipeline artifact.',
+  },
+];
+
 
 const HERO_STATS = [
   { stat: '$14M+', label: 'Enterprise portfolio owned end to end at GLG' },
@@ -506,21 +576,21 @@ const TK_TOKENS = [
 // ── The arcade (/apps) ───────────────────────────────────────
 
 const ARCADE_APPS = [
-  { slug: 'six-degrees', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things, whether people or films or bands or towns, and the shortest path between them, so Dolly Parton reaches Austin through Willie Nelson.' },
-  { slug: 'died-doing-what', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died, so for poets tuberculosis leads at a median age of 58.' },
-  { slug: 'taco-coin-flip', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants, and if one scored worse on the city's real inspection records then the coin defers to the cleaner option." },
-  { slug: 'corporate-translator', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm, and the slider genuinely rewrites the text.' },
-  { slug: 'streak-autopsy', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail, so two missed days and it stamps the habit DECEASED and opens a case file.' },
-  { slug: 'whodunit-roulette', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood, and if you import your Goodreads or StoryGraph export it learns which authors you return to.' },
-  { slug: 'nepotism-graph', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families, so of the 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
-  { slug: 'same-name', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
-  { slug: 'backlog-reaper', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt with one title condemned, and you can delete it forever or spare it like a coward.' },
-  { slug: 'was-it-worth-it', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase and thirty days later it asks whether you still care, and it keeps your lifetime regret rate.' },
-  { slug: 'sample-size-roast', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences, which is real margin-of-error math plus an honest rewrite of the stat.' },
-  { slug: 'oracle', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers, so you ask it anything and it hands back a harder question.' },
-  { slug: 'sql-tarot', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
-  { slug: 'locked-room', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, and one impossible exit, with a fresh locked-room mystery generated every time.' },
-  { slug: 'escalation-simulator', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions, and every choice moves account health and none of them are free.' },
+  { slug: 'six-degrees', needs: ['live'], preview: 'terminal', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things, whether people or films or bands or towns, and the shortest path between them, so Dolly Parton reaches Austin through Willie Nelson.' },
+  { slug: 'died-doing-what', needs: ['live'], preview: 'bars', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died, so for poets tuberculosis leads at a median age of 58.' },
+  { slug: 'taco-coin-flip', needs: ['live'], preview: 'terminal', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants, and if one scored worse on the city's real inspection records then the coin defers to the cleaner option." },
+  { slug: 'corporate-translator', needs: ['browser'], preview: 'terminal', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm, and the slider genuinely rewrites the text.' },
+  { slug: 'streak-autopsy', needs: ['browser'], preview: 'grid', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail, so two missed days and it stamps the habit DECEASED and opens a case file.' },
+  { slug: 'whodunit-roulette', needs: ['live', 'export'], preview: 'terminal', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood, and if you import your Goodreads or StoryGraph export it learns which authors you return to.' },
+  { slug: 'nepotism-graph', needs: ['live'], preview: 'terminal', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families, so of the 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
+  { slug: 'same-name', needs: ['live'], preview: 'terminal', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
+  { slug: 'backlog-reaper', needs: ['export'], preview: 'bars', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt with one title condemned, and you can delete it forever or spare it like a coward.' },
+  { slug: 'was-it-worth-it', needs: ['browser'], preview: 'grid', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase and thirty days later it asks whether you still care, and it keeps your lifetime regret rate.' },
+  { slug: 'sample-size-roast', needs: ['browser'], preview: 'bars', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences, which is real margin-of-error math plus an honest rewrite of the stat.' },
+  { slug: 'oracle', needs: ['browser'], preview: 'ring', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers, so you ask it anything and it hands back a harder question.' },
+  { slug: 'sql-tarot', needs: ['browser'], preview: 'grid', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
+  { slug: 'locked-room', needs: ['browser'], preview: 'ring', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, and one impossible exit, with a fresh locked-room mystery generated every time.' },
+  { slug: 'escalation-simulator', needs: ['browser'], preview: 'ring', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions, and every choice moves account health and none of them are free.' },
 ];
 
 // Ticker order on the work page differs deliberately from the arcade's curated order.
@@ -528,7 +598,7 @@ const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin 
 
 export {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
-  READ_ROWS, SEC_CONTACTS,
+  READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,

@@ -6,7 +6,7 @@
 // prefers-reduced-motion.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260831';
+import { ARCADE_APPS } from '../data/content.js?v=20260901';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -21,11 +21,30 @@ const state = {
 };
 
 // ── Cards and table ──────────────────────────────────────────
+// A1 — four archetypes, one per app, built in CSS rather than
+// screenshotted. Paused at a representative frame until the tile is
+// hovered or focused, so fifteen of them cost nothing at rest.
+function previewHtml(a) {
+  const pa = `--pa:${a.accent}`;
+  switch (a.preview) {
+    case 'bars':
+      return `<span class="prev prev--bars" style="${pa}" aria-hidden="true">${
+        [0, 0.2, 0.4, 0.6].map((d) => `<i style="animation-delay:${d}s"></i>`).join('')}</span>`;
+    case 'ring':
+      return `<span class="prev prev--ring" style="${pa}" aria-hidden="true"><i></i></span>`;
+    case 'grid':
+      return `<span class="prev prev--grid" style="${pa}" aria-hidden="true">${
+        [0, 1, 2, 3, 4, 5].map((n) => `<i style="background:${n % 2 ? 'var(--rule-strong)' : a.accent}"></i>`).join('')}</span>`;
+    default:
+      return `<span class="prev prev--term" style="${pa}" aria-hidden="true">${esc(a.slug)} <u></u></span>`;
+  }
+}
+
 function renderApps() {
   $('#featured').innerHTML = ARCADE_APPS.filter((a) => a.feat).map((a) => `
-    <a class="fcard" href="${a.slug}">
+    <a class="fcard" href="${a.slug}" data-needs="${a.needs.join(' ')}">
       <span class="fcard__marquee"><span>${esc(a.title)}</span><i style="background:${a.accent}"></i></span>
-      <span class="fcard__shot"><img src="${a.shot}" alt="${esc(a.title)}" loading="lazy"></span>
+      <span class="fcard__shot">${previewHtml(a)}</span>
       <span class="fcard__body">
         <span class="fcard__head">
           <span class="fcard__title">${esc(a.title)}</span>
@@ -37,12 +56,59 @@ function renderApps() {
     </a>`).join('');
 
   $('#others').innerHTML = ARCADE_APPS.filter((a) => !a.feat).map((a, i) => `
-    <a class="hst-row" href="${a.slug}">
+    <a class="hst-row" href="${a.slug}" data-needs="${a.needs.join(' ')}">
       <span class="rank">${String(i + 7).padStart(2, '0')}</span>
       <span class="game">${esc(a.title)}</span>
       <span class="what">${esc(a.hook)}</span>
       <span class="arc-badge" style="color:${a.accent}">${esc(a.badge)}</span>
     </a>`).join('');
+}
+
+
+// ── A2 ── Filter by what an app needs. Tiles travel to their new
+// positions (measure, invert, release) instead of jumping.
+function applyFilter(cat) {
+  const cards = [...document.querySelectorAll('#featured .fcard')];
+  const first = new Map(cards.map((c) => [c, c.getBoundingClientRect()]));
+
+  const show = (el) => {
+    const needs = (el.dataset.needs || '').split(' ');
+    el.hidden = !(cat === 'all' || needs.includes(cat));
+  };
+  cards.forEach(show);
+  document.querySelectorAll('#others .hst-row').forEach(show);
+
+  if (!REDUCED) {
+    cards.forEach((c) => {
+      if (c.hidden) return;
+      const f = first.get(c);
+      const last = c.getBoundingClientRect();
+      const dx = f.left - last.left;
+      const dy = f.top - last.top;
+      if (!dx && !dy) return;
+      c.style.transition = 'none';
+      c.style.transform = `translate(${dx}px, ${dy}px)`;
+      requestAnimationFrame(() => {
+        c.style.transition = 'transform .45s cubic-bezier(.2,.8,.2,1)';
+        c.style.transform = '';
+      });
+    });
+  }
+
+  document.querySelectorAll('#acat .chip').forEach((b) => {
+    const on = b.dataset.cat === cat;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+}
+
+function wireFilter() {
+  const row = $('#acat');
+  if (!row) return;
+  row.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cat]');
+    if (b) applyFilter(b.dataset.cat);
+  });
 }
 
 // ── The machine ──────────────────────────────────────────────
@@ -273,6 +339,7 @@ function wireScore() {
 // ── Boot ─────────────────────────────────────────────────────
 try { state.initials = localStorage.getItem('samie-arcade-initials') || null; } catch (err) { /* fine */ }
 renderApps();
+wireFilter();
 renderMachine();
 renderBulbs();
 wireSpin();

@@ -163,6 +163,68 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: .1s; } .reveal-delay-2 { transition-delay: .2s; }
 
+    /* ── C6: the battery drain that opens the invoice ──────── */
+    .bat-load {
+      position: absolute; inset: 0; z-index: 5;
+      background: var(--surface-raised);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 2rem; gap: .75rem;
+      transition: opacity .55s ease-out;
+    }
+    .bat-load.is-done { opacity: 0; pointer-events: none; }
+    .bat-load__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .bat-load__lab { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .bat-load__fig { font-family: var(--mono); font-size: 1.6rem; font-weight: 500; color: var(--ink); }
+    .bat-load__batt { display: flex; align-items: center; gap: 2px; }
+    .bat-load__cell { flex: 1; height: 20px; border: 2px solid var(--ink); padding: 2px; }
+    .bat-load__fill { display: block; height: 100%; width: 100%; background: var(--accent);
+      transition: width .12s linear, background .3s ease; }
+    .bat-load__nub { width: 4px; height: 9px; background: var(--ink); display: block; }
+    .bat-load__status { font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; color: var(--muted); margin: 0; }
+
+    /* ── C1: line items post one at a time ─────────────────── */
+    .line-item.is-posting, .total-block.is-posting { opacity: 0; transform: translateY(6px); }
+    .line-item, .total-block { transition: opacity .3s ease, transform .3s ease; }
+
+    /* ── X6: the dispute portal ────────────────────────────── */
+    .dispute { border: 1px solid var(--rule); background: var(--surface-page); max-width: 640px; }
+    .dispute__bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      background: var(--surface-raised); border-bottom: 1px solid var(--rule); padding: 10px 13px; }
+    .dispute__id, .dispute__status { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; }
+    .dispute__id { color: var(--muted); }
+    .dispute__thread { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .dispute__msg { border-left: 2px solid var(--ink); padding-left: 11px; }
+    .dispute__msg--rac { border-left-color: var(--accent); }
+    .dispute__who { font-family: var(--mono); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 3px; }
+    .dispute__body { font-family: var(--serif); font-size: .82rem; line-height: 1.55; color: var(--ink); margin: 0; }
+    .dispute__ctrl { margin: 14px 14px 16px; background: var(--accent); color: #fff; border: none;
+      font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: 10px 16px; cursor: pointer; }
+
+    /* ── C3: the joke only works if the document is correct ── */
+    @media print {
+      @page { size: letter; margin: 0.6in; }
+      nav, .hero, .nav-icon-btn, .dispute, .bat-load, footer { display: none !important; }
+      body > section:not(.invoice-print) { display: none !important; }
+      .invoice-print .sh { display: none !important; }
+      /* Reveal-gated content must print even though its JS never ran. */
+      .reveal, .line-item, .total-block { opacity: 1 !important; transform: none !important; }
+      .receipt-wrap { max-width: none !important; margin: 0 !important; }
+      /* Compacted so the whole invoice lands on one Letter page. */
+      html { font-size: 12px; }
+      .sw { padding: 0 !important; max-width: none !important; border-bottom: none !important; }
+      .receipt-header { padding-bottom: .7rem !important; margin-bottom: .7rem !important; }
+      .r-section-label { margin: .7rem 0 .35rem !important; }
+      .line-item { margin-bottom: 2px !important; }
+      .r-divider { margin: .6rem 0 !important; }
+      .receipt-footer { padding-top: .6rem !important; margin-top: .6rem !important; }
+      .receipt { border: none !important; padding: 0 !important; box-shadow: none !important;
+        background: #fff !important; break-inside: avoid; }
+      body { background: #fff !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .hero, .sw { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -202,7 +264,7 @@
 </header>
 
 <!-- INVOICE -->
-<section class="sw">
+<section class="sw invoice-print">
   <div class="sh reveal"><span class="sl">01 — The Invoice</span><h2 class="st">Itemized damages</h2></div>
   <div class="receipt-wrap reveal reveal-delay-1">
     <div class="receipt">
@@ -257,6 +319,19 @@
         <div class="no-refunds">*** NO REFUNDS ***</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- THE DISPUTE -->
+<section class="sw">
+  <div class="sh reveal"><span class="sl">01b — The Response</span><h2 class="st">The tenant disputes the charges</h2></div>
+  <div class="dispute reveal reveal-delay-1" id="dispute">
+    <div class="dispute__bar">
+      <span class="dispute__id">Ticket 0007-RAC</span>
+      <span class="dispute__status" id="dispute-status">Open</span>
+    </div>
+    <div class="dispute__thread" id="dispute-thread"></div>
+    <button type="button" class="dispute__ctrl" id="dispute-btn">Advance thread</button>
   </div>
 </section>
 
@@ -463,6 +538,142 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<script type="module">
+import { RACCOON_LIFE } from '../data/content.js?v=20260901';
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── C6 ── The battery drains through the real readings, from the
+// first night to the floor, and stops there. The recovery is a
+// different story and the invoice is not about it.
+function drainSegment(series) {
+  const min = Math.min(...series.map((d) => d.v));
+  const first = series.findIndex((d) => d.v === min);
+  let last = first;
+  while (last + 1 < series.length && series[last + 1].v === min) last += 1;
+  return series.slice(0, last + 1);
+}
+
+function batteryColour(v) {
+  if (v > 55) return 'var(--accent)';
+  if (v >= 30) return '#a8862f';
+  return 'var(--red)';
+}
+
+function postRows(receipt) {
+  const rows = [...receipt.querySelectorAll('.line-item'), ...receipt.querySelectorAll('.total-block')];
+  if (REDUCED) return;
+  rows.forEach((r) => r.classList.add('is-posting'));
+  requestAnimationFrame(() => {
+    rows.forEach((r, i) => {
+      setTimeout(() => r.classList.remove('is-posting'), i * 90);
+    });
+  });
+}
+
+function runBattery() {
+  const wrap = document.querySelector('.receipt-wrap');
+  const receipt = wrap && wrap.querySelector('.receipt');
+  if (!wrap || !receipt) return;
+  const seg = drainSegment(RACCOON_LIFE);
+  if (!seg.length) return;
+
+  if (REDUCED) { return; }
+
+  // Built in script and laid over finished markup, so with JS off the
+  // invoice is simply there.
+  wrap.style.position = 'relative';
+  const panel = document.createElement('div');
+  panel.className = 'bat-load';
+  panel.innerHTML = `
+    <div class="bat-load__row">
+      <span class="bat-load__lab">Body battery</span>
+      <span class="bat-load__fig">${seg[0].v}</span>
+    </div>
+    <div class="bat-load__batt">
+      <div class="bat-load__cell"><i class="bat-load__fill"></i></div>
+      <span class="bat-load__nub"></span>
+    </div>
+    <p class="bat-load__status">reading ${seg[0].d}</p>`;
+  wrap.appendChild(panel);
+
+  const fig = panel.querySelector('.bat-load__fig');
+  const fill = panel.querySelector('.bat-load__fill');
+  const status = panel.querySelector('.bat-load__status');
+  fill.style.width = `${seg[0].v}%`;
+  fill.style.background = batteryColour(seg[0].v);
+
+  seg.forEach((d, i) => {
+    setTimeout(() => {
+      fig.textContent = d.v;
+      fill.style.width = `${d.v}%`;
+      fill.style.background = batteryColour(d.v);
+      status.textContent = i === seg.length - 1
+        ? `floor reached · ${d.v} of 100`
+        : `reading ${d.d}`;
+    }, 220 + i * 260);
+  });
+
+  setTimeout(() => {
+    panel.classList.add('is-done');
+    postRows(receipt);
+    setTimeout(() => panel.remove(), 700);
+  }, 220 + seg.length * 260 + 500);
+}
+
+// ── X6 ── The raccoon files a response, through the proper channels.
+const THREAD = [
+  { who: 'Samie', when: 'Mar 4, 09:12', rac: false,
+    body: 'Invoice 0007-RAC issued for attic entry, sleep interruption, and insulation. Net 30.' },
+  { who: 'Procyon lotor', when: 'Mar 6, 03:41', rac: true,
+    body: 'Disputes line 3. Insulation was already loose. Requests itemisation.' },
+  { who: 'Samie', when: 'Mar 6, 08:02', rac: false,
+    body: 'Itemisation attached. Photographs from nights 3 and 6 included as exhibits A and B.' },
+  { who: 'Procyon lotor', when: 'Mar 9, 02:15', rac: true,
+    body: 'Escalating. Counter-claims $95.00 for emotional labour, cites the trap on night 9.' },
+];
+const STATUSES = [
+  { text: 'Open', colour: 'var(--accent)' },
+  { text: 'Disputed', colour: 'var(--red)' },
+  { text: 'Under review', colour: 'var(--muted)' },
+  { text: 'Escalated', colour: 'var(--red)' },
+];
+
+let step = 0;
+
+function renderThread() {
+  const thread = document.getElementById('dispute-thread');
+  const status = document.getElementById('dispute-status');
+  const btn = document.getElementById('dispute-btn');
+  if (!thread) return;
+  thread.innerHTML = THREAD.slice(0, step + 1).map((m) => `
+    <div class="dispute__msg${m.rac ? ' dispute__msg--rac' : ''}">
+      <span class="dispute__who">${m.who} · ${m.when}</span>
+      <p class="dispute__body">${m.body}</p>
+    </div>`).join('');
+  status.textContent = STATUSES[step].text;
+  status.style.color = STATUSES[step].colour;
+  btn.textContent = step >= THREAD.length - 1 ? 'Reset thread' : 'Advance thread';
+}
+
+const btn = document.getElementById('dispute-btn');
+if (btn) {
+  renderThread();
+  btn.addEventListener('click', () => {
+    step = step >= THREAD.length - 1 ? 0 : step + 1;
+    renderThread();
+  });
+}
+
+// The drain plays when the invoice arrives, not on a page-load timer.
+const wrap = document.querySelector('.receipt-wrap');
+if (wrap && !REDUCED) {
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { io.disconnect(); runBattery(); } });
+  }, { threshold: 0.25 });
+  io.observe(wrap);
+}
 </script>
 </body>
 </html>

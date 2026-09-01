@@ -9,7 +9,7 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   PLACES, LIFE_FACTS, RECORDS, CHRISTIE,
-} from '../data/content.js?v=20260831';
+} from '../data/content.js?v=20260901';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 const RATING_COLORS = { 5: '#0f6e56', 4: '#4daa91', 3: '#d97706', 2: '#b4552f' };
 
-const gates = { progIn: false, racIn: false, eatIn: false, rotIn: false, recIn: false, chrIn: false };
+const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, rotIn: false, recIn: false, chrIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -138,26 +138,104 @@ function fieldViz(sel) {
 
 let sel = 'toothbrush';
 
-function renderField() {
+// The dots are built once and then mutated in place. The L1 layout
+// transition and the L3 lens both run on persistent elements, so
+// re-rendering the field on every selection would kill them mid-move.
+let fieldMode = 'scatter';
+const fieldPts = new Map();
+
+const quadrant = (p) => (parseFloat(p.y) < 50 ? 0 : 2) + (parseFloat(p.x) < 50 ? 0 : 1);
+
+// Deterministic, so the cluster layout is identical on every load.
+function jitter(seed, span) {
+  const v = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  return (v - Math.floor(v) - 0.5) * span;
+}
+
+function buildField() {
   const plot = $('#plot');
-  const f = LIFE_FIELD.find((d) => d.id === sel) || LIFE_FIELD[0];
-  const rel = LIFE_RELATED[f.id] || [];
+  // Entrance order is by quadrant, so the field fills one corner at a
+  // time rather than sparkling at random.
+  const ranked = LIFE_FIELD.map((p, i) => ({ p, i }))
+    .sort((a, b) => quadrant(a.p) - quadrant(b.p) || a.i - b.i);
+  const rank = new Map(ranked.map((r, n) => [r.p.id, n]));
+
   plot.querySelectorAll('.plot__pt').forEach((el) => el.remove());
   plot.insertAdjacentHTML('beforeend', LIFE_FIELD.map((p, pi) => {
-    const on = p.id === sel, relOn = rel.includes(p.id), flip = parseFloat(p.x) > 50, art = !!p.art;
-    const size = art ? (on ? 20 : 15) : 11;
+    const flip = parseFloat(p.x) > 50;
     return `
-    <button type="button" class="plot__pt${flip ? ' plot__pt--flip' : ''}${art ? ' plot__pt--art' : ''}${on ? ' is-on' : ''}"
-            data-pt="${p.id}" style="left:${p.x};top:${p.y};z-index:${on ? 3 : art ? 2 : 1}" aria-label="${esc(p.title)}">
-      <i style="width:${size}px;height:${size}px;animation:bob ${(3.2 + (pi % 5) * 0.4).toFixed(1)}s ease-in-out ${(pi * 0.22).toFixed(2)}s infinite${relOn ? ',pulsegreen 1.6s ease-out infinite' : ''};background:${art ? (on ? '#1a6b5a' : relOn ? 'rgba(26,107,90,.8)' : 'rgba(26,107,90,.5)') : relOn ? 'rgba(26,107,90,.18)' : 'transparent'};border-color:${art || relOn ? '#1a6b5a' : '#9a9686'}"></i>
-      <span style="color:${on ? '#16150f' : relOn ? '#1a6b5a' : '#6d6a5c'}">${esc(p.short)}</span>
+    <button type="button" class="plot__pt${flip ? ' plot__pt--flip' : ''}${p.art ? ' plot__pt--art' : ''}"
+            data-pt="${p.id}" aria-label="${esc(p.title)}"
+            style="left:${p.x};top:${p.y};--bob:${(3.2 + (pi % 5) * 0.4).toFixed(1)}s;--d:${(pi * 0.22).toFixed(2)}s">
+      <i></i><span>${esc(p.short)}</span>
     </button>`;
   }).join(''));
 
+  LIFE_FIELD.forEach((p) => {
+    const btn = plot.querySelector(`[data-pt="${p.id}"]`);
+    const x = parseFloat(p.x), y = parseFloat(p.y), q = quadrant(p);
+    fieldPts.set(p.id, {
+      btn, dot: btn.querySelector('i'), x, y,
+      cx: (q % 2 ? 75 : 25) + jitter(x + y, 14),
+      cy: (q > 1 ? 75 : 25) + jitter(x * 2 + y, 14),
+      base: p.art ? 15 : 11,
+      rank: rank.get(p.id),
+    });
+    // Held back only when JS is running; without it the dots just show.
+    if (!REDUCED) btn.style.opacity = '0';
+  });
+
+  if (!REDUCED) {
+    $('.plot__mid-h').style.width = '0';
+    $('.plot__mid-v').style.height = '0';
+  }
+  updateFieldSel();
+}
+
+// L4 — axes wipe from the origin, then the dots land quadrant by
+// quadrant while the counter keeps up with them.
+function playFieldEntrance() {
+  const count = $('#plot-count');
+  const total = LIFE_FIELD.length;
+  if (REDUCED) {
+    if (count) count.textContent = `${total} of ${total} placed`;
+    return;
+  }
+  $('.plot__mid-h').style.width = '100%';
+  $('.plot__mid-v').style.height = '100%';
+  let placed = 0;
+  fieldPts.forEach((pt) => {
+    const delay = 0.3 + pt.rank * 0.045;
+    // Opacity only: the button's transform is doing the centring and the
+    // inner dot's transform is doing the bob, so neither is free to animate.
+    pt.btn.style.animation = `fadein .45s ease ${delay.toFixed(2)}s both`;
+    pt.btn.style.opacity = '';
+    setTimeout(() => {
+      placed += 1;
+      if (count) count.textContent = `${placed} of ${total} placed`;
+    }, (delay + 0.45) * 1000);
+  });
+}
+
+function updateFieldSel() {
+  const f = LIFE_FIELD.find((d) => d.id === sel) || LIFE_FIELD[0];
+  const rel = LIFE_RELATED[f.id] || [];
+
+  fieldPts.forEach((pt, id) => {
+    pt.btn.classList.toggle('is-on', id === f.id);
+    pt.btn.classList.toggle('is-rel', rel.includes(id));
+    pt.btn.style.zIndex = id === f.id ? 3 : (pt.base === 15 ? 2 : 1);
+  });
+
   $('#plot-lines').innerHTML = rel.map((id) => {
-    const t = LIFE_FIELD.find((d) => d.id === id);
-    if (!t) return '';
-    return `<line x1="${parseFloat(f.x)}" y1="${parseFloat(f.y)}" x2="${parseFloat(t.x)}" y2="${parseFloat(t.y)}"
+    const t2 = fieldPts.get(id);
+    if (!t2) return '';
+    const from = fieldPts.get(f.id);
+    const fx = fieldMode === 'cluster' ? from.cx : from.x;
+    const fy = fieldMode === 'cluster' ? from.cy : from.y;
+    const tx = fieldMode === 'cluster' ? t2.cx : t2.x;
+    const ty = fieldMode === 'cluster' ? t2.cy : t2.y;
+    return `<line x1="${fx}" y1="${fy}" x2="${tx}" y2="${ty}"
       stroke="#1a6b5a" stroke-width="0.35" stroke-dasharray="2 1.6" opacity="0.5"/>`;
   }).join('');
 
@@ -178,12 +256,69 @@ function renderField() {
     </div>`;
 }
 
+// L1 — the same dots move; the argument is that both halves fill.
+function setFieldLayout(mode) {
+  fieldMode = mode;
+  fieldPts.forEach((pt) => {
+    pt.btn.style.left = `${mode === 'cluster' ? pt.cx : pt.x}%`;
+    pt.btn.style.top = `${mode === 'cluster' ? pt.cy : pt.y}%`;
+  });
+  document.querySelectorAll('.plot-modes .chip').forEach((b) => {
+    const on = b.dataset.mode === mode;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  updateFieldSel();
+}
+
+// L3 — a magnifier for the dense corner. Hover only, so the dots stay
+// individually focusable and clickable at their base size.
+function clearLens(pt) {
+  pt.dot.style.width = '';
+  pt.dot.style.height = '';
+  pt.dot.style.margin = '';
+  pt.dot.style.borderColor = '';
+}
+
+function fieldLens(ev) {
+  const r = $('#plot').getBoundingClientRect();
+  const mx = ((ev.clientX - r.left) / r.width) * 100;
+  const my = ((ev.clientY - r.top) / r.height) * 100;
+  let any = false;
+  fieldPts.forEach((pt) => {
+    const px = fieldMode === 'cluster' ? pt.cx : pt.x;
+    const py = fieldMode === 'cluster' ? pt.cy : pt.y;
+    if ((mx - px) ** 2 + (my - py) ** 2 < 190) {
+      any = true;
+      const size = pt.base + 7;
+      // Grow from the centre, and keep the flex row from shifting.
+      pt.dot.style.width = `${size}px`;
+      pt.dot.style.height = `${size}px`;
+      pt.dot.style.margin = '-3.5px';
+      pt.dot.style.borderColor = '#1a6b5a';
+    } else {
+      clearLens(pt);
+    }
+  });
+  $('#plot-lens').textContent = any ? 'Lens on' : 'Move to magnify';
+}
+
 function wireField() {
-  $('#plot').addEventListener('click', (e) => {
+  const plot = $('#plot');
+  plot.addEventListener('click', (e) => {
     const pt = e.target.closest('[data-pt]');
     if (!pt) return;
     sel = pt.dataset.pt;
-    renderField();
+    updateFieldSel();
+  });
+  plot.addEventListener('mousemove', fieldLens);
+  plot.addEventListener('mouseleave', () => {
+    fieldPts.forEach(clearLens);
+    $('#plot-lens').textContent = 'Move to magnify';
+  });
+  document.querySelector('.plot-modes').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-mode]');
+    if (b && b.dataset.mode !== fieldMode) setFieldLayout(b.dataset.mode);
   });
 }
 
@@ -372,18 +507,60 @@ let selChr = 5;
 
 // Spines render once; selection only mutates transform and box-shadow, so
 // the shelf's entrance animation never replays on hover.
+// L6 — the spines stack left to right at full height in the accent,
+// then settle to their real heights and colours. The settle is what
+// makes it read as a shelf being built rather than bars animating.
+const CHR_TALL = 192;
+
 function renderChristie(on) {
+  const settling = on && !REDUCED;
   $('#chr-shelf').innerHTML = CHRISTIE.map((c, i) => {
     const col = c.cur ? '#2e5c4e' : c.u ? '#3c403b' : RATING_COLORS[c.r];
     const h = 152 + ((i * 13) % 38);
     return `
-    <button type="button" data-chr="${i}" aria-label="${esc(c.t + (c.u ? ': on the list' : c.cur ? ': currently reading' : `: ${c.r} stars`))}"
-      style="position:relative;height:${h}px;flex:1 1 20px;min-width:0;border:none;cursor:pointer;padding:9px 0 7px;overflow:hidden;writing-mode:vertical-rl;display:flex;justify-content:space-between;align-items:center;background-color:${col};background-image:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0) 38%,rgba(0,0,0,.3)),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px),linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px);transform-origin:bottom center;transition:transform .28s cubic-bezier(.34,1.3,.64,1);${on ? `animation:growup .55s cubic-bezier(.4,0,.2,1) ${(i * 0.03).toFixed(2)}s both` : 'opacity:0'}">
+    <button type="button" data-chr="${i}" data-h="${h}" data-col="${col}"
+      aria-label="${esc(c.t + (c.u ? ': on the list' : c.cur ? ': currently reading' : `: ${c.r} stars`))}"
+      style="position:relative;height:${settling ? CHR_TALL : h}px;flex:1 1 20px;min-width:0;border:none;cursor:pointer;padding:9px 0 7px;overflow:hidden;writing-mode:vertical-rl;display:flex;justify-content:space-between;align-items:center;background-color:${settling ? '#1a6b5a' : col};background-image:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0) 38%,rgba(0,0,0,.3)),linear-gradient(180deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px),linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 7px,rgba(0,0,0,0) 7px);transform-origin:bottom center;transition:transform .28s cubic-bezier(.34,1.3,.64,1),height .35s cubic-bezier(.2,.8,.2,1),background-color .35s ease;${on ? `animation:fadein .25s ease ${(i * 0.03).toFixed(2)}s both` : 'opacity:0'}">
       <span style="font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(251,249,243,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:74%">${esc(c.t)}</span>
       <span style="font:400 7.5px 'IBM Plex Mono',monospace;letter-spacing:.04em;color:rgba(251,249,243,.6);white-space:nowrap">${c.cur ? 'now' : c.u ? '·' : `${c.r}★`}</span>
     </button>`;
   }).join('');
+  if (settling) settleShelf(); else setShelfDone();
   updateChristieSel(on);
+}
+
+function setShelfDone() {
+  const el = $('#chr-progress');
+  if (el) el.textContent = `${CHRISTIE.length} shelved · 33 finished`;
+}
+
+function settleShelf() {
+  const spines = [...$('#chr-shelf').querySelectorAll('[data-chr]')];
+  const label = $('#chr-progress');
+  spines.forEach((b, i) => {
+    setTimeout(() => {
+      if (label) label.textContent = `Shelving ${i + 1} of ${spines.length}`;
+    }, 250 + i * 30);
+  });
+  setTimeout(() => {
+    spines.forEach((b) => {
+      b.style.height = `${b.dataset.h}px`;
+      b.style.backgroundColor = b.dataset.col;
+    });
+    setShelfDone();
+  }, 300 + spines.length * 30);
+}
+
+// L2 — hovering or focusing a spine names the book underneath it.
+function chrReadout(i) {
+  const c = CHRISTIE[i];
+  if (!c) return;
+  const title = $('#chr-title'), meta = $('#chr-meta');
+  if (title) title.textContent = c.t;
+  if (meta) {
+    const state = c.u ? 'queued' : c.cur ? 'reading now' : 'finished';
+    meta.textContent = `Read ${i + 1} of ${CHRISTIE.length} · ${state}`;
+  }
 }
 
 function updateChristieSel(on) {
@@ -420,14 +597,27 @@ function renderLibCard(on) {
 }
 
 function wireChristie() {
+  const shelf = $('#chr-shelf');
   const pick = (e) => {
     const b = e.target.closest('[data-chr]');
-    if (!b || Number(b.dataset.chr) === selChr) return;
+    if (!b) return;
+    chrReadout(Number(b.dataset.chr));
+    if (Number(b.dataset.chr) === selChr) return;
     selChr = Number(b.dataset.chr);
     updateChristieSel(gates.chrIn);
   };
-  $('#chr-shelf').addEventListener('mouseover', pick);
-  $('#chr-shelf').addEventListener('click', pick);
+  shelf.addEventListener('mouseover', pick);
+  shelf.addEventListener('click', pick);
+  shelf.addEventListener('focusin', pick);
+  shelf.addEventListener('keydown', (e) => {
+    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const spines = [...shelf.querySelectorAll('[data-chr]')];
+    const at = spines.indexOf(e.target.closest('[data-chr]'));
+    const next = spines[Math.min(spines.length - 1, Math.max(0, at + step))];
+    if (next) next.focus();
+  });
 }
 
 // ── On rotation ──────────────────────────────────────────────
@@ -442,7 +632,7 @@ function renderEq(on) {
 }
 
 // ── Boot ─────────────────────────────────────────────────────
-renderField();
+buildField();
 renderProgress(false);
 renderInvoice(false);
 renderBattery(false);
@@ -457,6 +647,7 @@ wireBattery();
 wireCrate();
 wireChristie();
 
+watchGate('field', 'fieldIn', () => playFieldEntrance());
 watchGate('progress', 'progIn', () => { renderProgress(true); startProgressCount(); });
 watchGate('raccoon', 'racIn', () => { renderInvoice(true); renderBattery(true); startAutoScrub(); });
 watchGate('eating', 'eatIn', () => renderPlaces(true));

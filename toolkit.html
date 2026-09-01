@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260831">
+  <link rel="stylesheet" href="css/styles.css?v=20260901">
 </head>
 <body>
 
@@ -74,6 +74,13 @@
     <span class="label" id="feed-status" style="letter-spacing:.1em;white-space:nowrap">Loading from GitHub…</span>
   </div>
   <p class="tk-intro">The list on the left is pulled live from the commits on <a href="https://github.com/SamieVargas/samievargas.github.io">samievargas.github.io</a>, so it updates itself when I push. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why.</p>
+  <div class="pushes" id="pushes" hidden>
+    <div class="pushes__strip" id="pushes-strip"></div>
+    <div class="pushes__meta">
+      <span id="pushes-window"></span>
+      <span id="pushes-total"></span>
+    </div>
+  </div>
   <div class="changelog rule-top" style="padding-top:26px">
     <div>
       <span class="col-label">Commits</span>
@@ -163,6 +170,19 @@
     </div>
   </div>
   <div class="token-grid" id="tokens"></div>
+  <div class="accent-lab" id="accent-lab">
+    <div class="accent-lab__row">
+      <a class="btn btn--accent btn--md" href="#accent-lab">Try Signal</a>
+      <a class="btn btn--ghost btn--md" href="#accent-lab">LinkedIn</a>
+      <span style="display:inline-flex;align-items:center;gap:9px"><i class="status__dot" style="display:block"></i><span class="label label--accent" style="letter-spacing:.12em">Exploring roles</span></span>
+    </div>
+    <label class="accent-lab__label" for="hue">Hue · lightness and chroma are pinned, which is what keeps the palette coherent</label>
+    <input type="range" id="hue" min="0" max="360" step="1" value="168" aria-label="Accent hue">
+    <div class="accent-lab__out">
+      <code id="accent-css"></code>
+      <button type="button" id="copy-accent">Copy</button>
+    </div>
+  </div>
   <p class="token-note">One correction I made to my own system: the faint grey was #9a9686, which measures 2.6:1 on paper and fails contrast. Anything carrying meaning now uses #77735f at 4.6:1, and the old value is decorative only.</p>
 </section>
 
@@ -255,11 +275,34 @@
   </div>
 </section>
 
+<!-- ── SANDBOX ─────────────────────────────────────────────── -->
+<section class="section">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <span class="section__num">05</span>
+      <h2>Build a strip of it yourself</h2>
+    </div>
+    <span class="label label--mid" style="white-space:nowrap">Click an instance to remove it</span>
+  </div>
+  <p class="tk-intro">Every component here is the real one, styled by the same stylesheet the rest of the site uses, and the markup it emits is what you would paste in.</p>
+  <div class="sandbox rule-top" style="padding-top:26px">
+    <div class="sandbox__palette" id="sandbox-palette"></div>
+    <div>
+      <div class="sandbox__canvas" id="sandbox-canvas"></div>
+      <div class="sandbox__outbar">
+        <span class="label label--mid">Emitted markup</span>
+        <button type="button" id="copy-sandbox">Copy</button>
+      </div>
+      <pre class="sandbox__out" id="sandbox-out"></pre>
+    </div>
+  </div>
+</section>
+
 <!-- ── HOW IT IS BUILT ─────────────────────────────────────── -->
 <section class="section section--alt" style="padding-bottom:72px;border-bottom:none">
   <div class="section__head" style="margin-bottom:10px">
     <div class="section__head-l">
-      <span class="section__num">05</span>
+      <span class="section__num">06</span>
       <h2>How it is built</h2>
     </div>
   </div>
@@ -286,6 +329,6 @@
   <span class="label" id="footer-line" style="letter-spacing:.13em;font-size:11px;color:var(--muted)"></span>
 </footer>
 
-<script type="module" src="js/toolkit.js?v=20260831"></script>
+<script type="module" src="js/toolkit.js?v=20260901"></script>
 </body>
 </html>

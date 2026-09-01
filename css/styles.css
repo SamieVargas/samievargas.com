@@ -323,6 +323,33 @@ em { font-style: italic; color: var(--accent); }
 .choro-legend .swatch i { width: 14px; height: 14px; display: block; }
 .choro-legend .swatch span { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
 .choro__src { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+/* Item 07 — the query console */
+.qconsole { background: var(--dark); border: 1px solid var(--rule); padding: 24px 26px; margin-top: 40px; }
+.qconsole__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+.qc-presets { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.qc-preset {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .08em; padding: 8px 13px;
+  background: transparent; border: 1px solid var(--dark-rule); color: #8fd6bf; cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.qc-preset:hover { border-color: #8fd6bf; }
+.qc-preset.is-on { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.qc-sql {
+  font-family: var(--mono); font-size: 12px; line-height: 1.75; color: #8fd6bf;
+  white-space: pre-wrap; margin: 0 0 14px; overflow-x: auto;
+}
+.qc-caret { display: inline-block; width: 7px; height: 13px; background: #8fd6bf; margin-left: 3px;
+  vertical-align: -2px; animation: blink 1s step-end infinite; }
+.qc-meta {
+  border-top: 1px solid var(--dark-rule); padding-top: 12px; margin: 0 0 14px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.qc-table { display: flex; flex-direction: column; gap: 1px; background: var(--dark-rule); border: 1px solid var(--dark-rule); }
+.qc-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1px; background: var(--dark-rule); }
+.qc-row > span { background: var(--dark); padding: 8px 11px; font-family: var(--mono); font-size: 11.5px; color: #c8ccbd; }
+.qc-row--head > span { color: var(--faint); }
+.qc-note { margin: 14px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--dark-body); max-width: 78ch; }
+@media (prefers-reduced-motion: reduce) { .qc-caret { animation: none; } }
 .zipmap-link { display: block; max-width: 432px; margin: 0 auto; padding: 16px 16px 12px; text-decoration: none; cursor: pointer; }
 .zipmap-link svg { display: block; width: 100%; transition: filter .3s ease; }
 .zipmap-link:hover svg { filter: saturate(1.15); }
@@ -492,8 +519,8 @@ em { font-style: italic; color: var(--accent); }
 .plot__axis--tl { top: 12px; left: 14px; }
 .plot__axis--bl { bottom: 12px; left: 14px; }
 .plot__axis--tr { top: 12px; right: 14px; }
-.plot__mid-h { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--rule); }
-.plot__mid-v { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--rule); }
+.plot__mid-h { position: absolute; left: 0; width: 100%; top: 50%; height: 1px; background: var(--rule); }
+.plot__mid-v { position: absolute; top: 0; height: 100%; left: 50%; width: 1px; background: var(--rule); }
 .plot svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
 .plot svg line { animation: dashflow 1.4s linear infinite; }
 .plot__pt {
@@ -519,6 +546,31 @@ em { font-style: italic; color: var(--accent); }
 .plot-key div { display: flex; align-items: center; gap: 7px; }
 .plot-key i { width: 11px; height: 11px; border-radius: 50%; display: block; background: var(--accent); }
 .plot-key div + div i { background: transparent; border: 1.5px solid var(--faint-deco); }
+.plot-key__lens { margin-left: auto; color: var(--faint-deco); }
+.plot-modes { display: flex; gap: 8px; margin-top: 12px; }
+/* L4 — the axes wipe out from the origin, each transitioning its own
+   property; declaring both on one rule made one axis snap. */
+.plot__mid-h { transition: width .44s cubic-bezier(.2,.8,.2,1); }
+.plot__mid-v { transition: height .44s cubic-bezier(.2,.8,.2,1); }
+.plot__count {
+  position: absolute; right: 14px; bottom: 12px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint-deco); pointer-events: none;
+}
+/* Dots related to the selection pulse; the bob has to be restated here
+   because the shorthand cannot be extended by a second rule. */
+.plot__pt.is-rel i {
+  background: rgba(26, 107, 90, .18); border-color: var(--accent);
+  animation: bob var(--bob, 3.2s) ease-in-out var(--d, 0s) infinite,
+             pulsegreen 1.6s ease-out infinite;
+}
+.plot__pt--art.is-rel i { background: rgba(26, 107, 90, .8); }
+.plot__pt.is-rel span { color: var(--accent); }
+/* L1 — scatter/cluster moves persistent elements, never a re-render. */
+.plot__pt { transition: left .7s cubic-bezier(.2,.8,.2,1), top .7s cubic-bezier(.2,.8,.2,1); }
+@media (prefers-reduced-motion: reduce) {
+  .plot__pt, .plot__mid-h, .plot__mid-v { transition: none; }
+}
 
 .field__card { border: 1px solid var(--rule); background: var(--paper-alt); }
 .field__shot {
@@ -599,6 +651,14 @@ em { font-style: italic; color: var(--accent); }
 .crate__base { height: 22px; margin: 0 -14px; background: linear-gradient(#3a2f22, #241d15); box-shadow: inset 0 2px 0 rgba(255, 255, 255, .05); display: flex; align-items: center; justify-content: center; }
 .crate__base span { font-family: var(--mono); font-size: 8.5px; letter-spacing: .3em; color: rgba(251, 249, 243, .35); white-space: nowrap; overflow: hidden; }
 .crate__readout { margin-top: 18px; font-size: 14px; line-height: 1.6; color: var(--dark-body); min-height: 24px; }
+/* L2 / L6 — the shelf readout and the shelving progress label. */
+.chr-foot {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--dark-rule);
+}
+.chr-foot__title { margin: 0; font-family: var(--serif); font-weight: 300; font-size: 18px; color: var(--dark-ink); }
+.chr-foot__meta { margin: 4px 0 0; font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dark-faint); }
+.chr-foot__prog { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dark-accent); white-space: nowrap; }
 
 /* The turntable */
 .deck { position: relative; background: linear-gradient(160deg, #26221c, #16150f); border: 1px solid #0e0d0b; height: 308px; padding: 20px; box-shadow: 0 16px 28px -16px rgba(0, 0, 0, .7); }
@@ -747,6 +807,55 @@ em { font-style: italic; color: var(--accent); }
 .tk-stats span { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
 .tk-intro { font-size: 14px; line-height: 1.7; color: var(--muted); max-width: 76ch; margin-bottom: 26px; }
+/* T2 — pushes per week */
+.pushes { margin-bottom: 26px; }
+.pushes__strip { display: flex; gap: 3px; align-items: flex-end; height: 64px; }
+.pushes__strip i { flex: 1; display: block; background: var(--accent); transform-origin: bottom; }
+.pushes__meta { display: flex; justify-content: space-between; margin-top: 8px; }
+.pushes__meta span { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+@keyframes pushgrow { from { transform: scaleY(0); } }
+
+/* T1 — the accent playground; only the samples recolour, never the chrome */
+.accent-lab { border: 1px solid var(--rule); padding: 22px 24px; margin: 26px 0; }
+.accent-lab__row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; }
+.accent-lab__label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 9px; }
+.accent-lab input[type="range"] { width: 100%; accent-color: #1a6b5a; }
+.accent-lab__out { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 14px; }
+.accent-lab__out code { font-family: var(--mono); font-size: 11px; color: var(--muted); word-break: break-all; }
+.accent-lab__out button, .sandbox__outbar button {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--paper); border: 1px solid var(--rule-strong); color: var(--ink);
+  padding: 8px 13px; cursor: pointer; white-space: nowrap;
+}
+
+/* X5 — the sandbox */
+.sandbox { display: grid; grid-template-columns: 132px 1fr; gap: 14px; align-items: start; }
+.sandbox__palette { display: flex; flex-direction: column; gap: 5px; }
+.sandbox__palette button {
+  width: 100%; text-align: left; border: 1px solid var(--rule-strong); background: var(--paper);
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink); padding: 8px 10px; cursor: pointer;
+}
+.sandbox__palette button:hover { border-color: var(--accent); color: var(--accent); }
+.sandbox__canvas {
+  background: var(--paper-alt); border: 1px solid var(--rule); padding: 13px; min-height: 76px;
+  display: flex; flex-wrap: wrap; gap: 7px; align-content: flex-start;
+}
+.sandbox__empty { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+.sandbox__inst { position: relative; display: inline-flex; }
+.sandbox__inst button.sandbox__x {
+  position: absolute; top: -7px; right: -7px; width: 15px; height: 15px; line-height: 1;
+  border: 1px solid var(--rule-strong); background: var(--paper); color: var(--muted);
+  font-family: var(--mono); font-size: 9px; cursor: pointer; padding: 0;
+}
+.sandbox__inst button.sandbox__x:hover, .sandbox__inst button.sandbox__x:focus { border-color: var(--accent); color: var(--accent); }
+.sandbox__outbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0 8px; }
+.sandbox__out {
+  background: var(--dark); border: 1px solid var(--dark-rule); color: #c8ccbd;
+  font-family: var(--mono); font-size: 10.5px; line-height: 1.7; white-space: pre-wrap;
+  max-height: 96px; overflow: auto; margin: 0; padding: 12px 14px;
+}
+@media (max-width: 860px) { .sandbox { grid-template-columns: 1fr; } }
 .changelog { display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px; align-items: start; }
 .changelog .col-label { display: block; margin-bottom: 16px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
 .commit {
@@ -911,6 +1020,31 @@ em { font-style: italic; color: var(--accent); }
 .fcard__marquee i { flex: none; width: 7px; height: 7px; border-radius: 50%; display: block; }
 .fcard__shot { display: block; padding: 10px 10px 0; background: var(--paper-alt); }
 .fcard__shot img { width: 100%; display: block; border: 1px solid var(--rule); }
+/* A1 — a live frozen frame per app instead of a dead screenshot.
+   Paused at a representative frame; fifteen running at once is the
+   thing to watch, so only the hovered or focused tile animates. */
+.prev {
+  height: 42px; border: 1px solid var(--rule); background: var(--paper);
+  display: flex; align-items: center; justify-content: center; gap: 4px; padding: 5px 10px;
+}
+.prev--bars { align-items: flex-end; gap: 5px; }
+.prev--bars i { flex: 1; max-width: 12px; background: var(--pa); height: 22%; animation: prevbars 1.6s ease-in-out infinite; }
+@keyframes prevbars { 0%, 100% { height: 22%; } 50% { height: 78%; } }
+.prev--ring i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--pa); display: block; animation: prevring 1.4s ease-in-out infinite; }
+@keyframes prevring { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.prev--grid { gap: 4px; }
+.prev--grid i { width: 12px; height: 8px; display: block; }
+.prev--term { justify-content: flex-start; font-family: var(--mono); font-size: 10px; color: var(--pa); }
+.prev--term u { width: 6px; height: 12px; background: var(--pa); display: block; text-decoration: none; animation: blink 1s step-end infinite; }
+/* After the archetypes: the animation shorthand above resets
+   play-state, so these have to come last to win. */
+.prev i, .prev u { animation-play-state: paused; }
+.fcard:hover .prev i, .fcard:focus-within .prev i,
+.fcard:hover .prev u, .fcard:focus-within .prev u { animation-play-state: running; }
+/* A2 — filter chips */
+.acat { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+.fcard { transform: none; }
+@media (prefers-reduced-motion: reduce) { .prev i, .prev u { animation: none !important; } }
 .fcard__body { display: block; padding: 14px 16px 16px; background: var(--paper-alt); }
 .fcard__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .fcard__title { font-family: var(--serif); font-size: 20px; color: var(--ink); }

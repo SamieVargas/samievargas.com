@@ -9,7 +9,7 @@ import {
   READ_ROWS, SEC_CONTACTS,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, ARCADE_TITLES,
-} from '../data/content.js?v=20260831';
+} from '../data/content.js?v=20260901';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
