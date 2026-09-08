@@ -4,7 +4,7 @@
 // with a hand-written fallback if the fetch fails.
 // ============================================================
 
-import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260901b';
+import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260908';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -42,32 +42,73 @@ function renderCommits(list, live) {
 function renderStatus(state) {
   const el = $('#feed-status');
   if (state === 'live') { el.textContent = 'Live from GitHub'; el.style.color = 'var(--accent)'; }
+  else if (state === 'cached') { el.textContent = 'Live from GitHub · cached'; el.style.color = 'var(--accent)'; }
+  else if (state === 'ratelimit') { el.textContent = 'GitHub rate limit hit · showing my own list'; el.style.color = 'var(--faint)'; }
   else if (state === 'failed') { el.textContent = 'GitHub unreachable · showing my own list'; el.style.color = 'var(--faint)'; }
   else { el.textContent = 'Loading from GitHub…'; el.style.color = 'var(--faint)'; }
+}
+
+// The change log is the one thing on this page that has to be live, so
+// it gets three defences. The commits call no longer shares a
+// Promise.all with the repo-age lookup, because a failed age lookup was
+// hiding a successful fetch behind "unreachable". A ten-minute
+// localStorage cache means iterating on the page does not spend the
+// unauthenticated rate limit, which is 60 an hour per IP. And a 403,
+// which on a public repo is that limit running out, is reported as what
+// it is rather than as a network failure.
+const COMMITS_KEY = 'tk-commits';
+const COMMITS_TTL = 10 * 60 * 1000;
+
+function cachedCommits() {
+  try {
+    const raw = localStorage.getItem(COMMITS_KEY);
+    if (!raw) return null;
+    const { at, list } = JSON.parse(raw);
+    return Date.now() - at < COMMITS_TTL && Array.isArray(list) && list.length ? list : null;
+  } catch (err) { return null; }
+}
+
+function applyCommits(list, state) {
+  renderCommits(list, true);
+  $('#tk-count').textContent = list.length >= 10 ? '10+' : String(list.length);
+  renderStatus(state);
+}
+
+function loadGithub() {
+  const base = `https://api.github.com/repos/${TK_REPO}`;
+  const hit = cachedCommits();
+  if (hit) applyCommits(hit, 'cached');
+
+  fetch(`${base}/commits?per_page=10`)
+    .then((r) => {
+      if (r.status === 403) return Promise.reject('ratelimit');
+      return r.ok ? r.json() : Promise.reject(r.status);
+    })
+    .then((commits) => {
+      const list = commits.map((c) => ({
+        message: (c.commit.message || '').split('\n')[0],
+        date: c.commit.author && c.commit.author.date,
+        href: c.html_url,
+      }));
+      try { localStorage.setItem(COMMITS_KEY, JSON.stringify({ at: Date.now(), list })); } catch (err) { /* private mode */ }
+      applyCommits(list, 'live');
+    })
+    .catch((why) => {
+      // A cached list is already on screen; leave it and stay quiet.
+      if (hit) return;
+      renderStatus(why === 'ratelimit' ? 'ratelimit' : 'failed');
+    });
+
+  // The repo age is decorative. Its failure must never touch the change log.
+  fetch(base)
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((repo) => renderAge(repo.created_at))
+    .catch(() => {});
 }
 
 function renderAge(firstDate) {
   $('#tk-age').textContent = ago(firstDate);
   $('#footer-line').textContent = `Started ${fmt(firstDate)} · ${ago(firstDate)} · built with Claude Opus`;
-}
-
-function loadGithub() {
-  const base = `https://api.github.com/repos/${TK_REPO}`;
-  Promise.all([
-    fetch(`${base}/commits?per_page=10`).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
-    fetch(base).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
-  ]).then(([commits, repo]) => {
-    renderCommits(commits.map((c) => ({
-      message: (c.commit.message || '').split('\n')[0],
-      date: c.commit.author && c.commit.author.date,
-      href: c.html_url,
-    })), true);
-    $('#tk-count').textContent = commits.length >= 10 ? '10+' : String(commits.length);
-    renderStatus('live');
-    renderAge(repo.created_at);
-  }).catch(() => {
-    renderStatus('failed');
-  });
 }
 
 function renderNotes() {
