@@ -56,7 +56,7 @@
 
   .sheet {
     max-width: 8.5in; margin: 28px auto; background: #fff;
-    padding: 0.6in; border: 1px solid #e2ddce;
+    padding: 0.55in; border: 1px solid #e2ddce;
     box-shadow: 0 2px 14px rgba(22, 21, 15, .07);
   }
 
@@ -69,12 +69,12 @@
 
   section { margin-bottom: 14px; }
   .sec-label {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #1a6b5a;
   }
   .summary { font-size: 10.5px; line-height: 1.6; color: #16150f; }
 
-  .comp { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 7px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
+  .comp { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 6px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
   .comp span:first-child { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #16150f; }
   .comp span:last-child { font-size: 10px; line-height: 1.55; color: #3a382e; }
 
@@ -90,8 +90,8 @@
   .role li::before, .proj-body::before { content: '—'; position: absolute; left: 0; color: #1a6b5a; }
 
   .proj { padding: 8px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
-  .proj h3 { margin-bottom: 3px; font: 400 13px 'Newsreader', Georgia, serif; }
-  .proj .stack { margin-bottom: 5px; font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #6d6a5c; }
+  .proj h3 { margin-bottom: 2px; font: 400 13px 'Newsreader', Georgia, serif; }
+  .proj .stack { margin-bottom: 4px; font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #6d6a5c; }
 
   .cert-line { padding: 5px 0; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
   .edu { padding-top: 6px; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
@@ -109,7 +109,7 @@
 
   /* R1 — the page box, inset by the real @page margin read at runtime. */
   .guide {
-    position: absolute; inset: var(--page-margin, 0.6in);
+    position: absolute; inset: var(--page-margin, 0.55in);
     border: 1px dashed #1a6b5a; pointer-events: none;
     transition: opacity .25s ease;
   }
@@ -132,7 +132,7 @@
   .stamp__age { font: 500 15px 'IBM Plex Mono', monospace; color: #16150f; }
   .stamp__sha { font: 400 10.5px 'IBM Plex Mono', monospace; color: #1a6b5a; }
 
-  @page { size: letter; margin: 0.6in; }
+  @page { size: letter; margin: 0.55in; }
   @media print {
     body { background: #fff; }
     .bar { display: none; }
@@ -190,7 +190,7 @@
         <li>Lead 3–10 client-facing managers per quarter on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools to accelerate account analysis, QBR prep, escalation drafting, and data synthesis.</li>
         <li>Built those workflows independently under personal license and drove their adoption across the team.</li>
         <li>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling, bringing the embedded practitioner perspective into cross-team discussions on where LLM workflows fit, what to standardize, and how to operationalize them safely for non-technical users.</li>
-        <li>Enabling the internal SharePoint I built for AI governance: defining the guardrails that keep its answers accurate, and the operating process teams use to work within them.</li>
+        <li>Built the team's internal SharePoint, used daily by 60+ people and adopted as the model for three other BUs: enabling it for AI governance with guardrails for answer accuracy, coaching other teams to build their own, and owning its long-term data governance.</li>
         <li>Manage a direct team of 5–10 (10 at peak) alongside the portfolio.</li>
         <li>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</li>
         <li>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</li>
@@ -261,7 +261,7 @@
     <p class="sec-label" style="margin-bottom:10px">04 — Certifications</p>
     <p class="cert-line">Anthropic AI Fluency — Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
     <p class="cert-line">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
-    <p class="cert-line">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; PSM I — Professional Scrum Master · Scrum.org · May 2026 &nbsp;·&nbsp; Snowflake Hands-On Essentials</p>
+    <p class="cert-line">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; PSM I — Professional Scrum Master · Scrum.org · May 2026 &nbsp;·&nbsp; PMP — Project Management Professional · PMI &nbsp;·&nbsp; Snowflake Hands-On Essentials</p>
     <p class="cert-line">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals · Six Sigma White Belt</p>
   </section>
 
