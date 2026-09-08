@@ -504,7 +504,7 @@ const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
 // ── Toolkit page ─────────────────────────────────────────────
 
-const TK_REPO = 'SamieVargas/samievargas.github.io';
+const TK_REPO = 'SamieVargas/samievargas.com';
 
 const TK_FALLBACK = [
   { message: 'Add the launch kit: favicon set, social card, 404, manifest', date: '2026-08-22' },
