@@ -61,13 +61,13 @@
   }
 
   .doc-head {
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
-    padding-bottom: 12px; border-bottom: 1.5px solid #16150f; margin-bottom: 20px;
+    display: block;
+    padding-bottom: 12px; border-bottom: 1.5px solid #16150f; margin-bottom: 16px;
   }
   .doc-head h1 { font: 400 34px/1 'Newsreader', Georgia, serif; letter-spacing: -.02em; }
-  .doc-head p { font: 400 9.5px/1.7 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #3a382e; text-align: right; }
+  .doc-head p { font: 400 9.5px/1.7 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #3a382e; text-align: left; margin-top: 6px; }
 
-  section { margin-bottom: 20px; }
+  section { margin-bottom: 14px; }
   .sec-label {
     margin-bottom: 8px;
     font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #1a6b5a;
@@ -82,18 +82,18 @@
   .co h2 { font: 500 15px 'Newsreader', Georgia, serif; }
   .mono-meta { font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #6d6a5c; white-space: nowrap; }
 
-  .role { padding: 12px 0 4px; }
+  .role { padding: 10px 0 4px; }
   .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 7px; }
   .role-head h3 { font: 400 13px 'Newsreader', Georgia, serif; color: #16150f; }
-  .role ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .role ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
   .role li, .proj-body { position: relative; padding-left: 14px; font-size: 10px; line-height: 1.55; color: #16150f; break-inside: avoid; }
   .role li::before, .proj-body::before { content: '—'; position: absolute; left: 0; color: #1a6b5a; }
 
-  .proj { padding: 10px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
+  .proj { padding: 8px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
   .proj h3 { margin-bottom: 3px; font: 400 13px 'Newsreader', Georgia, serif; }
   .proj .stack { margin-bottom: 5px; font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #6d6a5c; }
 
-  .cert-line { padding: 6px 0; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
+  .cert-line { padding: 5px 0; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
   .edu { padding-top: 6px; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
   .avoid-break { break-inside: avoid; }
   section:last-child { margin-bottom: 0; }
@@ -157,17 +157,17 @@
   <div class="guide" id="guide" aria-hidden="true"><span class="guide__lab">margin</span></div>
   <header class="doc-head">
     <h1>Samie Vargas</h1>
-    <p>Austin, TX · Remote<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
+    <p>Austin, TX · Remote · 214-587-3539<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
   </header>
 
   <section>
     <p class="sec-label">00 — Summary</p>
-    <p class="summary">Applied-AI operator embedded in an enterprise customer-facing team for 8 years at GLG, a PE-backed global expert network. The AI person on a non-AI team: deployed LLM-assisted workflows across my own team under personal license, drove their adoption, and contributed to the internal and client-facing AI enablement strategy conversations as that work scaled. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, translating ambiguous enterprise needs into structured workflows and feeding field insight back into how the organization operates. Builds the analytical and technical layer hands-on: Python, SQL, dbt, and the Anthropic API across self-shipped projects, with Google Advanced Data Analytics certification and the full Anthropic AI Fluency credential set. Looking for an Applied AI, AI Enablement, or AI Workflow role at a remote-first, async, output-judged company.</p>
+    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who deployed LLM workflows under personal license, drove their adoption, and is now building AI governance guardrails into the team's internal tooling. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger. Builds the technical layer hands-on, Python, SQL, dbt, and the Anthropic API across self-shipped projects, with Google Advanced Data Analytics and the full Anthropic AI Fluency credential set. Targeting Applied AI, AI Enablement, and AI Workflow roles, remote-first.</p>
   </section>
 
   <section>
-    <p class="sec-label" style="margin-bottom:10px">01 — Core competencies</p>
-    <div class="comp"><span>AI enablement</span><span>LLM Workflow Design &amp; Deployment · Team-Level AI Adoption · Prompt Engineering · AI Tool Evaluation · Internal &amp; Client-Facing AI Strategy Input · Human-in-the-Loop Process Design · AI Fluency Enablement</span></div>
+    <p class="sec-label" style="margin-bottom:10px">01 — Skills</p>
+    <div class="comp"><span>AI enablement</span><span>LLM Workflow Design &amp; Deployment · Team-Level AI Adoption · Change Management · Prompt Engineering · AI Tool Evaluation · AI Governance &amp; Guardrails · Internal &amp; Client-Facing AI Strategy Input · Human-in-the-Loop Process Design · AI Fluency Enablement</span></div>
     <div class="comp"><span>Build</span><span>Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API Integration · Structured JSON / Schema Design</span></div>
     <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
     <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Looker Studio · Tableau</span></div>
@@ -187,9 +187,12 @@
         <span class="mono-meta">Oct 2023 – Present</span>
       </div>
       <ul>
-        <li>Deployed AI-assisted workflows using Claude, ChatGPT, Gemini, and in-house LLM tools to accelerate account analysis, QBR prep, escalation drafting, and data synthesis, building the workflows independently under personal license and driving their adoption across my team, leading 3–10 client-facing managers per quarter on the workflows I wrote.</li>
+        <li>Lead 3–10 client-facing managers per quarter on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools to accelerate account analysis, QBR prep, escalation drafting, and data synthesis.</li>
+        <li>Built those workflows independently under personal license and drove their adoption across the team.</li>
         <li>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling, bringing the embedded practitioner perspective into cross-team discussions on where LLM workflows fit, what to standardize, and how to operationalize them safely for non-technical users.</li>
-        <li>Own end-to-end engagement and delivery for a 14M+ enterprise portfolio, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger from a single accountable position.</li>
+        <li>Enabling the internal SharePoint I built for AI governance: defining the guardrails that keep its answers accurate, and the operating process teams use to work within them.</li>
+        <li>Manage a direct team of 5–10 (10 at peak) alongside the portfolio.</li>
+        <li>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</li>
         <li>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</li>
         <li>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</li>
         <li>Drove 5% YoY portfolio growth by mapping new use cases and operational gaps through structured discovery, and led enablement sessions for stakeholder layers from end users to senior executives.</li>
@@ -202,15 +205,15 @@
         <span class="mono-meta">Mar 2022 – Oct 2023</span>
       </div>
       <ul>
-        <li>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, reducing ramp time and standardizing quality.</li>
-        <li>Managed a team of client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</li>
-        <li>Built renewal forecasting models and pipeline tracking in Salesforce that improved quarterly accuracy and surfaced at-risk accounts earlier.</li>
+        <li>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, cutting new-hire ramp to revenue production from 3 months to 1 and standardizing quality.</li>
+        <li>Managed a team of 5 client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</li>
+        <li>Built renewal forecasting models and pipeline tracking in Salesforce that recognized $300K per quarter in revenue opportunities that would previously have gone untracked, and surfaced at-risk accounts earlier.</li>
       </ul>
     </div>
 
     <div class="role">
       <div class="role-head">
-        <h3>Associate → Senior Client Solutions Manager</h3>
+        <h3>Senior Client Solutions Manager</h3>
         <span class="mono-meta">Jul 2018 – Feb 2022</span>
       </div>
       <ul>
@@ -230,7 +233,7 @@
     <div class="proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
       <p class="stack">Anthropic API · Multi-Call LLM Architecture · Source-Weighted Prompts · samievargas.com/signal</p>
-      <p class="proj-body">Designed a multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs through source-weighted prompts and an analysis-focus toggle. Cut account prep from about an hour to one minute, the hour of digging I spent eight years doing by hand. Validated with early users, including a senior CS leader, and refined to a single-step entry flow from their feedback.</p>
+      <p class="proj-body">Designed a multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs through source-weighted prompts and an analysis-focus toggle. Cut account prep from about an hour to one minute. Validated with early users, including a senior CS leader, and refined to a single-step entry flow from their feedback.</p>
     </div>
     <div class="proj">
       <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
@@ -240,12 +243,12 @@
     <div class="proj">
       <h3>samievargas.com — The Site and Its Arcade</h3>
       <p class="stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
-      <p class="proj-body">Built and shipped the portfolio site with no framework and no build step, so everything is readable and nothing is compiled. The two AI agents sit behind a Cloudflare Worker so the key stays server-side. Includes live-built SVG data visualizations, a public design-system page with a component sandbox and a change log fed by the GitHub commits API, and an arcade of fifteen self-contained browser apps, six of which pull live public data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</p>
+      <p class="proj-body">Built and shipped the portfolio site with no framework and no build step: two AI agents behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</p>
     </div>
     <div class="proj">
       <h3>Life in Pixels RAG + Life OS — Personal Data Tools</h3>
       <p class="stack">Python · RAG · Google Apps Script · github.com/SamieVargas/pixels-rag</p>
-      <p class="proj-body">A retrieval-augmented pipeline over six months of my own daily behavioral data, askable in plain language; it surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts across health, habits, and behavior.</p>
+      <p class="proj-body">Built a RAG pipeline over six months of my own daily behavioral data, askable in plain language; it surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts across health, habits, and behavior.</p>
     </div>
     <div class="proj">
       <h3>ATX Foodie — Public Health Compliance Analysis</h3>
