@@ -15,6 +15,7 @@
   --rule:       #e2ddce;  /* hairlines */
   --rule-strong:#c9c3b1;  /* button borders */
   --accent:     #1a6b5a;  /* Samie green */
+  --caveat:     #8a5a3a;  /* S2 "what still breaks" — a known limit, not an alarm */
 
   --dark:        #12130f; /* Brain Dump + contact surfaces */
   --dark-alt:    #181a14; /* inset panels on dark */
@@ -463,14 +464,66 @@ em { font-style: italic; color: var(--accent); }
   margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); min-height: 42px;
 }
 
-/* ── Life teaser (work page) ───────────────────────────────── */
-.life-teaser { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-.life-teaser h2 { font-size: clamp(28px, 2.8vw, 40px); line-height: 1.1; margin: 10px 0 14px; }
-.life-teaser__blurb { font-size: 15px; line-height: 1.7; color: var(--muted); max-width: 52ch; margin-bottom: 22px; }
-.tile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-.tile-grid > div { background: var(--paper); padding: 16px 18px; }
-.tile-grid .label { letter-spacing: .12em; color: var(--faint); }
-.tile-grid p { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--ink); }
+/* ── S3 — three front doors. Selection lives on the root's data-door;
+   the hero copy and the section order follow it in CSS, so with JS off
+   the page reads as the default (AI product) door. ───────────────── */
+.doors { display: flex; background: var(--paper-alt); border-bottom: 1px solid var(--rule); }
+.doors button {
+  flex: 1; padding: 16px 12px; border: none; border-right: 1px solid var(--rule); background: transparent;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  cursor: pointer; transition: color .2s ease, background .2s ease;
+}
+.doors button:last-child { border-right: none; }
+.doors button:hover { color: var(--ink); }
+.doors button[aria-selected="true"] { background: var(--paper); color: var(--accent); }
+.doors button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.door-copy { display: none; }
+:root:not([data-door]) .door-copy[data-for="ai"],
+:root[data-door="ai"] .door-copy[data-for="ai"],
+:root[data-door="analytics"] .door-copy[data-for="analytics"],
+:root[data-door="ops"] .door-copy[data-for="ops"] { display: inline; }
+:root[data-door="analytics"] .hero h1, :root[data-door="ops"] .hero h1 { max-width: 28ch; }
+.page { display: flex; flex-direction: column; }
+.page > #offclock { order: 6; }
+.page > #contact { order: 7; }
+:root[data-door="analytics"] .page > #work { order: 1; }
+:root[data-door="analytics"] .page > #experience { order: 2; }
+:root[data-door="analytics"] .page > #signal { order: 3; }
+:root[data-door="analytics"] .page > #skills { order: 4; }
+:root[data-door="analytics"] .page > #braindump { order: 5; }
+:root[data-door="ops"] .page > #experience { order: 1; }
+:root[data-door="ops"] .page > #signal { order: 2; }
+:root[data-door="ops"] .page > #braindump { order: 3; }
+:root[data-door="ops"] .page > #work { order: 4; }
+:root[data-door="ops"] .page > #skills { order: 5; }
+
+/* ── S2 — the same four-field result line under every project ── */
+.result { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 28px; }
+.result__head { background: var(--ink); padding: 12px 14px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #8d9184; }
+.result__cell { background: var(--paper-alt); padding: 15px 14px; font-family: var(--serif); font-size: 13.5px; line-height: 1.55; color: var(--ink-soft); }
+.result__cell--breaks { color: var(--caveat); }
+.result__label { display: none; font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; }
+.result__note { margin-top: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; color: var(--caveat); }
+.section--dark .result { background: var(--dark-rule); border-color: var(--dark-rule); }
+.section--dark .result__head { background: var(--dark-alt); color: var(--dark-faint); }
+@media (max-width: 900px) {
+  .result { grid-template-columns: 1fr; }
+  .result__head { display: none; }
+  .result__label { display: block; }
+}
+
+/* ── S6 — off the clock: one band, three doors out ───────────── */
+.tail { background: var(--paper-alt); border: 1px solid var(--rule); padding: 38px 36px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: start; }
+.tail__line { font-size: clamp(28px, 2.6vw, 34px); line-height: 1.08; letter-spacing: -.02em; margin: 12px 0 16px; }
+.tail__body { font-size: 14.5px; line-height: 1.7; color: var(--ink-soft); max-width: 46ch; }
+.tail__doors { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.tail__doors a { background: var(--paper); padding: 20px 22px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; transition: box-shadow .2s ease; }
+.tail__doors a:hover { box-shadow: inset 3px 0 0 var(--accent); }
+.tail__doors a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; box-shadow: none; }
+.tail__doors strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 17px; color: var(--ink); }
+.tail__doors em { display: block; font-style: normal; font-size: 13px; line-height: 1.5; color: var(--muted); margin-top: 3px; }
+.tail__cta { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+@media (max-width: 860px) { .tail { grid-template-columns: 1fr; gap: 28px; padding: 26px 20px; } }
 
 /* ── Contact (dark) ────────────────────────────────────────── */
 .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
@@ -995,11 +1048,6 @@ em { font-style: italic; color: var(--accent); }
 @keyframes spark { from { opacity: .85; } to { opacity: 0; transform: translateY(8px) scale(.2); } }
 
 /* Homepage strip */
-.arcade-strip { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-.arcade-strip p { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.arcade-strip__line { font-family: var(--serif); font-weight: 300; font-size: 20px; color: var(--ink); }
-.arcade-strip__ticker { font-family: var(--serif); font-size: 20px; font-style: italic; color: var(--accent); display: inline-block; min-width: 16ch; }
-.arcade-strip .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
 
 /* CRT power-on overlay */
 .crt { position: fixed; inset: 0; z-index: 400; pointer-events: none; display: flex; flex-direction: column; }
@@ -1139,7 +1187,7 @@ em { font-style: italic; color: var(--accent); }
 
   .section { padding: 44px var(--edge); }
 
-  .signal, .bd, .skills, .obs, .life-teaser, .contact,
+  .signal, .bd, .skills, .obs, .contact,
   .field, .raccoon, .progress-grid, .changelog, .marks, .built,
   .annotated__grid, .crate-grid, .ledger-grid { grid-template-columns: 1fr !important; }
   .rotation { grid-template-columns: 1fr; }
@@ -1186,4 +1234,4 @@ em { font-style: italic; color: var(--accent); }
    widen the whole page. Nothing here needs that. */
 .signal > *, .bd > *, .skills > *, .obs > *, .contact > *, .field > *,
 .raccoon > *, .rotation > *, .changelog > *, .marks > *, .built > *,
-.annotated__grid > *, .life-teaser > * { min-width: 0; }
+.annotated__grid > *, .tail > *, .result > * { min-width: 0; }

@@ -8,7 +8,7 @@
 
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT,
+  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT, OBSERVATIONS,
 } from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 const RATING_COLORS = { 5: '#0f6e56', 4: '#4daa91', 3: '#d97706', 2: '#b4552f' };
 
-const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, dragIn: false, rotIn: false, recIn: false, chrIn: false };
+const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, dragIn: false, rotIn: false, recIn: false, chrIn: false, notesIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -684,6 +684,138 @@ function renderEq(on) {
     <i style="flex:1;display:block;background:${i % 4 === 0 ? '#3fae8f' : `rgba(63,174,143,${(0.3 + ((i * 13) % 4) * 0.12).toFixed(2)})`};height:${12 + ((i * 37) % 82)}%;${on ? `animation:eqbar ${(0.8 + ((i * 7) % 11) / 10).toFixed(1)}s ease-in-out ${((i % 9) * 0.09).toFixed(2)}s infinite alternate,fadein .4s ease ${(i * 0.02).toFixed(2)}s both` : 'opacity:0'}"></i>`).join('');
 }
 
+// ── Notes / observations — moved here from the homepage. The raccoon
+// note carries its own body-battery chart, so its scrub state is kept
+// apart from the invoice's under `obs` names.
+let obsIdx = 0;
+let obsDay = -1;
+let obsAuto = true;
+let obsScrubTimer, obsScrubEnd, obsScrubActive = false, obsScrubbed = false;
+
+function stopObsScrub() {
+  clearInterval(obsScrubTimer);
+  clearTimeout(obsScrubEnd);
+  obsScrubActive = false;
+}
+
+// Once the section is in view, walk the chart's days by itself, then let go.
+function maybeAutoScrub() {
+  if (REDUCED || obsScrubbed || !gates.notesIn || !OBSERVATIONS[obsIdx].chart) return;
+  obsScrubbed = true;
+  obsScrubActive = true;
+  const days = OBSERVATIONS[obsIdx].chart.days.length;
+  obsScrubTimer = setInterval(() => {
+    const n = obsDay + 1;
+    if (n >= days) {
+      clearInterval(obsScrubTimer);
+      obsScrubActive = false;
+      obsScrubEnd = setTimeout(() => { obsDay = -1; updateChartReadout(); }, 1400);
+      return;
+    }
+    obsDay = n;
+    updateChartReadout();
+  }, 650);
+}
+
+function reanimate(el, anim) {
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = gates.notesIn && !REDUCED ? anim : '';
+  if (!gates.notesIn && !REDUCED) el.style.opacity = '0';
+  else el.style.opacity = '';
+}
+
+function renderObs() {
+  const o = OBSERVATIONS[obsIdx];
+  $('#obs-tag').textContent = o.tag;
+  $('#obs-title').textContent = o.title;
+  reanimate($('#obs-title'), 'crossfade .45s ease both');
+  $('#obs-counter').textContent = `${obsIdx + 1} of ${OBSERVATIONS.length}`;
+  $('#obs-body').innerHTML = o.paragraphs.map((p, i) => `<p style="${gates.notesIn ? `animation:driftup .55s ease ${(0.1 + i * 0.12).toFixed(2)}s both` : 'opacity:0'}">${esc(p)}</p>`).join('');
+  $('#obs-src').innerHTML = o.linkText
+    ? `${esc(o.sourceText)} <a href="${o.linkHref}">${esc(o.linkText)}</a>`
+    : esc(o.sourceText);
+  $('#obs-dots').innerHTML = OBSERVATIONS.map((_, i) =>
+    `<button type="button" class="dot${i === obsIdx ? ' is-on' : ''}" data-obs="${i}" aria-label="Observation ${i + 1}"></button>`).join('');
+  renderChart();
+}
+
+function renderChart() {
+  const chart = OBSERVATIONS[obsIdx].chart;
+  const host = $('#obs-chart');
+  if (!chart) { host.innerHTML = ''; return; }
+  host.innerHTML = `
+    <div class="chart" style="${gates.notesIn ? 'animation:crossfade .5s ease both' : 'opacity:0'}">
+      <div class="chart__head">
+        <span class="label label--accent">${esc(chart.title)}</span>
+        <span class="label label--mid">${esc(chart.hint)}</span>
+      </div>
+      <div class="chart__bars">
+        ${chart.days.map((d, i) => `
+          <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}" class="${d.v <= 10 ? 'is-low' : ''}">
+            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;${gates.notesIn ? `--d:${(i * 0.07).toFixed(2)}s` : 'opacity:0;animation:none'}"></i>
+          </button>`).join('')}
+      </div>
+      <div class="chart__scale">
+        <span class="label label--mid">${esc(chart.days[0].d)}</span>
+        <span class="label label--mid">${esc(chart.days[chart.days.length - 1].d)}</span>
+      </div>
+      <p class="chart__readout"></p>
+    </div>`;
+  updateChartReadout();
+}
+
+function updateChartReadout() {
+  const chart = OBSERVATIONS[obsIdx].chart;
+  if (!chart) return;
+  $('#obs-chart .chart__readout').textContent = obsDay > -1
+    ? `${chart.days[obsDay].d} — ${chart.days[obsDay].v} — ${chart.days[obsDay].note}`
+    : `${chart.days.length} days, from normal to the floor and back`;
+  $('#obs-chart').querySelectorAll('[data-day]').forEach((b, i) =>
+    b.classList.toggle('is-on', i === obsDay));
+}
+
+function wireObs() {
+  if (!$('#obs-prev')) return;
+  const step = (dir, manual) => {
+    if (manual) { stopObsScrub(); obsAuto = false; }
+    obsIdx = (obsIdx + dir + OBSERVATIONS.length) % OBSERVATIONS.length;
+    obsDay = -1;
+    renderObs();
+    maybeAutoScrub();
+  };
+  $('#obs-prev').addEventListener('click', () => step(-1, true));
+  $('#obs-next').addEventListener('click', () => step(1, true));
+  $('#obs-dots').addEventListener('click', (e) => {
+    const dot = e.target.closest('[data-obs]');
+    if (!dot) return;
+    stopObsScrub();
+    obsAuto = false;
+    obsIdx = Number(dot.dataset.obs);
+    obsDay = -1;
+    renderObs();
+    maybeAutoScrub();
+  });
+  const scrub = (e) => {
+    const bar = e.target.closest('[data-day]');
+    if (!bar) return;
+    stopObsScrub();
+    obsAuto = false;
+    obsDay = Number(bar.dataset.day);
+    updateChartReadout();
+  };
+  $('#obs-chart').addEventListener('mouseover', scrub);
+  $('#obs-chart').addEventListener('click', scrub);
+  $('#obs-chart').addEventListener('mouseleave', () => {
+    if (obsDay > -1 && !obsScrubActive) { obsDay = -1; updateChartReadout(); }
+  });
+  if (!REDUCED) {
+    setInterval(() => {
+      if (obsAuto && gates.notesIn && !obsScrubActive) step(1, false);
+    }, 8000);
+  }
+}
+
 // ── Boot ─────────────────────────────────────────────────────
 buildField();
 renderProgress(false);
@@ -695,11 +827,13 @@ renderChristie(false);
 renderDragon();
 renderFacts();
 renderEq(false);
+if ($('#obs-title')) renderObs();
 
 wireField();
 wireBattery();
 wireCrate();
 wireChristie();
+wireObs();
 
 watchGate('field', 'fieldIn', () => playFieldEntrance());
 watchGate('progress', 'progIn', () => { renderProgress(true); startProgressCount(); });
@@ -709,3 +843,4 @@ watchGate('dragon', 'dragIn', () => playDragon());
 watchGate('records', 'recIn', () => renderCrate(true));
 watchGate('christie', 'chrIn', () => renderChristie(true));
 watchGate('rotation', 'rotIn', () => renderEq(true));
+watchGate('notes', 'notesIn', () => { renderObs(); maybeAutoScrub(); });

@@ -40,6 +40,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css?v=20260909">
+  <script>
+    // S3 — put the remembered door on the root before first paint, so the
+    // hero and the section order never flash from the default.
+    try { var d = localStorage.getItem('door'); if (d === 'analytics' || d === 'ops') document.documentElement.setAttribute('data-door', d); } catch (e) { /* default door */ }
+  </script>
 </head>
 <body>
 
@@ -50,7 +55,7 @@
     <a href="#signal">Signal</a>
     <a href="#work">Work</a>
     <a href="#experience">Experience</a>
-    <a href="#notes">Notes</a>
+    <a href="/life#notes">Notes</a>
     <a href="/life">Life</a>
     <a href="/apps/">Apps</a>
     <a class="nav__cta" href="/resume">Résumé</a>
@@ -61,8 +66,16 @@
 <header class="hero" id="top">
   <div class="hero__body">
     <p class="status"><i class="status__dot"></i><span>Exploring applied-AI and enablement roles · Austin, TX · remote</span></p>
-    <h1>I ship AI tools that replace work I used to do <em>by hand</em>.</h1>
-    <p class="lead">I spent eight years inside an enterprise customer-facing team at GLG running a $14M+ portfolio, and I was the AI person on a non-AI team, so I built the LLM workflows, drove the adoption, and then started shipping the tools myself.</p>
+    <h1>
+      <span class="door-copy" data-for="ai">I ship AI tools that replace work I used to do <em>by hand</em>.</span>
+      <span class="door-copy" data-for="analytics">I answer questions with the whole pipeline, not just the chart at the end.</span>
+      <span class="door-copy" data-for="ops">I build the system around the messy workflow instead of working harder inside it.</span>
+    </h1>
+    <p class="lead">
+      <span class="door-copy" data-for="ai">I spent eight years inside an enterprise customer-facing team at GLG running a $14M+ portfolio, and I was the AI person on a non-AI team, so I built the LLM workflows, drove the adoption, and then started shipping the tools myself.</span>
+      <span class="door-copy" data-for="analytics">Twenty-one thousand inspection records, a dbt project with thirty-five passing tests, and eight years of reading an enterprise book of business for what the numbers were actually saying.</span>
+      <span class="door-copy" data-for="ops">A $14M+ portfolio, the processes underneath it, and a habit of turning the part everyone tolerates into something that runs on its own. The AI tools are the most recent version of that, not a change of subject.</span>
+    </p>
     <p class="hero__note">Two of them are live below and you can use them right now, and every project on this page started as a problem I actually had.</p>
     <div class="hero__actions">
       <a class="btn btn--solid" href="#signal">See what I built</a>
@@ -72,6 +85,16 @@
   </div>
   <aside class="hero__stats" id="hero-stats"></aside>
 </header>
+
+<!-- ── S3 — THREE FRONT DOORS ──────────────────────────────── -->
+<!-- The choice only reorders what follows; every section is present behind every door. -->
+<div class="doors" role="tablist" aria-label="Read this page as" id="doors">
+  <button type="button" role="tab" data-door="analytics" aria-selected="false" aria-controls="page" tabindex="-1">Analytics</button>
+  <button type="button" role="tab" data-door="ai" aria-selected="true" aria-controls="page" tabindex="0">AI product</button>
+  <button type="button" role="tab" data-door="ops" aria-selected="false" aria-controls="page" tabindex="-1">Ops systems</button>
+</div>
+
+<main class="page" id="page">
 
 <!-- ── SIGNAL — the flagship ───────────────────────────────── -->
 <section class="section section--alt" id="signal">
@@ -121,6 +144,7 @@
       <p class="finding"><strong>What it found: </strong>the contact read is the sleeper feature, it makes explicit what experienced managers do instinctively.</p>
     </div>
   </div>
+  <div id="result-signal"></div>
 </section>
 
 <!-- ── BRAIN DUMP ──────────────────────────────────────────── -->
@@ -149,13 +173,13 @@
       <a class="btn btn--dark btn--md" href="https://samievargas.com/brain-dump">Open Brain Dump</a>
     </div>
   </div>
+  <div id="result-braindump"></div>
 </section>
 
 <!-- ── THE ANALYSIS WORK ───────────────────────────────────── -->
 <section class="section" id="work">
   <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">01</span>
       <h2>The analysis work</h2>
     </div>
     <span class="label label--mid">Both start from a question I actually had</span>
@@ -196,7 +220,6 @@
 <section class="section section--alt" id="experience">
   <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">02</span>
       <h2>Experience</h2>
     </div>
     <button type="button" class="btn btn--ghost btn--sm" id="roles-toggle-all">Expand all</button>
@@ -219,7 +242,6 @@
 <section class="section" id="skills">
   <div class="section__head">
     <div class="section__head-l">
-      <span class="section__num">03</span>
       <h2>Skills and credentials</h2>
     </div>
   </div>
@@ -235,55 +257,19 @@
   </div>
 </section>
 
-<!-- ── NOTES ───────────────────────────────────────────────── -->
-<section class="section section--alt" id="notes">
-  <div class="section__head" style="margin-bottom:8px">
-    <div class="section__head-l">
-      <span class="section__num">04</span>
-      <h2>Notes from the data I live in</h2>
-    </div>
-    <span class="label" id="obs-counter" style="color:var(--faint-deco)"></span>
-  </div>
-  <div class="obs rule-top">
+<!-- ── S6 — OFF THE CLOCK: one band, three doors out ─────── -->
+<section class="section" id="offclock">
+  <div class="tail">
     <div>
-      <p class="label label--accent" id="obs-tag"></p>
-      <h3 id="obs-title"></h3>
-      <div class="obs__nav">
-        <button type="button" class="arrow" id="obs-prev" aria-label="Previous observation">‹</button>
-        <button type="button" class="arrow" id="obs-next" aria-label="Next observation">›</button>
-        <div class="dots" id="obs-dots"></div>
-      </div>
+      <p class="section__num">Off the clock</p>
+      <h2 class="tail__line">The same habit, pointed at things that do not pay.</h2>
+      <p class="tail__body">Fifteen small apps, a year of Christie logged one book at a time, the Greenbelt at fifteen of twenty-one miles, and a field of things I noticed and then plotted, which is the same instinct as the work above and none of it is on a roadmap.</p>
     </div>
-    <div>
-      <div id="obs-chart"></div>
-      <div class="obs__body" id="obs-body"></div>
-      <p class="obs__src" id="obs-src"></p>
+    <div class="tail__doors">
+      <a href="/apps/"><span><strong>The arcade</strong><em>Fifteen apps, free play, no quarters.</em></span><span class="tail__cta">All fifteen →</span></a>
+      <a href="/life"><span><strong>/life</strong><em>The noticing field, seven decks, twenty-one miles.</em></span><span class="tail__cta">Go there →</span></a>
+      <a href="/life#notes"><span><strong>Notes</strong><em>What the data I live in keeps telling me.</em></span><span class="tail__cta">Read four →</span></a>
     </div>
-  </div>
-</section>
-
-<!-- ── LIFE TEASER ─────────────────────────────────────────── -->
-<section class="section" id="life" style="padding-top:56px;padding-bottom:56px">
-  <div class="life-teaser">
-    <div id="life-intro">
-      <p class="section__num" style="display:block;margin-bottom:10px">05</p>
-      <h2>The rest of it lives on <em>/life</em>.</h2>
-      <p class="life-teaser__blurb">The noticing field, the tarot tracker, seven decks, the Greenbelt at fifteen of twenty-one miles, Agatha Christie in order, and what I have been listening to, same instinct with none of the résumé pressure.</p>
-      <a class="btn btn--ghost btn--md" href="/life">Go to /life →</a>
-    </div>
-    <div class="tile-grid" id="life-teasers"></div>
-  </div>
-</section>
-
-<!-- ── ARCADE STRIP ────────────────────────────────────────── -->
-<section id="arcade" class="section section--alt" style="padding-top:34px;padding-bottom:34px">
-  <div class="arcade-strip">
-    <p>
-      <span class="label" style="letter-spacing:.16em;color:var(--faint-deco)">Meanwhile, in the arcade</span>
-      <span class="arcade-strip__line">Fifteen mini apps, all in the browser, and right now someone could be playing</span>
-      <span class="arcade-strip__ticker" id="arcade-ticker">Six Degrees of Anything.</span>
-    </p>
-    <a class="btn btn--ghost" style="padding:12px 20px" href="/apps/">All fifteen →</a>
   </div>
 </section>
 
@@ -291,7 +277,7 @@
 <section class="section section--dark" id="contact" style="border-bottom:none">
   <div class="contact">
     <div>
-      <p class="contact__kicker">07 · Contact</p>
+      <p class="contact__kicker">Contact</p>
       <h2>Come say <em>howdy</em>.</h2>
       <p class="contact__blurb">Open to anything where a messy workflow needs a system built around it.</p>
       <div class="cmdlines">
@@ -304,6 +290,7 @@
     <div class="contact__links" id="contact-links"></div>
   </div>
 </section>
+</main>
 
 <!-- ── FOOTER ──────────────────────────────────────────────── -->
 <footer class="footer footer--dark" style="align-items:center">

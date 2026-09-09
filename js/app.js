@@ -8,7 +8,7 @@ import {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
   READ_ROWS, SEC_CONTACTS,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, ARCADE_TITLES,
+  SKILLS, CERTS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
 } from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 
 // Sections choreograph their entrance when they scroll into view.
-const gates = { workIn: false, skillsIn: false, notesIn: false, lifeIn: false, alsoIn: false, readIn: false, instaIn: false, atxIn: false, driftIn: false };
+const gates = { workIn: false, skillsIn: false, alsoIn: false, readIn: false, instaIn: false, atxIn: false, driftIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -463,6 +463,7 @@ function renderAnnotated() {
           </div>
         </div>
       </div>` : ''}
+      ${p.result ? resultRow(p.result) : ''}
     </div>`).join('');
 }
 
@@ -598,167 +599,66 @@ function renderCerts(on) {
     </div>`).join('');
 }
 
-// ── Notes / observations ─────────────────────────────────────
-let obsIdx = 0;
-let dayIdx = -1;
-let obsAuto = true;
-let scrubTimer, scrubEndTimer, scrubActive = false, scrubbed = false;
-
-function stopScrub() {
-  clearInterval(scrubTimer);
-  clearTimeout(scrubEndTimer);
-  scrubActive = false;
+// ── S2 — the same four-field result line under every project ─
+function resultRow(key) {
+  const cells = RESULTS.rows[key];
+  if (!cells) return '';
+  return `
+    <div class="result" role="group" aria-label="What it replaced, what it took, what it costs to run, what still breaks">
+      ${RESULT_FIELDS.map((f) => `<div class="result__head">${esc(f)}</div>`).join('')}
+      ${cells.map((c, i) => `<div class="result__cell${i === 3 ? ' result__cell--breaks' : ''}"><span class="result__label">${esc(RESULT_FIELDS[i])}</span>${esc(c)}</div>`).join('')}
+    </div>${RESULTS.draft ? '<p class="result__note">Placeholder copy from the design handoff, not confirmed yet.</p>' : ''}`;
 }
 
-// Once the section is in view, walk the chart's days by itself, then let go.
-function maybeAutoScrub() {
-  if (REDUCED || scrubbed || !gates.notesIn || !OBSERVATIONS[obsIdx].chart) return;
-  scrubbed = true;
-  scrubActive = true;
-  const days = OBSERVATIONS[obsIdx].chart.days.length;
-  scrubTimer = setInterval(() => {
-    const n = dayIdx + 1;
-    if (n >= days) {
-      clearInterval(scrubTimer);
-      scrubActive = false;
-      scrubEndTimer = setTimeout(() => { dayIdx = -1; updateChartReadout(); }, 1400);
-      return;
-    }
-    dayIdx = n;
-    updateChartReadout();
-  }, 650);
-}
-
-function reanimate(el, anim) {
-  el.style.animation = 'none';
-  void el.offsetHeight;
-  el.style.animation = gates.notesIn && !REDUCED ? anim : '';
-  if (!gates.notesIn && !REDUCED) el.style.opacity = '0';
-  else el.style.opacity = '';
-}
-
-function renderObs() {
-  const o = OBSERVATIONS[obsIdx];
-  $('#obs-tag').textContent = o.tag;
-  $('#obs-title').textContent = o.title;
-  reanimate($('#obs-title'), 'crossfade .45s ease both');
-  $('#obs-counter').textContent = `${obsIdx + 1} of ${OBSERVATIONS.length}`;
-  $('#obs-body').innerHTML = o.paragraphs.map((p, i) => `<p style="${gates.notesIn ? `animation:driftup .55s ease ${(0.1 + i * 0.12).toFixed(2)}s both` : 'opacity:0'}">${esc(p)}</p>`).join('');
-  $('#obs-src').innerHTML = o.linkText
-    ? `${esc(o.sourceText)} <a href="${o.linkHref}">${esc(o.linkText)}</a>`
-    : esc(o.sourceText);
-  $('#obs-dots').innerHTML = OBSERVATIONS.map((_, i) =>
-    `<button type="button" class="dot${i === obsIdx ? ' is-on' : ''}" data-obs="${i}" aria-label="Observation ${i + 1}"></button>`).join('');
-  renderChart();
-}
-
-function renderChart() {
-  const chart = OBSERVATIONS[obsIdx].chart;
-  const host = $('#obs-chart');
-  if (!chart) { host.innerHTML = ''; return; }
-  host.innerHTML = `
-    <div class="chart" style="${gates.notesIn ? 'animation:crossfade .5s ease both' : 'opacity:0'}">
-      <div class="chart__head">
-        <span class="label label--accent">${esc(chart.title)}</span>
-        <span class="label label--mid">${esc(chart.hint)}</span>
-      </div>
-      <div class="chart__bars">
-        ${chart.days.map((d, i) => `
-          <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}" class="${d.v <= 10 ? 'is-low' : ''}">
-            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;${gates.notesIn ? `--d:${(i * 0.07).toFixed(2)}s` : 'opacity:0;animation:none'}"></i>
-          </button>`).join('')}
-      </div>
-      <div class="chart__scale">
-        <span class="label label--mid">${esc(chart.days[0].d)}</span>
-        <span class="label label--mid">${esc(chart.days[chart.days.length - 1].d)}</span>
-      </div>
-      <p class="chart__readout"></p>
-    </div>`;
-  updateChartReadout();
-}
-
-function updateChartReadout() {
-  const chart = OBSERVATIONS[obsIdx].chart;
-  if (!chart) return;
-  $('#obs-chart .chart__readout').textContent = dayIdx > -1
-    ? `${chart.days[dayIdx].d} — ${chart.days[dayIdx].v} — ${chart.days[dayIdx].note}`
-    : `${chart.days.length} days, from normal to the floor and back`;
-  $('#obs-chart').querySelectorAll('[data-day]').forEach((b, i) =>
-    b.classList.toggle('is-on', i === dayIdx));
-}
-
-function wireObs() {
-  const step = (dir, manual) => {
-    if (manual) { stopScrub(); obsAuto = false; }
-    obsIdx = (obsIdx + dir + OBSERVATIONS.length) % OBSERVATIONS.length;
-    dayIdx = -1;
-    renderObs();
-    maybeAutoScrub();
-  };
-  $('#obs-prev').addEventListener('click', () => step(-1, true));
-  $('#obs-next').addEventListener('click', () => step(1, true));
-  $('#obs-dots').addEventListener('click', (e) => {
-    const dot = e.target.closest('[data-obs]');
-    if (!dot) return;
-    stopScrub();
-    obsAuto = false;
-    obsIdx = Number(dot.dataset.obs);
-    dayIdx = -1;
-    renderObs();
-    maybeAutoScrub();
+function renderResults() {
+  ['signal', 'braindump'].forEach((k) => {
+    const host = $(`#result-${k}`);
+    if (host) host.innerHTML = resultRow(k);
   });
-  const scrub = (e) => {
-    const bar = e.target.closest('[data-day]');
-    if (!bar) return;
-    stopScrub();
-    obsAuto = false;
-    dayIdx = Number(bar.dataset.day);
-    updateChartReadout();
-  };
-  $('#obs-chart').addEventListener('mouseover', scrub);
-  $('#obs-chart').addEventListener('click', scrub);
-  $('#obs-chart').addEventListener('mouseleave', () => {
-    if (dayIdx > -1 && !scrubActive) { dayIdx = -1; updateChartReadout(); }
-  });
-  if (!REDUCED) {
-    setInterval(() => {
-      if (obsAuto && gates.notesIn && !scrubActive) step(1, false);
-    }, 8000);
-  }
 }
 
-// ── Life teaser + contact ────────────────────────────────────
-let lifeT = 0;
-let lifeCountTimer;
+// ── S3 — three front doors. The section order and the hero copy are
+// CSS keyed off data-door on the root, so with JS off the page reads as
+// the default door. This only moves the attribute, the tab state, and
+// the remembered choice.
+const DOOR_IDS = ['analytics', 'ai', 'ops'];
 
-function teaserValue(l) {
-  if (l.k === 'Running') return `${Math.round(15 * lifeT)} of 21 miles on the Greenbelt`;
-  if (l.k === 'Tarot') return `Seven decks, every pull logged across ${Math.round(78 * lifeT)} cards`;
-  return l.v;
-}
-
-function renderLifeTeasers(on) {
-  $('#life-teasers').innerHTML = LIFE_TEASERS.map((l, i) => `
-    <div style="${on ? `animation:tilein .5s cubic-bezier(.34,1.15,.64,1) ${(0.15 + i * 0.1).toFixed(2)}s both` : 'opacity:0'}">
-      <span class="label">${esc(l.k)}</span><p data-teaser="${i}">${esc(teaserValue(l))}</p>
-    </div>`).join('');
-  $('#life-intro').style.cssText = on ? 'animation:driftup .6s ease both' : (REDUCED ? '' : 'opacity:0');
-}
-
-// The Greenbelt miles and the 78 cards count up as the section arrives.
-function startLifeCount() {
-  if (REDUCED) { lifeT = 1; }
-  clearInterval(lifeCountTimer);
-  lifeCountTimer = setInterval(() => {
-    if (lifeT >= 1) { clearInterval(lifeCountTimer); return; }
-    lifeT = Math.min(1, lifeT + 0.06);
-    LIFE_TEASERS.forEach((l, i) => {
-      const el = document.querySelector(`[data-teaser="${i}"]`);
-      if (el) el.textContent = teaserValue(l);
+function wireDoors() {
+  const list = $('#doors');
+  if (!list) return;
+  const tabs = [...list.querySelectorAll('[role="tab"]')];
+  const root = document.documentElement;
+  const current = () => root.getAttribute('data-door') || 'ai';
+  const select = (id, focus) => {
+    if (id === 'ai') root.removeAttribute('data-door'); else root.setAttribute('data-door', id);
+    tabs.forEach((t) => {
+      const on = t.dataset.door === id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
     });
-  }, 45);
+    try { localStorage.setItem('door', id); } catch (err) { /* private mode */ }
+  };
+  // The head script may already have restored a door; bring the tabs in line.
+  select(current(), false);
+  list.addEventListener('click', (e) => {
+    const t = e.target.closest('[role="tab"]');
+    if (t) select(t.dataset.door, false);
+  });
+  list.addEventListener('keydown', (e) => {
+    const i = DOOR_IDS.indexOf(current());
+    let n = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % DOOR_IDS.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + DOOR_IDS.length) % DOOR_IDS.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = DOOR_IDS.length - 1;
+    if (n === null) return;
+    e.preventDefault();
+    select(DOOR_IDS[n], true);
+  });
 }
 
+// ── Contact ──────────────────────────────────────────────────
 function renderContactLinks() {
   $('#contact-links').innerHTML = CONTACT_LINKS.map((l) => `
     <a href="${l.href}">
@@ -767,17 +667,7 @@ function renderContactLinks() {
     </a>`).join('');
 }
 
-// ── Arcade ticker + Konami cheat ─────────────────────────────
-function wireArcadeTicker() {
-  const el = $('#arcade-ticker');
-  if (!el || REDUCED) return;
-  let idx = 0;
-  setInterval(() => {
-    idx = (idx + 1) % ARCADE_TITLES.length;
-    el.textContent = `${ARCADE_TITLES[idx]}.`;
-  }, 2200);
-}
-
+// ── Konami cheat ─────────────────────────────────────────────
 function wireKonami() {
   const K = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   let seq = [];
@@ -837,17 +727,15 @@ renderRailTicks();
 renderRoles();
 renderSkillTabs(false);
 renderCerts(false);
-renderObs();
-renderLifeTeasers(false);
+renderResults();
 renderContactLinks();
 if (!REDUCED) { const ab = $('#alsobuilt'); if (ab) ab.style.opacity = '0'; }
 
 wireBrainDump();
 wireRoles();
 wireSkills();
-wireObs();
+wireDoors();
 wireCopyEmail();
-wireArcadeTicker();
 wireKonami();
 watchSignal();
 watchExperience();
@@ -862,8 +750,6 @@ watchGate('viz-reorder', 'instaIn', () => {
 watchGate('viz-atx', 'atxIn', () => { $('#viz-atx').innerHTML = zipMapSvg(true); });
 watchGate('viz-drift', 'driftIn', () => { $('#viz-drift').innerHTML = driftVizHtml(true); });
 watchGate('skills', 'skillsIn', () => { renderSkillTabs(true); renderCerts(true); typeSkillLine(); });
-watchGate('notes', 'notesIn', () => { renderObs(); maybeAutoScrub(); });
-watchGate('life', 'lifeIn', () => { renderLifeTeasers(true); startLifeCount(); });
 watchGate('alsobuilt', 'alsoIn', () => {
   const ab = $('#alsobuilt');
   ab.style.opacity = '';

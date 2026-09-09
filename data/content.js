@@ -169,7 +169,7 @@ const BRAIN_STATES = {
 const ANNOTATED = [
   { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'I rebuilt one cited number until it split in half.',
     cta: 'See the models ↗', href: 'https://github.com/SamieVargas/instacart-project',
-    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true,
+    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true, result: 'instacart',
     inputLine: 'In: raw order tables · out: five staging models, one join, three marts, 35 passing tests',
     notes: [
       { n: '1', title: 'Lineage you can follow', body: 'Every mart traces back to a named staging model, so a number can be argued with.' },
@@ -179,7 +179,7 @@ const ANNOTATED = [
     finding: 'new shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither.' },
   { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'I turned a pest-sighting post into an audit of where I eat.',
     cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
+    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true, result: 'atx',
     inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
     notes: [
       { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name, because that was the question I actually had.' },
@@ -294,6 +294,23 @@ const OBSERVATIONS = [
       'I do not think this is a failure, this is what maintenance looks like when your brain does not do it automatically, and each rebuilt version is smarter because you know more.'],
     sourceText: 'Currently running on Todoist and Drive', linkText: '', linkHref: '#' },
 ];
+
+// S2 · the same four-field result line under every project, same order
+// every time. The sixteen strings below are the design handoff's
+// placeholders and have not been confirmed; the "what it costs to run"
+// and "what still breaks" values in particular were invented to show the
+// shape. While `draft` is true the page prints a note saying so. Replace
+// all sixteen, one clause each, and flip `draft` to false.
+const RESULT_FIELDS = ['What it replaced', 'What it took', 'What it costs to run', 'What still breaks'];
+const RESULTS = {
+  draft: true,
+  rows: {
+    signal:    ['Forty minutes of reading account files before a QBR', 'Six weeks, nights, multi-call LLM workflow', 'Under a dollar a session', 'Long files get truncated and it will not say so'],
+    braindump: ['The twenty minutes of triage I never actually did', 'Two weeks, Cloudflare Worker, structured JSON out', 'Free tier, no database', 'It flatters you if you write like you are fine'],
+    instacart: ['Hand-rolled spreadsheets per question', 'Nine days, sources through marts, 35 tests', 'Runs locally, nothing hosted', 'One test is skipped and I know which one'],
+    atx:       ['Assuming which zips were worse', 'Two weekends, 21,160 records, 84 brands', 'Static, nothing to run', 'The small-sample zips are noisy and shown as such'],
+  },
+};
 
 const LIFE_TEASERS = [
   { k: 'The field', v: 'Everything I noticed, plotted by whether I built something about it' },
@@ -613,7 +630,7 @@ export {
   READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
+  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   PLACES, LIFE_INTERESTS, LIFE_FACTS, READING, PLAYING, RING_FIT, RECORDS, CHRISTIE,
   TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_HEAD, TK_TOKENS,
