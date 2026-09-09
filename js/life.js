@@ -8,7 +8,7 @@
 
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT, OBSERVATIONS,
+  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT, OBSERVATIONS, PLAYING,
 } from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
@@ -434,14 +434,13 @@ function renderPlaces(on) {
 }
 
 // ── The record shelf + turntable ─────────────────────────────
-// ── L5 — The dragon: an HP bar that fills to the number the fight
-// actually ended on, then lifts to show the save file underneath. The
-// stats and quote are real content rendered first; the bar is an overlay
-// added only when JS runs, so nothing is hidden behind it if it never does.
-const HP_NOTCHES = 20;
-
+// ── L5 — The dragon: a level bar, one notch per level, that fills to
+// where the save file actually is and stops, then lifts to show the
+// stats underneath. The stats and quote are real content rendered first;
+// the bar is an overlay added only when JS runs, so nothing is hidden
+// behind it if it never does.
 function dragonReady() {
-  return ['sessions', 'streak', 'hp', 'day'].every((k) => Number.isFinite(RING_FIT[k]));
+  return Number.isFinite(RING_FIT.level) && RING_FIT.level > 0;
 }
 
 function renderDragon() {
@@ -449,9 +448,9 @@ function renderDragon() {
   if (!host) return;
   if (!dragonReady()) { $('#dragon').hidden = true; return; }
   const rows = [
-    ['Sessions', String(RING_FIT.sessions)],
-    ['Longest streak', `${RING_FIT.streak} days`],
-    ['Final HP dealt', `${RING_FIT.hp} / 100`],
+    ['Level', String(RING_FIT.level)],
+    ['The dragon', RING_FIT.boss],
+    ['Status', PLAYING.includes('Ring Fit Adventure') ? 'Still in the rotation' : 'On the shelf'],
   ];
   host.innerHTML = rows.map(([k, v]) => `<div class="dragon__stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');
   const q = $('#dragon-quote');
@@ -464,26 +463,25 @@ function playDragon() {
   block.insertAdjacentHTML('beforeend', `
     <div class="hp" id="hp" aria-hidden="true">
       <div class="hp__panel">
-        <div class="hp__head"><span class="hp__name">Dragon</span><span class="hp__fig" id="hp-fig">0/100</span></div>
-        <div class="hp__bar" id="hp-bar">${'<i></i>'.repeat(HP_NOTCHES)}</div>
+        <div class="hp__head"><span class="hp__name">Ring Fit · save file</span><span class="hp__fig" id="hp-fig">Lv 0</span></div>
+        <div class="hp__bar" id="hp-bar">${'<i></i>'.repeat(RING_FIT.level)}</div>
         <p class="hp__status" id="hp-status">restoring save data</p>
       </div>
     </div>`);
   const hp = $('#hp'), fig = $('#hp-fig'), status = $('#hp-status');
   const notches = [...$('#hp-bar').children];
-  const target = Math.max(0, Math.min(100, Number(RING_FIT.hp) || 0));
+  const target = RING_FIT.level;
   const t0 = performance.now();
   const dur = 1900;
   const ease = (t) => 1 - Math.pow(1 - t, 3);
   const tick = (now) => {
     const f = Math.min(1, (now - t0) / dur);
     const v = Math.round(ease(f) * target);
-    fig.textContent = `${v}/100`;
-    const lit = Math.round((v / 100) * HP_NOTCHES);
-    notches.forEach((n, i) => n.classList.toggle('is-on', i < lit));
+    fig.textContent = `Lv ${v}`;
+    notches.forEach((n, i) => n.classList.toggle('is-on', i < v));
     if (f < 1) { requestAnimationFrame(tick); return; }
-    // It stops at the real figure. Running on to 100 would be a lie.
-    status.textContent = `fight complete, day ${RING_FIT.day}`;
+    // It stops where the save file is. Nothing here runs on to a round number.
+    status.textContent = `save loaded, level ${target}, ${RING_FIT.boss} still standing`;
     setTimeout(() => {
       hp.classList.add('is-done');
       setTimeout(() => hp.remove(), 650);

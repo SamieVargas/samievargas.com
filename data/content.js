@@ -525,14 +525,12 @@ const LIFE_FACTS = [
 const READING = ['Agatha Christie, in order', 'Seishi Yokomizo', 'Terry Pratchett'];
 const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
-// L5 · the dragon. The block stays hidden until all four numbers are
-// filled in from the real save file; the bar fills to `hp` and stops there.
-// (The design handoff's 214 / 41 / 78 were placeholders and are not used.)
+// L5 · the dragon. One real number: the save file is at level 32. The
+// bar puts one notch per level and fills to it, then stops. Dragaux is
+// the game's dragon; "still in the rotation" is the PLAYING list above.
 const RING_FIT = {
-  sessions: null,
-  streak: null,
-  hp: null,
-  day: null,
+  level: 32,
+  boss: 'Dragaux',
   quote: 'Ring Fit because it turns out I need a dragon to fight to stay motivated.',
 };
 
