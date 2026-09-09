@@ -296,19 +296,25 @@ const OBSERVATIONS = [
 ];
 
 // S2 · the same four-field result line under every project, same order
-// every time. The sixteen strings below are the design handoff's
-// placeholders and have not been confirmed; the "what it costs to run"
-// and "what still breaks" values in particular were invented to show the
-// shape. While `draft` is true the page prints a note saying so. Replace
-// all sixteen, one clause each, and flip `draft` to false.
+// every time. One clause each. Every string here is traceable: the site's
+// own copy, the Signal source, or the Brain Dump and Instacart READMEs.
+// Flip `draft` to true to print a "not confirmed" note under each row.
 const RESULT_FIELDS = ['What it replaced', 'What it took', 'What it costs to run', 'What still breaks'];
 const RESULTS = {
-  draft: true,
+  draft: false,
   rows: {
-    signal:    ['Forty minutes of reading account files before a QBR', 'Six weeks, nights, multi-call LLM workflow', 'Under a dollar a session', 'Long files get truncated and it will not say so'],
-    braindump: ['The twenty minutes of triage I never actually did', 'Two weeks, Cloudflare Worker, structured JSON out', 'Free tier, no database', 'It flatters you if you write like you are fine'],
-    instacart: ['Hand-rolled spreadsheets per question', 'Nine days, sources through marts, 35 tests', 'Runs locally, nothing hosted', 'One test is skipped and I know which one'],
-    atx:       ['Assuming which zips were worse', 'Two weekends, 21,160 records, 84 brands', 'Static, nothing to run', 'The small-sample zips are noisy and shown as such'],
+    // Hero stat 60 → 1; Signal lead; README (two-call pipeline, Worker, Python CLI);
+    // index.html: nothing stored, session only; the max_tokens cutoff error.
+    signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'Past the token cap it stops and asks you to trim the input'],
+    // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
+    // states, $0.01–0.02 per sort, no database, and history still on the list.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A cent or two per sort on Cloudflare\'s free tier, no database', 'It keeps no history, so it cannot show you a pattern over time'],
+    // Instacart README: "most projects go straight to ML"; the input line on
+    // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
+    instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
+    // ATX: the pest-sighting post and "where I eat" on this page; 21,160 records,
+    // 84 brands, folium; Kaggle-hosted; the zip_performance.png disagreement.
+    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Two zips sit on the 90.6 line and the notebook and map disagree'],
   },
 };
 
@@ -519,14 +525,14 @@ const LIFE_FACTS = [
 const READING = ['Agatha Christie, in order', 'Seishi Yokomizo', 'Terry Pratchett'];
 const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
-// L5 · the dragon. The three figures below arrived with the design
-// handoff as placeholders. Replace them from the real save file before
-// trusting the block; the bar fills to `hp` and stops there.
+// L5 · the dragon. The block stays hidden until all four numbers are
+// filled in from the real save file; the bar fills to `hp` and stops there.
+// (The design handoff's 214 / 41 / 78 were placeholders and are not used.)
 const RING_FIT = {
-  sessions: 214,
-  streak: 41,
-  hp: 78,
-  day: 214,
+  sessions: null,
+  streak: null,
+  hp: null,
+  day: null,
   quote: 'Ring Fit because it turns out I need a dragon to fight to stay motivated.',
 };
 

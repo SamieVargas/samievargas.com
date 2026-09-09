@@ -440,9 +440,14 @@ function renderPlaces(on) {
 // added only when JS runs, so nothing is hidden behind it if it never does.
 const HP_NOTCHES = 20;
 
+function dragonReady() {
+  return ['sessions', 'streak', 'hp', 'day'].every((k) => Number.isFinite(RING_FIT[k]));
+}
+
 function renderDragon() {
   const host = $('#dragon-stats');
   if (!host) return;
+  if (!dragonReady()) { $('#dragon').hidden = true; return; }
   const rows = [
     ['Sessions', String(RING_FIT.sessions)],
     ['Longest streak', `${RING_FIT.streak} days`],
@@ -455,7 +460,7 @@ function renderDragon() {
 
 function playDragon() {
   const block = $('#dragon-block');
-  if (!block || REDUCED) return;
+  if (!block || REDUCED || !dragonReady()) return;
   block.insertAdjacentHTML('beforeend', `
     <div class="hp" id="hp" aria-hidden="true">
       <div class="hp__panel">
