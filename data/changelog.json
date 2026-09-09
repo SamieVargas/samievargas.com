@@ -1,58 +1,58 @@
 {
-  "generated": "2026-09-09T00:42:37Z",
+  "generated": "2026-09-09T00:51:58Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 237,
+  "total": 240,
   "commits": [
     {
+      "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
+      "date": "2026-09-09T00:46:43Z",
+      "message": "The change log writes itself, and the dragon gets its HP bar"
+    },
+    {
       "sha": "da742e51c42bcebf9e725e36085597c0a1e6eaaa",
-      "date": "2026-09-08T22:50:34+00:00",
+      "date": "2026-09-08T22:50:34Z",
       "message": "/toolkit: make the live change log survive the ways it was failing"
     },
     {
       "sha": "db0da15028bdc3ab9b875a01d3c68a6c6a0ea673",
-      "date": "2026-09-08T21:38:04+00:00",
+      "date": "2026-09-08T21:38:04Z",
       "message": "Résumé: say what the deliverable is"
     },
     {
       "sha": "e364996a4b60e19684299c9fdeaca309f9138341",
-      "date": "2026-09-08T21:35:25+00:00",
+      "date": "2026-09-08T21:35:25Z",
       "message": "Résumé: the three numbers that were missing"
     },
     {
       "sha": "85ced7ce06e498147e8e689d5b5c2c482b93df46",
-      "date": "2026-09-08T21:31:07+00:00",
+      "date": "2026-09-08T21:31:07Z",
       "message": "Résumé: PMP named, the SharePoint work at its real scale"
     },
     {
       "sha": "5e6f949e194a2e0537629aab5bee2214ee2d8195",
-      "date": "2026-09-08T21:24:29+00:00",
+      "date": "2026-09-08T21:24:29Z",
       "message": "Résumé: apply the ATS review, with the numbers Samie supplied"
     },
     {
       "sha": "956c5284c24d417dd81e84f0076fa2f82d29070c",
-      "date": "2026-09-08T21:05:15+00:00",
+      "date": "2026-09-08T21:05:15Z",
       "message": "Restore Snowflake Hands-On Essentials to the résumé"
     },
     {
       "sha": "340bcab850b15edf1bdf1d80281866fb3e976925",
-      "date": "2026-09-08T20:53:21+00:00",
+      "date": "2026-09-08T20:53:21Z",
       "message": "Bring the resume up to what the site already says"
     },
     {
       "sha": "07f63e81ab0237a4e4a2bdd45ec7b1771bf4b70b",
-      "date": "2026-09-01T01:49:48+00:00",
+      "date": "2026-09-01T01:49:48Z",
       "message": "Make the hidden attribute actually hide"
     },
     {
       "sha": "631f205b2ff1f404d6130c6466d7bb9d6638de2f",
-      "date": "2026-09-01T01:19:14+00:00",
+      "date": "2026-09-01T01:19:14Z",
       "message": "07: a query console over cached result sets"
-    },
-    {
-      "sha": "8a82811e48c702f2eb68c7a488ffb2fc9dc8adc4",
-      "date": "2026-09-01T01:09:53+00:00",
-      "message": "/apps: tiles that run, and a filter for what each app needs"
     }
   ],
   "weeks": [
@@ -75,10 +75,10 @@
     0,
     26,
     16,
-    8
+    11
   ],
   "resume": {
-    "sha": "da742e51c42bcebf9e725e36085597c0a1e6eaaa",
-    "date": "2026-09-08T22:50:34+00:00"
+    "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
+    "date": "2026-09-09T00:46:43Z"
   }
 }
