@@ -502,6 +502,17 @@ const LIFE_FACTS = [
 const READING = ['Agatha Christie, in order', 'Seishi Yokomizo', 'Terry Pratchett'];
 const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
+// L5 · the dragon. The three figures below arrived with the design
+// handoff as placeholders. Replace them from the real save file before
+// trusting the block; the bar fills to `hp` and stops there.
+const RING_FIT = {
+  sessions: 214,
+  streak: 41,
+  hp: 78,
+  day: 214,
+  quote: 'Ring Fit because it turns out I need a dragon to fight to stay motivated.',
+};
+
 // ── Toolkit page ─────────────────────────────────────────────
 
 const TK_REPO = 'SamieVargas/samievargas.com';
@@ -516,6 +527,7 @@ const TK_FALLBACK = [
 ];
 
 const TK_NOTES = [
+  { date: '2026-09-09', title: 'The change log writes itself', body: 'This list used to ask the GitHub API from your browser, which only works while the repo is public and your IP has rate limit left, and lately neither held. Now a small Action snapshots the commit log into the site on every push. Same list, no API call, and it cannot show anything that is not already deployed.' },
   { date: '2026-08-22', title: 'The mark and the card', body: 'The social card was 347×190, so every platform upscaled it into a blur, and the tab title was just my name. That means the first thing anyone saw of this site was the least considered part of it. Redrew both in the same type as the rest.' },
   { date: '2026-08-20', title: 'Moving the personal half', body: 'The raccoon, the tarot decks, and the tooth zones are the most interesting things here and the worst thing to put between a hiring manager and my projects. They have their own page now, linked from the nav, and nothing was deleted.' },
   { date: '2026-08-18', title: 'Projects that show their work', body: 'Cards described what I built. They did not show messy going in and clean coming out, which is the actual point. Every project now names its input, marks four things in the output, and ends on what it found.' },
@@ -603,6 +615,6 @@ export {
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
   SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_INTERESTS, LIFE_FACTS, READING, PLAYING, RECORDS, CHRISTIE,
+  PLACES, LIFE_INTERESTS, LIFE_FACTS, READING, PLAYING, RING_FIT, RECORDS, CHRISTIE,
   TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_HEAD, TK_TOKENS,
 };

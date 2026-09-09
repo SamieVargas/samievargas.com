@@ -46,7 +46,7 @@ js/
   app.js             -- renders the work page from data/, wires every control
   life.js            -- the field, the crate, the Christie ledger
   arcade.js          -- the apps index
-  toolkit.js         -- the GitHub commits feed and repo age
+  toolkit.js         -- the change log, pushes per week, and repo age, read from data/changelog.json
 data/
   content.js         -- projects, roles, skills, certs, observations,
                         quick facts, interests, contact links, the field
@@ -69,7 +69,7 @@ The two agents, Signal and Brain Dump, talk to the Anthropic API through a Cloud
 
 **The arcade** -- fifteen small apps at /apps, where six pull live public data from keyless APIs like Wikidata and Open Library and the City of Austin, a few read exports you bring yourself, two track what you tap, and the rest need nothing but a browser.
 
-**Site toolkit** -- a public page about how the site is built, linked from the footer at the bottom of the homepage instead of the nav since it is for the people who want to look under it, with the design tokens, the component set, the copy decisions and why each one reads the way it does, the `<head>` block, and a change log fed by the GitHub commits API on this repo, so it updates itself when I push.
+**Site toolkit** -- a public page about how the site is built, linked from the footer at the bottom of the homepage instead of the nav since it is for the people who want to look under it, with the design tokens, the component set, the copy decisions and why each one reads the way it does, the `<head>` block, and a change log snapshotted from this repo's history by `.github/workflows/changelog.yml` on every push to main, so it updates itself when I push without the page ever calling the GitHub API.
 
 **Mobile as an app** -- under 820px the layout collapses to one column and a four-item tab bar pins to the bottom, so navigation stays under a thumb.
 
@@ -116,7 +116,7 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260908" --include=*.html --include=*.js .
+grep -rln "?v=20260909" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.

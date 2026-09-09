@@ -273,7 +273,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260908';
+import { TK_REPO } from './data/content.js?v=20260909';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
@@ -306,9 +306,9 @@ guideBtn.addEventListener('click', () => {
 });
 
 // ── R3 ── Freshness stamp. A wrong date here is worse than no date, so
-// anything short of a clean answer renders nothing at all.
-const STAMP_KEY = 'resume-stamp';
-const STAMP_TTL = 12 * 60 * 60 * 1000;
+// anything short of a clean answer renders nothing at all. The date and
+// SHA come from data/changelog.json, which the repo snapshots on every
+// push, so this never has to reach the GitHub API from here.
 
 function relativeAge(iso) {
   const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
@@ -332,23 +332,11 @@ function renderStamp(data) {
 }
 
 function loadStamp() {
-  try {
-    const raw = localStorage.getItem(STAMP_KEY);
-    if (raw) {
-      const cached = JSON.parse(raw);
-      if (Date.now() - cached.at < STAMP_TTL) { renderStamp(cached); return; }
-    }
-  } catch (err) { /* private mode, just fetch */ }
-
-  fetch(`https://api.github.com/repos/${TK_REPO}/commits?path=resume.html&per_page=1`)
+  fetch('data/changelog.json', { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((list) => {
-      const c = list && list[0];
-      const date = c && c.commit && c.commit.committer && c.commit.committer.date;
-      if (!date || !c.sha) return;
-      const data = { at: Date.now(), date, sha: c.sha };
-      try { localStorage.setItem(STAMP_KEY, JSON.stringify(data)); } catch (err) { /* private mode */ }
-      renderStamp(data);
+    .then((snap) => {
+      const c = snap && snap.resume;
+      if (c && c.date && c.sha) renderStamp(c);
     })
     .catch(() => { /* render nothing */ });
 }

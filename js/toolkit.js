@@ -1,10 +1,11 @@
 // ============================================================
 // js/toolkit.js
-// /toolkit — the change log is live from the GitHub commits API,
-// with a hand-written fallback if the fetch fails.
+// /toolkit — the change log, pushes per week, and repo age all come from
+// data/changelog.json, which the repo snapshots on every push to main.
+// A hand-written fallback list stands in if the file cannot be read.
 // ============================================================
 
-import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260908';
+import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -41,69 +42,41 @@ function renderCommits(list, live) {
 
 function renderStatus(state) {
   const el = $('#feed-status');
-  if (state === 'live') { el.textContent = 'Live from GitHub'; el.style.color = 'var(--accent)'; }
-  else if (state === 'cached') { el.textContent = 'Live from GitHub · cached'; el.style.color = 'var(--accent)'; }
-  else if (state === 'ratelimit') { el.textContent = 'GitHub rate limit hit · showing my own list'; el.style.color = 'var(--faint)'; }
-  else if (state === 'failed') { el.textContent = 'GitHub unreachable · showing my own list'; el.style.color = 'var(--faint)'; }
-  else { el.textContent = 'Loading from GitHub…'; el.style.color = 'var(--faint)'; }
+  if (state === 'live') { el.textContent = 'Live from the repo'; el.style.color = 'var(--accent)'; }
+  else if (state === 'failed') { el.textContent = 'Snapshot unavailable · showing my own list'; el.style.color = 'var(--faint)'; }
+  else { el.textContent = 'Reading the snapshot…'; el.style.color = 'var(--faint)'; }
 }
 
-// The change log is the one thing on this page that has to be live, so
-// it gets three defences. The commits call no longer shares a
-// Promise.all with the repo-age lookup, because a failed age lookup was
-// hiding a successful fetch behind "unreachable". A ten-minute
-// localStorage cache means iterating on the page does not spend the
-// unauthenticated rate limit, which is 60 an hour per IP. And a 403,
-// which on a public repo is that limit running out, is reported as what
-// it is rather than as a network failure.
-const COMMITS_KEY = 'tk-commits';
-const COMMITS_TTL = 10 * 60 * 1000;
+// The change log is a snapshot the repo writes about itself. A small
+// Action (.github/workflows/changelog.yml) runs on every push to main and
+// commits data/changelog.json, so this page reads a same-origin file
+// instead of asking the GitHub API from a visitor's browser. The API
+// needed the repo to be public and the visitor's IP to have rate limit
+// left, and neither can be counted on. A side effect worth having: the
+// list can never show a commit that is not deployed yet.
+const SNAPSHOT = 'data/changelog.json';
 
-function cachedCommits() {
-  try {
-    const raw = localStorage.getItem(COMMITS_KEY);
-    if (!raw) return null;
-    const { at, list } = JSON.parse(raw);
-    return Date.now() - at < COMMITS_TTL && Array.isArray(list) && list.length ? list : null;
-  } catch (err) { return null; }
+function applySnapshot(snap) {
+  if (!snap || !Array.isArray(snap.commits) || !snap.commits.length) throw new Error('empty snapshot');
+  renderCommits(snap.commits.map((c) => ({
+    message: c.message,
+    date: c.date,
+    href: c.sha ? `https://github.com/${TK_REPO}/commit/${c.sha}` : undefined,
+  })), true);
+  $('#feed-note').textContent = `Ten most recent commits, newest first, written into the site by the repo's own Action on the last push, ${ago(snap.generated)}.`;
+  $('#tk-count').textContent = snap.total ? String(snap.total) : `${snap.commits.length}+`;
+  renderStatus('live');
+  if (snap.first) renderAge(snap.first);
+  if (Array.isArray(snap.weeks) && snap.weeks.some((n) => n > 0)) renderPushes(snap.weeks);
 }
 
-function applyCommits(list, state) {
-  renderCommits(list, true);
-  $('#tk-count').textContent = list.length >= 10 ? '10+' : String(list.length);
-  renderStatus(state);
-}
-
-function loadGithub() {
-  const base = `https://api.github.com/repos/${TK_REPO}`;
-  const hit = cachedCommits();
-  if (hit) applyCommits(hit, 'cached');
-
-  fetch(`${base}/commits?per_page=10`)
-    .then((r) => {
-      if (r.status === 403) return Promise.reject('ratelimit');
-      return r.ok ? r.json() : Promise.reject(r.status);
-    })
-    .then((commits) => {
-      const list = commits.map((c) => ({
-        message: (c.commit.message || '').split('\n')[0],
-        date: c.commit.author && c.commit.author.date,
-        href: c.html_url,
-      }));
-      try { localStorage.setItem(COMMITS_KEY, JSON.stringify({ at: Date.now(), list })); } catch (err) { /* private mode */ }
-      applyCommits(list, 'live');
-    })
-    .catch((why) => {
-      // A cached list is already on screen; leave it and stay quiet.
-      if (hit) return;
-      renderStatus(why === 'ratelimit' ? 'ratelimit' : 'failed');
-    });
-
-  // The repo age is decorative. Its failure must never touch the change log.
-  fetch(base)
+function loadSnapshot() {
+  // The file changes on every push, so revalidate rather than version it;
+  // GitHub Pages answers a matching ETag with a 304.
+  fetch(SNAPSHOT, { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((repo) => renderAge(repo.created_at))
-    .catch(() => {});
+    .then(applySnapshot)
+    .catch(() => renderStatus('failed'));
 }
 
 function renderAge(firstDate) {
@@ -176,12 +149,8 @@ function renderTokens() {
 }
 
 
-// ── T2 ── Pushes per week, from the participation endpoint (one call
-// for 52 weeks) and cached, because /toolkit should not spend rate
-// limit on every load.
+// ── T2 ── Pushes per week, twenty seven-day buckets from the snapshot.
 const WEEKS = 20;
-const CACHE_KEY = 'tk-participation';
-const CACHE_TTL = 6 * 60 * 60 * 1000;
 
 function renderPushes(weeks) {
   const host = $('#pushes');
@@ -195,30 +164,6 @@ function renderPushes(weeks) {
   const total = weeks.reduce((a, b) => a + b, 0);
   $('#pushes-total').textContent = `${total.toLocaleString()} commits`;
   host.hidden = false;
-}
-
-function cachedParticipation() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const { at, weeks } = JSON.parse(raw);
-    return Date.now() - at < CACHE_TTL ? weeks : null;
-  } catch (err) { return null; }
-}
-
-function loadPushes() {
-  const hit = cachedParticipation();
-  if (hit) { renderPushes(hit); return; }
-  fetch(`https://api.github.com/repos/${TK_REPO}/stats/participation`)
-    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((json) => {
-      const weeks = (json.all || []).slice(-WEEKS);
-      if (!weeks.length) return;
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), weeks })); } catch (err) { /* private mode */ }
-      renderPushes(weeks);
-    })
-    // The strip stays hidden and the change log is untouched.
-    .catch(() => {});
 }
 
 // ── T1 ── Accent playground. Lightness and chroma are pinned so every
@@ -314,12 +259,11 @@ function wireSandbox() {
 // ── Boot ─────────────────────────────────────────────────────
 renderCommits(TK_FALLBACK, false);
 renderStatus('loading');
-renderAge('2026-06-10');
+renderAge('2026-05-20');
 renderNotes();
 renderMeta();
 renderHead();
 renderTokens();
-loadGithub();
-loadPushes();
+loadSnapshot();
 wireAccentLab();
 wireSandbox();

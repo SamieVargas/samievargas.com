@@ -1,0 +1,49 @@
+# The site keeps its own change log. On every push to main this writes
+# data/changelog.json from git history and commits it back, so /toolkit
+# and the résumé stamp read a file on the site instead of the GitHub
+# API. It is not a build step: nothing here is compiled, and the site
+# works from the last snapshot if this never runs.
+name: Snapshot the change log
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - data/changelog.json
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Write data/changelog.json
+        run: node .github/scripts/changelog.mjs
+
+      - name: Commit it if it changed
+        run: |
+          if git diff --quiet -- data/changelog.json; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/changelog.json
+          git commit -m "Snapshot the change log"
+          git push
+
+      # A push made with GITHUB_TOKEN does not always start a Pages build
+      # on its own, so ask for one. Harmless if one is already queued.
+      - name: Ask Pages to redeploy
+        run: |
+          curl -sS -o /dev/null -w "pages build request: %{http_code}\n" \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true
