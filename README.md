@@ -15,7 +15,7 @@ I have been in operations for eight years building systems that did not exist be
 
 | Page | Route | What it is |
 | --- | --- | --- |
-| Work | `/` | The portfolio, with the Signal and Brain Dump case studies, the annotated dbt and inspection projects, experience, skills, observations, and contact. |
+| Work | `/` | The portfolio, with the Signal and Brain Dump case studies, the annotated dbt and inspection projects, experience, skills, and contact. |
 | Life | `/life` | The personal half, split off the homepage so it stops standing between a hiring manager and the projects. |
 | Apps | `/apps` | The arcade, fifteen small browser apps that each do one thing. |
 | Toolkit | `/toolkit` | How the site is built, linked from the homepage footer. |
@@ -34,7 +34,7 @@ I made this decision early and I would make it the same way again, because I did
 
 ```
 index.html           -- the work page: nav, hero, Signal, Brain Dump,
-                        projects, experience, skills, observations, contact
+                        projects, experience, skills, off the clock, contact
 life.html            -- /life
 apps/                -- the arcade index plus fifteen self-contained apps
 toolkit.html         -- /toolkit, the build notes
@@ -48,7 +48,7 @@ js/
   arcade.js          -- the apps index
   toolkit.js         -- the change log, pushes per week, and repo age, read from data/changelog.json
 data/
-  content.js         -- projects, roles, skills, certs, observations,
+  content.js         -- projects, roles, skills, certs, result lines, observations,
                         quick facts, interests, contact links, the field
 assets/              -- charts and screenshots, one folder per project
 ```
@@ -65,7 +65,7 @@ The two agents, Signal and Brain Dump, talk to the Anthropic API through a Cloud
 
 **The field** -- a plot of everything on /life, placed by whether I only noticed it or actually built something, and whether it came from work or from my life, so you click a dot and the panel next to it changes, and the two halves turn out to look the same.
 
-**Observations** -- a carousel of short-form writing about things I have noticed in data, and the raccoon one has a scrubable chart of my body battery going to the floor for ten days, and this is the part of the site I want to keep adding to the most.
+**Observations** -- on /life now, a carousel of short-form writing about things I have noticed in data, and the raccoon one has a scrubable chart of my body battery going to the floor for ten days, and this is the part of the site I want to keep adding to the most.
 
 **The arcade** -- fifteen small apps at /apps, where six pull live public data from keyless APIs like Wikidata and Open Library and the City of Austin, a few read exports you bring yourself, two track what you tap, and the rest need nothing but a browser.
 

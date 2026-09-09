@@ -8,7 +8,7 @@
 
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT,
+  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT, OBSERVATIONS, PLAYING,
 } from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 const RATING_COLORS = { 5: '#0f6e56', 4: '#4daa91', 3: '#d97706', 2: '#b4552f' };
 
-const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, dragIn: false, rotIn: false, recIn: false, chrIn: false };
+const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, dragIn: false, rotIn: false, recIn: false, chrIn: false, notesIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -434,19 +434,23 @@ function renderPlaces(on) {
 }
 
 // ── The record shelf + turntable ─────────────────────────────
-// ── L5 — The dragon: an HP bar that fills to the number the fight
-// actually ended on, then lifts to show the save file underneath. The
-// stats and quote are real content rendered first; the bar is an overlay
-// added only when JS runs, so nothing is hidden behind it if it never does.
-const HP_NOTCHES = 20;
+// ── L5 — The dragon: a level bar, one notch per level, that fills to
+// where the save file actually is and stops, then lifts to show the
+// stats underneath. The stats and quote are real content rendered first;
+// the bar is an overlay added only when JS runs, so nothing is hidden
+// behind it if it never does.
+function dragonReady() {
+  return Number.isFinite(RING_FIT.level) && RING_FIT.level > 0;
+}
 
 function renderDragon() {
   const host = $('#dragon-stats');
   if (!host) return;
+  if (!dragonReady()) { $('#dragon').hidden = true; return; }
   const rows = [
-    ['Sessions', String(RING_FIT.sessions)],
-    ['Longest streak', `${RING_FIT.streak} days`],
-    ['Final HP dealt', `${RING_FIT.hp} / 100`],
+    ['Level', String(RING_FIT.level)],
+    ['The dragon', RING_FIT.boss],
+    ['Status', PLAYING.includes('Ring Fit Adventure') ? 'Still in the rotation' : 'On the shelf'],
   ];
   host.innerHTML = rows.map(([k, v]) => `<div class="dragon__stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');
   const q = $('#dragon-quote');
@@ -455,30 +459,29 @@ function renderDragon() {
 
 function playDragon() {
   const block = $('#dragon-block');
-  if (!block || REDUCED) return;
+  if (!block || REDUCED || !dragonReady()) return;
   block.insertAdjacentHTML('beforeend', `
     <div class="hp" id="hp" aria-hidden="true">
       <div class="hp__panel">
-        <div class="hp__head"><span class="hp__name">Dragon</span><span class="hp__fig" id="hp-fig">0/100</span></div>
-        <div class="hp__bar" id="hp-bar">${'<i></i>'.repeat(HP_NOTCHES)}</div>
+        <div class="hp__head"><span class="hp__name">Ring Fit · save file</span><span class="hp__fig" id="hp-fig">Lv 0</span></div>
+        <div class="hp__bar" id="hp-bar">${'<i></i>'.repeat(RING_FIT.level)}</div>
         <p class="hp__status" id="hp-status">restoring save data</p>
       </div>
     </div>`);
   const hp = $('#hp'), fig = $('#hp-fig'), status = $('#hp-status');
   const notches = [...$('#hp-bar').children];
-  const target = Math.max(0, Math.min(100, Number(RING_FIT.hp) || 0));
+  const target = RING_FIT.level;
   const t0 = performance.now();
   const dur = 1900;
   const ease = (t) => 1 - Math.pow(1 - t, 3);
   const tick = (now) => {
     const f = Math.min(1, (now - t0) / dur);
     const v = Math.round(ease(f) * target);
-    fig.textContent = `${v}/100`;
-    const lit = Math.round((v / 100) * HP_NOTCHES);
-    notches.forEach((n, i) => n.classList.toggle('is-on', i < lit));
+    fig.textContent = `Lv ${v}`;
+    notches.forEach((n, i) => n.classList.toggle('is-on', i < v));
     if (f < 1) { requestAnimationFrame(tick); return; }
-    // It stops at the real figure. Running on to 100 would be a lie.
-    status.textContent = `fight complete, day ${RING_FIT.day}`;
+    // It stops where the save file is. Nothing here runs on to a round number.
+    status.textContent = `save loaded, level ${target}, ${RING_FIT.boss} still standing`;
     setTimeout(() => {
       hp.classList.add('is-done');
       setTimeout(() => hp.remove(), 650);
@@ -684,6 +687,138 @@ function renderEq(on) {
     <i style="flex:1;display:block;background:${i % 4 === 0 ? '#3fae8f' : `rgba(63,174,143,${(0.3 + ((i * 13) % 4) * 0.12).toFixed(2)})`};height:${12 + ((i * 37) % 82)}%;${on ? `animation:eqbar ${(0.8 + ((i * 7) % 11) / 10).toFixed(1)}s ease-in-out ${((i % 9) * 0.09).toFixed(2)}s infinite alternate,fadein .4s ease ${(i * 0.02).toFixed(2)}s both` : 'opacity:0'}"></i>`).join('');
 }
 
+// ── Notes / observations — moved here from the homepage. The raccoon
+// note carries its own body-battery chart, so its scrub state is kept
+// apart from the invoice's under `obs` names.
+let obsIdx = 0;
+let obsDay = -1;
+let obsAuto = true;
+let obsScrubTimer, obsScrubEnd, obsScrubActive = false, obsScrubbed = false;
+
+function stopObsScrub() {
+  clearInterval(obsScrubTimer);
+  clearTimeout(obsScrubEnd);
+  obsScrubActive = false;
+}
+
+// Once the section is in view, walk the chart's days by itself, then let go.
+function maybeAutoScrub() {
+  if (REDUCED || obsScrubbed || !gates.notesIn || !OBSERVATIONS[obsIdx].chart) return;
+  obsScrubbed = true;
+  obsScrubActive = true;
+  const days = OBSERVATIONS[obsIdx].chart.days.length;
+  obsScrubTimer = setInterval(() => {
+    const n = obsDay + 1;
+    if (n >= days) {
+      clearInterval(obsScrubTimer);
+      obsScrubActive = false;
+      obsScrubEnd = setTimeout(() => { obsDay = -1; updateChartReadout(); }, 1400);
+      return;
+    }
+    obsDay = n;
+    updateChartReadout();
+  }, 650);
+}
+
+function reanimate(el, anim) {
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = gates.notesIn && !REDUCED ? anim : '';
+  if (!gates.notesIn && !REDUCED) el.style.opacity = '0';
+  else el.style.opacity = '';
+}
+
+function renderObs() {
+  const o = OBSERVATIONS[obsIdx];
+  $('#obs-tag').textContent = o.tag;
+  $('#obs-title').textContent = o.title;
+  reanimate($('#obs-title'), 'crossfade .45s ease both');
+  $('#obs-counter').textContent = `${obsIdx + 1} of ${OBSERVATIONS.length}`;
+  $('#obs-body').innerHTML = o.paragraphs.map((p, i) => `<p style="${gates.notesIn ? `animation:driftup .55s ease ${(0.1 + i * 0.12).toFixed(2)}s both` : 'opacity:0'}">${esc(p)}</p>`).join('');
+  $('#obs-src').innerHTML = o.linkText
+    ? `${esc(o.sourceText)} <a href="${o.linkHref}">${esc(o.linkText)}</a>`
+    : esc(o.sourceText);
+  $('#obs-dots').innerHTML = OBSERVATIONS.map((_, i) =>
+    `<button type="button" class="dot${i === obsIdx ? ' is-on' : ''}" data-obs="${i}" aria-label="Observation ${i + 1}"></button>`).join('');
+  renderChart();
+}
+
+function renderChart() {
+  const chart = OBSERVATIONS[obsIdx].chart;
+  const host = $('#obs-chart');
+  if (!chart) { host.innerHTML = ''; return; }
+  host.innerHTML = `
+    <div class="chart" style="${gates.notesIn ? 'animation:crossfade .5s ease both' : 'opacity:0'}">
+      <div class="chart__head">
+        <span class="label label--accent">${esc(chart.title)}</span>
+        <span class="label label--mid">${esc(chart.hint)}</span>
+      </div>
+      <div class="chart__bars">
+        ${chart.days.map((d, i) => `
+          <button type="button" data-day="${i}" aria-label="${esc(d.d)}: ${d.v}" class="${d.v <= 10 ? 'is-low' : ''}">
+            <i style="height:${Math.max(4, Math.round((d.v / chart.max) * 100))}%;${gates.notesIn ? `--d:${(i * 0.07).toFixed(2)}s` : 'opacity:0;animation:none'}"></i>
+          </button>`).join('')}
+      </div>
+      <div class="chart__scale">
+        <span class="label label--mid">${esc(chart.days[0].d)}</span>
+        <span class="label label--mid">${esc(chart.days[chart.days.length - 1].d)}</span>
+      </div>
+      <p class="chart__readout"></p>
+    </div>`;
+  updateChartReadout();
+}
+
+function updateChartReadout() {
+  const chart = OBSERVATIONS[obsIdx].chart;
+  if (!chart) return;
+  $('#obs-chart .chart__readout').textContent = obsDay > -1
+    ? `${chart.days[obsDay].d} — ${chart.days[obsDay].v} — ${chart.days[obsDay].note}`
+    : `${chart.days.length} days, from normal to the floor and back`;
+  $('#obs-chart').querySelectorAll('[data-day]').forEach((b, i) =>
+    b.classList.toggle('is-on', i === obsDay));
+}
+
+function wireObs() {
+  if (!$('#obs-prev')) return;
+  const step = (dir, manual) => {
+    if (manual) { stopObsScrub(); obsAuto = false; }
+    obsIdx = (obsIdx + dir + OBSERVATIONS.length) % OBSERVATIONS.length;
+    obsDay = -1;
+    renderObs();
+    maybeAutoScrub();
+  };
+  $('#obs-prev').addEventListener('click', () => step(-1, true));
+  $('#obs-next').addEventListener('click', () => step(1, true));
+  $('#obs-dots').addEventListener('click', (e) => {
+    const dot = e.target.closest('[data-obs]');
+    if (!dot) return;
+    stopObsScrub();
+    obsAuto = false;
+    obsIdx = Number(dot.dataset.obs);
+    obsDay = -1;
+    renderObs();
+    maybeAutoScrub();
+  });
+  const scrub = (e) => {
+    const bar = e.target.closest('[data-day]');
+    if (!bar) return;
+    stopObsScrub();
+    obsAuto = false;
+    obsDay = Number(bar.dataset.day);
+    updateChartReadout();
+  };
+  $('#obs-chart').addEventListener('mouseover', scrub);
+  $('#obs-chart').addEventListener('click', scrub);
+  $('#obs-chart').addEventListener('mouseleave', () => {
+    if (obsDay > -1 && !obsScrubActive) { obsDay = -1; updateChartReadout(); }
+  });
+  if (!REDUCED) {
+    setInterval(() => {
+      if (obsAuto && gates.notesIn && !obsScrubActive) step(1, false);
+    }, 8000);
+  }
+}
+
 // ── Boot ─────────────────────────────────────────────────────
 buildField();
 renderProgress(false);
@@ -695,11 +830,13 @@ renderChristie(false);
 renderDragon();
 renderFacts();
 renderEq(false);
+if ($('#obs-title')) renderObs();
 
 wireField();
 wireBattery();
 wireCrate();
 wireChristie();
+wireObs();
 
 watchGate('field', 'fieldIn', () => playFieldEntrance());
 watchGate('progress', 'progIn', () => { renderProgress(true); startProgressCount(); });
@@ -709,3 +846,4 @@ watchGate('dragon', 'dragIn', () => playDragon());
 watchGate('records', 'recIn', () => renderCrate(true));
 watchGate('christie', 'chrIn', () => renderChristie(true));
 watchGate('rotation', 'rotIn', () => renderEq(true));
+watchGate('notes', 'notesIn', () => { renderObs(); maybeAutoScrub(); });

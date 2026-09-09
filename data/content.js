@@ -169,7 +169,7 @@ const BRAIN_STATES = {
 const ANNOTATED = [
   { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'I rebuilt one cited number until it split in half.',
     cta: 'See the models ↗', href: 'https://github.com/SamieVargas/instacart-project',
-    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true,
+    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true, result: 'instacart',
     inputLine: 'In: raw order tables · out: five staging models, one join, three marts, 35 passing tests',
     notes: [
       { n: '1', title: 'Lineage you can follow', body: 'Every mart traces back to a named staging model, so a number can be argued with.' },
@@ -179,7 +179,7 @@ const ANNOTATED = [
     finding: 'new shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither.' },
   { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'I turned a pest-sighting post into an audit of where I eat.',
     cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true,
+    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true, result: 'atx',
     inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
     notes: [
       { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name, because that was the question I actually had.' },
@@ -294,6 +294,29 @@ const OBSERVATIONS = [
       'I do not think this is a failure, this is what maintenance looks like when your brain does not do it automatically, and each rebuilt version is smarter because you know more.'],
     sourceText: 'Currently running on Todoist and Drive', linkText: '', linkHref: '#' },
 ];
+
+// S2 · the same four-field result line under every project, same order
+// every time. One clause each. Every string here is traceable: the site's
+// own copy, the Signal source, or the Brain Dump and Instacart READMEs.
+// Flip `draft` to true to print a "not confirmed" note under each row.
+const RESULT_FIELDS = ['What it replaced', 'What it took', 'What it costs to run', 'What still breaks'];
+const RESULTS = {
+  draft: false,
+  rows: {
+    // Hero stat 60 → 1; Signal lead; README (two-call pipeline, Worker, Python CLI);
+    // index.html: nothing stored, session only; the max_tokens cutoff error.
+    signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'Past the token cap it stops and asks you to trim the input'],
+    // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
+    // states, $0.01–0.02 per sort, no database, and history still on the list.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A cent or two per sort on Cloudflare\'s free tier, no database', 'It keeps no history, so it cannot show you a pattern over time'],
+    // Instacart README: "most projects go straight to ML"; the input line on
+    // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
+    instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
+    // ATX: the pest-sighting post and "where I eat" on this page; 21,160 records,
+    // 84 brands, folium; Kaggle-hosted; the zip_performance.png disagreement.
+    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Two zips sit on the 90.6 line and the notebook and map disagree'],
+  },
+};
 
 const LIFE_TEASERS = [
   { k: 'The field', v: 'Everything I noticed, plotted by whether I built something about it' },
@@ -502,14 +525,12 @@ const LIFE_FACTS = [
 const READING = ['Agatha Christie, in order', 'Seishi Yokomizo', 'Terry Pratchett'];
 const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
-// L5 · the dragon. The three figures below arrived with the design
-// handoff as placeholders. Replace them from the real save file before
-// trusting the block; the bar fills to `hp` and stops there.
+// L5 · the dragon. One real number: the save file is at level 32. The
+// bar puts one notch per level and fills to it, then stops. Dragaux is
+// the game's dragon; "still in the rotation" is the PLAYING list above.
 const RING_FIT = {
-  sessions: 214,
-  streak: 41,
-  hp: 78,
-  day: 214,
+  level: 32,
+  boss: 'Dragaux',
   quote: 'Ring Fit because it turns out I need a dragon to fight to stay motivated.',
 };
 
@@ -613,7 +634,7 @@ export {
   READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS,
+  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   PLACES, LIFE_INTERESTS, LIFE_FACTS, READING, PLAYING, RING_FIT, RECORDS, CHRISTIE,
   TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_HEAD, TK_TOKENS,
