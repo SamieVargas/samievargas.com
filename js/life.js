@@ -8,8 +8,8 @@
 
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_FACTS, RECORDS, CHRISTIE,
-} from '../data/content.js?v=20260908';
+  PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT,
+} from '../data/content.js?v=20260909';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 const RATING_COLORS = { 5: '#0f6e56', 4: '#4daa91', 3: '#d97706', 2: '#b4552f' };
 
-const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, rotIn: false, recIn: false, chrIn: false };
+const gates = { fieldIn: false, progIn: false, racIn: false, eatIn: false, dragIn: false, rotIn: false, recIn: false, chrIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -434,6 +434,59 @@ function renderPlaces(on) {
 }
 
 // ── The record shelf + turntable ─────────────────────────────
+// ── L5 — The dragon: an HP bar that fills to the number the fight
+// actually ended on, then lifts to show the save file underneath. The
+// stats and quote are real content rendered first; the bar is an overlay
+// added only when JS runs, so nothing is hidden behind it if it never does.
+const HP_NOTCHES = 20;
+
+function renderDragon() {
+  const host = $('#dragon-stats');
+  if (!host) return;
+  const rows = [
+    ['Sessions', String(RING_FIT.sessions)],
+    ['Longest streak', `${RING_FIT.streak} days`],
+    ['Final HP dealt', `${RING_FIT.hp} / 100`],
+  ];
+  host.innerHTML = rows.map(([k, v]) => `<div class="dragon__stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');
+  const q = $('#dragon-quote');
+  if (q) q.textContent = RING_FIT.quote;
+}
+
+function playDragon() {
+  const block = $('#dragon-block');
+  if (!block || REDUCED) return;
+  block.insertAdjacentHTML('beforeend', `
+    <div class="hp" id="hp" aria-hidden="true">
+      <div class="hp__panel">
+        <div class="hp__head"><span class="hp__name">Dragon</span><span class="hp__fig" id="hp-fig">0/100</span></div>
+        <div class="hp__bar" id="hp-bar">${'<i></i>'.repeat(HP_NOTCHES)}</div>
+        <p class="hp__status" id="hp-status">restoring save data</p>
+      </div>
+    </div>`);
+  const hp = $('#hp'), fig = $('#hp-fig'), status = $('#hp-status');
+  const notches = [...$('#hp-bar').children];
+  const target = Math.max(0, Math.min(100, Number(RING_FIT.hp) || 0));
+  const t0 = performance.now();
+  const dur = 1900;
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+  const tick = (now) => {
+    const f = Math.min(1, (now - t0) / dur);
+    const v = Math.round(ease(f) * target);
+    fig.textContent = `${v}/100`;
+    const lit = Math.round((v / 100) * HP_NOTCHES);
+    notches.forEach((n, i) => n.classList.toggle('is-on', i < lit));
+    if (f < 1) { requestAnimationFrame(tick); return; }
+    // It stops at the real figure. Running on to 100 would be a lie.
+    status.textContent = `fight complete, day ${RING_FIT.day}`;
+    setTimeout(() => {
+      hp.classList.add('is-done');
+      setTimeout(() => hp.remove(), 650);
+    }, 500);
+  };
+  requestAnimationFrame(tick);
+}
+
 let selRec = 0;
 const RINGWEAR = 'radial-gradient(circle at 50% 52%,rgba(0,0,0,0) 56%,rgba(255,255,255,.07) 58%,rgba(255,255,255,.07) 61%,rgba(0,0,0,0) 63%)';
 const SPINE_EDGE = 'linear-gradient(90deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%,rgba(0,0,0,.3))';
@@ -639,6 +692,7 @@ renderBattery(false);
 renderPlaces(false);
 renderCrate(false);
 renderChristie(false);
+renderDragon();
 renderFacts();
 renderEq(false);
 
@@ -651,6 +705,7 @@ watchGate('field', 'fieldIn', () => playFieldEntrance());
 watchGate('progress', 'progIn', () => { renderProgress(true); startProgressCount(); });
 watchGate('raccoon', 'racIn', () => { renderInvoice(true); renderBattery(true); startAutoScrub(); });
 watchGate('eating', 'eatIn', () => renderPlaces(true));
+watchGate('dragon', 'dragIn', () => playDragon());
 watchGate('records', 'recIn', () => renderCrate(true));
 watchGate('christie', 'chrIn', () => renderChristie(true));
 watchGate('rotation', 'rotIn', () => renderEq(true));
