@@ -488,14 +488,14 @@ em { font-style: italic; color: var(--accent); }
 .page > #contact { order: 8; }
 :root[data-door="analytics"] .page > #work { order: 1; }
 :root[data-door="analytics"] .page > #experience { order: 2; }
-:root[data-door="analytics"] .page > #signal { order: 3; }
-:root[data-door="analytics"] .page > #skills { order: 4; }
-:root[data-door="analytics"] .page > #braindump { order: 5; }
-:root[data-door="analytics"] .page > #field-discovery { order: 6; }
+:root[data-door="analytics"] .page > #field-discovery { order: 3; }
+:root[data-door="analytics"] .page > #signal { order: 4; }
+:root[data-door="analytics"] .page > #skills { order: 5; }
+:root[data-door="analytics"] .page > #braindump { order: 6; }
 :root[data-door="ops"] .page > #experience { order: 1; }
-:root[data-door="ops"] .page > #signal { order: 2; }
-:root[data-door="ops"] .page > #braindump { order: 3; }
-:root[data-door="ops"] .page > #field-discovery { order: 4; }
+:root[data-door="ops"] .page > #field-discovery { order: 2; }
+:root[data-door="ops"] .page > #signal { order: 3; }
+:root[data-door="ops"] .page > #braindump { order: 4; }
 :root[data-door="ops"] .page > #work { order: 5; }
 :root[data-door="ops"] .page > #skills { order: 6; }
 
