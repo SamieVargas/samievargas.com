@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-09T20:54:12Z",
+  "generated": "2026-09-20T18:24:10Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 244,
+  "total": 246,
   "commits": [
+    {
+      "sha": "0a262993fcbbe5af5b741bd154ee88069e6aa477",
+      "date": "2026-09-20T17:47:03Z",
+      "message": "Add the Field discovery section to the homepage"
+    },
     {
       "sha": "bcc3404abae6b8c3ca6a8166e63a39ce8dbe74c0",
       "date": "2026-09-09T01:49:39Z",
@@ -48,21 +53,15 @@
       "sha": "5e6f949e194a2e0537629aab5bee2214ee2d8195",
       "date": "2026-09-08T21:24:29Z",
       "message": "Résumé: apply the ATS review, with the numbers Samie supplied"
-    },
-    {
-      "sha": "956c5284c24d417dd81e84f0076fa2f82d29070c",
-      "date": "2026-09-08T21:05:15Z",
-      "message": "Restore Snowflake Hands-On Essentials to the résumé"
     }
   ],
   "weeks": [
     0,
     0,
+    53,
+    84,
+    47,
     0,
-    0,
-    57,
-    95,
-    32,
     0,
     3,
     0,
@@ -72,10 +71,11 @@
     0,
     0,
     0,
-    0,
-    26,
-    16,
-    15
+    21,
+    7,
+    14,
+    15,
+    2
   ],
   "resume": {
     "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
