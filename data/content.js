@@ -309,6 +309,11 @@ const RESULTS = {
     // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
     // states, $0.01–0.02 per sort, no database, and history still on the list.
     braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A cent or two per sort on Cloudflare\'s free tier, no database', 'It keeps no history, so it cannot show you a pattern over time'],
+    // Field discovery: the CRM free-text field it replaces; the two tiers and
+    // the Salesforce upsert; sonnet pricing from the eval run, and $0 published
+    // because the demo runs canned; the 9-in-20 modal id set from the paired
+    // stability arm, which is why a person still confirms every card.
+    discovery: ['Four lines typed into a CRM field that cannot tell silence from a resolved requirement', 'A local requirements library, one LLM call under a closed enum, and an idempotent Salesforce upsert', 'Three cents and twenty seconds per capture, and nothing at all while the published demo runs canned', 'Nine runs in twenty produce the same id set, so a person still confirms every card'],
     // Instacart README: "most projects go straight to ML"; the input line on
     // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
     instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
