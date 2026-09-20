@@ -611,7 +611,7 @@ function resultRow(key) {
 }
 
 function renderResults() {
-  ['signal', 'braindump'].forEach((k) => {
+  ['signal', 'braindump', 'discovery'].forEach((k) => {
     const host = $(`#result-${k}`);
     if (host) host.innerHTML = resultRow(k);
   });

@@ -484,18 +484,52 @@ em { font-style: italic; color: var(--accent); }
 :root[data-door="ops"] .door-copy[data-for="ops"] { display: inline; }
 :root[data-door="analytics"] .hero h1, :root[data-door="ops"] .hero h1 { max-width: 28ch; }
 .page { display: flex; flex-direction: column; }
-.page > #offclock { order: 6; }
-.page > #contact { order: 7; }
+.page > #offclock { order: 7; }
+.page > #contact { order: 8; }
 :root[data-door="analytics"] .page > #work { order: 1; }
 :root[data-door="analytics"] .page > #experience { order: 2; }
 :root[data-door="analytics"] .page > #signal { order: 3; }
 :root[data-door="analytics"] .page > #skills { order: 4; }
 :root[data-door="analytics"] .page > #braindump { order: 5; }
+:root[data-door="analytics"] .page > #field-discovery { order: 6; }
 :root[data-door="ops"] .page > #experience { order: 1; }
 :root[data-door="ops"] .page > #signal { order: 2; }
 :root[data-door="ops"] .page > #braindump { order: 3; }
-:root[data-door="ops"] .page > #work { order: 4; }
-:root[data-door="ops"] .page > #skills { order: 5; }
+:root[data-door="ops"] .page > #field-discovery { order: 4; }
+:root[data-door="ops"] .page > #work { order: 5; }
+:root[data-door="ops"] .page > #skills { order: 6; }
+
+/* ── Field discovery ───────────────────────────────────────────
+   Reuses the .signal grid, so only the two panels inside it are new:
+   the transcript, and the three-state checklist that is the whole point. */
+.fd-intro { font-size: 14.5px; line-height: 1.7; color: var(--muted); max-width: 48ch; margin-bottom: 22px; }
+
+.fd-said { border: 1px solid var(--rule); background: var(--paper); padding: 15px 16px; margin-bottom: 22px; }
+.fd-said .panel-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--faint); margin-bottom: 10px;
+}
+.fd-said p { font-family: var(--serif); font-size: 15px; line-height: 1.65; color: var(--ink-soft); }
+/* The two phrases the extraction actually keyed off, marked in the source
+   rather than in the output, because the point is how little of it matters. */
+.fd-said u { text-decoration: none; background: rgba(26, 107, 90, .11); box-shadow: inset 0 -1px 0 var(--accent); }
+
+.fd-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--ink); }
+.fd-list { display: flex; flex-direction: column; }
+.fd-row { display: grid; grid-template-columns: 18px 1fr; gap: 12px; padding: 11px 16px; border-bottom: 1px solid var(--rule); align-items: start; }
+.fd-row:last-child { border-bottom: none; }
+.fd-mark { width: 18px; height: 18px; border-radius: 4px; font-family: var(--mono); font-size: 10px; line-height: 18px; text-align: center; color: #fff; }
+.fd-name { font-size: 14px; line-height: 1.4; color: var(--ink); }
+.fd-why { display: block; font-size: 12.5px; line-height: 1.55; color: var(--muted); margin-top: 4px; }
+
+.fd-row--ok   .fd-mark { background: var(--accent); }
+.fd-row--ok   .fd-why  { font-family: var(--serif); font-style: italic; color: var(--ink-soft); }
+.fd-row--soft .fd-mark { background: var(--faint-deco); }
+/* The gap rows carry the caveat colour the rest of the site uses for a known
+   limit, because that is exactly what they are on the record. */
+.fd-row--gap { background: #fdf6f1; }
+.fd-row--gap .fd-mark { background: var(--caveat); }
+.fd-row--gap .fd-why { color: var(--caveat); }
 
 /* ── S2 — the same four-field result line under every project ── */
 .result { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 28px; }
@@ -1176,7 +1210,12 @@ em { font-style: italic; color: var(--accent); }
 @media (max-width: 860px) {
   :root { --edge: 20px; }
 
-  .nav__links { gap: 14px; }
+  /* Eight links do not fit one phone-width line, and they did not quite fit at
+     seven either — the bar was overflowing its own container before Discovery
+     was added to it. Wrapping is the honest fix: two short lines, nothing
+     pushed off-screen, and no horizontal scroll on the page behind it. */
+  .nav { flex-wrap: wrap; row-gap: 10px; }
+  .nav__links { gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
   .nav__links a { font-size: 10px; letter-spacing: .08em; }
 
   .hero { grid-template-columns: 1fr; }
