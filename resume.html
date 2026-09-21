@@ -162,16 +162,16 @@
 
   <section>
     <p class="sec-label">00 — Summary</p>
-    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who deployed LLM workflows under personal license, drove their adoption, and is now building AI governance guardrails into the team's internal tooling. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger. Builds the technical layer hands-on, Python, SQL, dbt, and the Anthropic API across self-shipped projects, with Google Advanced Data Analytics and the full Anthropic AI Fluency credential set. Targeting Applied AI, AI Enablement, and AI Workflow roles, remote-first.</p>
+    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
   </section>
 
   <section>
     <p class="sec-label" style="margin-bottom:10px">01 — Skills</p>
-    <div class="comp"><span>AI enablement</span><span>LLM Workflow Design &amp; Deployment · Team-Level AI Adoption · Change Management · Prompt Engineering · AI Tool Evaluation · AI Governance &amp; Guardrails · Internal &amp; Client-Facing AI Strategy Input · Human-in-the-Loop Process Design · AI Fluency Enablement</span></div>
-    <div class="comp"><span>Build</span><span>Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API Integration · Structured JSON / Schema Design</span></div>
+    <div class="comp"><span>Applied AI</span><span>LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · Eval Design (Golden Sets &amp; Ablations) · Model Routing · RAG · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
+    <div class="comp"><span>Build</span><span>Python (pandas · scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · dbt Cloud · Salesforce REST API · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · ChromaDB</span></div>
     <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
     <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Looker Studio · Tableau</span></div>
-    <div class="comp"><span>Stack</span><span>Anthropic API · Claude · ChatGPT · Gemini · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4</span></div>
+    <div class="comp"><span>Stack</span><span>Claude · Claude Code · Anthropic API · ChatGPT · Gemini · Salesforce · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · GA4</span></div>
   </section>
 
   <section>
@@ -225,19 +225,20 @@
   <section>
     <p class="sec-label" style="margin-bottom:10px">03 — Applied AI &amp; analytics projects</p>
     <div class="proj">
-      <h3>Field Discovery — AI Handoff from Field Sales to Onboarding</h3>
-      <p class="stack">Anthropic API · Closed-Enum Extraction · Salesforce REST · Cloudflare Workers · Offline-First PWA · samievargas.com/field-discovery</p>
-      <p class="proj-body">Built and shipped a field sales tool that turns a rep’s sixty-second voice note into a structured discovery record and writes it to Salesforce through an idempotent upsert, with the questions nobody asked named on the record as open items. Split the work into a deterministic tier that runs offline in under a second and one LLM call held to a closed enum of requirement ids, then measured that constraint in a paired eval: zero invented categories across twenty runs, against ninety-nine without it. Designed the Salesforce field set so a model read, a rep edit, and a still-open question each print differently, and wired the whole path against a real developer org.</p>
+      <h3>Field Discovery Broker — AI Requirements Triage for Field Sales</h3>
+      <p class="stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
+      <p class="proj-body">Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce.</p>
+      <p class="proj-body">Evaluated in five layers, including a hand-written golden set graded asymmetrically with recall on viability cards as the primary metric, and a paired ablation: 20 runs with the enum and 20 with it stripped measured 0 invented requirement IDs versus 99.</p>
     </div>
     <div class="proj">
-      <h3>Brain Dump — AI Agent for Executive-Function Support</h3>
+      <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
       <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Vanilla JS · samievargas.com/brain-dump</p>
-      <p class="proj-body">Built and shipped an AI agent that turns unstructured brain dumps into structured, energy-state-aware task plans, architected around a Cloudflare proxy to the Anthropic API with structured JSON output and energy-state branching logic. Put in front of early users, whose feedback drove a single-step simplification to the capture flow.</p>
+      <p class="proj-body">Built and shipped an LLM tool that turns unstructured brain dumps into energy-state-aware task plans: a system prompt assembled at request time from the chosen energy state (caps, tone rules, banned phrasing), a strict JSON contract the UI renders from, model-driven sorting into four buckets, and a second prompt and schema for an emergency one-thing mode with a hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</p>
     </div>
     <div class="proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
-      <p class="stack">Anthropic API · Multi-Call LLM Architecture · Source-Weighted Prompts · samievargas.com/signal</p>
-      <p class="proj-body">Designed a multi-call LLM workflow that reads messy account files for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs through source-weighted prompts and an analysis-focus toggle. Cut account prep from about an hour to one minute. Validated with early users, including a senior CS leader, and refined to a single-step entry flow from their feedback.</p>
+      <p class="stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · samievargas.com/signal</p>
+      <p class="proj-body">Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</p>
     </div>
     <div class="proj">
       <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
@@ -247,12 +248,12 @@
     <div class="proj">
       <h3>samievargas.com — The Site and Its Arcade</h3>
       <p class="stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
-      <p class="proj-body">Built and shipped the portfolio site with no framework and no build step: two AI agents behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</p>
+      <p class="proj-body">Built and shipped the portfolio site with no framework and no build step: two LLM apps behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</p>
     </div>
     <div class="proj">
       <h3>Life in Pixels RAG + Life OS — Personal Data Tools</h3>
-      <p class="stack">Python · RAG · Google Apps Script · github.com/SamieVargas/pixels-rag</p>
-      <p class="proj-body">Built a RAG pipeline over six months of my own daily behavioral data, askable in plain language; it surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts across health, habits, and behavior.</p>
+      <p class="stack">Python · ChromaDB · Local Embeddings · Anthropic SDK · Apps Script · github.com/SamieVargas/pixels-rag</p>
+      <p class="proj-body">Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local embeddings in ChromaDB, top-k retrieval, and citation-grounded answers from Claude Haiku; it surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</p>
     </div>
     <div class="proj">
       <h3>ATX Foodie — Public Health Compliance Analysis</h3>
