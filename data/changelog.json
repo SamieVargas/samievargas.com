@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-21T00:08:01Z",
+  "generated": "2026-09-21T01:42:23Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 248,
+  "total": 250,
   "commits": [
+    {
+      "sha": "270c8f2f4c17ec11148697263920a182e84cc226",
+      "date": "2026-09-21T01:33:12Z",
+      "message": "Field discovery section, option 5b from the design handoff"
+    },
     {
       "sha": "cdfdd63307e6b1ab56e4fd7b6787f4fd22622c43",
       "date": "2026-09-20T23:57:05Z",
@@ -48,11 +53,6 @@
       "sha": "e364996a4b60e19684299c9fdeaca309f9138341",
       "date": "2026-09-08T21:35:25Z",
       "message": "Résumé: the three numbers that were missing"
-    },
-    {
-      "sha": "85ced7ce06e498147e8e689d5b5c2c482b93df46",
-      "date": "2026-09-08T21:31:07Z",
-      "message": "Résumé: PMP named, the SharePoint work at its real scale"
     }
   ],
   "weeks": [
@@ -72,10 +72,10 @@
     0,
     0,
     24,
-    4,
-    14,
+    8,
+    10,
     15,
-    4
+    6
   ],
   "resume": {
     "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
