@@ -225,6 +225,11 @@
   <section>
     <p class="sec-label" style="margin-bottom:10px">03 — Applied AI &amp; analytics projects</p>
     <div class="proj">
+      <h3>Field Discovery — AI Handoff from Field Sales to Onboarding</h3>
+      <p class="stack">Anthropic API · Closed-Enum Extraction · Salesforce REST · Cloudflare Workers · Offline-First PWA · samievargas.com/field-discovery</p>
+      <p class="proj-body">Built and shipped a field sales tool that turns a rep’s sixty-second voice note into a structured discovery record and writes it to Salesforce through an idempotent upsert, with the questions nobody asked named on the record as open items. Split the work into a deterministic tier that runs offline in under a second and one LLM call held to a closed enum of requirement ids, then measured that constraint in a paired eval: zero invented categories across twenty runs, against ninety-nine without it. Designed the Salesforce field set so a model read, a rep edit, and a still-open question each print differently, and wired the whole path against a real developer org.</p>
+    </div>
+    <div class="proj">
       <h3>Brain Dump — AI Agent for Executive-Function Support</h3>
       <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Vanilla JS · samievargas.com/brain-dump</p>
       <p class="proj-body">Built and shipped an AI agent that turns unstructured brain dumps into structured, energy-state-aware task plans, architected around a Cloudflare proxy to the Anthropic API with structured JSON output and energy-state branching logic. Put in front of early users, whose feedback drove a single-step simplification to the capture flow.</p>
