@@ -499,11 +499,8 @@ em { font-style: italic; color: var(--accent); }
 :root[data-door="ops"] .page > #work { order: 5; }
 :root[data-door="ops"] .page > #skills { order: 6; }
 
-/* ── Field discovery ───────────────────────────────────────────
-   Reuses the .signal grid, so only the two panels inside it are new:
-   the transcript, and the three-state checklist that is the whole point. */
-.fd-intro { font-size: 14.5px; line-height: 1.7; color: var(--muted); max-width: 48ch; margin-bottom: 22px; }
-
+/* ── Field discovery: the transcript panel. The rest of the first cut
+   was replaced by the block appended at the end of this file. ── */
 .fd-said { border: 1px solid var(--rule); background: var(--paper); padding: 15px 16px; margin-bottom: 22px; }
 .fd-said .panel-label {
   font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
@@ -513,23 +510,6 @@ em { font-style: italic; color: var(--accent); }
 /* The two phrases the extraction actually keyed off, marked in the source
    rather than in the output, because the point is how little of it matters. */
 .fd-said u { text-decoration: none; background: rgba(26, 107, 90, .11); box-shadow: inset 0 -1px 0 var(--accent); }
-
-.fd-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--ink); }
-.fd-list { display: flex; flex-direction: column; }
-.fd-row { display: grid; grid-template-columns: 18px 1fr; gap: 12px; padding: 11px 16px; border-bottom: 1px solid var(--rule); align-items: start; }
-.fd-row:last-child { border-bottom: none; }
-.fd-mark { width: 18px; height: 18px; border-radius: 4px; font-family: var(--mono); font-size: 10px; line-height: 18px; text-align: center; color: #fff; }
-.fd-name { font-size: 14px; line-height: 1.4; color: var(--ink); }
-.fd-why { display: block; font-size: 12.5px; line-height: 1.55; color: var(--muted); margin-top: 4px; }
-
-.fd-row--ok   .fd-mark { background: var(--accent); }
-.fd-row--ok   .fd-why  { font-family: var(--serif); font-style: italic; color: var(--ink-soft); }
-.fd-row--soft .fd-mark { background: var(--faint-deco); }
-/* The gap rows carry the caveat colour the rest of the site uses for a known
-   limit, because that is exactly what they are on the record. */
-.fd-row--gap { background: #fdf6f1; }
-.fd-row--gap .fd-mark { background: var(--caveat); }
-.fd-row--gap .fd-why { color: var(--caveat); }
 
 /* ── S2 — the same four-field result line under every project ── */
 .result { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 28px; }
@@ -1274,3 +1254,99 @@ em { font-style: italic; color: var(--accent); }
 .signal > *, .bd > *, .skills > *, .obs > *, .contact > *, .field > *,
 .raccoon > *, .rotation > *, .changelog > *, .marks > *, .built > *,
 .annotated__grid > *, .tail > *, .result > * { min-width: 0; }
+
+/* ── Field discovery, round 5 option 5b ────────────────────────
+   Replaces the .fd-* rules from the first cut (fd-intro, fd-head,
+   fd-list, fd-row, fd-mark, fd-name, fd-why). Keep .fd-said.
+
+   Two layers of motion. The four frames tile in on .is-in (#fd-motion,
+   set by watchGate in js/app.js). Everything inside them is a .fd-on
+   element that starts at opacity 0 and animates when the typewriter in
+   app.js hands it .is-on, so the content of each step arrives at the
+   moment the transcript reaches the words it came from. Keyframes other
+   than fdflag and fdtint already exist at the top of this file. */
+@keyframes fdflag { 0% { box-shadow: 0 0 0 0 rgba(168, 47, 24, .55), 0 4px 12px rgba(168, 47, 24, .25); } 100% { box-shadow: 0 0 0 10px rgba(168, 47, 24, 0), 0 4px 12px rgba(168, 47, 24, .25); } }
+@keyframes fdtint { from { background: #ffd9d0; } to { background: transparent; } }
+
+.fd-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: start; margin-bottom: 30px; }
+.fd-grid h3 { font-weight: 300; font-size: clamp(42px, 4.2vw, 60px); line-height: 1.02; letter-spacing: -.02em; margin-bottom: 14px; }
+.fd-grid .lead { max-width: 44ch; margin-bottom: 20px; }
+.fd-said--wide { padding: 18px 18px 20px; margin-bottom: 0; }
+.fd-said--wide .fd-said__text { font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--ink-soft); min-height: 7.5em; }
+.fd-said__text u { text-decoration: none; background: rgba(26, 107, 90, .11); box-shadow: inset 0 -1px 0 var(--accent); }
+.fd-said__note { margin-top: 14px; font-size: 13px; line-height: 1.55; color: var(--muted); }
+
+/* the gate: anything .fd-on waits for .is-on */
+.fd-on { opacity: 0; }
+.fd-on.is-on { opacity: 1; animation: driftrow .45s ease both; }
+.fd-said__note.is-on, .fd-foot .finding.is-on { animation: driftup .55s ease both; }
+.fd-foot__stack.is-on { animation: fadein .5s ease both; }
+
+.fd-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.fd-step { background: var(--paper); padding: 20px 20px 22px; position: relative; opacity: 0; min-width: 0; }
+.is-in .fd-step { opacity: 1; animation: tilein .5s cubic-bezier(.34, 1.15, .64, 1) var(--d, 0s) both; }
+.fd-step .label { display: block; margin-bottom: 10px; }
+.fd-step h4 { font-family: var(--serif); font-weight: 400; font-size: 17px; line-height: 1.3; margin: 0 0 6px; color: var(--ink); }
+.fd-step > p { font-size: 12.5px; line-height: 1.55; color: var(--muted); margin: 0; }
+.fd-step__art { margin-bottom: 14px; min-height: 130px; }
+.fd-step__arrow { position: absolute; right: -9px; top: 50%; z-index: 1; color: var(--accent); font-size: 14px; line-height: 1; background: var(--paper-alt); }
+.fd-step__arrow.is-on { animation: driftrow .5s cubic-bezier(.34, 1.15, .64, 1) both; }
+
+/* step 1 · the capture screen, in the app's own dark */
+.fd-cap { background: #14161a; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.fd-cap__k { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #c4c6ca; }
+.fd-cap__t { font-family: var(--mono); font-size: 30px; color: #fff; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.fd-wave { display: flex; align-items: flex-end; gap: 3px; height: 26px; }
+.fd-wave i { width: 4px; border-radius: 2px; background: #4b5058; display: block; transform-origin: bottom; transform: scaleY(.35); transition: transform .4s ease; }
+.fd-wave i:nth-child(2n) { background: #8a8d93; }
+.fd-wave i:nth-child(4n + 3) { background: #a82f18; }
+.fd-wave.is-on i { animation: eqbar var(--dur, 1s) ease-in-out var(--d, 0s) infinite alternate; }
+.fd-wave.is-done i { animation: none; transform: scaleY(.35); }
+
+/* steps 2 and 4 · rows of the card stack and the CRM record */
+.fd-mini { border: 1px solid var(--rule); background: #fff; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+.fd-mini > div { padding: 6px 11px; display: flex; justify-content: space-between; gap: 8px; min-width: 0; }
+.fd-mini > div > span { min-width: 0; overflow-wrap: anywhere; }
+.fd-mini > div > span:last-child { text-align: right; flex-shrink: 0; }
+.fd-mini > div:first-child { padding: 8px 11px; border-bottom: 1px solid var(--rule); color: var(--ink); }
+.fd-mini > div:last-child { padding-bottom: 9px; }
+.fd-mini .k { color: var(--faint); }
+.fd-mini .ok { color: var(--accent); }
+.fd-mini .inf { color: var(--faint); }
+.fd-mini .gap { color: var(--caveat); }
+.fd-mini .flag { color: #a82f18; }
+.fd-tint.is-on { animation: driftrow .45s ease both, fdtint 1.6s ease .3s both; }
+
+/* step 3 · the three weights of the gap panel */
+.fd-cards { display: flex; flex-direction: column; gap: 6px; }
+.fd-card.is-on { animation: tilein .5s cubic-bezier(.34, 1.15, .64, 1) both; }
+.fd-step .fd-card p { margin: 0; }
+.fd-card--viab { color: #fff; background: #a82f18; border-radius: 10px; padding: 11px 12px; box-shadow: 0 4px 12px rgba(168, 47, 24, .25); }
+.fd-card--viab.is-on { animation: tilein .5s cubic-bezier(.34, 1.15, .64, 1) both, fdflag .9s ease-out .4s both; }
+.fd-step .fd-card p.fd-card__l { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -.02em; }
+.fd-step .fd-card p.fd-card__m { margin-top: 5px; font-family: var(--mono); font-size: 10px; color: #ffe6e0; }
+.fd-card--conf { background: #14161a; border-radius: 9px; padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; color: #fff; transition: background .3s ease; }
+.fd-card__tick { background: #fdfcfb; color: #14161a; border-radius: 6px; padding: 3px 9px; font-size: 12px; font-weight: 400; transition: color .3s ease; }
+/* the rep's tap: the app's confirm-item--banking, dark to green */
+.fd-card--conf.is-banked { background: #1c6b58; }
+.fd-card--conf.is-banked .fd-card__tick { color: #1c6b58; }
+.fd-card--gap { background: #efedea; border-radius: 9px; padding: 9px 12px; font-size: 12px; color: #3b3f46; }
+
+.fd-foot { margin-top: 14px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: baseline; }
+.fd-foot .finding { margin-top: 0; max-width: 70ch; }
+.fd-foot__stack { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .fd-grid, .fd-flow { grid-template-columns: 1fr; }
+  .fd-step__arrow { right: auto; left: 50%; top: auto; bottom: -9px; font-size: 0; }
+  .fd-step__arrow::before { content: '↓'; font-size: 14px; }
+  .fd-step__arrow.is-on { animation: driftup .5s ease both; }
+  .fd-foot__stack { white-space: normal; }
+}
+
+/* Reduced motion: the site already sets * { animation: none } under this
+   query, so anything that starts at opacity 0 has to be forced visible. */
+@media (prefers-reduced-motion: reduce) {
+  .fd-step, .fd-on { opacity: 1 !important; }
+  .fd-wave i { transform: none; }
+}
