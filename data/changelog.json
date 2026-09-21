@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-21T17:36:57Z",
+  "generated": "2026-09-21T22:16:18Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 254,
+  "total": 256,
   "commits": [
+    {
+      "sha": "2e33bb07fad177b88d7b66c9a4f0bf270c23013f",
+      "date": "2026-09-21T20:47:55Z",
+      "message": "Résumé: read cleanly by parsers, and by recruiters"
+    },
     {
       "sha": "52677d2c65113f4c2f58478e8b5503729a74ca0e",
       "date": "2026-09-21T17:02:19Z",
@@ -48,11 +53,6 @@
       "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
       "date": "2026-09-09T00:46:43Z",
       "message": "The change log writes itself, and the dragon gets its HP bar"
-    },
-    {
-      "sha": "da742e51c42bcebf9e725e36085597c0a1e6eaaa",
-      "date": "2026-09-08T22:50:34Z",
-      "message": "/toolkit: make the live change log survive the ways it was failing"
     }
   ],
   "weeks": [
@@ -71,14 +71,14 @@
     0,
     0,
     0,
-    24,
-    8,
+    26,
+    6,
     10,
     15,
-    10
+    12
   ],
   "resume": {
-    "sha": "52677d2c65113f4c2f58478e8b5503729a74ca0e",
-    "date": "2026-09-21T17:02:19Z"
+    "sha": "2e33bb07fad177b88d7b66c9a4f0bf270c23013f",
+    "date": "2026-09-21T20:47:55Z"
   }
 }
