@@ -70,17 +70,23 @@
   section { margin-bottom: 14px; }
   .sec-label {
     margin-bottom: 6px;
-    font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #1a6b5a;
+    /* Tracking is capped at .08em on print-visible uppercase mono: above that,
+       pdfminer reads the labels as spaced letters ("S U M M A R Y"). */
+    font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #1a6b5a;
   }
   .summary { font-size: 10.5px; line-height: 1.6; color: #16150f; }
 
   .comp { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 6px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
-  .comp span:first-child { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #16150f; }
+  .comp span:first-child { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #16150f; }
   .comp span:last-child { font-size: 10px; line-height: 1.55; color: #3a382e; }
 
   .co { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 6px; border-bottom: 1px solid #16150f; margin-bottom: 2px; }
   .co h2 { font: 500 15px 'Newsreader', Georgia, serif; }
   .mono-meta { font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #6d6a5c; white-space: nowrap; }
+  .co-desc { display: block; white-space: normal; margin: 3px 0 1px; }
+  /* Hyphenated compounds never break at the hyphen: parsers read
+     "high-\ngrowth" as two words or none. Applied by the script below. */
+  .nb { white-space: nowrap; }
 
   .role { padding: 10px 0 4px; }
   .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 7px; }
@@ -116,7 +122,7 @@
   .guide.is-off { opacity: 0; }
   .guide__lab {
     position: absolute; right: 0; top: -13px;
-    font: 400 8.5px 'IBM Plex Mono', monospace; letter-spacing: .1em;
+    font: 400 8.5px 'IBM Plex Mono', monospace; letter-spacing: .08em;
     text-transform: uppercase; color: #1a6b5a;
   }
 
@@ -162,15 +168,15 @@
 
   <section>
     <p class="sec-label">00 — Summary</p>
-    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full engagement lifecycle for a $14M+ portfolio across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
+    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full post-sales lifecycle for a $14M+ B2B portfolio of professional services firms including Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, from scoping and success criteria through implementation, enablement, value realization, and expansion. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
   </section>
 
   <section>
     <p class="sec-label" style="margin-bottom:10px">01 — Skills</p>
-    <div class="comp"><span>Applied AI</span><span>LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · Eval Design (Golden Sets &amp; Ablations) · Model Routing · RAG · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
-    <div class="comp"><span>Build</span><span>Python (pandas · scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · dbt Cloud · Salesforce REST API · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · ChromaDB</span></div>
-    <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
-    <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Looker Studio · Tableau</span></div>
+    <div class="comp"><span>Applied AI</span><span>Generative AI / LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · LLM Evaluation (Golden Sets &amp; Ablations) · Model Routing · RAG · Context Management · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
+    <div class="comp"><span>Build</span><span>Python (pandas) · Machine Learning (scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · ELT Data Pipelines (dbt Cloud) · Salesforce REST API (OAuth) · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · Vector Database (ChromaDB)</span></div>
+    <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Post-Sales Account Management · Implementation &amp; Rollout · Value Realization &amp; Business Outcome Metrics · Executive Business Reviews (QBR / MBR) · Playbooks &amp; Best Practices · Workshops &amp; Design Sessions · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
+    <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Marketing Analytics (GA4) · Looker Studio · Tableau</span></div>
     <div class="comp"><span>Stack</span><span>Claude · Claude Code · Anthropic API · ChatGPT · Gemini · Salesforce · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · GA4</span></div>
   </section>
 
@@ -180,6 +186,7 @@
       <h2>GLG</h2>
       <span class="mono-meta">Austin, TX · Remote · Jul 2018 – Present</span>
     </div>
+    <p class="mono-meta co-desc">Enterprise customer success, implementation &amp; account management for professional services firms · B2B</p>
 
     <div class="role">
       <div class="role-head">
@@ -275,6 +282,32 @@
     <p class="edu">B.S. Biochemistry · The University of Texas at Austin</p>
   </section>
 </main>
+
+<script>
+  // Hyphenated compounds ("client-facing", "human-in-the-loop") get a nowrap
+  // span so no line, on screen or in the printed PDF, breaks at the hyphen.
+  // Runs on text nodes only, so markup is never re-parsed.
+  (function () {
+    const re = /\b(\w+(?:-\w+)+)\b/g;
+    const walker = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) if (re.test(walker.currentNode.nodeValue)) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      const frag = document.createDocumentFragment();
+      let last = 0;
+      node.nodeValue.replace(re, (m, _g, i) => {
+        frag.appendChild(document.createTextNode(node.nodeValue.slice(last, i)));
+        const span = document.createElement('span');
+        span.className = 'nb';
+        span.textContent = m;
+        frag.appendChild(span);
+        last = i + m.length;
+      });
+      frag.appendChild(document.createTextNode(node.nodeValue.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  })();
+</script>
 
 <aside class="stamp" id="stamp" hidden></aside>
 
