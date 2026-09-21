@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-21T02:05:51Z",
+  "generated": "2026-09-21T17:36:57Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 252,
+  "total": 254,
   "commits": [
+    {
+      "sha": "52677d2c65113f4c2f58478e8b5503729a74ca0e",
+      "date": "2026-09-21T17:02:19Z",
+      "message": "Bring every AI claim on the site in line with the code"
+    },
     {
       "sha": "0428f97ab92d4f6aa860bacc8c1d7500184ac039",
       "date": "2026-09-21T02:01:40Z",
@@ -48,11 +53,6 @@
       "sha": "da742e51c42bcebf9e725e36085597c0a1e6eaaa",
       "date": "2026-09-08T22:50:34Z",
       "message": "/toolkit: make the live change log survive the ways it was failing"
-    },
-    {
-      "sha": "db0da15028bdc3ab9b875a01d3c68a6c6a0ea673",
-      "date": "2026-09-08T21:38:04Z",
-      "message": "Résumé: say what the deliverable is"
     }
   ],
   "weeks": [
@@ -75,10 +75,10 @@
     8,
     10,
     15,
-    8
+    10
   ],
   "resume": {
-    "sha": "0428f97ab92d4f6aa860bacc8c1d7500184ac039",
-    "date": "2026-09-21T02:01:40Z"
+    "sha": "52677d2c65113f4c2f58478e8b5503729a74ca0e",
+    "date": "2026-09-21T17:02:19Z"
   }
 }
