@@ -55,7 +55,7 @@ assets/              -- charts and screenshots, one folder per project
 
 `data/content.js` is just exported JS objects, so if I want to update a project description or add a new interest card I go to one file, change the text, and push, and that is the whole update flow. Prose that only appears once, like the hero and the bio and the Signal writeup, sits directly in `index.html`.
 
-The two agents, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.
+The two LLM apps, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.
 
 ---
 
