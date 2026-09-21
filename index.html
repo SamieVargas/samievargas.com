@@ -52,8 +52,8 @@
 <nav class="nav">
   <a class="nav__name" href="#top">Samie Vargas</a>
   <div class="nav__links">
-    <a href="#signal">Signal</a>
     <a href="#field-discovery">Discovery</a>
+    <a href="#signal">Signal</a>
     <a href="#work">Work</a>
     <a href="#experience">Experience</a>
     <a href="/life#notes">Notes</a>
@@ -79,7 +79,7 @@
     </p>
     <p class="hero__note">Three of them are live below and you can use them right now, and every project on this page started as a problem I actually had.</p>
     <div class="hero__actions">
-      <a class="btn btn--solid" href="#signal">See what I built</a>
+      <a class="btn btn--solid" href="#field-discovery">See what I built</a>
       <a class="btn btn--ghost" href="/resume">Résumé ↓</a>
       <button type="button" class="btn btn--ghost" data-copy-email>Copy my email</button>
     </div>
@@ -97,11 +97,78 @@
 
 <main class="page" id="page">
 
-<!-- ── SIGNAL — the flagship ───────────────────────────────── -->
-<section class="section section--alt" id="signal">
+<!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
+<section class="section section--alt" id="field-discovery">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">Start here</span>
+      <h2>The requirement nobody asked about is the one that moves the date.</h2>
+    </div>
+    <a class="label label--mid" href="/field-discovery/">samievargas.com/field-discovery ↗</a>
+  </div>
+  <div class="signal rule-top">
+    <div>
+      <p class="label label--accent">AI agent · field sales · built solo</p>
+      <h3>Field discovery</h3>
+      <p class="lead">A rep talks into their phone in a parking lot, and the team who gets the shop open receives a record they can actually work from, with the unanswered questions named on it rather than left as an empty field.</p>
+      <p class="fd-intro">Summarising the conversation was the easy half of this. The difficulty is that a CRM holds no opinion about what a complete conversation looks like for this particular kind of shop, so an answer nobody asked for and an answer that came back fine sit on the record looking exactly alike.</p>
+
+      <div class="fd-said">
+        <p class="panel-label">What the rep actually said, four hours later</p>
+        <p>“Kestrel, this was Tuesday I think. Parking was a nightmare. Talked to the manager, Teddy? Ted? <u>They’re on an epi core system</u>, wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and <u>they rent equipment out the back, trailers and a scissor lift</u>, so that’d need to tie in.”</p>
+      </div>
+
+      <div class="sig-stack">
+        <a class="btn btn--accent btn--md" href="/field-discovery/">Read the case study</a>
+        <a class="btn btn--ghost btn--md" href="/field-discovery/demo/">Walk through it</a>
+        <span class="sig-stack__note">Closed-enum extraction · Salesforce REST</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sig-shot">
+        <div class="fd-head">
+          <span class="label label--mid" style="color:var(--ink)">Kestrel Hardware &amp; Rental</span>
+          <span class="label" style="font-size:9px;color:var(--faint)">19 questions · hardware store with rentals</span>
+        </div>
+        <div class="fd-list">
+          <div class="fd-row fd-row--ok">
+            <span class="fd-mark">✓</span>
+            <span class="fd-name">Equipment rental contracts<span class="fd-why">“they rent equipment out the back, trailers and a scissor lift”</span></span>
+          </div>
+          <div class="fd-row fd-row--ok">
+            <span class="fd-mark">✓</span>
+            <span class="fd-name">Current POS · Epicor Eagle<span class="fd-why">“they’re on an epi core system”</span></span>
+          </div>
+          <div class="fd-row fd-row--soft">
+            <span class="fd-mark">~</span>
+            <span class="fd-name">Decision maker<span class="fd-why">The rep met someone who seemed to be in charge but never confirmed it, so this stays a guess until somebody checks, and it is labelled as one everywhere it travels.</span></span>
+          </div>
+          <div class="fd-row fd-row--gap">
+            <span class="fd-mark">!</span>
+            <span class="fd-name">Restricted chemical licence check<span class="fd-why">Never came up</span></span>
+          </div>
+          <div class="fd-row fd-row--gap">
+            <span class="fd-mark">!</span>
+            <span class="fd-name">Budget<span class="fd-why">Never came up</span></span>
+          </div>
+          <div class="fd-row fd-row--gap">
+            <span class="fd-mark">!</span>
+            <span class="fd-name">Timeline<span class="fd-why">Never came up</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="finding"><strong>What it found: </strong>the flagged rows at the bottom are the whole point of building it. Everything above them a good rep would have written down anyway, and the reason the model is handed a fixed list of card ids rather than asked to summarise is that you cannot report on a gap the model invented a new name for.</p>
+    </div>
+  </div>
+  <div id="result-discovery"></div>
+</section>
+
+<!-- ── SIGNAL — the flagship ───────────────────────────────── -->
+<section class="section" id="signal">
+  <div class="section__head">
+    <div class="section__head-l">
+      <span class="section__num">Also live</span>
       <h2>Messy documents go in and a read you can act on comes out.</h2>
     </div>
     <a class="label label--mid" href="https://samievargas.com/signal/">samievargas.com/signal ↗</a>
@@ -175,73 +242,6 @@
     </div>
   </div>
   <div id="result-braindump"></div>
-</section>
-
-<!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
-<section class="section section--alt" id="field-discovery">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">Newest</span>
-      <h2>The requirement nobody asked about is the one that moves the date.</h2>
-    </div>
-    <a class="label label--mid" href="/field-discovery/">samievargas.com/field-discovery ↗</a>
-  </div>
-  <div class="signal rule-top">
-    <div>
-      <p class="label label--accent">AI agent · field sales · built solo</p>
-      <h3>Field discovery</h3>
-      <p class="lead">A rep talks into their phone in a parking lot and an onboarding consultant gets a record they can work from, with the coverage gaps named instead of left as an empty field.</p>
-      <p class="fd-intro">The hard part was never the summary. It was that a CRM has no opinion about what a complete discovery looks like for this merchant, so silence and a resolved requirement look identical on the record.</p>
-
-      <div class="fd-said">
-        <p class="panel-label">What the rep actually said, four hours later</p>
-        <p>“Ridgeline, this was Tuesday I think. Parking was a nightmare. Talked to the manager, Danny? Dan? <u>They’re on an epi core system</u>, wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and <u>they rent equipment out the back, trailers and a scissor lift</u>, so that’d need to tie in.”</p>
-      </div>
-
-      <div class="sig-stack">
-        <a class="btn btn--accent btn--md" href="/field-discovery/">Read the case study</a>
-        <a class="btn btn--ghost btn--md" href="/field-discovery/demo/">Walk through it</a>
-        <span class="sig-stack__note">Closed-enum extraction · Salesforce REST</span>
-      </div>
-    </div>
-
-    <div>
-      <div class="sig-shot">
-        <div class="fd-head">
-          <span class="label label--mid" style="color:var(--ink)">Ridgeline Hardware &amp; Rental</span>
-          <span class="label" style="font-size:9px;color:var(--faint)">19 cards · hardware + rental</span>
-        </div>
-        <div class="fd-list">
-          <div class="fd-row fd-row--ok">
-            <span class="fd-mark">✓</span>
-            <span class="fd-name">Equipment rental contracts<span class="fd-why">“they rent equipment out the back, trailers and a scissor lift”</span></span>
-          </div>
-          <div class="fd-row fd-row--ok">
-            <span class="fd-mark">✓</span>
-            <span class="fd-name">Current POS · Epicor Eagle<span class="fd-why">“they’re on an epi core system”</span></span>
-          </div>
-          <div class="fd-row fd-row--soft">
-            <span class="fd-mark">~</span>
-            <span class="fd-name">Decision maker<span class="fd-why">Inferred, and it stays inferred. A named contact with uncertain identity and no stated authority is not a confirmed answer.</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Restricted chemical licence check<span class="fd-why">Never came up</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Budget<span class="fd-why">Never came up</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Timeline<span class="fd-why">Never came up</span></span>
-          </div>
-        </div>
-      </div>
-      <p class="finding"><strong>What it found: </strong>the rows at the bottom are the product. Everything above them a good rep would have written down anyway, and the reason the model is handed a fixed list of card ids rather than asked to summarise is that you cannot report on a gap the model invented a new name for.</p>
-    </div>
-  </div>
-  <div id="result-discovery"></div>
 </section>
 
 <!-- ── THE ANALYSIS WORK ───────────────────────────────────── -->
