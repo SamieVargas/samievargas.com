@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-20T18:24:10Z",
+  "generated": "2026-09-21T00:08:01Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 246,
+  "total": 248,
   "commits": [
+    {
+      "sha": "cdfdd63307e6b1ab56e4fd7b6787f4fd22622c43",
+      "date": "2026-09-20T23:57:05Z",
+      "message": "Lead the homepage with Field discovery, and follow the demo's rename"
+    },
     {
       "sha": "0a262993fcbbe5af5b741bd154ee88069e6aa477",
       "date": "2026-09-20T17:47:03Z",
@@ -48,11 +53,6 @@
       "sha": "85ced7ce06e498147e8e689d5b5c2c482b93df46",
       "date": "2026-09-08T21:31:07Z",
       "message": "Résumé: PMP named, the SharePoint work at its real scale"
-    },
-    {
-      "sha": "5e6f949e194a2e0537629aab5bee2214ee2d8195",
-      "date": "2026-09-08T21:24:29Z",
-      "message": "Résumé: apply the ATS review, with the numbers Samie supplied"
     }
   ],
   "weeks": [
@@ -71,11 +71,11 @@
     0,
     0,
     0,
-    21,
-    7,
+    24,
+    4,
     14,
     15,
-    2
+    4
   ],
   "resume": {
     "sha": "a3769f5bd6ccc41b9edc41202e8a584d01fee455",
