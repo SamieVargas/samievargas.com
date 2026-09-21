@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260909">
+  <link rel="stylesheet" href="css/styles.css?v=20260921">
   <script>
     // S3 — put the remembered door on the root before first paint, so the
     // hero and the section order never flash from the default.
@@ -98,67 +98,93 @@
 <main class="page" id="page">
 
 <!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
+<!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
 <section class="section section--alt" id="field-discovery">
   <div class="section__head">
     <div class="section__head-l">
       <span class="section__num">Start here</span>
-      <h2>The requirement nobody asked about is the one that moves the date.</h2>
+      <h2>Sixty seconds in the car becomes a record onboarding can open.</h2>
     </div>
     <a class="label label--mid" href="/field-discovery/">samievargas.com/field-discovery ↗</a>
   </div>
-  <div class="signal rule-top">
-    <div>
-      <p class="label label--accent">AI agent · field sales · built solo</p>
-      <h3>Field discovery</h3>
-      <p class="lead">A rep talks into their phone in a parking lot, and the team who gets the shop open receives a record they can actually work from, with the unanswered questions named on it rather than left as an empty field.</p>
-      <p class="fd-intro">Summarising the conversation was the easy half of this. The difficulty is that a CRM holds no opinion about what a complete conversation looks like for this particular kind of shop, so an answer nobody asked for and an answer that came back fine sit on the record looking exactly alike.</p>
 
-      <div class="fd-said">
-        <p class="panel-label">What the rep actually said, four hours later</p>
-        <p>“Kestrel, this was Tuesday I think. Parking was a nightmare. Talked to the manager, Teddy? Ted? <u>They’re on an epi core system</u>, wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and <u>they rent equipment out the back, trailers and a scissor lift</u>, so that’d need to tie in.”</p>
+  <div class="fd-motion" id="fd-motion">
+    <div class="fd-grid rule-top">
+      <div>
+        <p class="label label--accent">AI agent · field sales · built solo</p>
+        <h3>Field discovery</h3>
+        <p class="lead">A rep talks into their phone in a parking lot, and onboarding gets a record with the unanswered questions named on it.</p>
+        <div class="sig-stack">
+          <a class="btn btn--accent btn--md" href="/field-discovery/">Read the case study</a>
+          <a class="btn btn--ghost btn--md" href="/field-discovery/demo/">Walk through it</a>
+        </div>
       </div>
 
-      <div class="sig-stack">
-        <a class="btn btn--accent btn--md" href="/field-discovery/">Read the case study</a>
-        <a class="btn btn--ghost btn--md" href="/field-discovery/demo/">Walk through it</a>
-        <span class="sig-stack__note">Closed-enum extraction · Salesforce REST</span>
+      <div class="fd-said fd-said--wide">
+        <p class="panel-label">What the rep actually said, four hours later</p>
+        <p class="fd-said__text"><span id="fd-typed"></span><span class="sig-cursor" id="fd-cursor" hidden>▍</span></p>
+        <p class="fd-said__note fd-on" data-fd="note">The sentence that decides the go-live date is the last one, after the tacos.</p>
       </div>
     </div>
 
-    <div>
-      <div class="sig-shot">
-        <div class="fd-head">
-          <span class="label label--mid" style="color:var(--ink)">Kestrel Hardware &amp; Rental</span>
-          <span class="label" style="font-size:9px;color:var(--faint)">19 questions · hardware store with rentals</span>
+    <!-- Frames tile in first; what fills them is driven by the typing in js/app.js. -->
+    <div class="fd-flow" id="fd-flow">
+      <div class="fd-step" style="--d:.2s">
+        <span class="label label--accent">1 · Talk</span>
+        <div class="fd-step__art fd-cap">
+          <span class="fd-cap__k">Kestrel · capture</span>
+          <span class="fd-cap__t" id="fd-timer">0:00</span>
+          <div class="fd-wave" id="fd-wave"><i style="--dur:.9s;--d:0s;height:8px"></i><i style="--dur:1.1s;--d:.1s;height:18px"></i><i style="--dur:.8s;--d:.2s;height:24px"></i><i style="--dur:1.2s;--d:.05s;height:12px"></i><i style="--dur:.95s;--d:.3s;height:20px"></i><i style="--dur:1.05s;--d:.15s;height:9px"></i><i style="--dur:.85s;--d:.25s;height:22px"></i><i style="--dur:1.15s;--d:.35s;height:14px"></i><i style="--dur:.9s;--d:.12s;height:6px"></i><i style="--dur:1s;--d:.22s;height:16px"></i><i style="--dur:.8s;--d:.4s;height:11px"></i><i style="--dur:1.1s;--d:.08s;height:19px"></i></div>
         </div>
-        <div class="fd-list">
-          <div class="fd-row fd-row--ok">
-            <span class="fd-mark">✓</span>
-            <span class="fd-name">Equipment rental contracts<span class="fd-why">“they rent equipment out the back, trailers and a scissor lift”</span></span>
-          </div>
-          <div class="fd-row fd-row--ok">
-            <span class="fd-mark">✓</span>
-            <span class="fd-name">Current POS · Epicor Eagle<span class="fd-why">“they’re on an epi core system”</span></span>
-          </div>
-          <div class="fd-row fd-row--soft">
-            <span class="fd-mark">~</span>
-            <span class="fd-name">Decision maker<span class="fd-why">The rep met someone who seemed to be in charge but never confirmed it, so this stays a guess until somebody checks, and it is labelled as one everywhere it travels.</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Restricted chemical licence check<span class="fd-why">Never came up</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Budget<span class="fd-why">Never came up</span></span>
-          </div>
-          <div class="fd-row fd-row--gap">
-            <span class="fd-mark">!</span>
-            <span class="fd-name">Timeline<span class="fd-why">Never came up</span></span>
-          </div>
-        </div>
+        <h4>Sixty seconds, one hand, in the car</h4>
+        <p>Talk, paste or type, after the visit.</p>
+        <span class="fd-step__arrow fd-on" data-fd="arrow1">→</span>
       </div>
-      <p class="finding"><strong>What it found: </strong>the flagged rows at the bottom are the whole point of building it. Everything above them a good rep would have written down anyway, and the reason the model is handed a fixed list of card ids rather than asked to summarise is that you cannot report on a gap the model invented a new name for.</p>
+
+      <div class="fd-step" style="--d:.5s">
+        <span class="label label--accent">2 · Match</span>
+        <div class="fd-step__art fd-mini">
+          <div class="fd-on" data-fd="m-head"><span>hardware_rental</span><span class="k">19 cards</span></div>
+          <div class="ok fd-on" data-fd="m-incumbent"><span>incumbent_system</span><span>confirmed</span></div>
+          <div class="ok fd-on" data-fd="m-rental"><span>rental_contracts</span><span>confirmed</span></div>
+          <div class="inf fd-on" data-fd="m-dm"><span>decision_maker</span><span>inferred</span></div>
+          <div class="gap fd-on" data-fd="m-gap1"><span>chemical_licence</span><span>not_discussed</span></div>
+          <div class="gap fd-on" data-fd="m-gap2"><span>budget</span><span>not_discussed</span></div>
+        </div>
+        <h4>Checked against this kind of shop</h4>
+        <p>A fixed list of questions. The AI cannot invent one.</p>
+        <span class="fd-step__arrow fd-on" data-fd="arrow2">→</span>
+      </div>
+
+      <div class="fd-step" style="--d:.8s">
+        <span class="label label--accent">3 · Confirm</span>
+        <div class="fd-step__art fd-cards">
+          <div class="fd-card fd-card--viab fd-on" data-fd="c-viab"><p class="fd-card__l">Rental counter on a second system</p><p class="fd-card__m">confirm before onboarding</p></div>
+          <div class="fd-card fd-card--conf fd-on" data-fd="c-conf"><span>Decision maker · Ted?</span><span class="fd-card__tick">✓</span></div>
+          <div class="fd-card fd-card--gap fd-on" data-fd="c-gap">Never came up: budget, timeline, chemical licence</div>
+        </div>
+        <h4>The rep sees only the gaps</h4>
+        <p>The red card is the one that could sink the deal.</p>
+        <span class="fd-step__arrow fd-on" data-fd="arrow3">→</span>
+      </div>
+
+      <div class="fd-step" style="--d:1.1s">
+        <span class="label label--accent">4 · Hand off</span>
+        <div class="fd-step__art fd-mini">
+          <div class="fd-on" data-fd="r-head"><span>Opportunity</span><span class="k">006Ax0001</span></div>
+          <div class="fd-on" data-fd="r-status"><span class="k">Discovery_Status</span><span>Open gaps</span></div>
+          <div class="fd-on fd-tint" data-fd="r-flag"><span class="k">Viability_Flag</span><span class="flag">rental_contracts</span></div>
+          <div class="fd-on" data-fd="r-shift"><span class="k">Golive_Shift</span><span>+3 wks</span></div>
+          <div class="fd-on" data-fd="r-open"><span class="k">Discovery_Open</span><span>3 items</span></div>
+        </div>
+        <h4>Written to the record they already use</h4>
+        <p>Plain CRM fields, a quote under every answer.</p>
+      </div>
+    </div>
+
+    <div class="fd-foot">
+      <p class="finding fd-on" data-fd="finding"><strong>What it found: </strong>only the reader in step 2 needs a network. A rep in a dead zone still gets a checklist in under a second.</p>
+      <span class="fd-foot__stack fd-on" data-fd="stack">Anthropic API · Cloudflare Workers · Salesforce REST · IndexedDB · PWA</span>
     </div>
   </div>
   <div id="result-discovery"></div>
@@ -371,7 +397,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/app.js?v=20260909"></script>
-<script type="module" src="js/console.js?v=20260909"></script>
+<script type="module" src="js/app.js?v=20260921"></script>
+<script type="module" src="js/console.js?v=20260921"></script>
 </body>
 </html>

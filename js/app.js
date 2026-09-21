@@ -17,7 +17,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const HAS_IO = 'IntersectionObserver' in window;
 
 // Sections choreograph their entrance when they scroll into view.
-const gates = { workIn: false, skillsIn: false, alsoIn: false, readIn: false, instaIn: false, atxIn: false, driftIn: false };
+const gates = { workIn: false, skillsIn: false, alsoIn: false, readIn: false, instaIn: false, atxIn: false, driftIn: false, fdIn: false };
 
 function watchGate(id, key, onIn) {
   const fire = () => { if (gates[key]) return; gates[key] = true; onIn(); };
@@ -739,6 +739,116 @@ wireCopyEmail();
 wireKonami();
 watchSignal();
 watchExperience();
+
+// ── Field discovery: the transcript drives the flow ──────────
+// Paste into js/app.js. Uses the existing REDUCED, $ and watchGate;
+// add `fdIn: false` to the gates object.
+//
+// The frames tile in on .is-in. Everything inside them is a [data-fd]
+// element that lights up (.is-on) at a moment in the story: rows in
+// step 2 land as the typing passes the words they came from, the cards
+// in step 3 follow their row, the rep's tap banks the confirm card
+// green, and only then does the record in step 4 fill in.
+
+const FD_SEGMENTS = [
+  { t: '\u201cKestrel, this was Tuesday I think. Parking was a nightmare. ' },
+  { t: 'Talked to the manager, Teddy? Ted? ', at: ['m-dm'] },
+  { t: 'They\u2019re on an epi core system', hl: true, at: ['m-incumbent'] },
+  { t: ', wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and ' },
+  { t: 'they rent equipment out the back, trailers and a scissor lift', hl: true, at: ['m-rental'] },
+  { t: ', so that\u2019d need to tie in.\u201d' },
+];
+const FD_LEN = FD_SEGMENTS.reduce((n, s) => n + s.t.length, 0);
+// what each step-2 row hands on to step 3, and how long after
+const FD_FOLLOW = { 'm-dm': ['c-conf', 320], 'm-incumbent': ['arrow2', 200], 'm-rental': ['c-viab', 320] };
+const FD_ALL = ['note', 'arrow1', 'arrow2', 'arrow3', 'm-head', 'm-incumbent', 'm-rental', 'm-dm', 'm-gap1', 'm-gap2', 'c-viab', 'c-conf', 'c-gap', 'r-head', 'r-status', 'r-flag', 'r-shift', 'r-open', 'finding', 'stack'];
+
+function fdTranscriptHtml(len) {
+  let left = len;
+  return FD_SEGMENTS.map((s) => {
+    if (left <= 0) return '';
+    const part = s.t.slice(0, left);
+    left -= s.t.length;
+    return s.hl ? `<u>${esc(part)}</u>` : esc(part);
+  }).join('');
+}
+
+function fdOn(id) {
+  const el = document.querySelector(`#fd-motion [data-fd="${id}"]`);
+  if (el) el.classList.add('is-on');
+}
+
+function fdIn() {
+  const motion = $('#fd-motion');
+  const typed = $('#fd-typed');
+  if (!motion || !typed) return;
+  const cursor = $('#fd-cursor');
+  const timer = $('#fd-timer');
+  const wave = $('#fd-wave');
+  const conf = motion.querySelector('[data-fd="c-conf"]');
+  motion.classList.add('is-in');
+
+  if (REDUCED) {
+    typed.innerHTML = fdTranscriptHtml(FD_LEN);
+    timer.textContent = '0:58';
+    FD_ALL.forEach(fdOn);
+    if (conf) conf.classList.add('is-banked');
+    return;
+  }
+
+  const later = (ms, fn) => setTimeout(fn, ms);
+  // the frames land first, then the recording starts
+  later(900, () => {
+    wave.classList.add('is-on');
+    cursor.hidden = false;
+    fdOn('m-head');
+    later(300, () => fdOn('arrow1'));
+
+    // The timer is the length of the talk: 0:58 lands as the typing ends.
+    const TICK = 22, PER = 2;
+    const total = Math.ceil(FD_LEN / PER) * TICK;
+    let s = 0;
+    const clock = setInterval(() => {
+      s = Math.min(58, s + 1);
+      timer.textContent = `0:${String(s).padStart(2, '0')}`;
+      if (s >= 58) clearInterval(clock);
+    }, total / 58);
+
+    // Segment ends are the cues: cross one, light its rows.
+    const cues = [];
+    let acc = 0;
+    FD_SEGMENTS.forEach((sg) => { acc += sg.t.length; if (sg.at) cues.push({ at: acc, ids: sg.at }); });
+    let len = 0;
+    const type = setInterval(() => {
+      len = Math.min(FD_LEN, len + PER);
+      typed.innerHTML = fdTranscriptHtml(len);
+      while (cues.length && len >= cues[0].at) {
+        cues.shift().ids.forEach((id) => {
+          fdOn(id);
+          const f = FD_FOLLOW[id];
+          if (f) later(f[1], () => fdOn(f[0]));
+        });
+      }
+      if (len < FD_LEN) return;
+      clearInterval(type);
+      cursor.hidden = true;
+      wave.classList.remove('is-on');
+      wave.classList.add('is-done');
+      fdOn('note');
+      // the reader has run: what never came up, then the rep's tap, then the record
+      later(350, () => fdOn('m-gap1'));
+      later(500, () => fdOn('m-gap2'));
+      later(850, () => fdOn('c-gap'));
+      later(1400, () => { if (conf) conf.classList.add('is-banked'); });
+      later(1800, () => fdOn('arrow3'));
+      ['r-head', 'r-status', 'r-flag', 'r-shift', 'r-open'].forEach((id, i) => later(2000 + i * 160, () => fdOn(id)));
+      later(3000, () => fdOn('finding'));
+      later(3200, () => fdOn('stack'));
+    }, TICK);
+  });
+}
+
+watchGate('field-discovery', 'fdIn', fdIn);
 
 watchGate('work', 'workIn', () => renderDag(true));
 watchGate('viz-read', 'readIn', () => renderContactRead(true));
