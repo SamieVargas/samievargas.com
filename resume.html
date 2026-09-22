@@ -233,9 +233,9 @@
     <p class="sec-label" style="margin-bottom:10px">03 — Applied AI &amp; analytics projects</p>
     <div class="proj">
       <h3>Field Discovery Broker — AI Requirements Triage for Field Sales</h3>
-      <p class="stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
-      <p class="proj-body">Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce.</p>
-      <p class="proj-body">Evaluated in five layers, including a hand-written golden set graded asymmetrically with recall on viability cards as the primary metric, and a paired ablation: 20 runs with the enum and 20 with it stripped measured 0 invented requirement IDs versus 99.</p>
+      <p class="stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Human-Approved Proposals · Shadow Mode · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
+      <p class="proj-body">Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce. A second stage reads the record Salesforce already holds and proposes the next discovery update or an engineer escalation; a person approves, edits or rejects each proposal, approve is the only path to a write, and read-before-write, one-per-kind and no-contradiction rules are enforced in code, with a shadow mode that records proposals without showing them.</p>
+      <p class="proj-body">Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</p>
     </div>
     <div class="proj">
       <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
@@ -312,7 +312,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260909';
+import { TK_REPO } from './data/content.js?v=20260922';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest

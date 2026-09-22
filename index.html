@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260921">
+  <link rel="stylesheet" href="css/styles.css?v=20260922">
   <script>
     // S3 — put the remembered door on the root before first paint, so the
     // hero and the section order never flash from the default.
@@ -182,9 +182,27 @@
       </div>
     </div>
 
+    <div class="fd-next" id="fd-next">
+      <div class="fd-next__cell">
+        <span class="k">5 · Propose</span>
+        <h4>The next step, written for a person to approve</h4>
+        <p>After the write, the tool reads what the record already holds and proposes the next discovery update, or an engineer escalation when the gap could move the go-live date. Nothing it proposes reaches Salesforce on its own. A person approves, edits or rejects each one, and approve is the only path to a write.</p>
+      </div>
+      <div class="fd-next__cell">
+        <span class="k">Rules that hold in code</span>
+        <h4>Read before write, one per kind, no contradiction</h4>
+        <p>A proposal for a record the tool has not read is refused, a second update in one run is refused, and an update that contradicts the extraction is refused with the cards named. A record read that fails forbids every write for that deal. Below full, the tool drops to the checklist and says so in the header.</p>
+      </div>
+      <div class="fd-next__cell">
+        <span class="k">Measured · 22 Sep 2026</span>
+        <h4>Eight of eight, zero hard fails, and one honest number</h4>
+        <p>Every golden transcript passes and both viability signals are recalled. On twelve hand-written proposal fixtures: zero unnecessary writes, escalation recall and precision both 100%. Ten planted instructions, five runs each: 80% of runs unchanged, and six of the ten fixtures moved a proposal at least once, which is why approval stays with a person.</p>
+      </div>
+    </div>
+
     <div class="fd-foot">
       <p class="finding fd-on" data-fd="finding"><strong>What it found: </strong>only the reader in step 2 needs a network. A rep in a dead zone still gets a checklist in under a second.</p>
-      <span class="fd-foot__stack fd-on" data-fd="stack">Anthropic API · Cloudflare Workers · Salesforce REST · IndexedDB · PWA</span>
+      <span class="fd-foot__stack fd-on" data-fd="stack">Anthropic API · Cloudflare Workers · Salesforce REST · IndexedDB · PWA · Shadow mode</span>
     </div>
   </div>
   <div id="result-discovery"></div>
@@ -397,7 +415,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/app.js?v=20260921"></script>
-<script type="module" src="js/console.js?v=20260921"></script>
+<script type="module" src="js/app.js?v=20260922"></script>
+<script type="module" src="js/console.js?v=20260922"></script>
 </body>
 </html>
