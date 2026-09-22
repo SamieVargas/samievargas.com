@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-22T16:13:09Z",
+  "generated": "2026-09-22T18:03:12Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 260,
+  "total": 262,
   "commits": [
+    {
+      "sha": "b5e006dbe8542bb25c25307c3593f4e8a234e918",
+      "date": "2026-09-22T18:01:55Z",
+      "message": "Signal: the ablation numbers on the résumé and the results row"
+    },
     {
       "sha": "261c093a396b72c10c245b9bf6ed2893d3c3bc32",
       "date": "2026-09-22T16:04:19Z",
@@ -48,11 +53,6 @@
       "sha": "bcc3404abae6b8c3ca6a8166e63a39ce8dbe74c0",
       "date": "2026-09-09T01:49:39Z",
       "message": "The dragon runs on the one real number: level 32"
-    },
-    {
-      "sha": "bf91d20af7d67000f31b2d6be60e8e9683effc23",
-      "date": "2026-09-09T01:49:39Z",
-      "message": "S2 gets its sixteen real strings; the dragon waits for real numbers"
     }
   ],
   "weeks": [
@@ -62,8 +62,8 @@
     96,
     35,
     0,
-    0,
     3,
+    0,
     0,
     0,
     0,
@@ -75,10 +75,10 @@
     16,
     0,
     15,
-    16
+    18
   ],
   "resume": {
-    "sha": "261c093a396b72c10c245b9bf6ed2893d3c3bc32",
-    "date": "2026-09-22T16:04:19Z"
+    "sha": "b5e006dbe8542bb25c25307c3593f4e8a234e918",
+    "date": "2026-09-22T18:01:55Z"
   }
 }
