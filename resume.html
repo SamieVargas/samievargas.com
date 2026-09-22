@@ -259,8 +259,9 @@
     </div>
     <div class="proj">
       <h3>Life in Pixels RAG + Life OS — Personal Data Tools</h3>
-      <p class="stack">Python · ChromaDB · Local Embeddings · Anthropic SDK · Apps Script · github.com/SamieVargas/pixels-rag</p>
-      <p class="proj-body">Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local embeddings in ChromaDB, top-k retrieval, and citation-grounded answers from Claude Haiku; it surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</p>
+      <p class="stack">Python · ChromaDB · Local Embeddings · Anthropic SDK · Code-Enforced Citations · Golden-Set Evals · Apps Script · github.com/SamieVargas/pixels-rag</p>
+      <p class="proj-body">Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local embeddings in ChromaDB, and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and aggregates run in code and only the search goes through retrieval. Every answer is checked in code against the retrieved days and the computed table, with one reject-and-retry on an uncited date or an invented number, and follow-ups are rewritten from the last three turns before anything is retrieved. It surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</p>
+      <p class="proj-body">Evaluated on 26 hand-written questions over a seeded synthetic export, 22 September 2026: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else.</p>
     </div>
     <div class="proj">
       <h3>ATX Foodie — Public Health Compliance Analysis</h3>
@@ -312,7 +313,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260922';
+import { TK_REPO } from './data/content.js?v=20260922b';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
