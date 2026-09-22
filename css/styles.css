@@ -1332,12 +1332,17 @@ em { font-style: italic; color: var(--accent); }
 .fd-card--conf.is-banked .fd-card__tick { color: #1c6b58; }
 .fd-card--gap { background: #efedea; border-radius: 9px; padding: 9px 12px; font-size: 12px; color: #3b3f46; }
 
+.fd-next { margin-top: 30px; border-top: 1px solid var(--rule); padding-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.fd-next .k { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.fd-next h4 { font-size: 15px; font-weight: 500; line-height: 1.35; margin-bottom: 8px; color: var(--ink); }
+.fd-next p { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+
 .fd-foot { margin-top: 14px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: baseline; }
 .fd-foot .finding { margin-top: 0; max-width: 70ch; }
 .fd-foot__stack { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
 
 @media (max-width: 900px) {
-  .fd-grid, .fd-flow { grid-template-columns: 1fr; }
+  .fd-grid, .fd-flow, .fd-next { grid-template-columns: 1fr; }
   .fd-step__arrow { right: auto; left: 50%; top: auto; bottom: -9px; font-size: 0; }
   .fd-step__arrow::before { content: '↓'; font-size: 14px; }
   .fd-step__arrow.is-on { animation: driftup .5s ease both; }

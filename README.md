@@ -15,7 +15,7 @@ I have been in operations for eight years building systems that did not exist be
 
 | Page | Route | What it is |
 | --- | --- | --- |
-| Work | `/` | The portfolio, with the Signal and Brain Dump case studies, the annotated dbt and inspection projects, experience, skills, and contact. |
+| Work | `/` | The portfolio, with the Field discovery, Signal and Brain Dump case studies, the annotated dbt and inspection projects, experience, skills, and contact. |
 | Life | `/life` | The personal half, split off the homepage so it stops standing between a hiring manager and the projects. |
 | Apps | `/apps` | The arcade, fifteen small browser apps that each do one thing. |
 | Toolkit | `/toolkit` | How the site is built, linked from the homepage footer. |
@@ -78,6 +78,8 @@ The two LLM apps, Signal and Brain Dump, talk to the Anthropic API through a Clo
 ---
 
 ## Projects on here
+
+**Field discovery** -- built for a final-round hiring case and presented to a leadership panel: a rep talks for sixty seconds after a visit and onboarding gets a Salesforce record with the unanswered questions named on it. The requirement library is local, the one model call runs under a closed enum with a validator in code, and a second stage proposes the next update for a person to approve. The evals are dated and on the page, and the case study lives at [samievargas.com/field-discovery](https://samievargas.com/field-discovery/).
 
 **ATX Foodie Inspection Analysis** -- health inspection records for Austin restaurants, fetched from the City of Austin Open Data Portal API, where I pulled 21,160 records and built a brand compliance scorecard across 84 local chains and then audited my own regular spots because of course I did. The findings are real and a couple of them are genuinely concerning if you eat at fast food chains in certain Austin zip codes.
 
