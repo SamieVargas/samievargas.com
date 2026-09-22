@@ -244,8 +244,9 @@
     </div>
     <div class="proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
-      <p class="stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · samievargas.com/signal</p>
+      <p class="stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Paired Ablation Evals · samievargas.com/signal</p>
       <p class="proj-body">Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</p>
+      <p class="proj-body">Evaluated on 13 hand-written account cases, 20 runs each under both arms of a source-weighting ablation, 21 and 22 September 2026: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy (93% against 69%), all of it on the three cases built around the most-mentioned name.</p>
     </div>
     <div class="proj">
       <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
@@ -313,7 +314,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260922b';
+import { TK_REPO } from './data/content.js?v=20260922c';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
