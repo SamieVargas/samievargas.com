@@ -304,8 +304,11 @@ const RESULTS = {
   draft: false,
   rows: {
     // Hero stat 60 → 1; Signal lead; README (two-call pipeline, Worker, Python CLI);
-    // index.html: nothing stored, session only; the max_tokens cutoff error.
-    signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'Past the token cap it stops and asks you to trim the input'],
+    // index.html: nothing stored, session only. "What still breaks" is from the
+    // README's ablation (2026-09-21/22, 20 runs per arm): vibe-risk right in 7
+    // of 20 with the weighting block, champion-loss names the wrong buyer in
+    // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
+    signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
     // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
     // states, $0.01–0.02 per sort, no database, and history still on the list.
     braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A cent or two per sort on Cloudflare\'s free tier, no database', 'It keeps no history, so it cannot show you a pattern over time'],
