@@ -239,8 +239,9 @@
     </div>
     <div class="proj">
       <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
-      <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Vanilla JS · samievargas.com/brain-dump</p>
+      <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
       <p class="proj-body">Built and shipped an LLM tool that turns unstructured brain dumps into energy-state-aware task plans: a system prompt assembled at request time from the chosen energy state (caps, tone rules, banned phrasing), a strict JSON contract the UI renders from, model-driven sorting into four buckets, and a second prompt and schema for an emergency one-thing mode with a hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</p>
+      <p class="proj-body">Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 22 September 2026: on the anxious state, 20 of 20 plans parsed under the native contract with the cap, schema and strategy rules at 100%, the banned-phrase rule caught "need to" in 6 of 20 plans, routing matched the fixture on 18 of 20, and three of five revisions dropped an item the user had not mentioned. The first run also found the output budget too small for the model, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</p>
     </div>
     <div class="proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
@@ -314,7 +315,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260922c';
+import { TK_REPO } from './data/content.js?v=20260922d';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
