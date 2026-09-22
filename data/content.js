@@ -310,8 +310,11 @@ const RESULTS = {
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
     signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
     // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
-    // states, $0.01–0.02 per sort, no database, and history still on the list.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A cent or two per sort on Cloudflare\'s free tier, no database', 'It keeps no history, so it cannot show you a pattern over time'],
+    // states, no database. "What still breaks" is the 2026-09-22 eval on the
+    // anxious state: "need to" in 6 of 20 plans despite the ban, and three of
+    // five revisions dropping an item. Cost is Sonnet 5 at a measured 944 to
+    // 3,542 output tokens per plan, so "a few cents" rather than one or two.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A few cents per sort on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs
