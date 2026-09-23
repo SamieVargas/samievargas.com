@@ -6,7 +6,7 @@
 // prefers-reduced-motion.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260923e';
+import { ARCADE_APPS } from '../data/content.js?v=20260923f';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

@@ -309,12 +309,13 @@ const RESULTS = {
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
     signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
-    // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
+    // Brain Dump README: the 47 tabs, one file, a Worker holding the prompts, five energy
     // states, no database. "What still breaks" is the 2026-09-22 eval on the
     // anxious state: "need to" in 6 of 20 plans despite the ban, and three of
-    // five revisions dropping an item. Cost is Sonnet 5 at a measured 944 to
-    // 3,542 output tokens per plan, so "a few cents" rather than one or two.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A few cents per sort on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
+    // five revisions dropping an item. Cost is the brain-dump repo's recost of
+    // that run at Sonnet 5 list price ($2 in / $10 out, read 2026-09-23):
+    // $0.0101 to $0.0363 per plan, median $0.0178.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, five energy states', 'One to four cents a sort at list price, on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs

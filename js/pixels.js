@@ -10,7 +10,7 @@
 // the page it is in that file.
 // ============================================================
 
-const DATA_URL = '../data/pixels-runs.json?v=20260923e';
+const DATA_URL = '../data/pixels-runs.json?v=20260923f';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
