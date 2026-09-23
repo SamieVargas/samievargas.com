@@ -240,10 +240,10 @@ const RAIL_TICKS = ['2018', '2019', '2020', '2021', '2022', '2023'];
 
 const SKILLS = [
   { label: 'AI enablement', line: 'LLM workflow design & deployment · Team-level AI adoption · Prompt engineering · AI tool evaluation · Internal and client-facing AI strategy input · Human-in-the-loop process design · AI fluency enablement' },
-  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API integration · Structured JSON / schema design' },
+  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API integration · Structured JSON / schema design · ChromaDB · Hugging Face embedding models · MCP servers' },
   { label: 'Delivery', line: 'Full-lifecycle engagement management · Multi-stakeholder orchestration · Workflow & SOP design · Health scoring systems · Adoption & usage tracking · Agile / Scrum (PSM I) · Cross-functional coordination' },
   { label: 'Data', line: 'EDA · Regression & classification modeling · Cohort & segment analysis · Behavioral pattern detection · Data modeling · Looker Studio · Tableau' },
-  { label: 'Stack', line: 'Anthropic API · Claude · ChatGPT · Gemini · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
+  { label: 'Stack', line: 'Anthropic API · Claude · MCP · Hugging Face Hub · ChatGPT · Gemini · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
 ];
 
 const CERTS = [
@@ -350,7 +350,7 @@ const CONTACT_LINKS = [
 // ── Life page ────────────────────────────────────────────────
 
 const LIFE_FIELD = [
-  { id: 'walk', short: 'A walk is worth half a point', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language. A router decides whether a question is a search, a filter or a sum, the numbers are computed in code, every answer cites the days it came from, and hot yoga plus walking still beat everything else for sleep and recovery.' },
+  { id: 'walk', short: 'A walk is worth half a point', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language. A router decides whether a question is a search, a filter or a sum, the numbers are computed in code, every answer cites the days it came from, the whole thing doubles as a local MCP server so Claude Desktop can ask it questions while the data stays on my machine, and hot yoga plus walking still beat everything else for sleep and recovery.' },
   { id: 'lifeos', short: 'Life OS', kind: 'Built', title: 'Life OS', x: '88%', y: '30%', year: '2025–26', art: 'assets/life-os/lifeos_today.png', href: 'https://samievargas.com', linkLabel: 'See the dashboard ↗', line: 'A daily dashboard pulling from two of my own data endpoints, fifteen charts across health, habits, and whatever I said I would do.' },
   { id: 'tarot', short: 'Tarot tracker', kind: 'Built', title: 'Seven decks and a tracker', x: '76%', y: '58%', year: '2025', art: 'assets/tarot-tracker/deck.png', href: 'https://samievargas.com', linkLabel: 'Open the tracker ↗', line: 'Every pull logged across all 78 cards, including the ones that keep coming back, and I built it because I pull most mornings anyway.' },
   { id: 'journal', short: 'Journaling since 2020', kind: 'Built', title: 'My own journaling app', x: '70%', y: '80%', year: '2020–26', line: 'Daily since 2020, in an app I built so the prompts are exactly what I want, and the patterns across months are different from what shows up in a single day.' },
