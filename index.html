@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260923d">
+  <link rel="stylesheet" href="css/styles.css?v=20260923f">
   <script>
     // S3 — put the remembered door on the root before first paint, so the
     // hero and the section order never flash from the default.
@@ -96,6 +96,17 @@
 </div>
 
 <main class="page" id="page">
+
+<!-- ── PATTERN INDEX ───────────────────────────────────────── -->
+<!-- For the reader who arrives with a checklist. Rendered from PATTERNS in data/content.js.
+     No door order rule on purpose: it sits first behind every door. -->
+<section class="section patterns" id="patterns" aria-labelledby="patterns-h">
+  <div class="patterns__head">
+    <p class="section__num" id="patterns-h">By pattern</p>
+    <p class="patterns__note">If you came with a checklist, agents, RAG, fine-tuning, MCP, here is where each one lives on this page with its number, and where it does not yet, the nearest thing and what is missing.</p>
+  </div>
+  <div class="patterns__grid" id="patterns-grid"></div>
+</section>
 
 <!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
 <!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
@@ -415,7 +426,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script type="module" src="js/app.js?v=20260923d"></script>
-<script type="module" src="js/console.js?v=20260923d"></script>
+<script type="module" src="js/app.js?v=20260923f"></script>
+<script type="module" src="js/console.js?v=20260923f"></script>
 </body>
 </html>

@@ -1,0 +1,2400 @@
+{
+ "generated": "2026-09-22T15:56:57+00:00",
+ "model": "claude-haiku-4-5-20251001",
+ "contract": "native",
+ "embedding": "default",
+ "source": "evals/results/2026-09-22.json, evals/results/2026-09-22-followups.json and evals/results/2026-09-22-ablation.md in github.com/SamieVargas/pixels-rag; the data is the seeded synthetic export from fixtures/make_days.py",
+ "prices": {
+  "model": "claude-haiku-4-5",
+  "input_per_mtok": 1.0,
+  "output_per_mtok": 5.0,
+  "read": "2026-09-23"
+ },
+ "aggregate": {
+  "n": 26,
+  "route_accuracy": 1.0,
+  "recall_semantic": {
+   "3": 0.7041,
+   "5": 0.7449,
+   "10": 0.7857
+  },
+  "mrr_semantic": 0.8571,
+  "recall_filter": {
+   "3": 0.5292,
+   "5": 0.6558,
+   "10": 0.8117
+  },
+  "mrr_filter": 1.0,
+  "recall_all": {
+   "3": 0.6167,
+   "5": 0.7004,
+   "10": 0.7987
+  },
+  "filter_exact": 1.0,
+  "facts": 0.8462,
+  "citations_valid": 1.0,
+  "abstained_when_should": [
+   5,
+   5
+  ],
+  "abstained_when_should_not": [
+   2,
+   21
+  ],
+  "hard_fails": 0,
+  "retries": 10,
+  "parse_paths": {
+   "native": 20
+  },
+  "mean_tokens": {
+   "input": 4107.4615,
+   "output": 417.7308
+  },
+  "mean_latency_ms": 4036.4231,
+  "mean_cost_usd": 0.0062,
+  "total_cost_usd": 0.1613
+ },
+ "records": [
+  {
+   "id": "S01",
+   "kind": "semantic",
+   "question": "What happened on the day I had a migraine in June?",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in June",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "migraine headache bad day"
+   },
+   "expected_dates": [
+    "2026-06-14"
+   ],
+   "expected_facts": [
+    "migraine"
+   ],
+   "notes": "one planted day; the chunk names the symptom",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-06-14"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "On June 14, you experienced a migraine along with several other health challenges. You had severe brain fog, poor sleep quality with a score of 48/100 despite sleeping 8.2 hours, and low mood and energy levels with moderate stress. Your body battery was notably depleted at 14 by end of day. You took 2,100 steps and had low activity. However, you maintained some positive habits by doing reading and yoga, and you consumed good nutrition with 74oz of water and 2 cups of caffeine. Your social interactions that day were draining, and the weather was cloudy.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": false,
+   "violations": [
+    "the number 8.2 in the answer does not appear in any cited day"
+   ],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4297,
+    "output_tokens": 901
+   },
+   "latency_ms": 10954,
+   "cost_usd": 0.0088
+  },
+  {
+   "id": "S02",
+   "kind": "semantic",
+   "question": "Describe my best day in July.",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in July",
+    "filters": [
+     {
+      "field": "rating",
+      "op": "==",
+      "value": 5
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "best day happy positive"
+   },
+   "expected_dates": [
+    "2026-07-04"
+   ],
+   "expected_facts": [
+    "positive"
+   ],
+   "notes": "hybrid: rating filter plus dense search; July has one five-star day",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-07-04"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Your best day in July was on 2026-07-04 with a 5/5 rating. You were happy with moderate energy, mild anxiety, and low stress. You slept with a quality score of 69/100. You took 8,563 steps through moderate activity and walking, got sunlight, and completed journaling. You had very positive social interactions and an active positive life event. Your resting heart rate was 54bpm and body battery end-of-day was 55. You drank 52oz of water, though productivity was low.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4194,
+    "output_tokens": 790
+   },
+   "latency_ms": 7176,
+   "cost_usd": 0.0081
+  },
+  {
+   "id": "S03",
+   "kind": "semantic",
+   "question": "What did recovery look like the day after my trail run in August?",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in August",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "recovery after trail running sleep body battery"
+   },
+   "expected_dates": [
+    "2026-08-09",
+    "2026-08-10"
+   ],
+   "expected_facts": [
+    "88"
+   ],
+   "notes": "the hard one: 'the day after' is adjacency, which similarity cannot do; the run day is findable, the morning after is not",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-08-09"
+   ],
+   "recall": {
+    "3": 0.5,
+    "5": 0.5,
+    "10": 0.5
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": 0.0,
+   "abstained": true,
+   "should_abstain": false,
+   "answer": "The evidence provided does not contain information about the day after the trail run. The log entry is only from 2026-08-09, which documents the day of the trail running activity itself. There is no entry for the following day that would show what recovery looked like after the run.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4038,
+    "output_tokens": 392
+   },
+   "latency_ms": 5480,
+   "cost_usd": 0.006
+  },
+  {
+   "id": "S04",
+   "kind": "semantic",
+   "question": "What was going on the day my anxiety was worst in May?",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in May",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "severe anxiety high stress catastrophizing"
+   },
+   "expected_dates": [
+    "2026-05-27"
+   ],
+   "expected_facts": [
+    "Severe"
+   ],
+   "notes": "one planted day in May with severe anxiety",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-27"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "On 2026-05-27, you experienced severe anxiety with an anxious mood, low energy, and high stress. You had an active negative life event that day. You also logged catastrophizing as a cognitive pattern. Despite these challenges, you maintained excellent emotional regulation and completed meditation. Your body battery declined from 64 at the beginning of the day to 40 by end of day, and your Garmin stress level was 25.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4185,
+    "output_tokens": 697
+   },
+   "latency_ms": 6019,
+   "cost_usd": 0.0077
+  },
+  {
+   "id": "S05",
+   "kind": "semantic",
+   "question": "Tell me about the night in May when I drank and ate late.",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in May",
+    "filters": [
+     {
+      "field": "alcohol",
+      "op": "==",
+      "value": true
+     },
+     {
+      "field": "late_meals",
+      "op": "==",
+      "value": true
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "alcohol late meals poor sleep"
+   },
+   "expected_dates": [
+    "2026-05-20"
+   ],
+   "expected_facts": [
+    "52"
+   ],
+   "notes": "hybrid with two boolean filters; one May day matches both",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-20"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "On 2026-05-20, you had alcohol and ate late meals. That night you went to bed between 12-1am, which was influenced by late screen time. You slept with poor quality, scoring 52/100. Despite these factors, you maintained excellent emotional regulation and had high energy the next day, though your mood was low and stress was high. Your body battery dropped from 94 at the beginning of the day to 27 by end of day.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4210,
+    "output_tokens": 715
+   },
+   "latency_ms": 6225,
+   "cost_usd": 0.0078
+  },
+  {
+   "id": "S06",
+   "kind": "semantic",
+   "question": "What was the week of June 8 like?",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "the week of June 8",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "how the week went overall"
+   },
+   "expected_dates": [
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14"
+   ],
+   "expected_facts": [],
+   "notes": "a whole week; the chunking ablation is aimed at this shape",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [
+    "2026-06-08",
+    "2026-06-10",
+    "2026-06-14",
+    "2026-06-11",
+    "2026-06-09",
+    "2026-06-12",
+    "2026-06-13"
+   ],
+   "recall": {
+    "3": 0.4286,
+    "5": 0.7143,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": null,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "The week of June 8-14 was challenging overall. On 2026-06-08, you had a low mood with poor sleep and moderate stress, though productivity was high. On 2026-06-09, you experienced irritability and high stress with another poor night. On 2026-06-10, anxiety became severe despite better sleep (6.5hrs, quality=Good, score=71/100). On 2026-06-11, stress peaked at High with a poor diet. Things began improving around 2026-06-12 with a happy mood and low stress, continuing into 2026-06-13 with a rating of 4/5. However, 2026-06-14 ended the week poorly with a low mood, severe brain fog, and a migraine. Throughout the week, catastrophizing and all-or-nothing thinking patterns appeared frequently.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 7041,
+    "output_tokens": 1304
+   },
+   "latency_ms": 8937,
+   "cost_usd": 0.0136
+  },
+  {
+   "id": "S07",
+   "kind": "semantic",
+   "question": "What did the days with a Hashimoto's flare look like?",
+   "plan": {
+    "kind": "semantic",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": "Hashimoto's symptoms fatigue joint pain"
+   },
+   "expected_dates": [
+    "2026-06-22",
+    "2026-08-15"
+   ],
+   "expected_facts": [
+    "joint pain"
+   ],
+   "notes": "two planted days; the phrase is in the chunk text and in no metadata field the router would filter on",
+   "route": "semantic",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {
+    "3": 0.0,
+    "5": 0.0,
+    "10": 0.0
+   },
+   "mrr": 0.0,
+   "exact": null,
+   "facts": 0.0,
+   "abstained": true,
+   "should_abstain": false,
+   "answer": "Nothing in the log matches that question.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2243,
+    "output_tokens": 84
+   },
+   "latency_ms": 1549,
+   "cost_usd": 0.0027
+  },
+  {
+   "id": "F01",
+   "kind": "filter",
+   "question": "Which days was my sleep score under 60?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [
+     {
+      "field": "sleep_score",
+      "op": "<",
+      "value": 60
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-04",
+    "2026-05-08",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-15",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-24",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-11",
+    "2026-06-14",
+    "2026-06-17",
+    "2026-06-23",
+    "2026-06-25",
+    "2026-06-29",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-06",
+    "2026-07-11",
+    "2026-07-15",
+    "2026-07-17",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-08-03",
+    "2026-08-05",
+    "2026-08-08",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-22",
+    "2026-08-29"
+   ],
+   "expected_facts": [],
+   "notes": "threshold",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-04",
+    "2026-05-08",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-15",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-24",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-11",
+    "2026-06-14",
+    "2026-06-17",
+    "2026-06-23",
+    "2026-06-25",
+    "2026-06-29",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-06",
+    "2026-07-11",
+    "2026-07-15",
+    "2026-07-17",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-08-03",
+    "2026-08-05",
+    "2026-08-08",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-22",
+    "2026-08-29"
+   ],
+   "recall": {
+    "3": 0.0682,
+    "5": 0.1136,
+    "10": 0.2273
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Your sleep score was under 60 on these dates: 2026-05-02 (48/100), 2026-05-04 (55/100), 2026-05-08 (51/100), 2026-05-12 (47/100), 2026-05-13 (58/100), 2026-05-15 (56/100), 2026-05-17 (52/100), 2026-05-18 (55/100), 2026-05-20 (52/100), 2026-05-21 (51/100), 2026-05-24 (55/100), 2026-05-26 (46/100), 2026-05-28 (46/100), 2026-05-29 (53/100), 2026-05-30 (49/100), 2026-06-08 (50/100), 2026-06-09 (51/100), 2026-06-11 (56/100), 2026-06-14 (48/100), 2026-06-17 (53/100), 2026-06-29 (39/100), and 2026-07-11 (55/100).",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 16500,
+    "output_tokens": 1538
+   },
+   "latency_ms": 8462,
+   "cost_usd": 0.0242
+  },
+  {
+   "id": "F02",
+   "kind": "filter",
+   "question": "List the days I did hot yoga in July.",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in July",
+    "filters": [
+     {
+      "field": "exercise",
+      "op": "contains",
+      "value": "hot yoga"
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-07-01",
+    "2026-07-05",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-18",
+    "2026-07-24",
+    "2026-07-31"
+   ],
+   "expected_facts": [],
+   "notes": "contains plus a month",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-07-01",
+    "2026-07-05",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-18",
+    "2026-07-24",
+    "2026-07-31"
+   ],
+   "recall": {
+    "3": 0.375,
+    "5": 0.625,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "You did hot yoga on 2026-07-01, 2026-07-05, 2026-07-09, 2026-07-10, 2026-07-11, 2026-07-18, 2026-07-24, and 2026-07-31.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4479,
+    "output_tokens": 316
+   },
+   "latency_ms": 3266,
+   "cost_usd": 0.0061
+  },
+  {
+   "id": "F03",
+   "kind": "filter",
+   "question": "Which days in the first two weeks of June had a rating of 4 or higher?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "the first two weeks of June",
+    "filters": [
+     {
+      "field": "rating",
+      "op": ">=",
+      "value": 4
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-06-01",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-13"
+   ],
+   "expected_facts": [],
+   "notes": "relative range resolved in code",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-06-01",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-13"
+   ],
+   "recall": {
+    "3": 0.75,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Four days in the first two weeks of June had a rating of 4 or higher: June 1st with a 5/5 rating, June 6th with a 5/5 rating, June 7th with a 4/5 rating, and June 13th with a 4/5 rating.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3626,
+    "output_tokens": 331
+   },
+   "latency_ms": 3055,
+   "cost_usd": 0.0053
+  },
+  {
+   "id": "F04",
+   "kind": "filter",
+   "question": "On which days did I have alcohol?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [
+     {
+      "field": "alcohol",
+      "op": "==",
+      "value": true
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-12",
+    "2026-05-20",
+    "2026-05-25",
+    "2026-06-08",
+    "2026-06-17",
+    "2026-06-27",
+    "2026-07-05",
+    "2026-07-11",
+    "2026-07-15",
+    "2026-07-20",
+    "2026-07-25",
+    "2026-07-28",
+    "2026-08-02",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-28"
+   ],
+   "expected_facts": [],
+   "notes": "boolean",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-12",
+    "2026-05-20",
+    "2026-05-25",
+    "2026-06-08",
+    "2026-06-17",
+    "2026-06-27",
+    "2026-07-05",
+    "2026-07-11",
+    "2026-07-15",
+    "2026-07-20",
+    "2026-07-25",
+    "2026-07-28",
+    "2026-08-02",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-28"
+   ],
+   "recall": {
+    "3": 0.1364,
+    "5": 0.2273,
+    "10": 0.4545
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "You had alcohol on the following days: 2026-05-02, 2026-05-03, 2026-05-12, 2026-05-20, 2026-05-25, 2026-06-08, 2026-06-17, 2026-06-27, 2026-07-05, 2026-07-11, 2026-07-15, 2026-07-20, 2026-07-25, 2026-07-28, 2026-08-02, 2026-08-08, 2026-08-09, 2026-08-13, 2026-08-14, 2026-08-22, 2026-08-24, and 2026-08-28.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 7350,
+    "output_tokens": 628
+   },
+   "latency_ms": 4642,
+   "cost_usd": 0.0105
+  },
+  {
+   "id": "F05",
+   "kind": "filter",
+   "question": "Which days had a body battery over 80?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [
+     {
+      "field": "body_battery",
+      "op": ">",
+      "value": 80
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-08-10"
+   ],
+   "expected_facts": [],
+   "notes": "one match",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-08-10"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "On 2026-08-10, the body battery end of day was 91, which is over 80.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3002,
+    "output_tokens": 176
+   },
+   "latency_ms": 2484,
+   "cost_usd": 0.0039
+  },
+  {
+   "id": "F06",
+   "kind": "filter",
+   "question": "What days did I walk more than 12,000 steps in August?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in August",
+    "filters": [
+     {
+      "field": "steps",
+      "op": ">",
+      "value": 12000
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-06",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-11",
+    "2026-08-14",
+    "2026-08-19"
+   ],
+   "expected_facts": [],
+   "notes": "a number with a comma in the question",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-06",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-11",
+    "2026-08-14",
+    "2026-08-19"
+   ],
+   "recall": {
+    "3": 0.375,
+    "5": 0.625,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "You walked more than 12,000 steps on multiple days in August: 2026-08-03 (12,456 steps), 2026-08-04 (12,615 steps), 2026-08-06 (12,819 steps), 2026-08-08 (12,286 steps), 2026-08-09 (16,400 steps), 2026-08-11 (12,839 steps), 2026-08-14 (13,365 steps), and 2026-08-19 (13,448 steps).",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 4471,
+    "output_tokens": 510
+   },
+   "latency_ms": 3847,
+   "cost_usd": 0.007
+  },
+  {
+   "id": "F07",
+   "kind": "filter",
+   "question": "Which weekends in May did I rate 5?",
+   "plan": {
+    "kind": "filter",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in May",
+    "filters": [
+     {
+      "field": "weekend",
+      "op": "==",
+      "value": true
+     },
+     {
+      "field": "rating",
+      "op": "==",
+      "value": 5
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-10",
+    "2026-05-23"
+   ],
+   "expected_facts": [],
+   "notes": "two filters, one derived field",
+   "route": "filter",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-10",
+    "2026-05-23"
+   ],
+   "recall": {
+    "3": 1.0,
+    "5": 1.0,
+    "10": 1.0
+   },
+   "mrr": 1.0,
+   "exact": true,
+   "facts": null,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "You rated your day 5/5 on two dates in May: 2026-05-10 and 2026-05-23. Both of these entries show a perfect rating, though the evidence does not specify whether these dates fall on weekends.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3211,
+    "output_tokens": 284
+   },
+   "latency_ms": 3207,
+   "cost_usd": 0.0046
+  },
+  {
+   "id": "A01",
+   "kind": "aggregate",
+   "question": "What was my average sleep score in June?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in June",
+    "filters": [],
+    "aggregate": {
+     "metric": "sleep_score",
+     "stat": "mean",
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30"
+   ],
+   "expected_facts": [
+    "64.0"
+   ],
+   "notes": "mean over a month",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Your average sleep score in June was 64.0 across 28 days.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3720,
+    "output_tokens": 324
+   },
+   "latency_ms": 4361,
+   "cost_usd": 0.0053
+  },
+  {
+   "id": "A02",
+   "kind": "aggregate",
+   "question": "Did I sleep better on hot yoga days?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [
+     {
+      "field": "exercise",
+      "op": "contains",
+      "value": "hot yoga"
+     }
+    ],
+    "aggregate": {
+     "metric": "sleep_score",
+     "stat": "mean",
+     "group_by": "match"
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "expected_facts": [
+    "66.2",
+    "62.0"
+   ],
+   "notes": "the comparison that is really an aggregation; both group means must appear",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Yes, you slept better on hot yoga days. On days when your exercise contained hot yoga, your mean sleep score was 66.2 across 28 days. On all other days, your mean sleep score was 62.0 across 90 days. Hot yoga days showed a higher sleep score than other days.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3757,
+    "output_tokens": 398
+   },
+   "latency_ms": 4118,
+   "cost_usd": 0.0057
+  },
+  {
+   "id": "A03",
+   "kind": "aggregate",
+   "question": "How many days did I meditate in July?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in July",
+    "filters": [
+     {
+      "field": "meditation",
+      "op": "==",
+      "value": true
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": "count",
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-07-01",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-09",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-30",
+    "2026-07-31"
+   ],
+   "expected_facts": [
+    "13"
+   ],
+   "notes": "count",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-07-01",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-09",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-30",
+    "2026-07-31"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "You meditated on 13 days in July according to the computed table for the date range 2026-07-01 to 2026-07-31.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2877,
+    "output_tokens": 212
+   },
+   "latency_ms": 2607,
+   "cost_usd": 0.0039
+  },
+  {
+   "id": "A04",
+   "kind": "aggregate",
+   "question": "What was my best body battery in May?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in May",
+    "filters": [],
+    "aggregate": {
+     "metric": "body_battery",
+     "stat": "max",
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31"
+   ],
+   "expected_facts": [
+    "66"
+   ],
+   "notes": "max",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Your best body battery in May was 66. This is based on analysis of all 30 matching days in the period from 2026-05-01 to 2026-05-31.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2877,
+    "output_tokens": 199
+   },
+   "latency_ms": 3848,
+   "cost_usd": 0.0039
+  },
+  {
+   "id": "A05",
+   "kind": "aggregate",
+   "question": "What was my average rating on weekends versus weekdays?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [],
+    "aggregate": {
+     "metric": "rating",
+     "stat": "mean",
+     "group_by": "weekend"
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "expected_facts": [
+    "3.4",
+    "3.0"
+   ],
+   "notes": "group by a derived boolean",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "On weekends, the average rating was 3.4 across 33 days. On weekdays, the average rating was 3.0 across 85 days. This shows a slightly higher average rating on weekends compared to weekdays.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2879,
+    "output_tokens": 221
+   },
+   "latency_ms": 2737,
+   "cost_usd": 0.004
+  },
+  {
+   "id": "A06",
+   "kind": "aggregate",
+   "question": "How many days had a sleep score under 60 in August?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in August",
+    "filters": [
+     {
+      "field": "sleep_score",
+      "op": "<",
+      "value": 60
+     }
+    ],
+    "aggregate": {
+     "metric": null,
+     "stat": "count",
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-08-03",
+    "2026-08-05",
+    "2026-08-08",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-22",
+    "2026-08-29"
+   ],
+   "expected_facts": [
+    "7"
+   ],
+   "notes": "count with a threshold",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-08-03",
+    "2026-08-05",
+    "2026-08-08",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-22",
+    "2026-08-29"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Based on the computed table, there were 7 days with a sleep score under 60 in August.",
+   "parse_path": "native",
+   "retries": 1,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 3774,
+    "output_tokens": 306
+   },
+   "latency_ms": 3829,
+   "cost_usd": 0.0053
+  },
+  {
+   "id": "A07",
+   "kind": "aggregate",
+   "question": "What was my median steps over the last two weeks?",
+   "plan": {
+    "kind": "aggregate",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "the last two weeks",
+    "filters": [],
+    "aggregate": {
+     "metric": "steps",
+     "stat": "median",
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "expected_facts": [
+    "8721"
+   ],
+   "notes": "relative phrase resolved against the newest logged day",
+   "route": "aggregate",
+   "route_ok": true,
+   "retrieved": [
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31"
+   ],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": 1.0,
+   "abstained": false,
+   "should_abstain": false,
+   "answer": "Over the last two weeks from 2026-08-18 to 2026-08-31, your median steps across 13 matching days was 8721 steps.",
+   "parse_path": "native",
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2880,
+    "output_tokens": 197
+   },
+   "latency_ms": 2751,
+   "cost_usd": 0.0039
+  },
+  {
+   "id": "U01",
+   "kind": "unanswerable",
+   "question": "What was my blood pressure in June?",
+   "plan": {
+    "kind": "unanswerable",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "in June",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [],
+   "expected_facts": [],
+   "notes": "not a field",
+   "route": "unanswerable",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": null,
+   "abstained": true,
+   "should_abstain": true,
+   "answer": "The log does not track that, so there is nothing to answer from.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2235,
+    "output_tokens": 66
+   },
+   "latency_ms": 1100,
+   "cost_usd": 0.0026
+  },
+  {
+   "id": "U02",
+   "kind": "unanswerable",
+   "question": "What did I eat for breakfast on June 14?",
+   "plan": {
+    "kind": "unanswerable",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "June 14",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [],
+   "expected_facts": [],
+   "notes": "meals are not logged",
+   "route": "unanswerable",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": null,
+   "abstained": true,
+   "should_abstain": true,
+   "answer": "The log does not track that, so there is nothing to answer from.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2238,
+    "output_tokens": 72
+   },
+   "latency_ms": 1191,
+   "cost_usd": 0.0026
+  },
+  {
+   "id": "U03",
+   "kind": "unanswerable",
+   "question": "How many meetings did I have last week?",
+   "plan": {
+    "kind": "unanswerable",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "last week",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [],
+   "expected_facts": [],
+   "notes": "not logged",
+   "route": "unanswerable",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": null,
+   "abstained": true,
+   "should_abstain": true,
+   "answer": "The log does not track that, so there is nothing to answer from.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2236,
+    "output_tokens": 68
+   },
+   "latency_ms": 1003,
+   "cost_usd": 0.0026
+  },
+  {
+   "id": "U04",
+   "kind": "unanswerable",
+   "question": "What was my weight at the end of August?",
+   "plan": {
+    "kind": "unanswerable",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": "end of August",
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [],
+   "expected_facts": [],
+   "notes": "not logged",
+   "route": "unanswerable",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": null,
+   "abstained": true,
+   "should_abstain": true,
+   "answer": "The log does not track that, so there is nothing to answer from.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2237,
+    "output_tokens": 66
+   },
+   "latency_ms": 1014,
+   "cost_usd": 0.0026
+  },
+  {
+   "id": "U05",
+   "kind": "unanswerable",
+   "question": "Who did I talk to on my best day?",
+   "plan": {
+    "kind": "unanswerable",
+    "date_range": {
+     "start": null,
+     "end": null
+    },
+    "date_phrase": null,
+    "filters": [],
+    "aggregate": {
+     "metric": null,
+     "stat": null,
+     "group_by": null
+    },
+    "rewritten_query": null
+   },
+   "expected_dates": [],
+   "expected_facts": [],
+   "notes": "the log has a social rating, never names",
+   "route": "unanswerable",
+   "route_ok": true,
+   "retrieved": [],
+   "recall": {},
+   "mrr": null,
+   "exact": null,
+   "facts": null,
+   "abstained": true,
+   "should_abstain": true,
+   "answer": "The log does not track that, so there is nothing to answer from.",
+   "parse_path": null,
+   "retries": 0,
+   "citations_valid": true,
+   "validation_ok": true,
+   "violations": [],
+   "hard_fail": false,
+   "tokens": {
+    "input_tokens": 2237,
+    "output_tokens": 66
+   },
+   "latency_ms": 1085,
+   "cost_usd": 0.0026
+  }
+ ],
+ "followups": [
+  {
+   "id": "H01",
+   "arm": "with history",
+   "route": "aggregate",
+   "route_ok": true,
+   "plan_ok": true,
+   "rewritten": "What was my average rating on hot yoga days?",
+   "exact": null,
+   "facts": 1.0,
+   "answer": "On days when exercise contained hot yoga, there were 28 such days with a mean rating of 3.3. In comparison, all other days (90 days) had a mean rating of 3.1, i"
+  },
+  {
+   "id": "H01",
+   "arm": "alone",
+   "route": "filter",
+   "route_ok": false,
+   "plan_ok": false,
+   "rewritten": "What were the hot yoga days like?",
+   "exact": null,
+   "facts": 0.0,
+   "answer": "Hot yoga was the primary exercise throughout the log. On hot yoga days, you consistently had moderate to high activity levels, with steps ranging from 5,159 to "
+  },
+  {
+   "id": "H02",
+   "arm": "with history",
+   "route": "filter",
+   "route_ok": true,
+   "plan_ok": true,
+   "rewritten": "Which days in June was my sleep score under 60?",
+   "exact": true,
+   "facts": null,
+   "answer": "Your log covers entries from 06-08 through 06-29. The entries document a range of emotional states, sleep quality, physical activity, and wellness habits throug"
+  },
+  {
+   "id": "H02",
+   "arm": "alone",
+   "route": "unanswerable",
+   "route_ok": false,
+   "plan_ok": false,
+   "rewritten": null,
+   "exact": false,
+   "facts": null,
+   "answer": "The log does not track that, so there is nothing to answer from."
+  }
+ ],
+ "ablation": {
+  "measures": [
+   [
+    "Recall@5 (expected days covered)",
+    "89%",
+    "93%"
+   ],
+   [
+    "Expected facts in the answer",
+    "82%",
+    "83%"
+   ],
+   [
+    "Week chunks retrieved (total)",
+    "0",
+    "280"
+   ]
+  ],
+  "per_question": [
+   [
+    "S01",
+    "100%",
+    "100%"
+   ],
+   [
+    "S02",
+    "100%",
+    "100%"
+   ],
+   [
+    "S03",
+    "50%",
+    "50%"
+   ],
+   [
+    "S04",
+    "100%",
+    "100%"
+   ],
+   [
+    "S05",
+    "100%",
+    "100%"
+   ],
+   [
+    "S06",
+    "71%",
+    "100%"
+   ],
+   [
+    "S07",
+    "100%",
+    "100%"
+   ]
+  ],
+  "title": "Chunk granularity ablation · 2026-09-22 · 7 semantic questions × 20 run(s) per arm · embedding `default` · `claude-haiku-4-5-20251001`"
+ }
+}

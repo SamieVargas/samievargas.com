@@ -309,12 +309,13 @@ const RESULTS = {
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
     signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
-    // Brain Dump README: the 47 tabs, one file, a ~30-line Worker, five energy
+    // Brain Dump README: the 47 tabs, one file, a Worker holding the prompts, five energy
     // states, no database. "What still breaks" is the 2026-09-22 eval on the
     // anxious state: "need to" in 6 of 20 plans despite the ban, and three of
-    // five revisions dropping an item. Cost is Sonnet 5 at a measured 944 to
-    // 3,542 output tokens per plan, so "a few cents" rather than one or two.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a thirty-line Cloudflare Worker, five energy states', 'A few cents per sort on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
+    // five revisions dropping an item. Cost is the brain-dump repo's recost of
+    // that run at Sonnet 5 list price ($2 in / $10 out, read 2026-09-23):
+    // $0.0101 to $0.0363 per plan, median $0.0178.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, five energy states', 'One to four cents a sort at list price, on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs
@@ -642,7 +643,33 @@ const ARCADE_APPS = [
 // Ticker order on the work page differs deliberately from the arcade's curated order.
 const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin Flip', 'SQL Tarot', 'The Nepotism Graph', 'Corporate Translator', 'Streak Autopsy', 'The Locked Room', 'One-Question Oracle', 'Whodunit Roulette', 'Backlog Reaper', 'Was It Worth It?', 'Same Name, Different Life', 'Sample Size Roast', 'Escalation Simulator'];
 
+// ── Pattern index (homepage, #patterns) ──────────────────────
+// For the reader who arrives with a checklist. `built: false` cells say
+// what the nearest thing is and what is missing; nothing here goes on the
+// résumé until its eval paragraph exists with a date.
+const PATTERNS = [
+  { key: 'rag', label: 'RAG', built: true, title: 'Life in Pixels', num: '100% valid citations · 26 questions',
+    line: 'A router in front of retrieval, sums and filters in code, every answer checked against the days it cites before it is shown. Replayed run by run.',
+    href: '/pixels/', cta: 'Watch it run →' },
+  { key: 'mcp', label: 'MCP', built: true, title: 'Life in Pixels server', num: '2 read-only tools · stdio',
+    line: 'The same router, validator and model call, so Claude Desktop and Claude Code can ask the data questions while it stays on my machine.',
+    href: 'https://github.com/SamieVargas/pixels-rag', cta: 'The server ↗' },
+  { key: 'structured', label: 'Structured outputs', built: true, title: 'Signal · Brain Dump · Field discovery', num: '0 parse failures in 520 runs',
+    line: 'Closed enums and JSON schemas the API enforces, a validator in code behind every one, and the parse path recorded per reply so a silent regression shows.',
+    href: '#signal', cta: 'Signal →' },
+  { key: 'evals', label: 'Evals', built: true, title: 'Every project', num: '4 dated golden sets',
+    line: 'Labels written before the first run, twenty-run ablations, planted-instruction fixtures, and a "what still breaks" line under each project.',
+    href: '#field-discovery', cta: 'The seven layers →' },
+  { key: 'agents', label: 'Agents', built: false, title: 'Nearest: Field discovery', num: 'A pipeline, not a loop',
+    line: 'It extracts, validates, proposes and waits for a person. Nothing on this page decides its own next step from a tool result yet.',
+    href: '#field-discovery', cta: 'See the proposal step →' },
+  { key: 'finetune', label: 'Fine-tuning', built: false, title: 'Prompting, so far', num: 'The baselines exist',
+    line: 'Every model call here is a prompted Haiku or Sonnet under a schema, scored on a golden set. The tuned-versus-prompted comparison is the next build.',
+    href: null, cta: '' },
+];
+
 export {
+  PATTERNS,
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
   READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,

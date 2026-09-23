@@ -8,8 +8,8 @@ import {
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
   READ_ROWS, SEC_CONTACTS,
   DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260923d';
+  SKILLS, CERTS, CONTACT_LINKS, RESULT_FIELDS, RESULTS, PATTERNS,
+} from '../data/content.js?v=20260923f';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -849,6 +849,22 @@ function fdIn() {
 }
 
 watchGate('field-discovery', 'fdIn', fdIn);
+
+// ── Pattern index ────────────────────────────────────────────
+// Rendered at once, no gate: the reader who wants this wants it in the
+// first screen, and a "not yet" cell is a plain div, not a link.
+function renderPatterns() {
+  const g = $('#patterns-grid');
+  if (!g) return;
+  g.innerHTML = PATTERNS.map((p) => {
+    const inner = `<span class="pattern__k"><span>${esc(p.label)}</span><i>${p.built ? 'built' : 'not yet'}</i></span>`
+      + `<span class="pattern__t">${esc(p.title)}</span><span class="pattern__n">${esc(p.num)}</span>`
+      + `<span class="pattern__l">${esc(p.line)}</span>${p.href ? `<span class="pattern__cta">${esc(p.cta)}</span>` : ''}`;
+    const cls = `pattern${p.built ? '' : ' pattern--not'}`;
+    return p.href ? `<a class="${cls}" href="${esc(p.href)}">${inner}</a>` : `<div class="${cls}">${inner}</div>`;
+  }).join('');
+}
+renderPatterns();
 
 watchGate('work', 'workIn', () => renderDag(true));
 watchGate('viz-read', 'readIn', () => renderContactRead(true));
