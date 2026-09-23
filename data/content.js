@@ -642,7 +642,33 @@ const ARCADE_APPS = [
 // Ticker order on the work page differs deliberately from the arcade's curated order.
 const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin Flip', 'SQL Tarot', 'The Nepotism Graph', 'Corporate Translator', 'Streak Autopsy', 'The Locked Room', 'One-Question Oracle', 'Whodunit Roulette', 'Backlog Reaper', 'Was It Worth It?', 'Same Name, Different Life', 'Sample Size Roast', 'Escalation Simulator'];
 
+// ── Pattern index (homepage, #patterns) ──────────────────────
+// For the reader who arrives with a checklist. `built: false` cells say
+// what the nearest thing is and what is missing; nothing here goes on the
+// résumé until its eval paragraph exists with a date.
+const PATTERNS = [
+  { key: 'rag', label: 'RAG', built: true, title: 'Life in Pixels', num: '100% valid citations · 26 questions',
+    line: 'A router in front of retrieval, sums and filters in code, every answer checked against the days it cites before it is shown. Replayed run by run.',
+    href: '/pixels/', cta: 'Watch it run →' },
+  { key: 'mcp', label: 'MCP', built: true, title: 'Life in Pixels server', num: '2 read-only tools · stdio',
+    line: 'The same router, validator and model call, so Claude Desktop and Claude Code can ask the data questions while it stays on my machine.',
+    href: 'https://github.com/SamieVargas/pixels-rag', cta: 'The server ↗' },
+  { key: 'structured', label: 'Structured outputs', built: true, title: 'Signal · Brain Dump · Field discovery', num: '0 parse failures in 520 runs',
+    line: 'Closed enums and JSON schemas the API enforces, a validator in code behind every one, and the parse path recorded per reply so a silent regression shows.',
+    href: '#signal', cta: 'Signal →' },
+  { key: 'evals', label: 'Evals', built: true, title: 'Every project', num: '4 dated golden sets',
+    line: 'Labels written before the first run, twenty-run ablations, planted-instruction fixtures, and a "what still breaks" line under each project.',
+    href: '#field-discovery', cta: 'The seven layers →' },
+  { key: 'agents', label: 'Agents', built: false, title: 'Nearest: Field discovery', num: 'A pipeline, not a loop',
+    line: 'It extracts, validates, proposes and waits for a person. Nothing on this page decides its own next step from a tool result yet.',
+    href: '#field-discovery', cta: 'See the proposal step →' },
+  { key: 'finetune', label: 'Fine-tuning', built: false, title: 'Prompting, so far', num: 'The baselines exist',
+    line: 'Every model call here is a prompted Haiku or Sonnet under a schema, scored on a golden set. The tuned-versus-prompted comparison is the next build.',
+    href: null, cta: '' },
+];
+
 export {
+  PATTERNS,
   HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
   READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
   ARCADE_APPS, ARCADE_TITLES,

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Life in Pixels, replayed — Samie Vargas</title>
+  <meta name="description" content="Twenty-six questions asked of six months of daily data, replayed run by run from the eval: the router's decision, the days it pulled, the answer it wrote, and what the validator said.">
+  <link rel="canonical" href="https://samievargas.com/pixels/">
+  <meta name="theme-color" content="#1a6b5a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samievargas.com/pixels/">
+  <meta property="og:title" content="Life in Pixels, replayed">
+  <meta property="og:description" content="A RAG pipeline over personal data, played back one recorded run at a time: route, retrieve, answer, validate.">
+  <meta property="og:image" content="https://samievargas.com/og-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K7B7NDTKEL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K7B7NDTKEL');
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/styles.css?v=20260923e">
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a class="nav__name" href="/">Samie Vargas</a>
+  <div class="nav__links">
+    <a href="/">← The work</a>
+    <a href="/life">/life</a>
+    <span class="is-here label label--mid" style="color:var(--accent)">/pixels</span>
+    <a class="nav__cta" href="https://github.com/SamieVargas/pixels-rag">Repo ↗</a>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<header class="page-hero">
+  <span class="label label--wide">samievargas.com/pixels · RAG + MCP · recorded runs</span>
+  <h1 style="font-size:clamp(42px,5vw,72px);max-width:22ch">Life in Pixels, <em>replayed</em>.</h1>
+  <p class="lead" style="max-width:62ch;margin-bottom:16px">Six months of my own daily data, askable in plain language. Below are the twenty-six questions from the eval, played back one real run at a time: what the router decided, which days it pulled or computed, the answer it wrote, and what the validator said about it before anything was shown.</p>
+  <p style="font-size:14px;line-height:1.7;color:var(--muted);max-width:60ch;margin-bottom:30px">Nothing on this page is live. Every run is copied from <code>evals/results/2026-09-22.json</code> in the repo, and the data behind it is a seeded synthetic export shaped like mine, because mine stays on my machine. The answers are the model's, as recorded; when the validator disagreed with one, you will see that too.</p>
+  <div class="tk-stats" id="px-stats" aria-label="Eval aggregate, 22 September 2026"></div>
+</header>
+
+<!-- ── THE RUNS ────────────────────────────────────────────── -->
+<section class="section section--alt" id="runs">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <p class="section__num">01 · The runs</p>
+      <h2>Pick a question, read the trace</h2>
+      <p class="px-sub">Four steps every time. Two are model calls, two are code, and the code gets the last word.</p>
+    </div>
+  </div>
+  <div class="px-wrap rule-top" style="padding-top:26px">
+    <aside class="px-list" id="px-list" aria-label="Questions"></aside>
+    <div class="px-trace" id="px-trace" aria-live="polite">
+      <p class="px-loading">Loading the recorded runs…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOLLOW-UPS ──────────────────────────────────────────── -->
+<section class="section" id="followups">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <p class="section__num">02 · Follow-ups</p>
+      <h2>The same second question, with and without the first one</h2>
+      <p class="px-sub">A follow-up is rewritten from the last three turns before anything is retrieved. Here is what the rewrite produced with the history, and what the router did when the same words arrived alone.</p>
+    </div>
+  </div>
+  <div class="px-tablewrap rule-top" style="padding-top:22px" id="px-followups"></div>
+</section>
+
+<!-- ── ABLATION ────────────────────────────────────────────── -->
+<section class="section section--alt" id="ablation">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <p class="section__num">03 · The ablation</p>
+      <h2>What a weekly rollup chunk changed, and what it did not</h2>
+      <p class="px-sub" id="px-ablation-title"></p>
+    </div>
+  </div>
+  <div class="px-ablation rule-top" style="padding-top:22px" id="px-ablation"></div>
+</section>
+
+<!-- ── ASK IT YOURSELF ─────────────────────────────────────── -->
+<section class="section" id="mcp">
+  <div class="section__head" style="margin-bottom:10px">
+    <div class="section__head-l">
+      <p class="section__num">04 · Ask it yourself</p>
+      <h2>The same pipeline as an MCP server</h2>
+    </div>
+  </div>
+  <div class="px-mcp rule-top" style="padding-top:22px">
+    <p>The router, the validator and the model call are exposed over stdio as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it never leaves the machine. There is no write tool, on purpose. The config and the two tool schemas are in the repo.</p>
+    <div class="px-mcp__actions">
+      <a class="btn btn--solid btn--md" href="https://github.com/SamieVargas/pixels-rag">Read the repo ↗</a>
+      <a class="btn btn--ghost btn--md" href="/#patterns">Back to the pattern index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Recorded 22 September 2026 · model and prices named in the stats above · <a href="/toolkit">how this site is built</a></p>
+</footer>
+
+<script type="module" src="../js/pixels.js?v=20260923e"></script>
+</body>
+</html>
