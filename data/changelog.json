@@ -1,9 +1,24 @@
 {
-  "generated": "2026-09-23T19:44:07Z",
+  "generated": "2026-09-23T20:11:31Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 268,
+  "total": 272,
   "commits": [
+    {
+      "sha": "b571d5697094606c7ad2e719f78dab7a9eab27dc",
+      "date": "2026-09-23T20:10:56Z",
+      "message": "Brain Dump: drop the thirty-line claim, state the measured cost"
+    },
+    {
+      "sha": "51ad4a6f7db2863c3d2b0a84f260d9c570efbe81",
+      "date": "2026-09-23T20:01:18Z",
+      "message": "A pattern index on the homepage and /pixels, the RAG pipeline replayed run by run"
+    },
+    {
+      "sha": "66001d4f7cc7531212e115a6c8bf2585124af152",
+      "date": "2026-09-23T19:47:39Z",
+      "message": "README: bring it up to date with the projects that are actually on the site"
+    },
     {
       "sha": "302894b25dcff137372086fc219d10b9ee9228f7",
       "date": "2026-09-23T19:34:48Z",
@@ -38,21 +53,6 @@
       "sha": "2e33bb07fad177b88d7b66c9a4f0bf270c23013f",
       "date": "2026-09-21T20:47:55Z",
       "message": "Résumé: read cleanly by parsers, and by recruiters"
-    },
-    {
-      "sha": "52677d2c65113f4c2f58478e8b5503729a74ca0e",
-      "date": "2026-09-21T17:02:19Z",
-      "message": "Bring every AI claim on the site in line with the code"
-    },
-    {
-      "sha": "0428f97ab92d4f6aa860bacc8c1d7500184ac039",
-      "date": "2026-09-21T02:01:40Z",
-      "message": "Add Field discovery to the résumé"
-    },
-    {
-      "sha": "270c8f2f4c17ec11148697263920a182e84cc226",
-      "date": "2026-09-21T01:33:12Z",
-      "message": "Field discovery section, option 5b from the design handoff"
     }
   ],
   "weeks": [
@@ -75,10 +75,10 @@
     16,
     14,
     1,
-    24
+    28
   ],
   "resume": {
-    "sha": "302894b25dcff137372086fc219d10b9ee9228f7",
-    "date": "2026-09-23T19:34:48Z"
+    "sha": "b571d5697094606c7ad2e719f78dab7a9eab27dc",
+    "date": "2026-09-23T20:10:56Z"
   }
 }
