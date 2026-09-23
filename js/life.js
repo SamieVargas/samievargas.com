@@ -9,7 +9,7 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   PLACES, LIFE_FACTS, RECORDS, CHRISTIE, RING_FIT, OBSERVATIONS, PLAYING,
-} from '../data/content.js?v=20260922d';
+} from '../data/content.js?v=20260923d';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
