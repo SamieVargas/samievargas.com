@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-22T20:34:43Z",
+  "generated": "2026-09-23T19:44:07Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 266,
+  "total": 268,
   "commits": [
+    {
+      "sha": "302894b25dcff137372086fc219d10b9ee9228f7",
+      "date": "2026-09-23T19:34:48Z",
+      "message": "Name the MCP server and the Hugging Face models that already ship"
+    },
     {
       "sha": "bb56bbe07c8b5910dca5a219c9d55342f16b8147",
       "date": "2026-09-22T20:30:46Z",
@@ -48,19 +53,14 @@
       "sha": "270c8f2f4c17ec11148697263920a182e84cc226",
       "date": "2026-09-21T01:33:12Z",
       "message": "Field discovery section, option 5b from the design handoff"
-    },
-    {
-      "sha": "cdfdd63307e6b1ab56e4fd7b6787f4fd22622c43",
-      "date": "2026-09-20T23:57:05Z",
-      "message": "Lead the homepage with Field discovery, and follow the demo's rename"
     }
   ],
   "weeks": [
     0,
     0,
     57,
-    92,
-    35,
+    95,
+    32,
     0,
     3,
     0,
@@ -73,12 +73,12 @@
     0,
     26,
     16,
-    0,
-    15,
-    22
+    14,
+    1,
+    24
   ],
   "resume": {
-    "sha": "328008eaba4409685f3c071250e44e14135f58e9",
-    "date": "2026-09-22T20:19:30Z"
+    "sha": "302894b25dcff137372086fc219d10b9ee9228f7",
+    "date": "2026-09-23T19:34:48Z"
   }
 }
