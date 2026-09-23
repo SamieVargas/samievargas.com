@@ -1,4 +1,4 @@
-# samievargas.github.io
+# samievargas.com
 My portfolio site. Live at [samievargas.com](https://samievargas.com).
 
 ---
@@ -7,7 +7,7 @@ My portfolio site. Live at [samievargas.com](https://samievargas.com).
 
 This started as an upskilling thing and then it became something else too, because the portfolio part is real and the projects are real and I genuinely needed a place to put all of it that was not a LinkedIn PDF, and somewhere along the way it also just became a place that is actually me, which felt more honest anyway. The Agatha Christie read-through and the Ring Fit dragon are not going to help me learn how to use SQL, but they are on here anyway.
 
-I have been in operations for eight years building systems that did not exist before I built them, and a big part of what I do is sit with a messy problem long enough that something useful shows up, so the data projects on here came from that same instinct. The ATX Foodie health inspection analysis started because of a JuiceLand pest sighting on TikTok or Reddit and then turned into 21,160 inspection records and a choropleth map of Austin zip codes, which is basically how I work.
+I have been in operations for eight years building systems that did not exist before I built them, and a big part of what I do is sit with a messy problem long enough that something useful shows up, so everything on here came from that same instinct. The AI tools replace work I used to do by hand. The data projects start from a question I actually had. The ATX Foodie health inspection analysis began because of a JuiceLand pest sighting on TikTok or Reddit and then turned into 21,160 inspection records and a choropleth map of Austin zip codes, which is basically how I work.
 
 ---
 
@@ -15,12 +15,40 @@ I have been in operations for eight years building systems that did not exist be
 
 | Page | Route | What it is |
 | --- | --- | --- |
-| Work | `/` | The portfolio, with the Field discovery, Signal and Brain Dump case studies, the annotated dbt and inspection projects, experience, skills, and contact. |
-| Life | `/life` | The personal half, split off the homepage so it stops standing between a hiring manager and the projects. |
+| Work | `/` | The portfolio: Field discovery, Signal and Brain Dump as working case studies, the annotated Instacart and inspection projects, experience, skills, and contact. |
+| Life | `/life` | The personal half, split off the homepage so it stops standing between a hiring manager and the projects. The field, the raccoon, the Christie ledger, the notes carousel, the dragon. |
 | Apps | `/apps` | The arcade, fifteen small browser apps that each do one thing. |
-| Toolkit | `/toolkit` | How the site is built, linked from the homepage footer. |
-| Résumé | `/resume` | A printable one-file résumé. |
+| Toolkit | `/toolkit` | How the site is built, linked from the homepage footer: tokens, components, the `<head>` block, the copy decisions, and a change log that writes itself. |
+| Résumé | `/resume` | A printable one-file résumé, with `Resume.pdf` generated from it. |
 | Raccoon | `/raccoon` | The raccoon invoice, which is exactly what it sounds like. |
+
+Three more routes on the same domain are served from their own repos, because each one is an app with its own Worker and its own evals:
+
+| Route | Repo | What it is |
+| --- | --- | --- |
+| `/signal/` | [SamieVargas/signal](https://github.com/SamieVargas/signal) | Reads messy account files for second-order sentiment and returns a revenue-risk, relationship-health, or pre-call brief. |
+| `/brain-dump` | [SamieVargas/brain-dump](https://github.com/SamieVargas/brain-dump) | Turns an unstructured brain dump into an energy-state-aware plan. |
+| `/field-discovery/` | case study and demo only | A rep talks for sixty seconds after a visit and onboarding gets a Salesforce record with the unanswered questions named on it. |
+
+---
+
+## The projects
+
+Every project line on the site ends in a dated eval paragraph, and nothing goes on the résumé until that paragraph exists. The numbers below are the ones the site and the résumé state as of 22 September 2026.
+
+**Field discovery** -- built for a final-round hiring case and presented to a cross-functional leadership panel. A rep talks into their phone in a parking lot; the transcript is checked against a local, vertical-aware requirement library; one model call runs under a closed enum with a five-rule validator in code and reject-and-retry; the result is an idempotent upsert to Salesforce. A second stage reads what the record already holds and proposes the next discovery update or an engineer escalation, and a person approves, edits or rejects each one, with approve as the only path to a write. Evaluated in seven layers: 8 of 8 golden transcripts pass with 0 hard fails and both viability signals recalled; on twelve proposal fixtures, zero unnecessary writes and 100% escalation recall and precision; ten planted-instruction fixtures at five runs each left 80% of runs unchanged, and six of the ten moved a proposal at least once, which is why approval stays with a person. Only the reader needs a network, so a rep in a dead zone still gets a checklist in under a second. Case study at [samievargas.com/field-discovery](https://samievargas.com/field-discovery/), walkthrough at [/field-discovery/demo](https://samievargas.com/field-discovery/demo/).
+
+**Signal** -- the thing I built because I spent eight years doing an hour of account digging before every quarterly review. Haiku summarizes each document, images and PDFs included, and Sonnet synthesizes, which cut the main call from roughly 23k to about 1k input tokens on long transcripts; every section of the brief names the sources it came from, and the JSON contract sits behind a tolerant parser with a native structured-output mode behind a flag. Evaluated on 13 hand-written account cases, 20 runs each, under both arms of a source-weighting ablation: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy, 93% against 69%. What still breaks: a mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20. Live at [samievargas.com/signal](https://samievargas.com/signal/), repo at [SamieVargas/signal](https://github.com/SamieVargas/signal).
+
+**Brain Dump** -- one HTML file, a thirty-line Cloudflare Worker, five energy states. The system prompt is assembled at request time from the state you pick, with caps, tone rules and banned phrasing; every item is sorted into one of four buckets under a strict JSON contract the page renders from; an emergency one-thing mode has its own prompt, schema and hard-coded fallback. Evaluated with deterministic graders over twenty hand-written dumps and five follow-up conversations: on the anxious state, 20 of 20 plans parsed with the cap, schema and strategy rules at 100%, the banned-phrase rule still caught "need to" in 6 of 20 plans, routing matched the fixture on 18 of 20, and three of five revisions dropped an item. Live at [samievargas.com/brain-dump](https://samievargas.com/brain-dump), repo at [SamieVargas/brain-dump](https://github.com/SamieVargas/brain-dump).
+
+**Life in Pixels** -- a RAG pipeline over six months of my own daily data, askable in plain language, at [SamieVargas/pixels-rag](https://github.com/SamieVargas/pixels-rag). Day-level chunks with metadata, local Hugging Face embeddings in ChromaDB (MiniLM by default, bge-small and e5 as measured arms, a cross-encoder reranker measured against plain top-k), and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and sums run in code and only the search goes through retrieval. Every answer is checked in code against the days it cites, with one reject-and-retry on an uncited date or an invented number. The same router, validator and model call are exposed as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it stays on the machine. Evaluated on 26 hand-written questions over a seeded synthetic export: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else. The card on /life is where it lives on the site.
+
+**Instacart** -- dbt Cloud on BigQuery across 3.4M orders, five staging models into one join and three marts with 35 passing tests, and the reorder rate everybody cites at 0.60 splits into 0.221 for new shoppers and 0.670 for veterans once you segment it, confirmed with a random forest at 0.989 AUC for veterans against 0.857 for new users. Repo at [SamieVargas/instacart-project](https://github.com/SamieVargas/instacart-project). The homepage has a read-only query console over cached result sets from the marts.
+
+**ATX Foodie** -- 21,160 City of Austin inspection records through the Socrata API, a brand compliance scorecard across 84 local chains, a folium choropleth by zip, and an audit of my own regular spots because of course I did. Scores drift about two points worse across a venue's inspection history, 90.5 at the first visit and 92.6 by the fourteenth, and being flagged is not what fixes it. Notebook at [kaggle.com/code/samievargas/atx-foodie-inspection](https://www.kaggle.com/code/samievargas/atx-foodie-inspection).
+
+**In progress** -- review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game.
 
 ---
 
@@ -33,69 +61,69 @@ I made this decision early and I would make it the same way again, because I did
 **Structure:**
 
 ```
-index.html           -- the work page: nav, hero, Signal, Brain Dump,
-                        projects, experience, skills, off the clock, contact
+index.html           -- the work page: nav, hero with three front doors, Field discovery,
+                        Signal, Brain Dump, projects, experience, skills, off the clock, contact
 life.html            -- /life
 apps/                -- the arcade index plus fifteen self-contained apps
 toolkit.html         -- /toolkit, the build notes
-resume.html          -- printable résumé
+resume.html          -- printable résumé; Resume.pdf is printed from it
 raccoon/             -- the raccoon invoice
 css/
   styles.css         -- design tokens and every style, one accent colour
 js/
   app.js             -- renders the work page from data/, wires every control
-  life.js            -- the field, the crate, the Christie ledger
+  console.js         -- the query console: keyed presets, cached result sets, real render time
+  staged-loader.js   -- one three-stage loader shared by the API-backed apps
+  life.js            -- the field, the crate, the Christie ledger, the notes, the dragon
   arcade.js          -- the apps index
   toolkit.js         -- the change log, pushes per week, and repo age, read from data/changelog.json
 data/
   content.js         -- projects, roles, skills, certs, result lines, observations,
-                        quick facts, interests, contact links, the field
+                        quick facts, interests, contact links, the field, the arcade
+  changelog.json     -- written by the Action below on every push to main
 assets/              -- charts and screenshots, one folder per project
+.github/
+  workflows/changelog.yml   -- snapshots the commit log into data/changelog.json
+  scripts/changelog.mjs     -- the script it runs
 ```
+
+`css/`, `js/` and `data/` each carry their own README with the conventions for that folder.
 
 `data/content.js` is just exported JS objects, so if I want to update a project description or add a new interest card I go to one file, change the text, and push, and that is the whole update flow. Prose that only appears once, like the hero and the bio and the Signal writeup, sits directly in `index.html`.
 
-The two LLM apps, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.
+The LLM apps talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern every time.
 
 ---
 
 ## Features worth noting
 
-**Signal and Brain Dump** -- the two AI tools are on the homepage as working case studies rather than screenshots, so you can see what goes in, what comes back, and how long it took, and both of them are things I built because I was doing the work by hand.
+**Three front doors** -- the hero has three claims, one each for AI tools, analysis, and operations, and picking one reorders the page so the matching section comes first. The choice is remembered in localStorage and restored before first paint, so it never flashes.
+
+**Result lines** -- every project ends on the same four fields: what it replaced, what it took, what it costs to run, and what still breaks. The last one is filled from the project's own eval, not from optimism.
+
+**Working case studies** -- Field discovery, Signal and Brain Dump are on the homepage as things you can watch rather than screenshots, so you can see what goes in, what comes back, and how long it took.
+
+**The query console** -- run one of a few keyed presets against the Instacart marts. Nothing is executed; the result sets ship cached, and the millisecond figure is the real render time, labelled as such.
 
 **The field** -- a plot of everything on /life, placed by whether I only noticed it or actually built something, and whether it came from work or from my life, so you click a dot and the panel next to it changes, and the two halves turn out to look the same.
 
-**Observations** -- on /life now, a carousel of short-form writing about things I have noticed in data, and the raccoon one has a scrubable chart of my body battery going to the floor for ten days, and this is the part of the site I want to keep adding to the most.
+**Notes** -- on /life, a carousel of short-form writing about things I have noticed in data, and the raccoon one has a scrubable chart of my body battery going to the floor for ten days. This is the part of the site I want to keep adding to the most.
 
-**The arcade** -- fifteen small apps at /apps, where six pull live public data from keyless APIs like Wikidata and Open Library and the City of Austin, a few read exports you bring yourself, two track what you tap, and the rest need nothing but a browser.
+**The dragon** -- Ring Fit Adventure, level 32, with an HP bar, because it turns out I need a dragon to fight to stay motivated.
 
-**Site toolkit** -- a public page about how the site is built, linked from the footer at the bottom of the homepage instead of the nav since it is for the people who want to look under it, with the design tokens, the component set, the copy decisions and why each one reads the way it does, the `<head>` block, and a change log snapshotted from this repo's history by `.github/workflows/changelog.yml` on every push to main, so it updates itself when I push without the page ever calling the GitHub API.
+**The arcade** -- fifteen small apps at /apps, where six pull live public data from keyless APIs like Wikidata and Open Library and the City of Austin, a few read exports you bring yourself, two track what you tap, and the rest need nothing but a browser. The API-backed ones share one staged loader that advances on real events and trips a failure path on a budget, so it can never spin forever.
 
-**Mobile as an app** -- under 820px the layout collapses to one column and a four-item tab bar pins to the bottom, so navigation stays under a thumb.
+**Site toolkit** -- a public page about how the site is built, linked from the footer instead of the nav since it is for the people who want to look under it: the design tokens, the component set, the copy decisions and why each one reads the way it does, the `<head>` block, and a change log snapshotted from this repo's history by `.github/workflows/changelog.yml` on every push to main. It used to ask the GitHub API from the browser, which stopped working while the repo was private and whenever the rate limit ran out, so now it updates itself when I push and never calls the API at all.
+
+**Mobile as an app** -- on narrow screens the layout collapses to one column and a four-item tab bar pins to the bottom, so navigation stays under a thumb.
 
 **Scroll reveal** -- IntersectionObserver and CSS transitions with no library, and content is visible by default so nothing depends on the animation firing.
 
 ---
 
-## Projects on here
-
-**Field discovery** -- built for a final-round hiring case and presented to a leadership panel: a rep talks for sixty seconds after a visit and onboarding gets a Salesforce record with the unanswered questions named on it. The requirement library is local, the one model call runs under a closed enum with a validator in code, and a second stage proposes the next update for a person to approve. The evals are dated and on the page, and the case study lives at [samievargas.com/field-discovery](https://samievargas.com/field-discovery/).
-
-**Life in Pixels** -- six months of my own daily data, askable in plain language, at [github.com/SamieVargas/pixels-rag](https://github.com/SamieVargas/pixels-rag). A router decides whether a question is a search, a filter, a sum or unanswerable, filters and sums run in code, and every answer is checked against the days it cites before it is shown. Twenty-six hand-written questions score it, and the card on /life is where it lives on the site.
-
-**ATX Foodie Inspection Analysis** -- health inspection records for Austin restaurants, fetched from the City of Austin Open Data Portal API, where I pulled 21,160 records and built a brand compliance scorecard across 84 local chains and then audited my own regular spots because of course I did. The findings are real and a couple of them are genuinely concerning if you eat at fast food chains in certain Austin zip codes.
-
-**Instacart Market Basket Analysis** -- dbt Cloud and BigQuery across 3.4M orders, five staging models into three marts with 35 passing tests, and the reorder rate that everybody cites at 0.60 splits into 0.221 for new shoppers and 0.670 for veterans once you segment it. The repo is also public at [github.com/SamieVargas/instacart-dbt](https://github.com/SamieVargas/instacart-dbt).
-
-**Wearable GDA Capstone** -- a Google Data Analytics capstone using wearable fitness data, and this one is what got me properly into analytics after years of building the operational side of things and watching the data insights sit unused.
-
-**IBM HR Churn Analysis** -- attrition modeling on a synthetic HR dataset.
-
----
-
 ## Why it's public
 
-The site is already live so the repo being private would not accomplish much, and also the code is the point, or part of the point. If you are a recruiter or hiring manager who clicked through from the live site, hello, the projects tab is probably what you are looking for but feel free to poke around here too.
+The site is already live so the repo being private would not accomplish much, and also the code is the point, or part of the point. It was private for a stretch, which is when the change log broke and every commit link on /toolkit went dead, so it is back to public and staying that way. If you are a recruiter or hiring manager who clicked through from the live site, hello, the projects section is probably what you are looking for but feel free to poke around here too.
 
 ---
 
@@ -120,10 +148,14 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260909" --include=*.html --include=*.js .
+grep -rln "?v=20260923" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.
+
+### Regenerating the résumé PDF
+
+`Resume.pdf` is printed from `resume.html` with headless Chromium, with the Google Fonts link swapped for embedded Newsreader and IBM Plex Mono so the PDF carries its own type. Regenerate it whenever the résumé copy changes, and check the page count before committing.
 
 ---
 
