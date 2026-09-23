@@ -10,7 +10,7 @@
 // the page it is in that file.
 // ============================================================
 
-const DATA_URL = '../data/pixels-runs.json?v=20260923f';
+const DATA_URL = '../data/pixels-runs.json?v=20260923g';
 
 const $ = (sel) => document.querySelector(sel);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -133,6 +133,9 @@ function stepFour(r) {
   if (r.abstained && !r.should_abstain) rows.push('Abstained when the golden set expected an answer: <span class="px-violation">a miss, counted against recall</span>');
   if (r.abstained && r.should_abstain) rows.push('Refused, as the golden set expected: <b>yes</b>');
   rows.push(`Hard fail: <b>${r.hard_fail ? 'yes' : 'no'}</b>`);
+  // A note added after reading the validator against the evidence, when a
+  // recorded violation turned out to be the check's error, not the model's.
+  if (r.validator_note) rows.push(`<span class="px-note">On review: ${esc(r.validator_note)}</span>`);
   return rows;
 }
 

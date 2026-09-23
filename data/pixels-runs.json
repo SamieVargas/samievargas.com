@@ -110,7 +110,8 @@
     "output_tokens": 901
    },
    "latency_ms": 10954,
-   "cost_usd": 0.0088
+   "cost_usd": 0.0088,
+   "validator_note": "This violation is the validator's mistake, not the answer's. The 2026-06-14 chunk records sleep as \"8.2hrs\", and the number pattern in core/validate.py skips a number glued to its unit, so a correct 8.2 is never found in the evidence and the one retry repeats it. It is listed in the repo's failure modes and under not built, unfixed until a re-run can re-quote the numbers."
   },
   {
    "id": "S02",
