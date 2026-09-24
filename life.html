@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>The rest of it — Samie Vargas</title>
-  <meta name="description" content="The personal half: the noticing field, the raccoon invoice, the record shelf, the Christie ledger, and where I actually eat in Austin.">
+  <meta name="description" content="The personal half: the noticing field, the raccoon invoice, the record shelf, the Christie ledger, and four notes from the data I live in.">
   <link rel="canonical" href="https://samievargas.com/life">
   <meta name="theme-color" content="#1a6b5a">
 
@@ -34,298 +34,147 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260923g">
+  <link rel="stylesheet" href="css/styles.css?v=20260924a">
 </head>
 <body>
 
 <!-- ── NAV ─────────────────────────────────────────────────── -->
 <nav class="nav">
-  <a class="nav__name" href="/">Samie Vargas</a>
-  <div class="nav__links">
-    <a href="/#signal">Signal</a>
-    <a href="/#work">Work</a>
-    <a href="/#experience">Experience</a>
-    <a href="/life#notes">Notes</a>
-    <span class="is-here label label--mid" style="color:var(--accent)">Life</span>
-    <a href="/apps/">Apps</a>
-    <a class="nav__cta" href="/resume">Résumé</a>
+  <div class="nav__in">
+    <a class="nav__name" href="/">Samie Vargas</a>
+    <div class="nav__links">
+      <a href="/">Work</a>
+      <a href="/life" class="is-here" id="nav-life" aria-current="page">Life</a>
+      <a href="/life#notes" id="nav-notes">Notes</a>
+      <a href="/apps/">Arcade</a>
+      <a href="/resume">Résumé</a>
+    </div>
   </div>
 </nav>
 
-<!-- ── HERO ────────────────────────────────────────────────── -->
-<header class="page-hero">
-  <span class="label label--wide">Austin, TX · since 2014</span>
-  <h1>The rest of <em>it</em>.</h1>
-  <p class="lead">I would be building most of this regardless, it is the same instinct as the work, which is to notice something and sit with it and make a thing, just pointed at raccoons, tarot decks, and the Greenbelt instead of revenue.</p>
-</header>
+<main class="wrap life">
 
-<!-- ── THE FIELD ───────────────────────────────────────────── -->
-<section class="section" id="field">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">01</span>
-      <h2>Everything here started as something I noticed</h2>
+  <!-- ── HERO ──────────────────────────────────────────────── -->
+  <header class="life-head" data-in>
+    <div class="life-head__l rv">
+      <span class="eyebrow">/life · Austin, since 2014</span>
+      <h1 class="life-h1">The same habit, pointed at things that do not pay.</h1>
     </div>
-    <span class="label label--mid">Click a dot</span>
-  </div>
-  <p class="field__intro">Left is where I only noticed something and right is where I built something about it, and none of this is on the work page even though it is the same instinct, just pointed at raccoons, tooth zones, and the Greenbelt.</p>
-  <div class="field rule-top">
-    <div>
-      <div class="plot" id="plot">
-        <span class="plot__axis plot__axis--tl">Work</span>
-        <span class="plot__axis plot__axis--bl">Life</span>
-        <span class="plot__axis plot__axis--tr">Built it →</span>
-        <span class="plot__mid-h"></span>
-        <span class="plot__mid-v"></span>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" id="plot-lines"></svg>
-        <span class="plot__count" id="plot-count"></span>
-      </div>
-      <div class="plot-key">
-        <div><i></i><span class="label label--mid">Something you can open</span></div>
-        <div><i></i><span class="label label--mid">A note, no artifact</span></div>
-        <span class="plot-key__lens label label--mid" id="plot-lens">Move to magnify</span>
-      </div>
-      <div class="plot-modes">
-        <button type="button" class="chip is-on" data-mode="scatter" aria-pressed="true">Scatter</button>
-        <button type="button" class="chip" data-mode="cluster" aria-pressed="false">Cluster</button>
-      </div>
-    </div>
-    <article class="field__card" id="field-card"></article>
-  </div>
-</section>
+    <p class="plain rv rv--fade" style="--d:.2s"><strong>In plain terms:</strong> this is everything I noticed outside of work, plotted by whether I ended up building something about it, plus the running lists I keep for fun.</p>
+  </header>
 
-<!-- ── IN PROGRESS ─────────────────────────────────────────── -->
-<section class="section section--alt" id="progress">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">02</span>
-      <h2>Things I am part-way through</h2>
+  <!-- ── THE NOTICING FIELD ────────────────────────────────── -->
+  <section class="life-field" id="field" data-in>
+    <div class="life-field__head rv">
+      <h2 class="life-h2">The noticing field</h2>
+      <div class="life-kinds" id="life-kinds" role="group" aria-label="Filter by kind"></div>
     </div>
-    <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Nothing here is finished, which is the point</span>
-  </div>
-  <div class="progress-grid" id="progress-rows"></div>
-</section>
-
-<!-- ── THE RACCOON INVOICE ─────────────────────────────────── -->
-<section class="section" id="raccoon">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">03</span>
-      <h2>The Raccoon Invoice</h2>
-    </div>
-    <a class="label label--mid" style="white-space:nowrap" href="https://samievargas.com/raccoon/">samievargas.com/raccoon ↗</a>
-  </div>
-  <div class="raccoon rule-top">
-    <div>
-      <p class="lead">For five nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans, and then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.</p>
-      <p class="raccoon__note">The wearable had the whole story before I did, and what surprised me was the tail, because the raccoons left on May 3 and it still took eight more days to get back to baseline, so the nervous system does not get the memo.</p>
-      <div class="receipt">
-        <div class="receipt__perf"></div>
-        <div class="receipt__head">
-          <p class="receipt__title">The Raccoon Invoice</p>
-          <p class="receipt__meta">Tenant: Samie Vargas · Austin, TX<br>Period: Apr 23 – May 10, 2026<br>Issued by: The Raccoon (unauthorized occupant)</p>
+    <div class="life-field__grid rv" style="--d:.1s">
+      <div class="life-plot" id="life-plot">
+        <i class="life-plot__half life-plot__half--l"></i><i class="life-plot__half life-plot__half--r"></i>
+        <i class="life-plot__mid"></i>
+        <div class="life-plot__top">
+          <span><span class="life-plot__t">Noticed</span><span class="life-plot__s">things I paid attention to</span></span>
+          <span class="life-plot__built"><span class="life-plot__t">Built</span><span class="life-plot__s">things I made something about</span></span>
         </div>
-        <div id="invoice-rows"></div>
-        <div class="receipt__totals">
-          <div><span>Total disruption</span><span class="bad">17 days</span></div>
-          <div><span>Recovery lag after removal</span><span class="bad">8 days</span></div>
-          <div class="receipt__due"><span>Balance due</span><span>$0 · paid in raccoon</span></div>
-        </div>
-        <div class="receipt__foot">
-          <p>Thank you for your unauthorized tenancy.<br>Please do not return.</p>
-          <p class="receipt__norefunds">*** NO REFUNDS ***</p>
+        <div class="life-plot__axis"><span>just noticed</span><i></i><span class="life-plot__axis-end">built →</span></div>
+        <div class="life-plot__area" id="life-area">
+          <svg class="life-plot__links" id="life-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
         </div>
       </div>
+      <article class="life-card" id="life-card" aria-live="polite"></article>
     </div>
-    <div>
-      <p class="battery__label">Body battery, out of 100 · hover a day</p>
-      <div class="battery__bars" id="battery"></div>
-      <div class="battery__scale">
-        <span class="label label--mid" style="letter-spacing:.1em">Apr 24</span>
-        <span class="label label--mid" style="letter-spacing:.1em">May 11</span>
-      </div>
-      <p class="battery__readout" id="battery-readout"></p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── EATING HERE ─────────────────────────────────────────── -->
-<section class="section section--alt" id="eating">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">04</span>
-      <h2>Eating here</h2>
+  <!-- ── IN PROGRESS + THE DRAGON ──────────────────────────── -->
+  <section class="life-prog" id="progress" data-in>
+    <div class="life-prog__col rv">
+      <div class="sechead"><h2>In progress</h2><span class="meta">six things, none on a roadmap</span></div>
+      <div class="life-bars" id="life-bars"></div>
     </div>
-    <span class="label label--mid" style="white-space:nowrap">Hover a place · scores are real</span>
-  </div>
-  <p class="eat__intro">This is the standing rotation and the reason the inspection project exists, because I pulled 21,160 city records since I wanted to know about exactly this list, and the scores are the city's where lower means fewer violations.</p>
-  <div class="eat" id="places"></div>
-  <div class="eat__foot">
-    <p>The Caesar salad search continues and may be structurally doomed, since the current standard is a cold plate with no anchovy and croutons that were bread yesterday, and nothing in Austin has cleared it yet, which is the only open ticket on this page.</p>
-    <a href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">How I checked all of them ↗</a>
-  </div>
-</section>
+    <div class="life-prog__col rv" style="--d:.12s" id="dragon">
+      <div class="sechead"><h2>The dragon</h2><span class="meta" id="ring-meta">Ring Fit · level 0</span></div>
+      <div class="life-ring" id="life-ring" aria-hidden="true"></div>
+      <div class="life-ring__ticks"><span>level 1</span><span id="ring-save"></span><span id="ring-boss"></span></div>
+      <p class="life-quote" id="ring-quote"></p>
+      <div class="life-lists">
+        <div class="life-list"><span class="life-micro">Reading</span><div id="life-reading"></div></div>
+        <div class="life-list"><span class="life-micro">Playing</span><div id="life-playing"></div></div>
+      </div>
+    </div>
+  </section>
 
-<!-- ── THE RECORD SHELF ────────────────────────────────────── -->
-<section class="section section--dark" id="records">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">05</span>
-      <h2>The record shelf</h2>
+  <!-- ── THE CHRISTIE LEDGER ───────────────────────────────── -->
+  <section class="life-sec" id="christie" data-in>
+    <div class="life-sec__head rv">
+      <h2 class="life-h2">The complete Christie, in order</h2>
+      <span class="meta">stalled on late Poirot, because he is getting old and I am not ready</span>
     </div>
-    <span class="label" style="white-space:nowrap;color:var(--dark-faint)">Thirty-five and counting · dig through the crate</span>
-  </div>
-  <div class="rule-top crate-grid">
-    <div>
-      <div class="crate">
-        <div class="crate__row" id="rec-crate"></div>
-        <div class="crate__base"><span>THE&nbsp;CRATE&nbsp;·&nbsp;35&nbsp;LPs</span></div>
+    <div class="life-books" id="life-books" role="group" aria-label="The Christie shelf"></div>
+    <div class="life-sec__split">
+      <div class="life-legend">
+        <span><i class="life-b--5"></i>5 stars</span>
+        <span><i class="life-b--4"></i>4</span>
+        <span><i class="life-b--3"></i>3</span>
+        <span><i class="life-b--2"></i>2</span>
+        <span><i class="life-b--u"></i>unread</span>
+        <span><i class="life-b--c"></i>reading now</span>
       </div>
-      <p class="crate__readout" id="rec-readout"></p>
+      <div class="life-book" id="life-book" aria-live="polite"></div>
     </div>
-    <div>
-      <div class="deck" id="turntable">
-        <div class="deck__platter">
-          <div class="deck__label" id="deck-label">
-            <span class="deck__label-t" id="deck-label-t"></span>
-            <span class="deck__label-hole"></span>
-            <span class="deck__label-sub">33⅓ RPM · SIDE A</span>
-          </div>
-          <div class="deck__sheen"></div>
-        </div>
-        <div class="deck__spindlecap"></div>
-        <div class="deck__arm" id="deck-arm"><i class="deck__arm-weight"></i><i class="deck__arm-head"></i></div>
-        <div class="deck__controls">
-          <i class="deck__power" id="deck-power"></i>
-          <span class="deck__speed deck__speed--on">33⅓</span>
-          <span class="deck__speed">45</span>
-        </div>
-        <span class="deck__index" id="deck-index"></span>
-        <div class="deck__sleeve" id="deck-sleeve"><span id="deck-sleeve-t"></span></div>
-      </div>
-      <p class="deck__caption" id="deck-caption"></p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── THE CHRISTIE LEDGER ─────────────────────────────────── -->
-<section class="section section--dark" id="christie">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">06</span>
-      <h2>The Christie ledger</h2>
+  <!-- ── THE RECORD SHELF ──────────────────────────────────── -->
+  <section class="life-sec" id="records" data-in>
+    <div class="life-sec__head rv">
+      <h2 class="life-h2">The record shelf</h2>
+      <span class="meta">thirty-five and counting · from the Discogs export</span>
     </div>
-    <span class="label" style="white-space:nowrap;color:var(--dark-faint)">33 read · avg 3.9 · 17 more on the shelf</span>
-  </div>
-  <div class="rule-top ledger-grid">
-    <div>
-      <div class="crate">
-        <div class="crate__row crate__row--books" id="chr-shelf"></div>
-        <div class="crate__base"><span>CHRISTIE&nbsp;·&nbsp;33&nbsp;DOWN&nbsp;·&nbsp;17&nbsp;TO&nbsp;GO</span></div>
-      </div>
-      <div class="chr-foot">
-        <div>
-          <p class="chr-foot__title" id="chr-title">Hover a spine</p>
-          <p class="chr-foot__meta" id="chr-meta">Arrow keys walk the shelf</p>
-        </div>
-        <span class="chr-foot__prog" id="chr-progress"></span>
-      </div>
-      <div class="ledger-legend">
-        <span><i style="background:#0f6e56"></i><span>5 stars</span></span>
-        <span><i style="background:#4daa91"></i><span>4 stars</span></span>
-        <span><i style="background:#d97706"></i><span>3 stars</span></span>
-        <span><i style="background:#b4552f"></i><span>2 stars</span></span>
-      </div>
+    <div class="life-sec__split">
+      <div class="life-recs" id="life-recs" role="group" aria-label="The record shelf"></div>
+      <div class="life-rec" id="life-rec" aria-live="polite"></div>
     </div>
-    <div>
-      <div class="libcard" id="libcard"></div>
-      <p class="label" style="display:block;margin-top:14px;letter-spacing:.12em;color:var(--dark-faint)">Pull a spine · the two-star shelf is load-bearing</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── ON ROTATION ─────────────────────────────────────────── -->
-<section class="section" id="rotation">
-  <div class="rotation">
-    <div>
-      <div class="rotation__head">
-        <span class="section__num">07</span>
-        <h2>On rotation</h2>
-      </div>
-      <div id="facts"></div>
+  <!-- ── THE RACCOON INVOICE ───────────────────────────────── -->
+  <section class="life-inv" id="raccoon" data-in>
+    <div class="life-inv__l rv">
+      <span class="eyebrow">Apr–May 2026 · the balcony</span>
+      <h2 class="life-h2 life-h2--36">The Raccoon Invoice</h2>
+      <p class="life-inv__p">Five bad nights that I blamed on podcasts, and my recovery score had been pinned at the floor for days before I found a raccoon nesting on my balcony, so I billed her.</p>
+      <p class="plain"><strong>In plain terms:</strong> my sleep tracker noticed the stress days before I did, so I turned the damage into a receipt.</p>
+      <a class="life-btn" href="/raccoon/">Read the full story →</a>
     </div>
-    <div class="rotation__main">
-      <a class="np" href="https://open.spotify.com/playlist/3oLN1CsU4GEi8N3q6SbhbE">
-        <div class="np__head">
-          <span>Now playing</span>
-          <span>Spotify ↗</span>
-        </div>
-        <p class="np__title">The one I keep coming back to</p>
-        <p class="np__blurb">I built it over a couple of years, mostly for walking the Greenbelt and for the hour before I start writing anything.</p>
-        <div class="np__eq np__eq--tall" id="eq"></div>
-        <div class="np__foot">
-          <span class="np__play">▶</span>
-          <span class="np__track"><i></i></span>
-          <span>open in Spotify</span>
-        </div>
-      </a>
+    <div class="life-receipt rv" style="--d:.1s">
+      <div class="life-receipt__head"><span>INVOICE</span><span>billed to: one raccoon</span></div>
+      <div id="life-inv-rows"></div>
+      <div class="life-receipt__total" id="life-inv-total"><span>Amount paid</span><span>$0.00</span></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── NOTES — the four observations, moved here from the homepage ── -->
-<section class="section section--alt" id="notes">
-  <div class="section__head" style="margin-bottom:8px">
-    <div class="section__head-l">
-      <span class="section__num">08</span>
-      <h2>Notes from the data I live in</h2>
-    </div>
-    <span class="label" id="obs-counter" style="color:var(--faint-deco)"></span>
-  </div>
-  <div class="obs rule-top">
-    <div>
-      <p class="label label--accent" id="obs-tag"></p>
-      <h3 id="obs-title"></h3>
-      <div class="obs__nav">
-        <button type="button" class="arrow" id="obs-prev" aria-label="Previous observation">‹</button>
-        <button type="button" class="arrow" id="obs-next" aria-label="Next observation">›</button>
-        <div class="dots" id="obs-dots"></div>
+  <!-- ── NOTES ─────────────────────────────────────────────── -->
+  <section class="life-notes" id="notes">
+    <header class="notes-head" data-in>
+      <div class="notes-head__l rv">
+        <span class="eyebrow">Notes · four so far</span>
+        <h2 class="life-h1">What the data I live in keeps telling me.</h2>
       </div>
-    </div>
-    <div>
-      <div id="obs-chart"></div>
-      <div class="obs__body" id="obs-body"></div>
-      <p class="obs__src" id="obs-src"></p>
-    </div>
-  </div>
-</section>
-
-<!-- ── THE DRAGON ──────────────────────────────────────────── -->
-<section class="section" id="dragon">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">09</span>
-      <h2>The dragon</h2>
-    </div>
-    <span class="label label--mid" style="white-space:nowrap">Ring Fit Adventure · the fight is the point</span>
-  </div>
-  <div class="dragon rule-top" id="dragon-block">
-    <div class="dragon__stats" id="dragon-stats"></div>
-    <blockquote class="dragon__quote">
-      <p id="dragon-quote"></p>
-      <cite>Why I keep the save file going</cite>
-    </blockquote>
-  </div>
-</section>
+      <nav class="notes-index rv rv--fade" style="--d:.2s" id="notes-index" aria-label="The four notes"></nav>
+    </header>
+    <div id="notes-list"></div>
+  </section>
+</main>
 
 <!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer class="footer footer--light">
-  <a class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)" href="/">← Back to the work</a>
-  <span class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)">© 2026 Samie Vargas</span>
+<footer class="foot">
+  <div class="foot__in">
+    <span>© 2026 Samie Vargas</span>
+    <span class="foot__links"><a href="/toolkit">Site toolkit ↗</a><a href="/">← back to the work</a></span>
+  </div>
 </footer>
 
-<script type="module" src="js/life.js?v=20260923g"></script>
+<script type="module" src="js/life.js?v=20260924a"></script>
 </body>
 </html>

@@ -1,351 +1,106 @@
 // ============================================================
 // js/arcade.js
-// /apps — the arcade machine, the cabinets, and the effects:
-// CRT power-on, attract mode, coin drop, cursor trail, ticket
-// dispenser, high-score initials. All motion respects
-// prefers-reduced-motion.
+// /apps: the title ticker, the badge filter, six featured cards and
+// the other nine as rows, all built from ARCADE_APPS. The only state
+// is the badge filter. Motion respects prefers-reduced-motion through
+// reveal.js and the stylesheet.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260923g';
+import { ARCADE_APPS } from '../data/content.js?v=20260924a';
+import { $, esc, onSeen } from './reveal.js?v=20260924a';
 
-const $ = (sel) => document.querySelector(sel);
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const N = ARCADE_APPS.length;
+const TOTAL = ARCADE_APPS.length;
+const APPS = ARCADE_APPS.map((a, i) => ({ ...a, num: `${String(i + 1).padStart(2, '0')} / ${TOTAL}` }));
 
-const state = {
-  reelIdx: 0, spinning: false, coinDropping: false, landed: false, credits: 0,
-  attract: false, ticketOut: false, ticketTorn: false,
-  initialsEditing: false, initials: null, letters: [0, 0, 0],
-};
+const FILTERS = [
+  ['All', () => true],
+  ['Live data', (a) => a.badge.includes('live')],
+  ['No data needed', (a) => a.badge === 'no data needed'],
+  ['Tracks your taps', (a) => a.badge === 'tracks your taps'],
+  ['Your export', (a) => a.badge.includes('export')],
+];
 
-// ── Cards and table ──────────────────────────────────────────
-// A1 — four archetypes, one per app, built in CSS rather than
-// screenshotted. Paused at a representative frame until the tile is
-// hovered or focused, so fifteen of them cost nothing at rest.
-function previewHtml(a) {
-  const pa = `--pa:${a.accent}`;
-  switch (a.preview) {
-    case 'bars':
-      return `<span class="prev prev--bars" style="${pa}" aria-hidden="true">${
-        [0, 0.2, 0.4, 0.6].map((d) => `<i style="animation-delay:${d}s"></i>`).join('')}</span>`;
-    case 'ring':
-      return `<span class="prev prev--ring" style="${pa}" aria-hidden="true"><i></i></span>`;
-    case 'grid':
-      return `<span class="prev prev--grid" style="${pa}" aria-hidden="true">${
-        [0, 1, 2, 3, 4, 5].map((n) => `<i style="background:${n % 2 ? 'var(--rule-strong)' : a.accent}"></i>`).join('')}</span>`;
-    default:
-      return `<span class="prev prev--term" style="${pa}" aria-hidden="true">${esc(a.slug)} <u></u></span>`;
-  }
+const state = { filter: 'All' };
+const seen = { feat: false, rest: false };
+
+// ── Ticker: every title twice, so the -50% loop is seamless ──
+function renderTicker() {
+  const one = APPS.map((a) => `<span><i></i>${esc(a.title)}</span>`).join('');
+  $('#arc-ticker').innerHTML = one + one;
 }
 
-function renderApps() {
-  $('#featured').innerHTML = ARCADE_APPS.filter((a) => a.feat).map((a) => `
-    <a class="fcard" href="${a.slug}" data-needs="${a.needs.join(' ')}">
-      <span class="fcard__marquee"><span>${esc(a.title)}</span><i style="background:${a.accent}"></i></span>
-      <span class="fcard__shot">${previewHtml(a)}</span>
-      <span class="fcard__body">
-        <span class="fcard__head">
-          <span class="fcard__title">${esc(a.title)}</span>
-          <span class="arc-badge" style="color:${a.accent}">${esc(a.badge)}</span>
-        </span>
-        <span class="fcard__hook">${esc(a.hook)}</span>
-        <span class="fcard__start" style="color:${a.accent}">Press start →</span>
-      </span>
-    </a>`).join('');
-
-  $('#others').innerHTML = ARCADE_APPS.filter((a) => !a.feat).map((a, i) => `
-    <a class="hst-row" href="${a.slug}" data-needs="${a.needs.join(' ')}">
-      <span class="rank">${String(i + 7).padStart(2, '0')}</span>
-      <span class="game">${esc(a.title)}</span>
-      <span class="what">${esc(a.hook)}</span>
-      <span class="arc-badge" style="color:${a.accent}">${esc(a.badge)}</span>
-    </a>`).join('');
+// ── Filters ──────────────────────────────────────────────────
+function renderFilters() {
+  $('#arc-filters').innerHTML = FILTERS.map(([name, fn]) => {
+    const on = name === state.filter;
+    return `<button type="button" class="chip" data-f="${esc(name)}" aria-pressed="${on}">${esc(name)} <span>${APPS.filter(fn).length}</span></button>`;
+  }).join('');
 }
 
-
-// ── A2 ── Filter by what an app needs. Tiles travel to their new
-// positions (measure, invert, release) instead of jumping.
-function applyFilter(cat) {
-  const cards = [...document.querySelectorAll('#featured .fcard')];
-  const first = new Map(cards.map((c) => [c, c.getBoundingClientRect()]));
-
-  const show = (el) => {
-    const needs = (el.dataset.needs || '').split(' ');
-    el.hidden = !(cat === 'all' || needs.includes(cat));
-  };
-  cards.forEach(show);
-  document.querySelectorAll('#others .hst-row').forEach(show);
-
-  if (!REDUCED) {
-    cards.forEach((c) => {
-      if (c.hidden) return;
-      const f = first.get(c);
-      const last = c.getBoundingClientRect();
-      const dx = f.left - last.left;
-      const dy = f.top - last.top;
-      if (!dx && !dy) return;
-      c.style.transition = 'none';
-      c.style.transform = `translate(${dx}px, ${dy}px)`;
-      requestAnimationFrame(() => {
-        c.style.transition = 'transform .45s cubic-bezier(.2,.8,.2,1)';
-        c.style.transform = '';
-      });
-    });
-  }
-
-  document.querySelectorAll('#acat .chip').forEach((b) => {
-    const on = b.dataset.cat === cat;
-    b.classList.toggle('is-on', on);
-    b.setAttribute('aria-pressed', String(on));
-  });
+function shot(a, cls) {
+  return `<div class="${cls}"><img src="${esc(a.shot)}" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
 }
 
-function wireFilter() {
-  const row = $('#acat');
-  if (!row) return;
-  row.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-cat]');
-    if (b) applyFilter(b.dataset.cat);
-  });
+const cardHtml = (a, i) => `
+  <a class="arc-card" href="${esc(a.slug)}" style="--hue:${a.accent};--d:${(150 + i * 90) / 1000}s">
+    ${shot(a, 'arc-card__shot')}
+    <div class="arc-card__body">
+      <div class="arc-card__top"><span class="arc-card__badge">${esc(a.badge)}</span><span class="arc-card__num">${a.num}</span></div>
+      <span class="arc-card__title">${esc(a.title)}</span>
+      <span class="arc-card__hook">${esc(a.hook)}</span>
+      <span class="arc-card__play">Play →</span>
+    </div>
+  </a>`;
+
+const rowHtml = (a, i) => `
+  <a class="arc-row" href="${esc(a.slug)}" style="--hue:${a.accent};--d:${(100 + i * 70) / 1000}s">
+    ${shot(a, 'arc-row__shot')}
+    <span class="arc-row__text">
+      <span class="arc-row__line"><span class="arc-row__title">${esc(a.title)}</span><span class="arc-row__badge">${esc(a.badge)}</span></span>
+      <span class="arc-row__hook">${esc(a.hook)}</span>
+    </span>
+  </a>`;
+
+// Rebuild both lists for the current filter; a list lights (and its items
+// stagger in) once its section has been seen.
+function renderLists() {
+  const test = (FILTERS.find((f) => f[0] === state.filter) || FILTERS[0])[1];
+  const shown = APPS.filter(test);
+  const feat = shown.filter((a) => a.feat);
+  const rest = shown.filter((a) => !a.feat);
+
+  const grid = $('#arc-feat-grid');
+  const list = $('#arc-rest-list');
+  grid.classList.remove('is-lit');
+  list.classList.remove('is-lit');
+  grid.innerHTML = feat.map(cardHtml).join('');
+  list.innerHTML = rest.map(rowHtml).join('');
+  $('#arc-feat-n').textContent = `${feat.length} shown`;
+  $('#arc-rest-n').textContent = `${rest.length} shown`;
+  $('#arc-feat').hidden = !feat.length;
+  $('#arc-rest').hidden = !rest.length;
+
+  // Let the hidden state paint before lighting, so the stagger replays.
+  void grid.offsetWidth;
+  if (seen.feat) grid.classList.add('is-lit');
+  if (seen.rest) list.classList.add('is-lit');
 }
 
-// ── The machine ──────────────────────────────────────────────
-function renderReel() {
-  $('#reel-prev').textContent = ARCADE_APPS[(state.reelIdx + N - 1) % N].title;
-  $('#reel-cur').textContent = ARCADE_APPS[state.reelIdx].title;
-  $('#reel-next').textContent = ARCADE_APPS[(state.reelIdx + 1) % N].title;
-}
-
-function renderMachine() {
-  const btn = $('#insert-coin');
-  btn.textContent = (state.spinning || state.coinDropping) ? 'Dealing…'
-    : (state.credits > 0 ? 'Insert another coin' : 'Insert coin');
-  $('#credit-readout').innerHTML = `CREDITS&nbsp;${String(state.credits).padStart(2, '0')}`;
-  const play = $('#play-it');
-  if (state.landed && !state.spinning) {
-    const href = ARCADE_APPS[state.reelIdx].slug;
-    if (play) { play.href = href; }
-    else $('#btnrow').insertAdjacentHTML('beforeend', `<a class="cab__play" id="play-it" href="${href}">Play it →</a>`);
-  } else if (play) {
-    play.remove();
-  }
-  renderReel();
-  renderScore();
-}
-
-function runSpin() {
-  const total = 22 + Math.floor(Math.random() * 8);
-  let step = 0;
-  const tick = () => {
-    step++;
-    state.reelIdx = (state.reelIdx + 1) % N;
-    renderReel();
-    if (step < total) {
-      setTimeout(tick, step < total - 6 ? 60 : 60 + (step - (total - 6)) * 55);
-    } else {
-      state.spinning = false;
-      state.landed = true;
-      renderMachine();
-      renderBulbs();
-    }
-  };
-  tick();
-}
-
-function wireSpin() {
-  $('#insert-coin').addEventListener('click', () => {
-    if (state.spinning || state.coinDropping) return;
-    state.credits += 1;
-    if (REDUCED) {
-      state.reelIdx = Math.floor(Math.random() * N);
-      state.landed = true;
-      renderMachine();
-      return;
-    }
-    state.coinDropping = true;
-    state.landed = false;
-    renderMachine();
-    renderBulbs();
-    const coin = document.createElement('i');
-    coin.className = 'cab__coin';
-    $('#btnrow').appendChild(coin);
-    setTimeout(() => {
-      coin.remove();
-      state.coinDropping = false;
-      state.spinning = true;
-      renderMachine();
-      renderBulbs();
-      runSpin();
-    }, 480);
-  });
-}
-
-// ── Marquee bulbs: one chases; all light during a spin ───────
-let bulbOn = 0;
-function renderBulbs() {
-  [...$('#bulbs').children].forEach((b, i) =>
-    b.classList.toggle('is-lit', state.spinning || i === bulbOn));
-}
-function startBulbs() {
-  if (REDUCED) return;
-  setInterval(() => { bulbOn = (bulbOn + 1) % 5; renderBulbs(); }, 700);
-}
-
-// ── CRT power-on, once per session ───────────────────────────
-function crtPowerOn() {
-  if (REDUCED) return;
-  try {
-    if (sessionStorage.getItem('samie-arcade-crt')) return;
-    sessionStorage.setItem('samie-arcade-crt', '1');
-  } catch (err) { return; }
-  const crt = document.createElement('div');
-  crt.className = 'crt';
-  crt.innerHTML = '<i class="half half--top"></i><i class="line"></i><i class="half half--bot"></i>';
-  document.body.appendChild(crt);
-  setTimeout(() => crt.remove(), 750);
-}
-
-// ── Attract mode after 20s idle ──────────────────────────────
-function startAttract() {
-  if (REDUCED) return;
-  let idleT, attractT = null;
-  const stop = () => {
-    clearTimeout(idleT);
-    if (attractT) {
-      clearInterval(attractT);
-      attractT = null;
-      state.attract = false;
-      const o = $('#attract');
-      if (o) o.remove();
-    }
-    idleT = setTimeout(() => {
-      if (state.spinning || state.coinDropping) { stop(); return; }
-      state.attract = true;
-      state.landed = false;
-      renderMachine();
-      $('#reel').insertAdjacentHTML('beforeend',
-        '<div class="reel__attract" id="attract"><span>INSERT&nbsp;COIN</span></div>');
-      attractT = setInterval(() => {
-        state.reelIdx = (state.reelIdx + 1) % N;
-        renderReel();
-      }, 480);
-    }, 20000);
-  };
-  ['pointermove', 'pointerdown', 'keydown', 'wheel'].forEach((ev) =>
-    window.addEventListener(ev, stop, { passive: true }));
-  stop();
-}
-
-// ── Pixel cursor trail ───────────────────────────────────────
-function startTrail() {
-  if (REDUCED) return;
-  let last = 0;
-  window.addEventListener('pointermove', (e) => {
-    const now = Date.now();
-    if (now - last < 45) return;
-    last = now;
-    const d = document.createElement('i');
-    d.style.cssText = `position:fixed;z-index:300;pointer-events:none;width:5px;height:5px;background:#1a6b5a;left:${e.clientX - 2}px;top:${e.clientY + 8}px;animation:spark .5s ease-out forwards`;
-    d.addEventListener('animationend', () => d.remove());
-    document.body.appendChild(d);
-  }, { passive: true });
-}
-
-// ── Ticket dispenser ─────────────────────────────────────────
-function wireTicket() {
-  const ticket = $('#ticket');
-  // A plain scroll check, not IntersectionObserver — simpler and reliable here.
-  const check = () => {
-    if (state.ticketOut) return;
-    const f = $('#arcade-footer');
-    if (f && f.getBoundingClientRect().top < window.innerHeight * 0.8) {
-      state.ticketOut = true;
-      ticket.classList.add('is-out');
-      window.removeEventListener('scroll', check);
-      window.removeEventListener('resize', check);
-    }
-  };
-  window.addEventListener('scroll', check, { passive: true });
-  window.addEventListener('resize', check, { passive: true });
-  check();
-
-  ticket.addEventListener('click', () => {
-    if (state.ticketTorn) return;
-    state.ticketTorn = true;
-    $('#ticket-well').classList.add('is-open');
-    ticket.classList.add('is-torn');
-    setTimeout(() => {
-      ticket.remove();
-      state.credits += 10;
-      $('#ticket-redeemed').hidden = false;
-      renderMachine();
-    }, 900);
-  });
-}
-
-// ── High-score initials ──────────────────────────────────────
-function renderScore() {
-  const host = $('#hiscore-body');
-  if (!host) return;
-  if (state.initialsEditing) {
-    if (!host.querySelector('.hiscore__edit')) {
-      host.innerHTML = `
-        <div class="hiscore__edit">
-          ${[0, 1, 2].map((i) => `
-            <div class="hiscore__col">
-              <button type="button" data-up="${i}">▲</button>
-              <span class="hiscore__ch" data-ch="${i}">${AZ[state.letters[i]]}</span>
-              <button type="button" data-down="${i}">▼</button>
-            </div>`).join('')}
-          <button type="button" class="hiscore__end" id="save-initials">END</button>
-        </div>`;
-    } else {
-      [0, 1, 2].forEach((i) => { host.querySelector(`[data-ch="${i}"]`).textContent = AZ[state.letters[i]]; });
-    }
-  } else {
-    const line = state.initials
-      ? `PLAYER ${state.initials} · ${String(state.credits * 100).padStart(6, '0')}`
-      : 'ENTER YOUR INITIALS ▸';
-    host.innerHTML = `<button type="button" class="hiscore__idle" id="edit-initials">${esc(line)}</button>`;
-  }
-}
-
-function wireScore() {
-  $('#hiscore-body').addEventListener('click', (e) => {
-    const t = e.target;
-    if (t.id === 'edit-initials') {
-      state.initialsEditing = true;
-      state.letters = (state.initials || 'AAA').split('').map((c) => Math.max(0, AZ.indexOf(c)));
-      renderScore();
-    } else if (t.dataset.up !== undefined) {
-      const i = Number(t.dataset.up);
-      state.letters[i] = (state.letters[i] + 25) % 26;
-      renderScore();
-    } else if (t.dataset.down !== undefined) {
-      const i = Number(t.dataset.down);
-      state.letters[i] = (state.letters[i] + 1) % 26;
-      renderScore();
-    } else if (t.id === 'save-initials') {
-      state.initials = state.letters.map((i) => AZ[i]).join('');
-      try { localStorage.setItem('samie-arcade-initials', state.initials); } catch (err) { /* fine */ }
-      state.initialsEditing = false;
-      renderScore();
-    }
+function wireFilters() {
+  $('#arc-filters').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-f]');
+    if (!b || b.dataset.f === state.filter) return;
+    state.filter = b.dataset.f;
+    renderFilters();
+    renderLists();
   });
 }
 
 // ── Boot ─────────────────────────────────────────────────────
-try { state.initials = localStorage.getItem('samie-arcade-initials') || null; } catch (err) { /* fine */ }
-renderApps();
-wireFilter();
-renderMachine();
-renderBulbs();
-wireSpin();
-wireTicket();
-wireScore();
-startBulbs();
-crtPowerOn();
-startAttract();
-startTrail();
+renderTicker();
+renderFilters();
+renderLists();
+wireFilters();
+onSeen($('#arc-head'));
+onSeen($('#arc-feat'), () => { seen.feat = true; $('#arc-feat-grid').classList.add('is-lit'); });
+onSeen($('#arc-rest'), () => { seen.rest = true; $('#arc-rest-list').classList.add('is-lit'); });

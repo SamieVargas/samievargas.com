@@ -34,109 +34,60 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css?v=20260923g">
+  <link rel="stylesheet" href="../css/styles.css?v=20260924a">
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────────────────────────── -->
 <nav class="nav">
-  <a class="nav__name" href="/">Samie Vargas</a>
-  <div class="nav__links">
-    <a href="/#signal">Signal</a>
-    <a href="/#work">Work</a>
-    <a href="/#experience">Experience</a>
-    <a href="/life#notes">Notes</a>
-    <a href="/life">Life</a>
-    <span class="is-here label label--mid" style="color:var(--accent)">Apps</span>
-    <a class="nav__cta" href="/resume">Résumé</a>
+  <div class="nav__in">
+    <a class="nav__name" href="/">Samie Vargas</a>
+    <div class="nav__links">
+      <a href="/">Work</a>
+      <a href="/life">Life</a>
+      <a href="/life#notes">Notes</a>
+      <span class="is-here" aria-current="page">Arcade</span>
+      <a href="/resume">Résumé</a>
+    </div>
   </div>
 </nav>
 
-<!-- ── HERO + THE MACHINE ──────────────────────────────────── -->
-<header class="apps-hero">
-  <div>
-    <span class="label label--wide">The arcade · fifteen small apps</span>
-    <h1>Small apps that each do exactly one thing</h1>
-    <p class="lead">I built these for fun and kept them because people use them, and six pull live public data while a few read files you export yourself, two track what you tap, and the rest need nothing but a browser, so there are no servers and no keys and no logins, and nothing you do here leaves your machine.</p>
-  </div>
-  <div class="cab">
-    <div class="cab__bar">
-      <span>THE&nbsp;ARCADE</span>
-      <span class="cab__bulbs" id="bulbs"><i></i><i></i><i></i><i></i><i></i></span>
+<div class="arc-ticker" aria-hidden="true">
+  <div class="arc-ticker__run" id="arc-ticker"></div>
+</div>
+
+<main class="wrap arc-main">
+  <header class="arc-head" id="arc-head">
+    <div class="arc-head__l rv">
+      <span class="eyebrow">/apps · the arcade</span>
+      <h1 class="arc-h1">Fifteen apps, free play, no quarters.</h1>
+      <p class="arc-lead">Small single-purpose toys, most of them running on real public data, built on evenings when a question would not leave me alone.</p>
     </div>
-    <div class="cab__body">
-      <p class="cab__caption">One credit · one app, dealt at random</p>
-      <div class="reel" id="reel">
-        <div class="reel__row reel__row--prev" id="reel-prev"></div>
-        <div class="reel__cur" id="reel-cur"></div>
-        <div class="reel__row reel__row--next" id="reel-next"></div>
-      </div>
-      <div class="cab__btnrow" id="btnrow">
-        <button type="button" class="cab__insert" id="insert-coin">Insert coin</button>
-      </div>
-      <div class="cab__ledger">
-        <span id="credit-readout">CREDITS&nbsp;00</span><span>FREE&nbsp;PLAY&nbsp;·&nbsp;NO&nbsp;QUARTERS</span>
-      </div>
+    <div class="arc-head__r rv rv--fade" style="--d:.2s">
+      <p class="plain"><strong>In plain terms:</strong> each one does exactly one silly or useful thing, and the badge tells you whether it pulls live data, runs entirely in your browser, or wants a file from you.</p>
+      <div class="arc-filters" id="arc-filters" role="group" aria-label="Filter apps by badge"></div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- ── FEATURED SIX ────────────────────────────────────────── -->
-<section class="section section--alt" style="padding-top:56px;padding-bottom:56px">
-  <div class="section__head-l" style="margin-bottom:26px">
-    <span class="section__num">01</span>
-    <h2 style="font-size:clamp(26px,2.6vw,36px);letter-spacing:-.02em">Start with these six</h2>
-  </div>
-  <div class="acat" id="acat">
-    <button type="button" class="chip is-on" data-cat="all">All</button>
-    <button type="button" class="chip" data-cat="live">Live API</button>
-    <button type="button" class="chip" data-cat="export">Your export</button>
-    <button type="button" class="chip" data-cat="browser">Browser only</button>
-  </div>
-  <div class="fgrid" id="featured"></div>
-</section>
+  <section class="arc-feat" id="arc-feat" aria-labelledby="arc-feat-h">
+    <div class="arc-feat__head"><h2 id="arc-feat-h">Featured</h2><span class="meta" id="arc-feat-n"></span></div>
+    <div class="arc-grid" id="arc-feat-grid"></div>
+  </section>
 
-<!-- ── THE OTHER NINE ──────────────────────────────────────── -->
-<section class="section" style="padding-top:56px;padding-bottom:56px">
-  <div class="section__head-l" style="margin-bottom:10px">
-    <span class="section__num">02</span>
-    <h2 style="font-size:clamp(26px,2.6vw,36px);letter-spacing:-.02em">High-score table · the other nine</h2>
-  </div>
-  <div class="hst-head">
-    <span>Rank</span><span>Game</span><span>What it does</span><span>Coin type</span>
-  </div>
-  <div id="others" style="display:flex;flex-direction:column"></div>
-  <p class="hst-note">All fifteen run entirely in your browser, and the live ones talk to public keyless APIs like Wikidata, Open Library, and the City of Austin.</p>
-</section>
+  <section class="arc-rest" id="arc-rest" aria-labelledby="arc-rest-h">
+    <div class="sechead"><h2 id="arc-rest-h">The rest of the floor</h2><span class="meta" id="arc-rest-n"></span></div>
+    <div class="arc-list" id="arc-rest-list"></div>
+  </section>
+</main>
 
-<!-- ── GAME OVER ───────────────────────────────────────────── -->
-<section class="arcfoot" id="arcade-footer">
-  <p class="arcfoot__title">Game over.</p>
-  <p class="arcfoot__joke">Every one of these started as a joke that got out of hand.</p>
-  <div class="hiscore">
-    <p class="hiscore__label">TODAY'S&nbsp;HIGH&nbsp;SCORE</p>
-    <div id="hiscore-body"></div>
+<footer class="foot">
+  <div class="foot__in">
+    <span>© 2026 Samie Vargas</span>
+    <span class="foot__links"><a href="/toolkit">Site toolkit ↗</a><a href="/">← back to the work</a></span>
   </div>
-  <p class="arcfoot__continue">Continue?
-    <a href="/" style="margin:0 6px">Yes, back to the serious work</a>·
-    <a href="oracle" style="margin-left:6px">No, ask the Oracle</a>
-    <span class="arcfoot__cursor"></span>
-  </p>
-  <div class="dispenser">
-    <div class="dispenser__slot"></div>
-    <div class="dispenser__well" id="ticket-well">
-      <button type="button" class="ticket" id="ticket">
-        <span class="admit">ADMIT&nbsp;ONE</span>
-        <span class="redeem">Redeem for 1 portfolio</span>
-        <span class="tear">TEAR&nbsp;HERE&nbsp;✂</span>
-      </button>
-    </div>
-    <p class="dispenser__redeemed" id="ticket-redeemed" hidden>REDEEMED&nbsp;·&nbsp;+10&nbsp;CREDITS</p>
-  </div>
-</section>
+</footer>
 
-<script type="module" src="../js/arcade.js?v=20260923g"></script>
+<script type="module" src="../js/arcade.js?v=20260924a"></script>
 </body>
 </html>

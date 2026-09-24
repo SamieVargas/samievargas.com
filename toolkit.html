@@ -34,285 +34,180 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260923g">
+  <link rel="stylesheet" href="css/styles.css?v=20260924a">
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────────────────────────── -->
 <nav class="nav">
-  <a class="nav__name" href="/">Samie Vargas</a>
-  <div class="nav__links">
-    <a href="/">← The work</a>
-    <a href="/life">/life</a>
-    <span class="is-here label label--mid" style="color:var(--accent)">/toolkit</span>
+  <div class="nav__in">
+    <a class="nav__name" href="/">Samie Vargas</a>
+    <div class="nav__links">
+      <a href="/">← The work</a>
+      <a href="/life">/life</a>
+      <span class="is-here--accent">/toolkit</span>
+    </div>
   </div>
 </nav>
 
-<!-- ── HERO ────────────────────────────────────────────────── -->
-<header class="page-hero">
-  <span class="label label--wide">samievargas.com/toolkit</span>
-  <h1 style="font-size:clamp(42px,5vw,72px);max-width:24ch">How this site is <em>put together</em>.</h1>
-  <p class="lead" style="max-width:62ch;margin-bottom:16px">I always wanted my own website, and I wanted to teach myself to code past HTML. This page is the part I would normally keep in a scratch file: the tokens, the components, the marks, the copy decisions, and every change I have made with the reason attached.</p>
-  <p style="font-size:14px;line-height:1.7;color:var(--muted);max-width:58ch;margin-bottom:30px">It is public because I found <a href="https://www.evebouffard.com/">evebouffard.com</a> and loved being able to see the thinking that went into a site alongside the site. So here is mine.</p>
-  <div class="tk-stats">
-    <div style="padding-right:8px"><strong id="tk-age">—</strong><span>Since the first commit</span></div>
-    <div><strong id="tk-count">—</strong><span>Commits, latest first below</span></div>
-    <div><strong>0</strong><span>Frameworks · no build step</span></div>
-    <div><strong>Opus</strong><span>Built with Claude Opus</span></div>
-  </div>
-</header>
+<main class="wrap tk">
 
-<!-- ── CHANGE LOG ──────────────────────────────────────────── -->
-<section class="section section--alt">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">01</span>
-      <h2>What I changed, and why</h2>
+  <!-- ── HERO ──────────────────────────────────────────────── -->
+  <header class="tk-hero" data-in>
+    <span class="eyebrow rv rv--fade" style="--d:0s">samievargas.com/toolkit</span>
+    <h1 class="tk-h1 rv" style="--d:.1s">How this site is <em>put together</em>.</h1>
+    <p class="tk-lead rv rv--fade" style="--d:.25s">I always wanted my own website, and I wanted to teach myself to code past HTML. This page is the part I would normally keep in a scratch file: the tokens, the components, the marks, the copy decisions, and every change I have made with the reason attached.</p>
+    <p class="tk-aside rv rv--fade" style="--d:.35s">It is public because I found <a href="https://www.evebouffard.com/">evebouffard.com</a> and loved being able to see the thinking that went into a site alongside the site. So here is mine.</p>
+    <p class="plain tk-plain rv rv--fade" style="--d:.45s"><strong>In plain terms:</strong> this is the behind-the-scenes page, the colors and fonts and building blocks the site is made of, and a log of what changed and why.</p>
+    <div class="tk-stats">
+      <div class="stat tk-stat"><span class="stat__n" id="tk-first">May 20</span><span class="stat__l" id="tk-age">first commit, 2026</span></div>
+      <div class="stat tk-stat"><span class="stat__n" id="tk-count">—</span><span class="stat__l" id="tk-count-l">commits, the latest ten below</span></div>
+      <div class="stat tk-stat"><span class="stat__n">0</span><span class="stat__l">Frameworks · no build step</span></div>
+      <div class="stat tk-stat"><span class="stat__n">Opus</span><span class="stat__l">Built with Claude Opus</span></div>
     </div>
-    <span class="label" id="feed-status" style="letter-spacing:.1em;white-space:nowrap">Loading from GitHub…</span>
-  </div>
-  <p class="tk-intro">The list on the left is written by the repo itself: on every push, a small Action snapshots the commits on <a href="https://github.com/SamieVargas/samievargas.com">samievargas.com</a> into the site, so it updates when I push and never has to ask GitHub from your browser. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why.</p>
-  <div class="pushes" id="pushes" hidden>
-    <div class="pushes__strip" id="pushes-strip"></div>
-    <div class="pushes__meta">
-      <span id="pushes-window"></span>
-      <span id="pushes-total"></span>
-    </div>
-  </div>
-  <div class="changelog rule-top" style="padding-top:26px">
-    <div>
-      <span class="col-label">Commits</span>
-      <div id="commits"></div>
-      <p class="feed-note" id="feed-note"></p>
-    </div>
-    <div>
-      <span class="col-label">The reasons</span>
-      <div id="notes"></div>
-      <div class="backlog">
-        <span class="label label--mid">Backlog</span>
-        <p>Empty, everything I know about is shipped, and I am pushing the rest right now.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </header>
 
-<!-- ── DESIGN SYSTEM ───────────────────────────────────────── -->
-<section class="section">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">02</span>
-      <h2>The pieces I reuse</h2>
+  <!-- ── 01 CHANGE LOG ─────────────────────────────────────── -->
+  <section class="tk-sec" id="tk-log">
+    <div class="tk-sechead">
+      <h2><span class="tk-num">01</span>What I changed, and why</h2>
+      <span class="tk-note">snapshotted from the repo on every push</span>
     </div>
-  </div>
-  <p class="tk-intro">Everything here is in <span style="font-family:var(--mono);font-size:12px">css/styles.css</span> and rendered live, so this page breaks if I break the styles. Two typefaces, one green, no framework: Newsreader for anything that speaks, IBM Plex Mono for anything that labels, Helvetica for the reading.</p>
-  <div class="ds-grid">
-    <div>
-      <p class="ds-name">Buttons</p>
-      <p class="ds-class">.btn--solid · --accent · --ghost</p>
-      <div class="ds-row">
-        <span class="btn btn--solid btn--md">See the work</span>
-        <span class="btn btn--accent btn--md">Try Signal</span>
-        <span class="btn btn--ghost btn--md">LinkedIn</span>
+    <p class="tk-intro">The list on the left is written by the repo itself: on every push, a small Action snapshots the commits on <a href="https://github.com/SamieVargas/samievargas.com">samievargas.com</a> into the site, so it updates when I push and never has to ask GitHub from your browser. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why.</p>
+    <div class="tk-strip" id="tk-strip" aria-label="Pushes per week"></div>
+    <div class="tk-strip-axis"><span id="tk-strip-from"></span><span id="tk-strip-cap">one stem per week, taller is more pushes · latest in green</span><span id="tk-strip-to"></span></div>
+    <div class="tk-two">
+      <div class="tk-col">
+        <div class="sechead tk-subhead"><h3>Commits</h3><span class="meta" id="tk-feed-status">latest first</span></div>
+        <div id="tk-commits" class="tk-commits"></div>
+        <p class="caption" id="tk-feed-note"></p>
       </div>
-    </div>
-    <div>
-      <p class="ds-name">Segmented control</p>
-      <p class="ds-class">.seg — plain / technical</p>
-      <span class="seg"><span class="is-on">Plain</span><span>Technical</span></span>
-    </div>
-    <div>
-      <p class="ds-name">Filter chips</p>
-      <p class="ds-class">.chip · .chip.is-on</p>
-      <div class="ds-row">
-        <span class="chip is-on">All</span>
-        <span class="chip">AI</span>
-        <span class="chip">Data</span>
-      </div>
-    </div>
-    <div>
-      <p class="ds-name">Tech tags</p>
-      <p class="ds-class">.tag — never clickable</p>
-      <div class="ds-row" style="gap:6px">
-        <span class="tag">dbt Cloud</span>
-        <span class="tag">BigQuery</span>
-        <span class="tag">SQL</span>
-      </div>
-    </div>
-    <div>
-      <p class="ds-name">Carousel controls</p>
-      <p class="ds-class">.arrow · .dot · .dot.is-on</p>
-      <div class="ds-row" style="gap:10px;align-items:center">
-        <span class="arrow" style="cursor:default">‹</span>
-        <span class="arrow" style="cursor:default">›</span>
-        <span style="display:flex;gap:6px;margin-left:8px"><i class="dot is-on" style="cursor:default"></i><i class="dot" style="cursor:default"></i><i class="dot" style="cursor:default"></i></span>
-      </div>
-    </div>
-    <div>
-      <p class="ds-name">Labels</p>
-      <p class="ds-class">.label — never body copy</p>
-      <div class="ds-col">
-        <span class="label">Shipped</span>
-        <span class="label label--mid">6 of 8 shown</span>
-        <span class="label label--accent">LLM app · in use · built solo</span>
-      </div>
-    </div>
-    <div>
-      <p class="ds-name">Verify pill</p>
-      <p class="ds-class">.cert__verify — credentials only</p>
-      <span class="cert__verify">Verify ↗</span>
-    </div>
-    <div>
-      <p class="ds-name">Status dot</p>
-      <p class="ds-class">.status — pulses, 2.4s</p>
-      <span style="display:inline-flex;align-items:center;gap:9px"><i class="status__dot" style="display:block"></i><span class="label label--accent" style="letter-spacing:.12em">Exploring roles</span></span>
-    </div>
-  </div>
-  <div class="token-grid" id="tokens"></div>
-  <div class="accent-lab" id="accent-lab">
-    <div class="accent-lab__row">
-      <a class="btn btn--accent btn--md" href="#accent-lab">Try Signal</a>
-      <a class="btn btn--ghost btn--md" href="#accent-lab">LinkedIn</a>
-      <span style="display:inline-flex;align-items:center;gap:9px"><i class="status__dot" style="display:block"></i><span class="label label--accent" style="letter-spacing:.12em">Exploring roles</span></span>
-    </div>
-    <label class="accent-lab__label" for="hue">Hue · lightness and chroma are pinned, which is what keeps the palette coherent</label>
-    <input type="range" id="hue" min="0" max="360" step="1" value="168" aria-label="Accent hue">
-    <div class="accent-lab__out">
-      <code id="accent-css"></code>
-      <button type="button" id="copy-accent">Copy</button>
-    </div>
-  </div>
-  <p class="token-note">One correction I made to my own system: the faint grey was #9a9686, which measures 2.6:1 on paper and fails contrast. Anything carrying meaning now uses #77735f at 4.6:1, and the old value is decorative only.</p>
-</section>
-
-<!-- ── MARKS AND CARDS ─────────────────────────────────────── -->
-<section class="section section--alt">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">03</span>
-      <h2>The mark, and what a link looks like</h2>
-    </div>
-  </div>
-  <p class="tk-intro" style="margin-bottom:28px">Most people meet this site as a favicon in a crowded tab strip or a card in someone's Slack. Both were the least considered part of it, so I redrew them in the same type as everything else.</p>
-  <div class="marks rule-top">
-    <div>
-      <h3>Favicon</h3>
-      <p class="blurb">An italic S in Newsreader on the site green, with a hairline inset so it reads as a plate instead of a blob. I checked it at 16px first and drew back up from there.</p>
-      <div class="fav-row">
-        <div>
-          <svg viewBox="0 0 64 64" width="64" height="64" style="border:1px solid var(--rule)"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><rect x="4.5" y="4.5" width="55" height="55" rx="6" fill="none" stroke="rgba(251,249,243,.35)" stroke-width="1.5"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 40px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
-          <p class="cap">64px</p>
-        </div>
-        <div>
-          <svg viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><rect x="4.5" y="4.5" width="55" height="55" rx="6" fill="none" stroke="rgba(251,249,243,.35)" stroke-width="1.5"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 40px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
-          <p class="cap">32px</p>
-        </div>
-        <div>
-          <svg viewBox="0 0 64 64" width="16" height="16"><rect width="64" height="64" rx="9" fill="#1a6b5a"></rect><text x="32" y="46" text-anchor="middle" style="font:italic 400 44px Newsreader,Georgia,serif;fill:#fbf9f3">S</text></svg>
-          <p class="cap">16px · tab</p>
-        </div>
-      </div>
-      <p class="fav-set-label">In the set</p>
-      <p class="fav-set">favicon.svg · favicon-32.png<br>favicon-16.png · apple-touch-icon 180<br>icon-192 · icon-512, both maskable</p>
-    </div>
-    <div>
-      <h3>Social card · 1200×630</h3>
-      <p class="blurb" style="max-width:64ch">The card used to be 347×190 and said only my name, so it arrived blurry and told you nothing. Now it carries the claim, the domain, and three numbers I can defend.</p>
-      <img class="og-hero" src="og-card.png" alt="The social card: I ship AI tools that replace work I used to do by hand">
-      <p class="fav-set-label" style="margin-bottom:14px">The same card, everywhere it shows up</p>
-      <div class="previews">
-        <div>
-          <p class="pv-label">Slack</p>
-          <div class="pv-slack">
-            <p class="dom">samievargas.com</p>
-            <p class="t">I ship AI tools that replace work I used to do by hand</p>
-            <p class="d">Signal reads messy account files in a minute. 3.4M orders modeled in dbt.</p>
-            <img src="og-card.png" alt="Card preview in Slack">
-          </div>
-        </div>
-        <div>
-          <p class="pv-label">iMessage</p>
-          <div class="pv-imsg">
-            <img src="og-card.png" alt="Card preview in iMessage">
-            <div class="meta">
-              <p class="t">I ship AI tools that replace work I used to do by hand</p>
-              <p class="dom">samievargas.com</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <p class="pv-label">LinkedIn</p>
-          <div class="pv-li">
-            <img src="og-card.png" alt="Card preview on LinkedIn">
-            <div class="meta">
-              <p class="t">I ship AI tools that replace work I used to do by hand</p>
-              <p class="dom">samievargas.com · 2 min read</p>
-            </div>
-          </div>
+      <div class="tk-col">
+        <div class="sechead tk-subhead"><h3>The reasons</h3><span class="meta">the ones worth a sentence</span></div>
+        <div id="tk-notes" class="tk-col"></div>
+        <div class="tk-backlog">
+          <span class="micro">Backlog</span>
+          <p>Empty, everything I know about is shipped, and I am pushing the rest right now.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── COPY DECISIONS ──────────────────────────────────────── -->
-<section class="section">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">04</span>
-      <h2>The lines that do the work</h2>
+  <!-- ── 02 PIECES ─────────────────────────────────────────── -->
+  <section class="tk-sec" id="tk-ds">
+    <div class="tk-sechead">
+      <h2><span class="tk-num">02</span>The pieces I reuse</h2>
+      <span class="tk-note">three typefaces, one green</span>
     </div>
-  </div>
-  <p class="tk-intro">Six strings that most people never see me choose, and the reasoning behind each. These are what is live now.</p>
-  <div id="meta-rows"></div>
-  <div class="headblock">
-    <div class="headblock__bar">
-      <h3>All of it, as it sits in &lt;head&gt;</h3>
-      <button type="button" id="copy-head">Copy the whole block</button>
-    </div>
-    <pre id="head-snippet"></pre>
-  </div>
-</section>
+    <p class="tk-intro">Young Serif for anything that speaks, Onest for the reading, and Geist Mono for anything that labels or measures, with paper and ink for the frame and one green for the thing you should look at.</p>
 
-<!-- ── SANDBOX ─────────────────────────────────────────────── -->
-<section class="section">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">05</span>
-      <h2>Build a strip of it yourself</h2>
+    <div class="tk-type">
+      <div class="tk-type__card tk-up" style="--d:.15s"><span class="micro tk-micro">Speaks</span><span class="tk-type__name tk-f-serif">Young Serif</span><span class="tk-type__sample tk-s-serif">Sixty seconds in the car becomes a record.</span></div>
+      <div class="tk-type__card tk-up" style="--d:.27s"><span class="micro tk-micro">Reads</span><span class="tk-type__name tk-f-sans">Onest</span><span class="tk-type__sample tk-s-sans">A rep talks into their phone in a parking lot, and onboarding gets a record.</span></div>
+      <div class="tk-type__card tk-up" style="--d:.39s"><span class="micro tk-micro">Labels</span><span class="tk-type__name tk-f-mono">Geist Mono</span><span class="tk-type__sample tk-s-mono">golden transcripts · 8/8 pass · $0.03</span></div>
     </div>
-    <span class="label label--mid" style="white-space:nowrap">Click an instance to remove it</span>
-  </div>
-  <p class="tk-intro">Every component here is the real one, styled by the same stylesheet the rest of the site uses, and the markup it emits is what you would paste in.</p>
-  <div class="sandbox rule-top" style="padding-top:26px">
-    <div class="sandbox__palette" id="sandbox-palette"></div>
-    <div>
-      <div class="sandbox__canvas" id="sandbox-canvas"></div>
-      <div class="sandbox__outbar">
-        <span class="label label--mid">Emitted markup</span>
-        <button type="button" id="copy-sandbox">Copy</button>
+
+    <div class="tk-tokens" id="tk-tokens"></div>
+
+    <div class="tk-parts">
+      <div class="tk-part">
+        <span class="micro tk-micro">Buttons</span>
+        <div class="tk-part__row">
+          <span class="btn btn--sm btn--accent">Try Signal ↗</span>
+          <span class="btn btn--sm btn--tint">Walk through it →</span>
+          <span class="btn btn--sm btn--line">LinkedIn</span>
+        </div>
       </div>
-      <pre class="sandbox__out" id="sandbox-out"></pre>
+      <div class="tk-part">
+        <span class="micro tk-micro">Chips and verify pill</span>
+        <div class="tk-part__row tk-part__row--6">
+          <span class="chip is-on">All</span>
+          <span class="chip">AI</span>
+          <span class="chip">Data</span>
+          <span class="pill tk-pill">Verify ↗</span>
+        </div>
+      </div>
+      <div class="tk-part">
+        <span class="micro tk-micro">Labels and status</span>
+        <span class="eyebrow">LLM app · in use · built solo</span>
+        <span class="tk-status"><i></i><span class="eyebrow">Exploring roles</span></span>
+      </div>
+      <div class="tk-part">
+        <span class="micro tk-micro">In plain terms</span>
+        <p class="plain tk-plain-sm"><strong>In plain terms:</strong> one sentence under every project for the reader who skipped the technical part.</p>
+      </div>
+      <div class="tk-part">
+        <span class="micro tk-micro">Evidence dots</span>
+        <div class="tk-dots" id="tk-dots"></div>
+        <span class="tk-dots__cap">one dot per test case · red still breaks</span>
+      </div>
+      <div class="tk-part tk-part--dark term">
+        <span class="micro tk-micro-dark">Eval log</span>
+        <div class="term__row tk-term-row"><span>field_disc</span><span>golden transcripts</span><span class="ok">8/8 pass</span></div>
+        <div class="term__row tk-term-row"><span>signal</span><span>mood with no event</span><span class="bad">7/20</span></div>
+      </div>
     </div>
-  </div>
-</section>
 
-<!-- ── HOW IT IS BUILT ─────────────────────────────────────── -->
-<section class="section section--alt" style="padding-bottom:72px;border-bottom:none">
-  <div class="section__head" style="margin-bottom:10px">
-    <div class="section__head-l">
-      <span class="section__num">06</span>
-      <h2>How it is built</h2>
+    <div class="tk-hue">
+      <div class="tk-hue__l">
+        <div class="tk-hue__samples" id="tk-hue-samples">
+          <span class="btn btn--sm btn--accent">Try Signal</span>
+          <span class="btn btn--sm btn--tint">Walk through it →</span>
+          <span class="tk-status tk-status--still"><i></i><span class="eyebrow">Exploring roles</span></span>
+        </div>
+        <label class="tk-hue__label" for="tk-hue">Hue · lightness and chroma are pinned, which is what keeps the palette coherent</label>
+        <input type="range" id="tk-hue" min="0" max="360" step="1" value="168" aria-label="Accent hue">
+      </div>
+      <div class="tk-hue__out">
+        <code id="tk-hue-css">--accent: oklch(0.47 0.08 168);</code>
+        <button type="button" id="tk-hue-copy">Copy</button>
+      </div>
     </div>
-  </div>
-  <div class="built rule-top" style="padding-top:26px">
-    <div>
-      <p>Plain HTML, CSS custom properties, and vanilla JavaScript modules, deployed on GitHub Pages, with no framework and no build step, which was the point, because I wanted to understand every part of it rather than inherit someone else's structure.</p>
-      <p>The two LLM apps on the site, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.</p>
-      <p>I built it with Claude Opus, and I am saying so here because the alternative is pretending I did not, and what I brought was the judgement about what to cut, what to prove, and which numbers I am willing to defend.</p>
+  </section>
+
+  <!-- ── 03 MARK ───────────────────────────────────────────── -->
+  <section class="tk-sec" id="tk-mark">
+    <div class="tk-sechead">
+      <h2><span class="tk-num">03</span>The mark, and what a link looks like</h2>
     </div>
-    <div class="built__cells">
+    <p class="tk-intro">Most people meet this site as a favicon in a crowded tab strip or a card in someone's Slack. Both were the least considered part of it, so I redrew them in the same type as everything else.</p>
+    <div class="tk-two tk-two--40">
+      <div class="tk-col tk-col--16">
+        <div class="sechead tk-subhead"><h3>Favicon</h3><span class="meta">checked at 16px first</span></div>
+        <div class="tk-favs">
+          <div class="tk-fav tk-pop" style="--d:.15s"><span class="tk-fav__s tk-fav__s--64">S</span><span class="tk-fav__l">64px</span></div>
+          <div class="tk-fav tk-pop" style="--d:.3s"><span class="tk-fav__s tk-fav__s--32">S</span><span class="tk-fav__l">32px</span></div>
+          <div class="tk-fav tk-pop" style="--d:.45s"><span class="tk-fav__s tk-fav__s--16">S</span><span class="tk-fav__l">16px · tab</span></div>
+        </div>
+        <p class="tk-set">favicon.svg · favicon-32.png · favicon-16.png · apple-touch-icon 180 · icon-192 · icon-512, both maskable</p>
+      </div>
+      <div class="tk-col tk-col--16">
+        <div class="sechead tk-subhead"><h3>Social card · 1200×630</h3><span class="meta">was 347×190</span></div>
+        <div class="tk-og"><img src="og-card.png" alt="The social card for samievargas.com" width="1200" height="630" loading="lazy"></div>
+        <p class="tk-card-p">The card used to be 347×190 and said only my name, so it arrived blurry and told you nothing. Now it carries the claim, the domain, and three numbers I can defend.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 COPY ───────────────────────────────────────────── -->
+  <section class="tk-sec tk-sec--18" id="tk-copy">
+    <div class="tk-sechead">
+      <h2><span class="tk-num">04</span>The lines that do the work</h2>
+      <span class="tk-note">length against the limit each surface truncates at</span>
+    </div>
+    <div id="tk-meta"></div>
+  </section>
+
+  <!-- ── 05 HOW ────────────────────────────────────────────── -->
+  <section class="tk-sec tk-how" id="tk-how" data-in>
+    <div class="tk-col rv">
+      <h2 class="tk-h2"><span class="tk-num">05</span>How it is built</h2>
+      <p class="tk-how__p">Plain HTML, CSS custom properties, and vanilla JavaScript modules, deployed on GitHub Pages, with no framework and no build step, which was the point, because I wanted to understand every part of it rather than inherit someone else's structure.</p>
+      <p class="tk-how__p">The two LLM apps on the site, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.</p>
+      <p class="tk-how__p">I built it with Claude Opus, and I am saying so here because the alternative is pretending I did not, and what I brought was the judgement about what to cut, what to prove, and which numbers I am willing to defend.</p>
+    </div>
+    <div class="tk-built rv" style="--d:.12s">
       <div><span>Front end</span><p>HTML · CSS custom properties · vanilla JS modules</p></div>
       <div><span>LLM apps</span><p>Anthropic API behind a Cloudflare Worker</p></div>
       <div><span>Data work</span><p>dbt on BigQuery · Python · folium</p></div>
@@ -320,15 +215,16 @@
       <div><span>Built with</span><p>Claude Opus, and my own judgement about what to cut</p></div>
       <div><span>Source</span><p><a href="https://github.com/SamieVargas/samievargas.com">SamieVargas/samievargas.com ↗</a></p></div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer class="footer footer--light">
-  <a class="label" style="letter-spacing:.13em;font-size:11px;color:var(--muted)" href="/">← Back to the work</a>
-  <span class="label" id="footer-line" style="letter-spacing:.13em;font-size:11px;color:var(--muted)"></span>
+<footer class="foot foot--light">
+  <div class="foot__in">
+    <a href="/" class="tk-foot-back">← Back to the work</a>
+    <span>Austin, TX · Remote · no framework, no build step</span>
+  </div>
 </footer>
 
-<script type="module" src="js/toolkit.js?v=20260923g"></script>
+<script type="module" src="js/toolkit.js?v=20260924a"></script>
 </body>
 </html>
