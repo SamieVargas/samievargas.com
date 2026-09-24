@@ -148,6 +148,23 @@ export const BD_V3 = {
   ],
 };
 
+// Tuning the sorter on the same eval grid each time (brain-dump
+// evals/results/2026-09-24-plenty+a_little+none-native-x1-sort-v3.json,
+// …-x1.json for sort@v4 medium and …-x1-effort-low.json): 20 dumps, three
+// levels, anxious off and on, 120 plans a run on claude-sonnet-5. Latency is
+// the median and p90 of the 120 calls, cost the mean per plan at list price,
+// "one gentle item" counts the mental-load dumps that got more than one now
+// item, which is the one miss the page cannot fix, and "need to" counts the
+// plans with a banned phrase, which the page rewrites. The Worker runs `live`.
+export const BD_TUNING = {
+  date: '24 Sep 2026', plans: 120,
+  runs: [
+    { label: 'sort@v3', effort: 'high (the default)', median: 14.0, p90: 23.8, cost: '$0.0134', routing: 8, banned: 10 },
+    { label: 'sort@v4', effort: 'medium', median: 7.3, p90: 13.4, cost: '$0.0071', routing: 7, banned: 12, live: true },
+    { label: 'sort@v4', effort: 'low', median: 4.6, p90: 6.6, cost: '$0.0040', routing: 16, banned: 10 },
+  ],
+};
+
 // The Instacart dbt DAG: [x, y, tier, delay in seconds, text]. Tier hues
 // follow the style guide: source 60, staging 200, intermediate 145, marts 330.
 export const DAG = {
@@ -283,14 +300,15 @@ const RESULTS = {
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
     signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
-    // Brain Dump README (sort@v3, redesign of 2026-09-24): the 47 tabs, one
-    // file, a Worker holding the prompts, three levels and the anxious switch,
-    // no database. Cost: the README's 120-plan eval grid averaged $0.0134 a
-    // plan, and the four live runs of one long dump on 24 Sep came to $0.05.
-    // "What still breaks": the same grid, "need to" in 8 of 60 plans with
-    // anxious on, and the two "a little" runs on BD_V3 put the same two tasks
-    // in opposite orders.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', 'About a cent a sort at list price, $0.05 for four runs of one long dump, on Cloudflare\'s free tier, no database', 'With anxious on, 8 of 60 eval plans still said "need to", which the page rewrites, and the same dump at the same level can come back in a different order'],
+    // Brain Dump README (sort@v4 at effort medium, 24 Sep 2026): the 47 tabs,
+    // one file, a Worker holding the prompts, three levels and the anxious
+    // switch, no database. Cost: the sort@v4 medium grid averaged $0.0071 a
+    // plan (BD_TUNING), and the four live sort@v3 runs of one long dump came
+    // to $0.05. "What still breaks": the same grid, 7 of 120 mental-load plans
+    // got more than one now item and 12 of 120 carried a banned phrase, and
+    // the two "a little" runs on BD_V3 put the same two tasks in opposite
+    // orders.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', 'Under a cent a sort at list price, $0.0071 on average after tuning, on Cloudflare\'s free tier, no database', '7 of 120 eval plans still gave a worry-heavy dump more than one thing to do, "need to" slipped into 12, which the page rewrites, and the same dump at the same level can come back in a different order'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs

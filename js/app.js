@@ -7,11 +7,11 @@
 
 import {
   HERO_LOG, SPINE, FD_SEGMENTS, FD_MATCH, FD_RECORD, FD_CASE, FD_INJECTION,
-  PX_REPLAY, SIGNAL_PILE, BD_V3, DAG, REORDER, ATX_DRIFT,
+  PX_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925a';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925a';
+} from '../data/content.js?v=20260925b';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925b';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -294,6 +294,27 @@ function brainDump() {
   });
 }
 
+// ── Brain Dump tuning: one row per prompt and effort on the same grid ──
+// The latency bar is the median against the slowest median, with the p90 as a
+// tick; "one gentle item" goes alert red on the row where it got worse.
+function bdTuning() {
+  const T = BD_TUNING;
+  const max = Math.max(...T.runs.map((r) => r.p90));
+  const worst = Math.max(...T.runs.map((r) => r.routing));
+  $('#bd-tune-cap').textContent = `${T.plans} eval plans a row · ${T.date}`;
+  $('#bd-tune-rows').innerHTML = `
+    <div class="bd-tune__row bd-tune__row--h" role="row"><span role="columnheader">prompt · effort</span><span role="columnheader">seconds per sort, median · p90</span><span role="columnheader">per plan</span><span role="columnheader">one gentle item missed</span></div>
+    ${T.runs.map((r) => `
+    <div class="bd-tune__row${r.live ? ' is-live' : ''}" role="row">
+      <span class="bd-tune__k" role="cell">${esc(r.label)} · ${esc(r.effort)}${r.live ? ' <b>live</b>' : ''}</span>
+      <span class="bd-tune__bar" role="cell"><span class="bd-tune__track"><i style="--w:${(100 * r.median / max).toFixed(1)}%"></i><em style="left:${(100 * r.p90 / max).toFixed(1)}%"></em></span><span class="bd-tune__v">${r.median.toFixed(1)} · ${r.p90.toFixed(1)} s</span></span>
+      <span class="bd-tune__v" role="cell">${esc(r.cost)}<span class="bd-tune__sfx"> a plan</span></span>
+      <span class="bd-tune__v${r.routing === worst ? ' is-bad' : ''}" role="cell">${r.routing} of ${T.plans}<span class="bd-tune__sfx"> missed one gentle item</span></span>
+    </div>`).join('')}`;
+  $('#bd-tune-source').textContent = `the brain-dump eval grid, 20 dumps × 3 levels × anxious off and on, claude-sonnet-5 · the Worker runs the live row · banned phrases, ${T.runs.map((r) => r.banned).join(', ')} of ${T.plans} in the same order, are rewritten on the page`;
+  onSeen($('#bd-tune'), () => $('#bd-tune').classList.add('is-in'));
+}
+
 // ── Analysis: the DAG grows in, the bar splits, the line wipes ──
 function analysis() {
   const D = DAG;
@@ -435,6 +456,7 @@ results();
 pixels();
 signal();
 brainDump();
+bdTuning();
 analysis();
 experience();
 skills();
