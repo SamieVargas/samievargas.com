@@ -204,6 +204,8 @@ export const CONTACT_CMD = ["SELECT * FROM conversations WHERE topic = 'ai'", 'd
 
 const ROLES = [
   { title: 'Senior Manager, Service', period: 'Oct 2023 – present', meta: 'People manager · $14M+ book · ~$3.5M quarterly target', bullets: [
+    'Designed a Claude-ready knowledge base over the PSF Emerging segment\'s ~110-document library, with an orientation layer that directs the model to cite each document and its date, quote compliance guidance verbatim, surface conflicting guidance rather than resolve it, respect a restricted-content boundary, and report gaps instead of inventing process; in a paired test on 10 simple requests it cut an average of three back-and-forth turns and answered accurately on all 10.',
+    'Piloting it with a 60-person team through September 2026, with rollout to four more pods (about 240 people) in October gated on no increase in back-and-forth against the paired baseline, and 1x1s with high-usage users shaping revisions.',
     'Accountable for revenue performance and 5% YoY growth strategy across a $14M+ annual enterprise book spanning global strategy and management consulting firms; quarterly revenue target of ~$3.5M.',
     'Lead a team of 3 client-facing managers, scaled 3–10 per quarter based on account needs, with full accountability for onboarding, performance management, and development across seniority levels.',
     'Architect and operate a multi-metric account health system — custom internal dashboard plus SFDC — tracking engagement pipeline, project yield, renewal risk, and health signals across the full portfolio in real time.',
