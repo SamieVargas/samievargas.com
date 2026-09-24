@@ -1,20 +1,23 @@
 // ============================================================
 // js/toolkit.js
-// /toolkit — the change log, pushes per week, and repo age all come from
-// data/changelog.json, which the repo snapshots on every push to main.
-// A hand-written fallback list stands in if the file cannot be read.
+// /toolkit. The change log, pushes per week and repo age all come from
+// data/changelog.json, which the repo snapshots on every push to main;
+// a hand-written list (TK_FALLBACK) stands in if the file cannot be read.
+// The notes and copy rows come from data/content.js. Swatches read their
+// colour from the live custom properties on :root, and every component
+// sample in the HTML is the real class from css/styles.css.
 // ============================================================
 
-import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260923g';
+import { $, $$, esc, onSeen, autoReveal, wait } from './reveal.js?v=20260924a';
+import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260924a';
 
-const $ = (sel) => document.querySelector(sel);
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const TZ = 'America/Chicago';
+const day = (iso) => new Date(iso.length <= 10 ? `${iso}T12:00:00Z` : iso);
 
 // Relative ages, always recomputed at render.
 function ago(iso) {
   if (!iso) return '';
-  const then = new Date(iso.length <= 10 ? `${iso}T12:00:00Z` : iso);
-  const days = Math.max(0, Math.round((Date.now() - then) / 86400000));
+  const days = Math.max(0, Math.round((Date.now() - day(iso)) / 86400000));
   if (days < 1) return 'today';
   if (days < 7) return `${days}${days === 1 ? ' day ago' : ' days ago'}`;
   if (days < 31) { const w = Math.round(days / 7); return `${w}${w === 1 ? ' week ago' : ' weeks ago'}`; }
@@ -22,248 +25,248 @@ function ago(iso) {
   const y = days / 365.25;
   return y < 1.2 ? '1 year ago' : `${y.toFixed(1).replace('.0', '')} years ago`;
 }
+const ymd = (iso) => day(iso).toLocaleDateString('en-CA', { timeZone: TZ });
+const mdy = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: TZ });
+const md = (iso) => day(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ });
+const yr = (iso) => day(iso).toLocaleDateString('en-US', { year: 'numeric', timeZone: TZ });
 
-function fmt(iso) {
-  if (!iso) return '';
-  const d = new Date(iso.length <= 10 ? `${iso}T12:00:00Z` : iso);
-  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+// ── Staging ──────────────────────────────────────────────────
+// Some pieces are built from data after their section is already on
+// screen (the snapshot arrives async), so each section remembers it was
+// seen and anything rendered into it later still gets its entrance.
+const seen = new Set();
+const queued = new Map();
+
+function watch(el) {
+  onSeen(el, () => {
+    seen.add(el);
+    (queued.get(el) || []).forEach((fn) => fn());
+    queued.delete(el);
+  });
+}
+function whenSeen(el, fn) {
+  if (seen.has(el)) { fn(); return; }
+  if (!queued.has(el)) queued.set(el, []);
+  queued.get(el).push(fn);
+}
+// Stagger .is-on onto nodes: delay(i) in ms, after their section is seen.
+function stage(section, nodes, delay) {
+  nodes.forEach((n, i) => n.style.setProperty('--d', `${delay(i) / 1000}s`));
+  whenSeen(section, () => requestAnimationFrame(() => requestAnimationFrame(() => nodes.forEach((n) => n.classList.add('is-on')))));
 }
 
-function renderCommits(list, live) {
-  $('#commits').innerHTML = list.map((c) => `
-    <a class="commit" href="${c.href || `https://github.com/${TK_REPO}/commits/main`}">
-      <span class="msg">${esc(c.message)}</span>
-      <span class="when">${esc(ago(c.date))}</span>
+const secLog = $('#tk-log');
+const secDs = $('#tk-ds');
+const secCopy = $('#tk-copy');
+
+// ── Hero stats ───────────────────────────────────────────────
+function renderAge(first) {
+  $('#tk-first').textContent = md(first);
+  $('#tk-age').textContent = `first commit, ${yr(first)} · ${ago(first)}`;
+}
+
+// ── 01 · Commits and the push strip ──────────────────────────
+function renderCommits(list) {
+  const host = $('#tk-commits');
+  host.innerHTML = list.map((c) => `
+    <a class="tk-commit tk-c tk-c--y" href="${esc(c.href || `https://github.com/${TK_REPO}/commits/main`)}" title="${esc(ago(c.date))}">
+      <span class="tk-commit__d">${esc(ymd(c.date))}</span>
+      <span class="tk-commit__m">${esc(c.message)}</span>
     </a>`).join('');
-  $('#feed-note').textContent = live
-    ? 'Ten most recent commits, newest first, straight from the repo.'
-    : 'These are the ones I would have listed by hand.';
+  stage(secLog, $$('.tk-commit', host), (i) => 300 + i * 90);
 }
 
-function renderStatus(state) {
-  const el = $('#feed-status');
-  if (state === 'live') { el.textContent = 'Live from the repo'; el.style.color = 'var(--accent)'; }
-  else if (state === 'failed') { el.textContent = 'Snapshot unavailable · showing my own list'; el.style.color = 'var(--faint)'; }
-  else { el.textContent = 'Reading the snapshot…'; el.style.color = 'var(--faint)'; }
+function renderStatus(state, generated) {
+  const st = $('#tk-feed-status');
+  const note = $('#tk-feed-note');
+  if (state === 'live') {
+    st.textContent = 'latest first · live from the repo';
+    note.textContent = `Ten most recent commits, written into the site by the repo's own Action on the last push, ${ago(generated)}.`;
+  } else if (state === 'failed') {
+    st.textContent = 'snapshot unavailable · my own list';
+    note.textContent = 'These are the ones I would have listed by hand.';
+  } else {
+    st.textContent = 'latest first · reading the snapshot…';
+    note.textContent = '';
+  }
+}
+
+// One stem per week; stems place by date across the strip, the tallest
+// week sets the scale, and the latest week with a push is green.
+function drawStrip(points, from, to, cap) {
+  const host = $('#tk-strip');
+  const max = Math.max(1, ...points.map((p) => p.n));
+  const lastIdx = points.reduce((k, p, i) => (p.n > 0 ? i : k), -1);
+  host.innerHTML = points.map((p, i) => {
+    if (!p.n) return '';
+    const h = p.fixed ?? Math.round(8 + (p.n / max) * 28);
+    return `<span class="tk-strip__w tk-c${i === lastIdx ? ' is-last' : ''}" style="left:${p.x.toFixed(2)}%" title="${esc(p.title)}"><i></i><i style="height:${i === lastIdx && p.fixed ? 30 : h}px"></i></span>`;
+  }).join('');
+  $('#tk-strip-from').textContent = mdy(from);
+  $('#tk-strip-to').textContent = mdy(to);
+  $('#tk-strip-cap').textContent = cap;
+  const stems = $$('.tk-strip__w', host);
+  stage(secLog, stems, (i) => 200 + (i + 1) * Math.min(120, 840 / stems.length));
+}
+
+function stripFromWeeks(weeks, generated) {
+  const end = day(generated).getTime();
+  const W = 7 * 86400000;
+  const n = weeks.length;
+  const from = new Date(end - n * W);
+  const points = weeks.map((c, i) => {
+    const wk = new Date(end - (n - i) * W);
+    return { n: c, x: (n === 1 ? 50 : (i / (n - 1)) * 94 + 3), title: `${c} commit${c === 1 ? '' : 's'}, week of ${mdy(wk)}` };
+  });
+  const total = weeks.reduce((a, b) => a + b, 0);
+  drawStrip(points, from, new Date(end), `${n} weeks, ${total.toLocaleString()} commits · one stem per week, taller is more · latest in green`);
+}
+
+function stripFromDates(list) {
+  const ts = list.map((c) => day(c.date).getTime());
+  const d0 = Math.min(...ts);
+  const d1 = Math.max(...ts);
+  const points = list.map((c, i) => ({
+    n: 1,
+    fixed: 16,
+    x: d1 === d0 ? 50 : ((ts[i] - d0) / (d1 - d0)) * 94 + 3,
+    title: `${ymd(c.date)} · ${c.message}`,
+  })).reverse();
+  drawStrip(points, new Date(d0), new Date(d1), 'each dot is a push · latest in green');
+}
+
+function applyFallback() {
+  renderCommits(TK_FALLBACK);
+  stripFromDates(TK_FALLBACK);
+  $('#tk-count').textContent = String(TK_FALLBACK.length);
+  $('#tk-count-l').textContent = 'pushes worth a line, below';
 }
 
 // The change log is a snapshot the repo writes about itself. A small
 // Action (.github/workflows/changelog.yml) runs on every push to main and
 // commits data/changelog.json, so this page reads a same-origin file
-// instead of asking the GitHub API from a visitor's browser. The API
-// needed the repo to be public and the visitor's IP to have rate limit
-// left, and neither can be counted on. A side effect worth having: the
-// list can never show a commit that is not deployed yet.
-const SNAPSHOT = 'data/changelog.json';
-
+// instead of asking the GitHub API from a visitor's browser. The list can
+// never show a commit that is not deployed yet.
 function applySnapshot(snap) {
   if (!snap || !Array.isArray(snap.commits) || !snap.commits.length) throw new Error('empty snapshot');
   renderCommits(snap.commits.map((c) => ({
     message: c.message,
     date: c.date,
     href: c.sha ? `https://github.com/${TK_REPO}/commit/${c.sha}` : undefined,
-  })), true);
-  $('#feed-note').textContent = `Ten most recent commits, newest first, written into the site by the repo's own Action on the last push, ${ago(snap.generated)}.`;
+  })));
+  renderStatus('live', snap.generated);
   $('#tk-count').textContent = snap.total ? String(snap.total) : `${snap.commits.length}+`;
-  renderStatus('live');
+  $('#tk-count-l').textContent = `commits, the latest ${snap.commits.length} below`;
   if (snap.first) renderAge(snap.first);
-  if (Array.isArray(snap.weeks) && snap.weeks.some((n) => n > 0)) renderPushes(snap.weeks);
+  if (Array.isArray(snap.weeks) && snap.weeks.some((n) => n > 0)) stripFromWeeks(snap.weeks, snap.generated || snap.commits[0].date);
+  else stripFromDates(snap.commits);
 }
 
 function loadSnapshot() {
-  // The file changes on every push, so revalidate rather than version it;
-  // GitHub Pages answers a matching ETag with a 304.
-  fetch(SNAPSHOT, { cache: 'no-cache' })
+  // The file changes on every push, so revalidate rather than version it.
+  fetch('data/changelog.json', { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
     .then(applySnapshot)
-    .catch(() => renderStatus('failed'));
-}
-
-function renderAge(firstDate) {
-  $('#tk-age').textContent = ago(firstDate);
-  $('#footer-line').textContent = `Started ${fmt(firstDate)} · ${ago(firstDate)} · built with Claude Opus`;
+    .catch(() => { renderStatus('failed'); applyFallback(); });
 }
 
 function renderNotes() {
-  $('#notes').innerHTML = TK_NOTES.map((n) => `
-    <div class="why">
-      <div class="why__head">
-        <p class="t">${esc(n.title)}</p>
-        <p class="w">${esc(ago(n.date))}</p>
-      </div>
+  const host = $('#tk-notes');
+  host.innerHTML = TK_NOTES.map((n) => `
+    <div class="tk-why tk-c tk-c--y">
+      <span class="tk-why__d">${esc(n.date)}</span>
+      <span class="tk-why__t">${esc(n.title)}</span>
       <p>${esc(n.body)}</p>
     </div>`).join('');
+  stage(secLog, $$('.tk-why', host), (i) => 300 + i * 90);
 }
 
-function renderMeta() {
-  $('#meta-rows').innerHTML = TK_META.map((m) => `
-    <div class="copyrow">
-      <div>
-        <h3>${esc(m.name)}</h3>
-        <span class="attr">${esc(m.attr)}</span>
-      </div>
-      <div>
-        <p class="current">${esc(m.current)}</p>
-        <span class="stat">${esc(m.status)}</span>
-      </div>
-      <p class="why-p">${esc(m.why)}</p>
-    </div>`).join('');
+// ── 02 · Swatches read from :root ────────────────────────────
+function renderTokens() {
+  const css = getComputedStyle(document.documentElement);
+  const host = $('#tk-tokens');
+  host.innerHTML = TK_TOKENS.map((t) => {
+    const val = css.getPropertyValue(t.prop).trim() || t.prop;
+    return `
+    <div class="tk-token tk-c" title="var(${esc(t.prop)})">
+      <i style="background:var(${esc(t.prop)})"></i>
+      <b>${esc(t.name)}</b>
+      <span>${esc(val)} · ${esc(t.use)}</span>
+    </div>`;
+  }).join('');
+  stage(secDs, $$('.tk-token', host), (i) => 400 + i * 50);
 }
 
-// T3 — read the live document rather than a pasted copy, so the
-// snippet cannot drift from what actually ships.
-function liveHead() {
-  try {
-    const keep = ['META', 'TITLE', 'LINK'];
-    const lines = [...document.head.children]
-      .filter((el) => keep.includes(el.tagName))
-      .map((el) => '  ' + el.outerHTML.replace(/\s+/g, ' ').trim());
-    if (!lines.length) throw new Error('empty');
-    return lines.join('\n');
-  } catch (err) {
-    return '<!-- head unavailable -->';
-  }
-}
-
-function renderHead() {
-  const snippet = liveHead();
-  $('#head-snippet').textContent = snippet;
-  const btn = $('#copy-head');
-  let timer;
-  btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(snippet); } catch (err) { /* nothing to add */ }
-    btn.textContent = 'Copied';
-    clearTimeout(timer);
-    timer = setTimeout(() => { btn.textContent = 'Copy the whole block'; }, 2000);
+// Ten test cases, six of which still break; laid out for the sample.
+const BAD = [0, 2, 3, 5, 7, 8];
+function renderDots() {
+  const host = $('#tk-dots');
+  host.innerHTML = Array.from({ length: 10 }, () => '<i></i>').join('');
+  const dots = $$('i', host);
+  dots.forEach((d, i) => { d.style.transitionDelay = `${(800 + i * 70) / 1000}s`; });
+  whenSeen(secDs, () => {
+    requestAnimationFrame(() => requestAnimationFrame(() => dots.forEach((d) => d.classList.add('is-on'))));
+    wait(1700).then(() => dots.forEach((d, i) => {
+      d.style.transitionDelay = '0s';
+      if (BAD.includes(i)) d.classList.add('is-bad');
+    }));
   });
 }
 
-function renderTokens() {
-  $('#tokens').innerHTML = TK_TOKENS.map((t) => `
-    <div>
-      <span class="swatch" style="background:${t.hex}"></span>
-      <strong>${esc(t.name)}</strong>
-      <span class="hex">${t.hex}</span>
-      <span class="use">${esc(t.use)}</span>
-    </div>`).join('');
-}
-
-
-// ── T2 ── Pushes per week, twenty seven-day buckets from the snapshot.
-const WEEKS = 20;
-
-function renderPushes(weeks) {
-  const host = $('#pushes');
-  if (!host || !weeks || !weeks.length) return;
-  const max = Math.max(...weeks, 1);
-  $('#pushes-strip').innerHTML = weeks.map((n, i) => {
-    const h = Math.max(18, Math.round((n / max) * 100));
-    return `<i style="height:${h}%;animation:pushgrow .5s ease-out ${(i * 0.04).toFixed(2)}s both" title="${n} commit${n === 1 ? '' : 's'}"></i>`;
-  }).join('');
-  $('#pushes-window').textContent = `${weeks.length} weeks`;
-  const total = weeks.reduce((a, b) => a + b, 0);
-  $('#pushes-total').textContent = `${total.toLocaleString()} commits`;
-  host.hidden = false;
-}
-
-// ── T1 ── Accent playground. Lightness and chroma are pinned so every
-// hue lands at the same weight; only the samples recolour.
-function wireAccentLab() {
-  const lab = $('#accent-lab');
-  const slider = $('#hue');
-  const out = $('#accent-css');
-  const copy = $('#copy-accent');
-  if (!lab || !slider) return;
+// The accent lab: lightness and chroma pinned, hue free. Only the sample
+// row takes the new --accent, and the classes inside it are the real ones.
+function wireHue() {
+  const range = $('#tk-hue');
+  const out = $('#tk-hue-css');
+  const box = $('#tk-hue-samples');
+  const copy = $('#tk-hue-copy');
+  const decl = () => `--accent: oklch(0.47 0.08 ${range.value});`;
   const apply = () => {
-    const decl = `--accent: oklch(0.48 0.09 ${slider.value});`;
-    lab.style.setProperty('--accent', `oklch(0.48 0.09 ${slider.value})`);
-    out.textContent = decl;
-    return decl;
+    box.style.setProperty('--accent', `oklch(0.47 0.08 ${range.value})`);
+    box.style.setProperty('--accent-tint', `oklch(0.95 0.025 ${range.value})`);
+    out.textContent = decl();
   };
   apply();
-  slider.addEventListener('input', apply);
+  range.addEventListener('input', apply);
   let timer;
   copy.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(apply()); } catch (err) { /* nothing to add */ }
-    copy.textContent = 'Copied';
+    try { await navigator.clipboard.writeText(decl()); } catch (e) { /* the label still confirms */ }
+    copy.textContent = 'Copied ✓';
     clearTimeout(timer);
-    timer = setTimeout(() => { copy.textContent = 'Copy'; }, 2000);
+    timer = setTimeout(() => { copy.textContent = 'Copy'; }, 1400);
   });
 }
 
-// ── X5 ── The component set as data: each entry pairs a live rendering
-// with the markup it emits, and the markup uses the real class names so
-// a copied snippet works against css/styles.css.
-const REGISTRY = [
-  { key: 'solid', label: 'Solid button', html: '<a class="btn btn--solid" href="#">See the work</a>' },
-  { key: 'accent', label: 'Accent button', html: '<a class="btn btn--accent" href="#">Try Signal</a>' },
-  { key: 'ghost', label: 'Ghost button', html: '<a class="btn btn--ghost" href="#">LinkedIn</a>' },
-  { key: 'chip', label: 'Chip', html: '<button class="chip is-on">Data</button>' },
-  { key: 'label', label: 'Label', html: '<span class="label">Observations</span>' },
-  { key: 'seg', label: 'Segmented', html: '<span class="seg"><span class="is-on">Scatter</span><span>Cluster</span></span>' },
-  { key: 'tag', label: 'Tech tag', html: '<span class="tag">dbt</span>' },
-  { key: 'verify', label: 'Verify pill', html: '<a class="cert__verify" href="#">Verify ↗</a>' },
-  { key: 'status', label: 'Status dot', html: '<span class="status"><i class="status__dot"></i><span>Exploring roles</span></span>' },
-  { key: 'dot', label: 'Carousel dot', html: '<button class="dot is-on" aria-label="Observation 1"></button>' },
-];
-
-let composed = [];
-
-function renderSandbox() {
-  const canvas = $('#sandbox-canvas');
-  const out = $('#sandbox-out');
-  if (!canvas) return;
-  if (!composed.length) {
-    canvas.innerHTML = '<span class="sandbox__empty">nothing yet, add from the left</span>';
-    out.textContent = '<!-- empty -->';
-    return;
-  }
-  canvas.innerHTML = composed.map((c, i) => {
-    const entry = REGISTRY.find((r) => r.key === c);
-    return `<span class="sandbox__inst">${entry.html}<button type="button" class="sandbox__x" data-remove="${i}" aria-label="Remove ${esc(entry.label)}">×</button></span>`;
+// ── 04 · Copy against each surface's limit ───────────────────
+const META_ORDER = ['<title>', 'description', 'og:title', 'og:description'];
+function renderMeta() {
+  const rows = META_ORDER.map((k) => TK_META.find((m) => m.key === k)).filter(Boolean);
+  const host = $('#tk-meta');
+  host.innerHTML = rows.map((m) => {
+    const n = m.current.length;
+    return `
+    <div class="tk-meta" title="${esc(m.why)}">
+      <span class="tk-meta__k">${esc(m.key)}</span>
+      <span class="tk-meta__v">${esc(m.current)}</span>
+      <span class="tk-meta__m">
+        <span class="tk-meta__bar"><i class="${n > m.max ? 'is-over' : ''}" data-w="${Math.min(100, (n / m.max) * 100).toFixed(1)}"></i></span>
+        <span class="tk-meta__n">${n} / ${m.max} chars</span>
+      </span>
+    </div>`;
   }).join('');
-  out.textContent = composed.map((c) => REGISTRY.find((r) => r.key === c).html).join('\n');
-}
-
-function wireSandbox() {
-  const palette = $('#sandbox-palette');
-  const canvas = $('#sandbox-canvas');
-  if (!palette) return;
-  palette.innerHTML = REGISTRY.map((r) =>
-    `<button type="button" data-add="${r.key}">+ ${esc(r.label)}</button>`).join('');
-  palette.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-add]');
-    if (!b) return;
-    composed.push(b.dataset.add);
-    renderSandbox();
-  });
-  // Removal is a real focusable control, not a click-only affordance.
-  canvas.addEventListener('click', (e) => {
-    const x = e.target.closest('[data-remove]');
-    if (!x) return;
-    e.preventDefault();
-    composed.splice(Number(x.dataset.remove), 1);
-    renderSandbox();
-  });
-  const copy = $('#copy-sandbox');
-  let timer;
-  copy.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText($('#sandbox-out').textContent); } catch (err) { /* nothing to add */ }
-    copy.textContent = 'Copied';
-    clearTimeout(timer);
-    timer = setTimeout(() => { copy.textContent = 'Copy'; }, 2000);
-  });
-  renderSandbox();
+  const bars = $$('.tk-meta__bar i', host);
+  bars.forEach((b, i) => b.style.setProperty('--d', `${(200 + i * 150) / 1000}s`));
+  whenSeen(secCopy, () => requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach((b) => { b.style.width = `${b.dataset.w}%`; }))));
 }
 
 // ── Boot ─────────────────────────────────────────────────────
-renderCommits(TK_FALLBACK, false);
-renderStatus('loading');
+[secLog, secDs, $('#tk-mark'), secCopy].forEach(watch);
+autoReveal();
 renderAge('2026-05-20');
+renderStatus('loading');
 renderNotes();
-renderMeta();
-renderHead();
 renderTokens();
+renderDots();
+wireHue();
+renderMeta();
 loadSnapshot();
-wireAccentLab();
-wireSandbox();
