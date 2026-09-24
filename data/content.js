@@ -4,211 +4,200 @@
 // Numbers are real data from the projects — do not round them.
 // ============================================================
 
-// ── Work page ────────────────────────────────────────────────
-// ── Query console (item 07) ──────────────────────────────────
-// An allowlist, keyed. No user-supplied SQL reaches anything, and the
-// result sets are shipped cached rather than queried live, so there is
-// no cost and no failure surface. Every figure below is one the site
-// already publishes elsewhere.
-//
-// The zip-code preset from the design is deliberately not here: the
-// notebook and the site widgets still disagree on per-zip averages,
-// and that has to be settled before zip figures go into a table that
-// reads like query output.
-const CONSOLE_QUERIES = [
-  {
-    key: 'cohort',
-    label: 'Reorder rate by cohort',
-    source: 'marts.fct_order_products',
-    sql: `select
-  user_cohort,
-  round(avg(reordered), 3) as reorder_rate,
-  round(avg(reordered) - 0.600, 3) as vs_pooled
-from marts.fct_order_products
-group by user_cohort
-order by reorder_rate`,
-    cols: ['user_cohort', 'reorder_rate', 'vs_pooled'],
-    rows: [
-      ['new_shopper', '0.221', '-0.379'],
-      ['veteran', '0.670', '+0.070'],
-    ],
-    note: 'The 0.60 everyone cites is the midpoint of two populations, and it describes neither.',
-  },
-  {
-    key: 'drift',
-    label: 'Operational drift by inspection',
-    source: 'marts.fct_inspections',
-    sql: `select
-  inspection_seq,
-  round(avg(score), 2) as avg_score,
-  round(avg(score) - 90.50, 2) as vs_first
-from marts.fct_inspections
-group by inspection_seq
-having count(*) > 200
-order by inspection_seq`,
-    cols: ['inspection_seq', 'avg_score', 'vs_first'],
-    rows: [
-      ['1', '90.50', '0.00'], ['2', '90.60', '+0.10'], ['3', '90.55', '+0.05'],
-      ['4', '91.05', '+0.55'], ['5', '91.15', '+0.65'], ['6', '89.80', '-0.70'],
-      ['7', '90.10', '-0.40'], ['8', '90.85', '+0.35'], ['9', '90.50', '0.00'],
-      ['10', '91.80', '+1.30'], ['11', '91.15', '+0.65'], ['12', '90.90', '+0.40'],
-      ['13', '91.30', '+0.80'], ['14', '92.60', '+2.10'],
-    ],
-    note: 'The axis is inverted here, so a rising score is more violations, and venues drift about two points worse across their inspection history.',
-  },
-  {
-    key: 'model',
-    label: 'Reorder model by segment',
-    source: 'marts.dim_model_scores',
-    sql: `select
-  segment,
-  round(auc, 4) as auc,
-  round(auc - 0.8566, 4) as lift_over_new
-from marts.dim_model_scores
-order by auc desc`,
-    cols: ['segment', 'auc', 'lift_over_new'],
-    rows: [
-      ['veteran', '0.9886', '+0.1320'],
-      ['new_shopper', '0.8566', '0.0000'],
-    ],
-    note: 'A random forest separates veterans almost perfectly and struggles on new shoppers, which is what confirmed the split was real rather than a pipeline artifact.',
-  },
-];
-
-
-const HERO_STATS = [
-  { stat: '$14M+', label: 'Enterprise portfolio owned end to end at GLG' },
-  { stat: '60 → 1', label: 'Minutes of account prep, after Signal' },
-  { stat: '3–10', label: 'Client-facing managers led per quarter, on the AI workflows I wrote' },
-  { stat: '3.4M', label: 'Orders modeled in dbt on BigQuery' },
-];
-
-const SIGNAL_TYPED = 'Send the CFO a one-page value recap. Nothing else.';
-
-const SIGNAL_SCRAPS = [
-  { text: 'call notes 4/12 — "budget owner changed, new CFO wants value by renewal"', left: '2%', top: '8px', rot: -4 },
-  { text: 'renewal_deck_v3.pptx', left: '38%', top: '52px', rot: 6 },
-  { text: 'crm_export_q2.csv (412 rows)', left: '12%', top: '84px', rot: -7 },
-  { text: 'slack thread, 60 messages', left: '44%', top: '112px', rot: 3 },
-];
-
-const SIGNAL_OUT = [
-  { k: 'The read', v: 'Renewal at risk. New CFO has no history with you.' },
-  { k: 'Who matters', v: 'The CFO, not your champion. Champion quiet since April.' },
-  { k: 'Where to press', v: '1. Value recap tied to their Q4 board metric  2. Re-anchor the champion  3. Bring in exec sponsor' },
-  { k: 'Do this today', v: SIGNAL_TYPED, typing: true },
-];
-
-const SIGNAL_NOTES = [
-  { n: '1', title: 'Ranked by risk', body: 'Accounts come back in risk order, so the first thing you read is the thing to act on.' },
-  { n: '2', title: 'One line per account', body: 'The read is a sentence you can paste into Slack without editing it.' },
-  { n: '3', title: 'The contact read', body: 'Second-order sentiment, meaning the gap between what someone says and what their behavior says.' },
-  { n: '4', title: 'One action', body: 'It ends in a single "do this today" instead of a list of options, which is what makes it usable before a call.' },
-];
-
-// The contact read — verbatim Signal output for one account, typed
-// back in live rather than screenshotted.
-const READ_ROWS = [
-  { k: 'Primary contact', v: 'Marcus Webb, VP Strategy & Analytics' },
-  { k: 'Comm style', v: 'In Q3, Marcus was concise, technically engaged, and responsive same-day — he communicated with specificity and named deliverables. By Q4, his language became vague ("the team uses it when we use it"), he delegated substantive work to Tom without follow-through, and he stopped responding entirely. His current communication style is avoidance through silence, not explicit pushback.' },
-  { k: 'Decision style', v: 'Data-driven when bought in — he cited specific metrics (6-hour savings) to his CPO and asked retroactive-cohort technical questions. But his decisions appear to also be politically influenced: the board deck win suggested he was using Veridian to build internal credibility. When that internal momentum stalled or his priorities shifted, his engagement dropped in lockstep.' },
-  { k: 'Says vs means', v: 'Says: "Not off the table… not the right timing right now" (re: Export API). Means: I am not prioritizing this and I am not going to tell you why. Says nothing (silence since Nov 7). Means: either I have lost internal support for this tool, my priorities have materially changed, or I am already evaluating alternatives and do not want to have the renewal conversation yet.' },
-  { k: 'How to engage', v: 'Do not re-pitch features to Marcus — he has heard the pitches and is not responding. The only approach likely to move him is a peer-level executive touchpoint that re-anchors to the outcome he already claimed as a win (board deck, CPO visibility). If that re-engage fails within 2 weeks, treat Marcus as lost and shift renewal strategy entirely to Priya Nair as the signing-authority path.' },
-];
-
-const SEC_CONTACTS = [
-  { name: 'Priya Nair, Director of Research Operations', body: 'Operational admin and de facto day-to-day owner — 14 logins in 30 days, attended Q4 QBR as Marcus\'s substitute, highest platform engagement of any user. She is not the budget decision-maker but is the closest active stakeholder to the renewal and the most viable path to internal influence if Marcus remains unreachable.' },
-  { name: 'Tom Gillis, Senior Analyst', body: 'Technical power user with the highest average session time (12.4 min) and substantive product engagement — evaluated Attribution v2 but reported being "slammed." An important adoption driver, but with no budget authority and limited bandwidth.' },
-];
-
-const DUMP_BITS = [
-  { t: 'deck for thursday not started', x: 2, y: 4, r: -3, dx: -26, dy: -14, dr: -14 },
-  { t: 'call the vendor back', x: 46, y: 18, r: 4, dx: 30, dy: -10, dr: 12 },
-  { t: 'why am i still thinking about the q2 thing', x: 4, y: 34, r: -2, dx: -18, dy: 20, dr: -8 },
-  { t: 'laundry', x: 62, y: 48, r: 6, dx: 26, dy: 16, dr: 16 },
-  { t: 'learn snowflake properly', x: 8, y: 62, r: 3, dx: -22, dy: 26, dr: 10 },
-  { t: "haven't eaten", x: 52, y: 74, r: -5, dx: 20, dy: 22, dr: -16 },
-  { t: 'the greenbelt run i keep not doing', x: 2, y: 88, r: 2, dx: -16, dy: 28, dr: 8 },
-  { t: 'is the knee thing getting worse', x: 40, y: 4, r: 7, dx: 22, dy: -22, dr: 18 },
-  { t: 'text back', x: 74, y: 30, r: -6, dx: 28, dy: -6, dr: -12 },
-];
-
-const BRAIN_STATES = {
-  Foggy: { note: 'Foggy gets one physical task and warmer wording, and decision work is pushed down the list instead of surfaced.',
-    piles: [
-      { k: 'Energy for today', v: 'Eat something. That is the whole task.' },
-      { k: 'Real but not now', v: 'Thursday deck · vendor callback' },
-      { k: 'Worth keeping', v: 'Learn Snowflake properly — park it, it is a good one' },
-      { k: 'Put it down', v: 'The Q2 thing. It is closed and you are still carrying it.' } ] },
-  Low: { note: 'Low energy blocks decision work entirely, so nothing needing a judgement call reaches the first pile.',
-    piles: [
-      { k: 'Energy for today', v: 'Laundry. Low stakes, visible progress.' },
-      { k: 'Real but not now', v: 'Thursday deck — needs a clear head, not this one' },
-      { k: 'Worth keeping', v: 'Greenbelt run · Snowflake' },
-      { k: 'Put it down', v: 'The Q2 thing, again.' } ] },
-  Steady: { note: 'Steady is the default sort: highest-friction real work first, ideas held separately so they stop competing with it.',
-    piles: [
-      { k: 'Energy for today', v: 'Thursday deck, first pass only · vendor callback' },
-      { k: 'Real but not now', v: 'Greenbelt run — schedule it, do not do it today' },
-      { k: 'Worth keeping', v: 'Snowflake, properly, with a project attached' },
-      { k: 'Put it down', v: 'The Q2 thing' } ] },
-  Wired: { note: 'Wired gets a hard cap of two items, because the failure mode here is starting six things.',
-    piles: [
-      { k: 'Energy for today', v: 'Thursday deck, all the way through' },
-      { k: 'Real but not now', v: 'Vendor callback · laundry' },
-      { k: 'Worth keeping', v: 'Snowflake — write the plan down, do not open it tonight' },
-      { k: 'Put it down', v: 'The Q2 thing' } ] },
-  Heavy: { note: 'Heavy reorders around the weight first, and the thing you are carrying gets named before anything is asked of you.',
-    piles: [
-      { k: 'Put it down', v: 'The Q2 thing. You have thought about it for weeks and it is finished.' },
-      { k: 'Energy for today', v: 'Eat. Then the vendor callback if it still feels possible.' },
-      { k: 'Real but not now', v: 'Thursday deck' },
-      { k: 'Worth keeping', v: 'The Greenbelt run' } ] },
+// ── Work page (index.html, js/app.js) ────────────────────────
+// Every row of the hero log is a result line published elsewhere on the
+// site with its date: field discovery from the 22 Sep 2026 run, Pixels
+// from evals/results/2026-09-22.json, Signal from the README ablation,
+// the parse count from the structured-output tally across Signal, Brain
+// Dump and field discovery (0 failures in 520 runs).
+export const HERO_LOG = {
+  head: 'evals · last run 22 Sep 2026',
+  rows: [
+    { p: 'field_disc', k: 'golden transcripts', v: '8/8 pass', tone: 'ok' },
+    { p: 'field_disc', k: 'escalation recall · precision', v: '1.00 · 1.00', tone: 'ok' },
+    { p: 'field_disc', k: 'unneeded writes, 12 fixtures', v: '0', tone: 'ok' },
+    { p: 'field_disc', k: 'planted instructions, 50 runs', v: '40 unchanged', tone: 'warn' },
+    { p: 'pixels_rag', k: 'valid citations, 26 questions', v: '26/26', tone: 'ok' },
+    { p: 'structured', k: 'parse failures', v: '0 / 520', tone: 'ok' },
+    { p: 'signal', k: 'mood with no event', v: '7/20', tone: 'bad' },
+    { p: 'cost', k: 'per capture', v: '$0.0313 · 21.5s', tone: '' },
+  ],
 };
 
-const ANNOTATED = [
-  { kicker: 'Instacart · dbt on BigQuery · 3.4M orders', headline: 'I rebuilt one cited number until it split in half.',
-    cta: 'See the models ↗', href: 'https://github.com/SamieVargas/instacart-project',
-    img: null, viz: 'reorder', vizId: 'viz-reorder', cols: '1.2fr 1fr', imgFirst: true, result: 'instacart',
-    inputLine: 'In: raw order tables · out: five staging models, one join, three marts, 35 passing tests',
-    notes: [
-      { n: '1', title: 'Lineage you can follow', body: 'Every mart traces back to a named staging model, so a number can be argued with.' },
-      { n: '2', title: '35 tests that mean something', body: 'The tests encode business rules like grain, valid segments, and plausible ranges.' },
-      { n: '3', title: 'Segmented, then compared', body: 'I recomputed reorder rate per shopper tenure instead of pooling it.' },
-      { n: '4', title: 'Confirmed with a model', body: 'Random forest AUC 0.989 for veterans against 0.857 for new users.' } ],
-    finding: 'new shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither.' },
-  { kicker: 'ATX Foodie · Socrata API · 21,160 records', headline: 'I turned a pest-sighting post into an audit of where I eat.',
-    cta: 'See the findings ↗', href: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection',
-    img: null, vizId: 'viz-atx', cols: '1fr 1.2fr', imgFirst: false, isAtx: true, result: 'atx',
-    inputLine: 'In: City of Austin open data, paginated · out: brand scorecard and a folium choropleth',
-    notes: [
-      { n: '1', title: 'My own spots first', body: 'The places I eat at weekly, queried by name, because that was the question I actually had.' },
-      { n: '2', title: 'Scored per visit type', body: 'I separated routine visits from follow-ups, which is where the pattern lives.' },
-      { n: '3', title: '84 brands compared', body: 'A compliance scorecard across whole local restaurant groups rather than single locations.' },
-      { n: '4', title: 'Mapped by zip', body: 'A choropleth of Austin, so a neighborhood answer replaces an anecdote.' } ],
-    finding: 'scores drift about two points worse across a venue\'s inspection history, 90.5 at the first visit and 92.6 by the fourteenth, and being flagged is not what fixes it.' },
+// The four-pattern spine. `dots` is one per test case; `bad` lists which
+// dots are drawn red, which is laid out for the mock (the total is real).
+export const SPINE = {
+  title: 'Four patterns, one row each',
+  note: 'one dot per test case · red is a case that still breaks',
+  rows: [
+    { label: 'Agents', name: 'Field discovery', line: 'voice note to CRM record, a person approves every write', dots: 10, bad: [0, 2, 3, 5, 7, 8], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.03 →', href: '#field-discovery' },
+    { label: 'RAG', name: 'Life in Pixels', line: 'a router in front of retrieval, every answer checked against its cited days', dots: 26, bad: [], cap: '26 questions · 26 valid citations', cta: '100% · watch it run →', href: '/pixels/' },
+    { label: 'Fine-tuning', name: 'Card matching, tuned vs prompted', line: 'a small open model against Haiku and Sonnet', pending: true, cap: 'baselines scored · tuned run not yet', cta: 'in progress', href: '#fine-tuning' },
+    { label: 'MCP', name: 'Pixels server', line: 'the same retrieval, for Claude Desktop and Claude Code, data stays local', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
+  ],
+  rule: 'under all four · 0 parse failures in 520 structured calls',
+  plain: 'each row is one common way companies put AI to work, and each dot is a test I ran on it, so you can see at a glance what holds up and what still slips.',
+};
+
+// Field discovery: the real transcript, and what each step shows as the
+// typing passes the words it came from.
+export const FD_SEGMENTS = [
+  { t: '“Kestrel, this was Tuesday I think. Parking was a nightmare. ' },
+  { t: 'Talked to the manager, Teddy? Ted? ', at: 'dm' },
+  { t: 'They’re on an epi core system', hl: true, at: 'inc' },
+  { t: ', wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and ' },
+  { t: 'they rent equipment out the back, trailers and a scissor lift', hl: true, at: 'rent' },
+  { t: ', so that’d need to tie in.”' },
+];
+export const FD_MATCH = {
+  head: 'hardware_rental · 19 cards',
+  rows: [
+    { k: 'incumbent_system', v: 'confirmed', tone: 'ok', at: 'inc' },
+    { k: 'rental_contracts', v: 'confirmed', tone: 'ok', at: 'rent' },
+    { k: 'decision_maker', v: 'inferred', tone: 'inf', at: 'dm' },
+    { k: 'chemical_licence', v: 'not_discussed', tone: 'gap', at: 'end', after: 300 },
+    { k: 'budget', v: 'not_discussed', tone: 'gap', at: 'end', after: 600 },
+  ],
+};
+export const FD_RECORD = {
+  head: 'Opportunity 006Ax0001',
+  rows: [
+    { k: 'Discovery_Status', v: 'Open gaps' },
+    { k: 'Viability_Flag', v: 'rental_contracts', tone: 'bad' },
+    { k: 'Golive_Shift', v: '+3 wks' },
+    { k: 'Discovery_Open', v: '3 items' },
+  ],
+};
+export const FD_CASE = [
+  { k: 'Problem', v: 'Reps type four lines into a CRM field that cannot tell silence from a resolved requirement.' },
+  { k: 'Approach', v: 'A fixed requirements library, one call under a closed enum, and a proposal step where approve is the only path to a write.' },
+  { k: 'Went wrong', v: 'Planted instructions moved a proposal at least once in six of ten fixtures.' },
+  { k: 'Result', v: '8 of 8 golden · 0 unneeded writes in 12 · $0.03 · 21.5s', mono: true },
+  { k: 'Next time', v: 'Let the proposal step pick its own tools in a loop, with every current rule kept as the fence.' },
+];
+// Totals from the 22 Sep run: 10 fixtures, 5 runs each, 40 of 50 unchanged,
+// six fixtures moved at least once. Which runs moved is laid out for the mock.
+export const FD_INJECTION = { fixtures: 10, runs: 5, moved: { 0: [1, 3], 2: [2], 3: [0, 2, 4], 5: [3], 7: [1, 4], 8: [2] } };
+
+// Life in Pixels: one replayed run, from data/pixels-runs.json.
+export const PX_REPLAY = {
+  q: 'How was the week of June 8 to 14?',
+  routes: ['search', 'filter · date range', 'sum'], picked: 1,
+  days: ['06-08', '06-09', '06-10', '06-11', '06-12', '06-13'],
+  a: 'The week of June 8-14 was challenging overall. On 2026-06-08, you had a low mood with poor sleep and moderate stress, though productivity was high. On 2026-06-09, you experienced irritability and high stress with another poor night.',
+  check: '✓ 6 of 6 cited days exist in the data',
+};
+
+// Signal: the four sharp scraps and the faded pile behind them. Hue is the
+// oklch hue for the type tag.
+export const SIGNAL_PILE = {
+  scraps: [
+    { x: 'call notes 4/12 — "budget owner changed, new CFO wants value by renewal"', l: '2%', t: '36px', r: -4, ty: 'TXT', g: '¶', h: 60, lg: 'call notes' },
+    { x: 'renewal_deck_v3.pptx', l: '38%', t: '90px', r: 6, ty: 'PPTX', g: '▭', h: 28, lg: 'slides' },
+    { x: 'crm_export_q2.csv (412 rows)', l: '8%', t: '140px', r: -7, ty: 'CSV', g: '▦', h: 145, lg: 'CRM export' },
+    { x: 'slack thread, 60 messages', l: '40%', t: '192px', r: 3, ty: 'CHAT', g: '◌', h: 265, lg: 'Slack' },
+  ],
+  ghosts: [
+    { x: 'RE: RE: Fwd: renewal timing (14)', l: '50%', t: '30px', r: 4, ty: 'EML', h: 330, bl: 0.6 },
+    { x: 'MSA_2024_signed.pdf', l: '54%', t: '66px', r: -6, ty: 'PDF', h: 28, bl: 1.2 },
+    { x: 'IMG_4471.png', l: '4%', t: '116px', r: 9, ty: 'PNG', h: 200, bl: 0.8 },
+    { x: 'qbr_notes_FINAL_v2.docx', l: '52%', t: '150px', r: -3, ty: 'DOC', h: 265, bl: 0.5 },
+    { x: 'zoom_transcript_0912.vtt', l: '20%', t: '226px', r: 3, ty: 'VTT', h: 60, bl: 1 },
+    { x: 'usage_by_seat.xlsx', l: '54%', t: '236px', r: -5, ty: 'XLS', h: 145, bl: 0.7 },
+    { x: '"can we loop in procurement?"', l: '30%', t: '62px', r: -9, ty: 'TXT', h: 60, bl: 1.4 },
+    { x: 'support_tickets_open.csv', l: '3%', t: '194px', r: 5, ty: 'CSV', h: 145, bl: 1.1 },
+  ],
+  out: [
+    { k: 'The read', v: 'Renewal at risk. New CFO has no history with you.' },
+    { k: 'Who matters', v: 'The CFO, not your champion. Champion quiet since April.' },
+    { k: 'Where to press', v: '1. Value recap tied to their Q4 board metric  2. Re-anchor the champion  3. Bring in exec sponsor' },
+    { k: 'Do this today', v: 'Send the CFO a one-page value recap. Nothing else.', typed: true },
+  ],
+  // README ablation, 20 runs per arm: 7 right. Which runs is laid out for the mock.
+  strip: { runs: 20, right: [1, 4, 6, 9, 12, 15, 18] },
+};
+
+// Brain Dump. The five states are the product's own (brain-dump
+// worker/contracts.js CAPS and worker/prompts.js STATE_RULES), and each
+// note paraphrases that state's rules. The piles are predictions from those
+// rules until the five-state run is recorded, and the page says so.
+export const BD_BUCKETS = {
+  today: { k: 'Energy for today', h: 145 },
+  not:   { k: 'Real but not now', h: 70 },
+  keep:  { k: 'Worth keeping', h: 250 },
+  down:  { k: 'Put it down', h: 70, quiet: true },
+};
+export const BD_DUMP = [
+  { t: 'deck for thursday not started', b: 'today' },
+  { t: 'call the vendor back', b: 'today' },
+  { t: 'why am i still thinking about the q2 thing', b: 'down' },
+  { t: 'laundry', b: 'not' },
+  { t: 'learn snowflake properly', b: 'keep' },
+  { t: "haven't eaten", b: 'today' },
+  { t: 'the greenbelt run i keep not doing', b: 'keep' },
+  { t: 'is the knee thing getting worse', b: 'not' },
+  { t: 'text back', b: 'not' },
+];
+export const BD_STATES = [
+  { n: 'overwhelmed', cap: 'cap 5 · focus 3', note: 'Overwhelmed caps the first pile at five and the focus list at three, groups what can stack, and says you had a lot in there before it asks for anything.',
+    p: { today: ['Eat something first', 'Vendor callback, before five', 'Deck, open the file'], not: ['Laundry, tonight', 'The knee, book a check'], keep: ['Snowflake, properly'], down: ['The Q2 thing is done'] } },
+  { n: 'scattered', cap: 'cap 5 · time-boxed', note: 'Scattered time-boxes every focus task, lowest activation first, and lets go of the rabbit holes that feel urgent and are not.',
+    p: { today: ['Laundry, runs while you work', 'Vendor callback', 'Deck, 20 minutes only'], not: ['The knee thing', 'Text back'], keep: ['Snowflake, one lane at a time'], down: ['The Q2 rabbit hole'] } },
+  { n: 'anxious', cap: 'cap 3 · no "should"', note: 'Anxious caps the first pile at three, bans "should" and "need to", and sends every what-will-they-think item to the last pile as a statement of release.',
+    p: { today: ['Eat something', 'Text back, one line is enough'], not: ['Deck, when you are ready', 'The knee, if it feels okay'], keep: ['Snowflake'], down: ['The Q2 thing is not a verdict on you'] } },
+  { n: 'low energy', cap: 'cap 2 · physical only', note: 'Low energy allows two physical tasks at most, makes the decisions inside the task text, and says outright that this is enough for today.',
+    p: { today: ['Eat, whatever takes least thought', 'Laundry in, that is it'], not: ['Thursday deck', 'Vendor callback'], keep: ['Greenbelt run', 'Snowflake'], down: ['The Q2 thing, again'] } },
+  { n: 'foggy', cap: 'cap 1 · one gesture', note: 'Foggy gets one automatic physical gesture and nothing to decide, and the ambiguous items go to keeping or letting go instead of waiting in the middle.',
+    p: { today: ['Eat something.'], not: ['Vendor callback'], keep: ['Deck', 'Snowflake, still here after the fog'], down: ['The knee worry', 'The Q2 thing'] } },
 ];
 
-// Real per-zip averages from assets/atx-foodie-inspection — lower score = fewer violations.
-const ATX_ZIPS = [
-  { zip: '78701', score: 89.2, label: 'Downtown', box: [30.282, -97.748, 30.266, -97.730] },
-  { zip: '78702', score: 89.3, label: 'East Austin', box: [30.280, -97.730, 30.255, -97.710] },
-  { zip: '78703', score: 90.1, label: 'Tarrytown', box: [30.300, -97.775, 30.270, -97.748] },
-  { zip: '78704', score: 88.7, label: 'South Congress', box: [30.255, -97.775, 30.225, -97.740] },
-  { zip: '78705', score: 89.1, label: 'UT area', box: [30.300, -97.748, 30.282, -97.730] },
-  { zip: '78721', score: 90.8, label: 'MLK', box: [30.280, -97.710, 30.260, -97.693] },
-  { zip: '78722', score: 91.0, label: 'Cherrywood', box: [30.300, -97.730, 30.280, -97.710] },
-  { zip: '78723', score: 90.9, label: 'Windsor Park', box: [30.300, -97.710, 30.272, -97.685] },
-  { zip: '78741', score: 90.4, label: 'Riverside', box: [30.255, -97.730, 30.228, -97.710] },
-  { zip: '78745', score: 88.8, label: 'South Lamar', box: [30.225, -97.775, 30.198, -97.740] },
-  { zip: '78748', score: 90.2, label: 'Slaughter Ln', box: [30.198, -97.775, 30.172, -97.740] },
-  { zip: '78751', score: 90.5, label: 'Hyde Park', box: [30.320, -97.730, 30.300, -97.710] },
-  { zip: '78752', score: 89.5, label: 'North Loop', box: [30.340, -97.710, 30.320, -97.685] },
-  { zip: '78753', score: 88.8, label: 'Rundberg', box: [30.380, -97.685, 30.345, -97.655] },
-  { zip: '78757', score: 91.6, label: 'Crestview', box: [30.360, -97.730, 30.340, -97.710] },
-  { zip: '78758', score: 91.6, label: 'North Burnet', box: [30.380, -97.730, 30.360, -97.710] },
-  { zip: '78759', score: 89.4, label: 'Great Hills', box: [30.400, -97.775, 30.370, -97.745] },
+// The Instacart dbt DAG: [x, y, tier, delay in seconds, text]. Tier hues
+// follow the style guide: source 60, staging 200, intermediate 145, marts 330.
+export const DAG = {
+  head: 'Instacart · dbt on BigQuery · sources through marts · 35 tests passing',
+  tests: 35,
+  hues: { src: 60, stg: 200, int: 145, mart: 330 },
+  bands: [['0%', '21%', 60, 0], ['23%', '26%', 200, 0.3], ['50%', '29%', 145, 1.0], ['80%', '20%', 330, 1.5]],
+  nodes: [['2%', '6%', 'lab', 0, 'Source'], ['2%', '79%', 'src', 0.05, 'instacart.orders'], ['25%', '6%', 'lab', 0.3, 'Staging · 5 models'], ['25%', '14%', 'stg', 0.35, 'stg_order_products'], ['25%', '29%', 'stg', 0.41, 'stg_products'], ['25%', '44%', 'stg', 0.47, 'stg_aisles'], ['25%', '59%', 'stg', 0.53, 'stg_departments'], ['25%', '79%', 'stg', 0.59, 'stg_orders'], ['52%', '24%', 'lab', 1.0, 'Intermediate'], ['52%', '32%', 'int', 1.05, 'int_order_products_joined'], ['52%', '79%', 'int', 1.12, 'fct_orders'], ['82%', '24%', 'lab', 1.5, 'Marts'], ['82%', '32%', 'mart', 1.55, 'dim_products'], ['82%', '79%', 'mart', 1.62, 'dim_users']],
+  // [x1, y1, x2, y2, stage, hue]
+  edges: [[11.5, 82, 24, 82, 0, 60], [36, 17, 51, 36, 1, 200], [36, 32, 51, 36, 1, 200], [36, 47, 51, 36, 1, 200], [36, 62, 51, 36, 1, 200], [36, 82, 51, 82, 1, 200], [64.5, 36, 81, 36, 2, 145], [62, 41, 52.5, 77, 2, 145], [58.5, 82, 81, 82, 2, 145]],
+};
+// Reorder rate: pooled 0.60, new 0.221, veteran 0.670 (instacart README).
+export const REORDER = { pooled: 0.60, fresh: 0.221, veteran: 0.670 };
+// ATX drift: mean score by inspection number, 1 through 14 (notebook). Higher
+// is more violations, so the chart flips it and labels the axis.
+export const ATX_DRIFT = [90.5, 90.6, 90.55, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6];
+
+export const SKILL_AREAS = [
+  { label: 'AI enablement', line: 'LLM workflow design & deployment · Team-level AI adoption · Prompt engineering · AI tool evaluation · Human-in-the-loop process design · AI fluency enablement' },
+  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · SQL / BigQuery · dbt Cloud · Structured JSON / schema design · ChromaDB · MCP servers' },
+  { label: 'Delivery', line: 'Full-lifecycle engagement management · Multi-stakeholder orchestration · Workflow & SOP design · Health scoring systems · Adoption & usage tracking · Agile / Scrum (PSM I)' },
+  { label: 'Data', line: 'EDA · Regression & classification modeling · Cohort & segment analysis · Behavioral pattern detection · Data modeling · Looker Studio · Tableau' },
+  { label: 'Stack', line: 'Anthropic API · Claude · MCP · Hugging Face Hub · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
 ];
+
+// Every cert verifiable; a sub without an href renders an "Add verify link" pill.
+export const CERT_LIST = [
+  { name: 'Anthropic AI Fluency, full credential set', issuer: 'Anthropic Academy · Jun 2026 · six courses, each verifiable', subs: [
+    { name: 'Claude 101', href: 'https://verify.skilljar.com/c/m33jy7xt39an' },
+    { name: 'Claude Code 101', href: 'https://academy.claude.com/badges/9bd2cc2f-37ac-4859-9ddb-6fe827dd4713' },
+    { name: 'Intro to Agent Skills', href: 'https://verify.skilljar.com/c/mcpdh7rajijd' },
+    { name: 'Intro to Claude Cowork', href: 'https://verify.skilljar.com/c/akk8bvgh8u8i' },
+    { name: 'AI Capabilities & Limitations', href: 'https://verify.skilljar.com/c/5on46yhihy7j' },
+    { name: 'AI Fluency Framework & Foundations', href: 'https://verify.skilljar.com/c/ju2k6b9v4ruu' },
+  ] },
+  { name: 'Snowflake Hands-On Essentials: Data Warehousing Workshop', issuer: 'Snowflake University · Badge ID 184380098', href: 'https://achieve.snowflake.com/e3201335-75c2-4604-98c1-4c8063699131' },
+  { name: 'Google Advanced Data Analytics', issuer: 'Google / Coursera · ID 4REOBHKQJ0DS · Jun 2026', href: 'https://coursera.org/verify/professional-cert/4REOBHKQJ0DS' },
+  { name: 'dbt Fundamentals', issuer: 'dbt Labs · May 2026', href: 'https://credentials.getdbt.com/5470c199-7753-4f90-99a3-07e8f8c6fe51' },
+];
+
+export const OFF_CLOCK = [
+  { name: 'The arcade', line: 'Fifteen apps, free play, no quarters.', cta: 'All fifteen →', href: '/apps/' },
+  { name: '/life', line: 'The noticing field, seven decks, twenty-one miles.', cta: 'Go there →', href: '/life' },
+  { name: 'Notes', line: 'What the data I live in keeps telling me.', cta: 'Read four →', href: '/life#notes' },
+];
+
+export const CONTACT_CMD = ["SELECT * FROM conversations WHERE topic = 'ai'", 'dbt run --select samie.availability', 'mail sammisnv@gmail.com'];
 
 const ROLES = [
   { title: 'Senior Manager, Service', period: 'Oct 2023 – present', meta: 'People manager · $14M+ book · ~$3.5M quarterly target', bullets: [
@@ -234,23 +223,6 @@ const ROLES = [
     'Managed over 10 projects weekly from inception to completion, ensuring timely delivery for enterprise clients.',
     'Analyzed value chains across industries to sharpen client problem-solving and execution strategies.',
     'Recruited subject matter experts across diverse industries to strengthen client engagements.'] },
-];
-
-const RAIL_TICKS = ['2018', '2019', '2020', '2021', '2022', '2023'];
-
-const SKILLS = [
-  { label: 'AI enablement', line: 'LLM workflow design & deployment · Team-level AI adoption · Prompt engineering · AI tool evaluation · Internal and client-facing AI strategy input · Human-in-the-loop process design · AI fluency enablement' },
-  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · Google Apps Script · SQL / BigQuery · dbt Cloud · REST API integration · Structured JSON / schema design · ChromaDB · Hugging Face embedding models · MCP servers' },
-  { label: 'Delivery', line: 'Full-lifecycle engagement management · Multi-stakeholder orchestration · Workflow & SOP design · Health scoring systems · Adoption & usage tracking · Agile / Scrum (PSM I) · Cross-functional coordination' },
-  { label: 'Data', line: 'EDA · Regression & classification modeling · Cohort & segment analysis · Behavioral pattern detection · Data modeling · Looker Studio · Tableau' },
-  { label: 'Stack', line: 'Anthropic API · Claude · MCP · Hugging Face Hub · ChatGPT · Gemini · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
-];
-
-const CERTS = [
-  { name: 'Anthropic AI Fluency — full credential set', issuer: 'Anthropic Academy · Jun 2026 · Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities & Limitations · AI Fluency Framework', href: 'https://www.anthropic.com/learn' },
-  { name: 'Google Advanced Data Analytics', issuer: 'Google / Coursera · ID 4REOBHKQJ0DS · Jun 2026', href: 'https://coursera.org/verify/professional-cert/4REOBHKQJ0DS' },
-  { name: 'dbt Fundamentals', issuer: 'dbt Labs · May 2026', href: 'https://credentials.getdbt.com/5470c199-7753-4f90-99a3-07e8f8c6fe51' },
-  { name: 'PSM I — Professional Scrum Master', issuer: 'Scrum.org · May 2026', href: 'https://scrum.org/certificates/1318010' },
 ];
 
 const RACCOON_DAYS = [
@@ -281,7 +253,7 @@ const OBSERVATIONS = [
       'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans, and then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.',
       'The wearable data told the story better than I could, five consecutive days at a body battery of 5 out of 100, which is the floor, before I knew what the threat was, and my sleep score fell from a baseline of 81 to 53.',
       'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
-    sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice ↗', linkHref: 'https://samievargas.com/raccoon/',
+    sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_DAYS } },
   { tag: 'May 2026 · 21,160 inspection records', title: 'Being flagged does not fix it',
     paragraphs: [
@@ -331,13 +303,6 @@ const RESULTS = {
     atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Two zips sit on the 90.6 line and the notebook and map disagree'],
   },
 };
-
-const LIFE_TEASERS = [
-  { k: 'The field', v: 'Everything I noticed, plotted by whether I built something about it' },
-  { k: 'Running', v: '15 of 21 miles on the Greenbelt' },
-  { k: 'Reading', v: 'The complete Christie in order, currently stalled on late Poirot.' },
-  { k: 'Tarot', v: 'Seven decks, every pull logged across 78 cards' },
-];
 
 const CONTACT_LINKS = [
   { label: 'Email', value: 'sammisnv@gmail.com', href: 'mailto:sammisnv@gmail.com' },
@@ -515,27 +480,6 @@ const PROGRESS = [
   { title: 'Solo travel, London first', note: 'neighborhoods mapped', pct: 20 },
 ];
 
-const PLACES = [
-  { name: 'Paprika', note: 'The standing default, on the patio, late.', zip: '78757', score: 91.6 },
-  { name: 'Desnudo', note: 'Coffee that turns into something else by evening.', zip: '78702', score: 89.3 },
-  { name: 'Terrible Love', note: 'Named like a warning and eats like a favourite.', zip: '78704', score: 88.7 },
-  { name: 'Barton Springs, before the crowd', note: 'Not food, but still part of the rotation.', zip: '78704', score: 88.7 },
-  { name: 'The Caesar salad, still hypothetical', note: 'Cold plate, no anchovy, croutons that were bread yesterday.', zip: 'anywhere', score: null },
-];
-
-const LIFE_INTERESTS = [
-  { title: 'Austin, actually', body: 'Here since 2014 and still finding things. Barton Springs before it gets crowded. That late afternoon light in South Austin. I complain about the summers and then September comes.' },
-  { title: 'Eating here', body: 'Paprika, Desnudo, and Terrible Love are the standing favorites. The inspection project started with exactly this list.' },
-  { title: 'Moving', body: 'Hot yoga and pilates for the knee and the nervous system. Ring Fit because it turns out I need a dragon to fight to stay motivated.' },
-];
-
-const LIFE_FACTS = [
-  { label: 'Location', value: 'Austin, TX · since 2014' },
-  { label: 'Journaling', value: 'Daily since 2020, in my own app' },
-  { label: 'Decks', value: 'Seven, every pull logged' },
-  { label: 'Code', value: 'github.com/SamieVargas' },
-];
-
 const READING = ['Agatha Christie, in order', 'Seishi Yokomizo', 'Terry Pratchett'];
 const PLAYING = ['House Flipper 2', 'Ring Fit Adventure', 'Stardew Valley'];
 
@@ -546,7 +490,26 @@ const RING_FIT = {
   level: 32,
   boss: 'Dragaux',
   quote: 'Ring Fit because it turns out I need a dragon to fight to stay motivated.',
+  track: 40,  // cells in the level strip on /life
+  bossAt: 36, // the cells past here are where Dragaux waits
 };
+
+// /life#notes · one entry per OBSERVATIONS item, same order: the "In
+// plain terms" line and the numbers each note's chart draws. The rebuild
+// bars in note 04 are illustrative and the page captions them as such.
+export const LIFE_NOTES = [
+  { plain: 'new shoppers rarely rebuy and regulars almost always do, so the one famous average is two different groups mashed together and it fits neither of them.',
+    chart: { label: 'reorder rate · pooled, then split', pooled: 0.60, split: [{ k: 'new', v: 0.221 }, { k: 'veteran', v: 0.670 }] } },
+  { plain: 'my body was stressed for days before I knew why, and it stayed stressed for more than a week after the problem was gone.',
+    chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 27', found: 'May 1' } },
+  { plain: 'getting caught by the health inspector does not seem to make a place cleaner, and you can see which ones are sliding years before they get bad.',
+    chart: { label: 'average score by inspection number', scores: [90.5, 90.6, 90.55, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6],
+      first: '90.5 · 1st visit', last: '92.6 · 14th', gapLabel: 'Follow-up visits against routine ones', gap: 8 } },
+  { plain: 'every version of my to-do setup gets better, and every version still needs me at my most tired, which is the design problem worth solving and why Brain Dump exists.',
+    chart: { label: 'four rebuilds, one shared weak spot', versions: ['v1', 'v2', 'v3', 'v4'], gapLabel: 'same gap',
+      caption: 'bar is how much better each one got · the dot is the moment it asks too much',
+      illustrative: 'bar lengths are illustrative, there is no score behind them' } },
+];
 
 // ── Toolkit page ─────────────────────────────────────────────
 
@@ -571,111 +534,58 @@ const TK_NOTES = [
 ];
 
 const TK_META = [
-  { name: 'Tab title', attr: '<title>', current: 'Samie Vargas — applied AI & enablement', status: 'Live · 38 chars',
+  { name: 'Tab title', attr: '<title>', key: '<title>', max: 60, current: 'Samie Vargas · applied AI', status: 'Live · 25 chars',
     why: 'My name on its own loses to every other Samie Vargas in a search result, and it says nothing in a tab strip of twelve, so this says what I do in the space I have.' },
-  { name: 'Social title', attr: 'og:title · twitter:title', current: 'I ship AI tools that replace work I used to do by hand', status: 'Live · 54 chars',
+  { name: 'Social title', attr: 'og:title · twitter:title', key: 'og:title', max: 70, current: 'I build AI into the workflows customers already run, and I publish how often it breaks', status: 'Live · 86 chars',
     why: 'This is the line that shows up in someone\'s Slack, which is how most people get here, so it should be the claim, since my name is already on the card as the domain.' },
-  { name: 'Social description', attr: 'og:description', current: 'Signal reads messy account files in a minute. 3.4M orders modeled in dbt. 21,160 inspection records. Eight years running a $14M+ enterprise book.', status: 'Live · 146 chars',
+  { name: 'Social description', attr: 'og:description', key: 'og:description', max: 200, current: 'Agents, RAG, fine-tuning and MCP, one row each, with a dot for every test case. Field discovery, Life in Pixels, Signal and Brain Dump, each with its evals.', status: 'Live · 156 chars',
     why: 'The title makes the claim, so this carries proof instead of repeating it, and every number here is one I can walk someone through.' },
-  { name: 'Search description', attr: 'meta name="description"', current: 'Applied-AI operator in enterprise customer success. I build the LLM workflows and ship the tools — Signal, Brain Dump, dbt pipelines. Austin, remote.', status: 'Live · 150 chars',
+  { name: 'Search description', attr: 'meta name="description"', key: 'description', max: 160, current: 'I build AI into the workflows customers already run, and I publish how often it breaks. Four builds with dated evals, eight years at GLG. Austin, remote.', status: 'Live · 153 chars',
     why: 'Google cuts around 155 and my old one was 197, so the part being dropped was the location, and this ends on the strongest clause while still keeping Austin.' },
-  { name: 'Card alt text', attr: 'og:image:alt', current: 'Samie Vargas — applied AI and enablement. Austin, remote.', status: 'Live',
+  { name: 'Card alt text', attr: 'og:image:alt', current: 'Samie Vargas, applied AI. Austin, remote.', status: 'Live',
     why: 'Some clients and every screen reader get this instead of the image, and it was missing entirely.' },
   { name: 'Canonical + theme', attr: 'link canonical · meta theme-color', current: 'https://samievargas.com/ · #1a6b5a', status: 'Live',
     why: 'The site answers on two domains, so one of them has to be the real one, and the theme colour tints mobile browser chrome to the same green as everything else.' },
 ];
 
-const TK_HEAD = [
-  '<title>Samie Vargas — applied AI & enablement</title>',
-  '<meta name="description" content="Applied-AI operator in enterprise customer success. I build the LLM workflows and ship the tools — Signal, Brain Dump, dbt pipelines. Austin, remote.">',
-  '<link rel="canonical" href="https://samievargas.com/">',
-  '<meta name="theme-color" content="#1a6b5a">',
-  '',
-  '<meta property="og:type" content="website">',
-  '<meta property="og:url" content="https://samievargas.com/">',
-  '<meta property="og:title" content="I ship AI tools that replace work I used to do by hand">',
-  '<meta property="og:description" content="Signal reads messy account files in a minute. 3.4M orders modeled in dbt. 21,160 inspection records. Eight years running a $14M+ enterprise book.">',
-  '<meta property="og:image" content="https://samievargas.com/og-card.png">',
-  '<meta property="og:image:width" content="1200">',
-  '<meta property="og:image:height" content="630">',
-  '<meta property="og:image:alt" content="Samie Vargas — applied AI and enablement. Austin, remote.">',
-  '<meta name="twitter:card" content="summary_large_image">',
-  '',
-  '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
-  '<link rel="icon" href="/favicon-32.png" sizes="32x32">',
-  '<link rel="icon" href="/favicon-16.png" sizes="16x16">',
-  '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
-  '<link rel="manifest" href="/site.webmanifest">',
-].join('\n');
-
+// Toolkit swatches: name, the custom property it reads, and its use. The
+// colour itself is read from css/styles.css at render, so it cannot drift.
 const TK_TOKENS = [
-  { name: '--paper', hex: '#fbf9f3', use: 'Page background' },
-  { name: '--paper-alt', hex: '#f4f1e8', use: 'Alternating sections' },
-  { name: '--ink', hex: '#16150f', use: 'Headings and body' },
-  { name: '--ink-soft', hex: '#3a382e', use: 'Lead paragraphs' },
-  { name: '--muted', hex: '#6d6a5c', use: 'Secondary text' },
-  { name: '--faint', hex: '#77735f', use: 'Labels · fixed for contrast' },
-  { name: '--rule', hex: '#e2ddce', use: 'Hairlines' },
-  { name: '--rule-strong', hex: '#c9c3b1', use: 'Button borders' },
-  { name: '--accent', hex: '#1a6b5a', use: 'The one green' },
+  { name: 'paper', prop: '--paper', use: 'page' },
+  { name: 'card', prop: '--card', use: 'cards' },
+  { name: 'track', prop: '--track', use: 'tracks' },
+  { name: 'ink', prop: '--ink', use: 'type, dark bands' },
+  { name: 'body', prop: '--body', use: 'paragraphs' },
+  { name: 'meta', prop: '--meta', use: 'meta' },
+  { name: 'rule', prop: '--rule', use: 'hairlines' },
+  { name: 'green', prop: '--accent', use: 'the accent' },
+  { name: 'mint', prop: '--accent-dark', use: 'accent on dark' },
+  { name: 'tint', prop: '--accent-tint', use: 'plain terms' },
 ];
 
 // ── The arcade (/apps) ───────────────────────────────────────
 
 const ARCADE_APPS = [
-  { slug: 'six-degrees', needs: ['live'], preview: 'terminal', shot: 'shots/six-degrees.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things, whether people or films or bands or towns, and the shortest path between them, so Dolly Parton reaches Austin through Willie Nelson.' },
-  { slug: 'died-doing-what', needs: ['live'], preview: 'bars', shot: 'shots/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died, so for poets tuberculosis leads at a median age of 58.' },
-  { slug: 'taco-coin-flip', needs: ['live'], preview: 'terminal', shot: 'shots/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants, and if one scored worse on the city's real inspection records then the coin defers to the cleaner option." },
-  { slug: 'corporate-translator', needs: ['browser'], preview: 'terminal', shot: 'shots/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm, and the slider genuinely rewrites the text.' },
-  { slug: 'streak-autopsy', needs: ['browser'], preview: 'grid', shot: 'shots/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail, so two missed days and it stamps the habit DECEASED and opens a case file.' },
-  { slug: 'whodunit-roulette', needs: ['live', 'export'], preview: 'terminal', shot: 'shots/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood, and if you import your Goodreads or StoryGraph export it learns which authors you return to.' },
-  { slug: 'nepotism-graph', needs: ['live'], preview: 'terminal', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families, so of the 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
-  { slug: 'same-name', needs: ['live'], preview: 'terminal', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
-  { slug: 'backlog-reaper', needs: ['export'], preview: 'bars', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt with one title condemned, and you can delete it forever or spare it like a coward.' },
-  { slug: 'was-it-worth-it', needs: ['browser'], preview: 'grid', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase and thirty days later it asks whether you still care, and it keeps your lifetime regret rate.' },
-  { slug: 'sample-size-roast', needs: ['browser'], preview: 'bars', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences, which is real margin-of-error math plus an honest rewrite of the stat.' },
-  { slug: 'oracle', needs: ['browser'], preview: 'ring', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers, so you ask it anything and it hands back a harder question.' },
-  { slug: 'sql-tarot', needs: ['browser'], preview: 'grid', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
-  { slug: 'locked-room', needs: ['browser'], preview: 'ring', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, and one impossible exit, with a fresh locked-room mystery generated every time.' },
-  { slug: 'escalation-simulator', needs: ['browser'], preview: 'ring', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions, and every choice moves account health and none of them are free.' },
-];
-
-// Ticker order on the work page differs deliberately from the arcade's curated order.
-const ARCADE_TITLES = ['Six Degrees of Anything', 'Died Doing What', 'Taco Coin Flip', 'SQL Tarot', 'The Nepotism Graph', 'Corporate Translator', 'Streak Autopsy', 'The Locked Room', 'One-Question Oracle', 'Whodunit Roulette', 'Backlog Reaper', 'Was It Worth It?', 'Same Name, Different Life', 'Sample Size Roast', 'Escalation Simulator'];
-
-// ── Pattern index (homepage, #patterns) ──────────────────────
-// For the reader who arrives with a checklist. `built: false` cells say
-// what the nearest thing is and what is missing; nothing here goes on the
-// résumé until its eval paragraph exists with a date.
-const PATTERNS = [
-  { key: 'rag', label: 'RAG', built: true, title: 'Life in Pixels', num: '100% valid citations · 26 questions',
-    line: 'A router in front of retrieval, sums and filters in code, every answer checked against the days it cites before it is shown. Replayed run by run.',
-    href: '/pixels/', cta: 'Watch it run →' },
-  { key: 'mcp', label: 'MCP', built: true, title: 'Life in Pixels server', num: '2 read-only tools · stdio',
-    line: 'The same router, validator and model call, so Claude Desktop and Claude Code can ask the data questions while it stays on my machine.',
-    href: 'https://github.com/SamieVargas/pixels-rag', cta: 'The server ↗' },
-  { key: 'structured', label: 'Structured outputs', built: true, title: 'Signal · Brain Dump · Field discovery', num: '0 parse failures in 520 runs',
-    line: 'Closed enums and JSON schemas the API enforces, a validator in code behind every one, and the parse path recorded per reply so a silent regression shows.',
-    href: '#signal', cta: 'Signal →' },
-  { key: 'evals', label: 'Evals', built: true, title: 'Every project', num: '4 dated golden sets',
-    line: 'Labels written before the first run, twenty-run ablations, planted-instruction fixtures, and a "what still breaks" line under each project.',
-    href: '#field-discovery', cta: 'The seven layers →' },
-  { key: 'agents', label: 'Agents', built: false, title: 'Nearest: Field discovery', num: 'A pipeline, not a loop',
-    line: 'It extracts, validates, proposes and waits for a person. Nothing on this page decides its own next step from a tool result yet.',
-    href: '#field-discovery', cta: 'See the proposal step →' },
-  { key: 'finetune', label: 'Fine-tuning', built: false, title: 'Prompting, so far', num: 'The baselines exist',
-    line: 'Every model call here is a prompted Haiku or Sonnet under a schema, scored on a golden set. The tuned-versus-prompted comparison is the next build.',
-    href: null, cta: '' },
+  { slug: 'six-degrees', needs: ['live'], preview: 'terminal', shot: 'shots-clean/six-degrees-v2.png', title: 'Six Degrees of Anything', badge: 'live data', accent: '#1a6b5a', feat: true, hook: 'Two things, whether people or films or bands or towns, and the shortest path between them, so Dolly Parton reaches Austin through Willie Nelson.' },
+  { slug: 'died-doing-what', needs: ['live'], preview: 'bars', shot: 'shots-clean/died-doing-what.png', title: 'Died Doing What', badge: 'live data', accent: '#8a4a3a', feat: true, hook: 'Pick a trade and Wikidata reports how its people actually died, so for poets tuberculosis leads at a median age of 58.' },
+  { slug: 'taco-coin-flip', needs: ['live'], preview: 'terminal', shot: 'shots-clean/taco-flip.png', title: 'Taco Coin Flip', badge: 'live data', accent: '#b31f5b', feat: true, hook: "Settles a lunch argument between two Austin restaurants, and if one scored worse on the city's real inspection records then the coin defers to the cleaner option." },
+  { slug: 'corporate-translator', needs: ['browser'], preview: 'terminal', shot: 'shots-clean/translator.png', title: 'Corporate Translator', badge: 'no data needed', accent: '#4a5ac9', feat: true, hook: 'Paste an email and slide from passive-aggressive to Texan warm, and the slider genuinely rewrites the text.' },
+  { slug: 'streak-autopsy', needs: ['browser'], preview: 'grid', shot: 'shots-clean/streak-autopsy.png', title: 'Streak Autopsy', badge: 'tracks your taps', accent: '#6b6255', feat: true, hook: 'A habit tracker that only gets interesting when you fail, so two missed days and it stamps the habit DECEASED and opens a case file.' },
+  { slug: 'whodunit-roulette', needs: ['live', 'export'], preview: 'terminal', shot: 'shots-clean/whodunit.png', title: 'Whodunit Roulette', badge: 'live + your export', accent: '#7a3b8f', feat: true, hook: 'Picks your next mystery by mood, and if you import your Goodreads or StoryGraph export it learns which authors you return to.' },
+  { slug: 'nepotism-graph', needs: ['live'], preview: 'terminal', shot: 'shots-clean/nepotism.png', title: 'The Nepotism Graph', badge: 'live data', accent: '#1a6b5a', hook: 'Which professions run in families, so of the 25,885 conductors in Wikidata, 347 have a relative who also conducted.' },
+  { slug: 'same-name', needs: ['live'], preview: 'terminal', shot: 'shots-clean/same-name.png', title: 'Same Name, Different Life', badge: 'live data', accent: '#1a6b5a', hook: 'Every human in Wikidata who carried your name, as a timeline, a constellation, and a list.' },
+  { slug: 'backlog-reaper', needs: ['export'], preview: 'bars', shot: 'shots-clean/backlog-reaper.png', title: 'Backlog Reaper', badge: 'your export', accent: '#8a4a3a', hook: 'Your unplayed game pile scored by guilt with one title condemned, and you can delete it forever or spare it like a coward.' },
+  { slug: 'was-it-worth-it', needs: ['browser'], preview: 'grid', shot: 'shots-clean/worth-it-v2.png', title: 'Was It Worth It?', badge: 'tracks your taps', accent: '#6b6255', hook: 'Log a purchase and thirty days later it asks whether you still care, and it keeps your lifetime regret rate.' },
+  { slug: 'sample-size-roast', needs: ['browser'], preview: 'bars', shot: 'shots-clean/sample-size.png', title: 'Sample Size Roast', badge: 'no data needed', accent: '#4a5ac9', hook: 'Paste a percentage claim, give it n, and receive consequences, which is real margin-of-error math plus an honest rewrite of the stat.' },
+  { slug: 'oracle', needs: ['browser'], preview: 'ring', shot: 'shots-clean/oracle.png', title: 'One-Question Oracle', badge: 'no data needed', accent: '#4a5ac9', hook: 'An obsidian scrying stone that never answers, so you ask it anything and it hands back a harder question.' },
+  { slug: 'sql-tarot', needs: ['browser'], preview: 'grid', shot: 'shots-clean/sql-tarot.png', title: 'SQL Tarot', badge: 'no data needed', accent: '#7a3b8f', hook: 'Fourteen SQL clauses, upright or reversed, dealt into past, present, and ships-to-prod.' },
+  { slug: 'locked-room', needs: ['browser'], preview: 'ring', shot: 'shots-clean/locked-room.png', title: 'The Locked Room', badge: 'no data needed', accent: '#7a3b8f', hook: 'A house, a body, six guests, and one impossible exit, with a fresh locked-room mystery generated every time.' },
+  { slug: 'escalation-simulator', needs: ['browser'], preview: 'ring', shot: 'shots-clean/escalation.png', title: 'Escalation Simulator', badge: 'no data needed', accent: '#8a4a3a', hook: 'An enterprise account is on fire and you have five decisions, and every choice moves account health and none of them are free.' },
 ];
 
 export {
-  PATTERNS,
-  HERO_STATS, SIGNAL_TYPED, SIGNAL_SCRAPS, SIGNAL_OUT, SIGNAL_NOTES,
-  READ_ROWS, SEC_CONTACTS, CONSOLE_QUERIES,
-  ARCADE_APPS, ARCADE_TITLES,
-  DUMP_BITS, BRAIN_STATES, ANNOTATED, ATX_ZIPS, ROLES, RAIL_TICKS,
-  SKILLS, CERTS, OBSERVATIONS, LIFE_TEASERS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
+  ARCADE_APPS, ROLES, OBSERVATIONS, CONTACT_LINKS, RESULT_FIELDS, RESULTS,
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
-  PLACES, LIFE_INTERESTS, LIFE_FACTS, READING, PLAYING, RING_FIT, RECORDS, CHRISTIE,
-  TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_HEAD, TK_TOKENS,
+  READING, PLAYING, RING_FIT, RECORDS, CHRISTIE,
+  TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS,
 };

@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Samie Vargas — applied AI &amp; enablement</title>
-  <meta name="description" content="Applied-AI operator in enterprise customer success. I build the LLM workflows and ship the tools — Signal, Brain Dump, dbt pipelines. Austin, remote.">
+  <title>Samie Vargas · applied AI</title>
+  <meta name="description" content="I build AI into the workflows customers already run, and I publish how often it breaks. Four builds with dated evals, eight years at GLG. Austin, remote.">
   <link rel="canonical" href="https://samievargas.com/">
   <meta name="theme-color" content="#1a6b5a">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://samievargas.com/">
-  <meta property="og:title" content="I ship AI tools that replace work I used to do by hand">
-  <meta property="og:description" content="Signal reads messy account files in a minute. 3.4M orders modeled in dbt. 21,160 inspection records. Eight years running a $14M+ enterprise book.">
+  <meta property="og:title" content="I build AI into the workflows customers already run, and I publish how often it breaks">
+  <meta property="og:description" content="Agents, RAG, fine-tuning and MCP, one row each, with a dot for every test case. Field discovery, Life in Pixels, Signal and Brain Dump, each with its evals.">
   <meta property="og:image" content="https://samievargas.com/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Samie Vargas — applied AI and enablement. Austin, remote.">
+  <meta property="og:image:alt" content="Samie Vargas, applied AI. Austin, remote.">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -34,399 +34,337 @@
     gtag('config', 'G-K7B7NDTKEL');
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260923g">
-  <script>
-    // S3 — put the remembered door on the root before first paint, so the
-    // hero and the section order never flash from the default.
-    try { var d = localStorage.getItem('door'); if (d === 'analytics' || d === 'ops') document.documentElement.setAttribute('data-door', d); } catch (e) { /* default door */ }
-  </script>
+  <link rel="stylesheet" href="css/styles.css?v=20260924a">
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────────────────────────── -->
 <nav class="nav">
-  <a class="nav__name" href="#top">Samie Vargas</a>
-  <div class="nav__links">
-    <a href="#field-discovery">Discovery</a>
-    <a href="#signal">Signal</a>
-    <a href="#work">Work</a>
-    <a href="#experience">Experience</a>
-    <a href="/life#notes">Notes</a>
-    <a href="/life">Life</a>
-    <a href="/apps/">Apps</a>
-    <a class="nav__cta" href="/resume">Résumé</a>
+  <div class="nav__in">
+    <a class="nav__name" href="#top">Samie Vargas</a>
+    <div class="nav__links">
+      <a href="#patterns">Patterns</a>
+      <a href="#field-discovery">Builds</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#experience">Experience</a>
+      <a href="/life">Life</a>
+      <a href="/life#notes">Notes</a>
+      <a href="/apps/">Arcade</a>
+      <a class="nav__ink" href="/resume">Résumé</a>
+    </div>
   </div>
 </nav>
 
-<!-- ── HERO ────────────────────────────────────────────────── -->
-<header class="hero" id="top">
-  <div class="hero__body">
-    <p class="status"><i class="status__dot"></i><span>Exploring applied-AI and enablement roles · Austin, TX · remote</span></p>
-    <h1>
-      <span class="door-copy" data-for="ai">I ship AI tools that replace work I used to do <em>by hand</em>.</span>
-      <span class="door-copy" data-for="analytics">I answer questions with the whole pipeline, not just the chart at the end.</span>
-      <span class="door-copy" data-for="ops">I build the system around the messy workflow instead of working harder inside it.</span>
-    </h1>
-    <p class="lead">
-      <span class="door-copy" data-for="ai">I spent eight years inside an enterprise customer-facing team at GLG running a $14M+ portfolio, and I was the AI person on a non-AI team, so I built the LLM workflows, drove the adoption, and then started shipping the tools myself.</span>
-      <span class="door-copy" data-for="analytics">Twenty-one thousand inspection records, a dbt project with thirty-five passing tests, and eight years of reading an enterprise book of business for what the numbers were actually saying.</span>
-      <span class="door-copy" data-for="ops">A $14M+ portfolio, the processes underneath it, and a habit of turning the part everyone tolerates into something that runs on its own. The AI tools are the most recent version of that, not a change of subject.</span>
-    </p>
-    <p class="hero__note">Three of them are live below and you can use them right now, and every project on this page started as a problem I actually had.</p>
-    <div class="hero__actions">
-      <a class="btn btn--solid" href="#field-discovery">See what I built</a>
-      <a class="btn btn--ghost" href="/resume">Résumé ↓</a>
-      <button type="button" class="btn btn--ghost" data-copy-email>Copy my email</button>
+<main class="wrap" id="top">
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <header class="hero" data-in>
+    <div class="hero__copy">
+      <span class="eyebrow rv" style="--d:.05s">Applied AI · customer-facing builds · Austin, remote</span>
+      <h1 class="h1 rv" style="--d:.15s">I build AI into the workflows customers already run, and I publish how often it breaks.</h1>
+      <p class="lead rv" style="--d:.35s">Eight years running a $14M+ enterprise book at GLG, where I was the AI person on a non-AI team, and four builds with dated evals on every one, so the log on the right is the last run.</p>
+      <div class="hero__actions rv rv--fade" style="--d:.5s">
+        <a class="btn btn--ink" href="#field-discovery">See the builds ↓</a>
+        <button type="button" class="btn btn--line" data-copy-email>Copy my email</button>
+      </div>
     </div>
-  </div>
-  <aside class="hero__stats" id="hero-stats"></aside>
-</header>
-
-<!-- ── S3 — THREE FRONT DOORS ──────────────────────────────── -->
-<!-- The choice only reorders what follows; every section is present behind every door. -->
-<div class="doors" role="tablist" aria-label="Read this page as" id="doors">
-  <button type="button" role="tab" data-door="analytics" aria-selected="false" aria-controls="page" tabindex="-1">Analytics</button>
-  <button type="button" role="tab" data-door="ai" aria-selected="true" aria-controls="page" tabindex="0">AI product</button>
-  <button type="button" role="tab" data-door="ops" aria-selected="false" aria-controls="page" tabindex="-1">Ops systems</button>
-</div>
-
-<main class="page" id="page">
-
-<!-- ── PATTERN INDEX ───────────────────────────────────────── -->
-<!-- For the reader who arrives with a checklist. Rendered from PATTERNS in data/content.js.
-     No door order rule on purpose: it sits first behind every door. -->
-<section class="section patterns" id="patterns" aria-labelledby="patterns-h">
-  <div class="patterns__head">
-    <p class="section__num" id="patterns-h">By pattern</p>
-    <p class="patterns__note">If you came with a checklist, agents, RAG, fine-tuning, MCP, here is where each one lives on this page with its number, and where it does not yet, the nearest thing and what is missing.</p>
-  </div>
-  <div class="patterns__grid" id="patterns-grid"></div>
-</section>
-
-<!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
-<!-- ── FIELD DISCOVERY ─────────────────────────────────────── -->
-<section class="section section--alt" id="field-discovery">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">Start here</span>
-      <h2>Sixty seconds in the car becomes a record onboarding can open.</h2>
+    <div class="term hero__log rv" style="--d:.3s" aria-label="Eval log, last run 22 September 2026">
+      <div class="term__head"><span id="log-head"></span><span id="log-clock">00:00.0</span></div>
+      <div class="hero__rows" id="log-rows"></div>
+      <span class="cursor cursor--dark" aria-hidden="true">▍</span>
     </div>
-    <a class="label label--mid" href="/field-discovery/">samievargas.com/field-discovery ↗</a>
-  </div>
+  </header>
 
-  <div class="fd-motion" id="fd-motion">
-    <div class="fd-grid rule-top">
-      <div>
-        <p class="label label--accent">LLM pipeline · field sales · built solo</p>
-        <h3>Field discovery</h3>
-        <p class="lead">A rep talks into their phone in a parking lot, and onboarding gets a record with the unanswered questions named on it.</p>
-        <div class="sig-stack">
-          <a class="btn btn--accent btn--md" href="/field-discovery/">Read the case study</a>
-          <a class="btn btn--ghost btn--md" href="/field-discovery/demo/">Walk through it</a>
+  <!-- ── SPINE: four patterns ─────────────────────────────── -->
+  <section class="sec sec--major spine" id="patterns" data-in>
+    <div class="row-between"><h2 class="spine__title" id="spine-title"></h2><span class="meta" id="spine-note"></span></div>
+    <div class="spine__rows" id="spine-rows"></div>
+    <div class="spine__rule"><div class="spine__track"><i id="spine-fill"></i></div><span id="spine-rule"></span></div>
+    <p class="plain"><strong>In plain terms:</strong> <span id="spine-plain"></span></p>
+  </section>
+
+  <!-- ── FIELD DISCOVERY ──────────────────────────────────── -->
+  <section class="sec fd" id="field-discovery" data-in>
+    <div class="cols cols--start">
+      <div class="stack stack--14 rv">
+        <span class="eyebrow">Agents · Field discovery · LLM pipeline, built solo</span>
+        <h2 class="h2">Sixty seconds in the car becomes a record onboarding can open.</h2>
+        <p class="body">A rep talks into their phone in a parking lot, and onboarding gets a record with the unanswered questions named on it.</p>
+        <p class="plain"><strong>In plain terms:</strong> a salesperson rambles into their phone after a visit, and the tool pulls out what matters, flags what nobody asked about, and waits for a person to okay it before anything touches the sales system.</p>
+        <div class="btn-row">
+          <a class="btn btn--accent btn--sm" href="/field-discovery/">Read the case study</a>
+          <a class="btn btn--tint btn--sm" href="/field-discovery/demo/">Walk through it →</a>
         </div>
       </div>
-
-      <div class="fd-said fd-said--wide">
-        <p class="panel-label">What the rep actually said, four hours later</p>
-        <p class="fd-said__text"><span id="fd-typed"></span><span class="sig-cursor" id="fd-cursor" hidden>▍</span></p>
-        <p class="fd-said__note fd-on" data-fd="note">The sentence that decides the go-live date is the last one, after the tacos.</p>
+      <div class="card fd-said rv rv--fade" style="--d:.2s">
+        <span class="micro">What the rep actually said, four hours later</span>
+        <p class="fd-said__text"><span id="fd-typed"></span><span class="cursor" aria-hidden="true">▍</span></p>
+        <span class="fd-said__note" id="fd-note">The sentence that decides the go-live date is the last one, after the tacos.</span>
       </div>
     </div>
 
-    <!-- Frames tile in first; what fills them is driven by the typing in js/app.js. -->
-    <div class="fd-flow" id="fd-flow">
-      <div class="fd-step" style="--d:.2s">
-        <span class="label label--accent">1 · Talk</span>
-        <div class="fd-step__art fd-cap">
-          <span class="fd-cap__k">Kestrel · capture</span>
-          <span class="fd-cap__t" id="fd-timer">0:00</span>
-          <div class="fd-wave" id="fd-wave"><i style="--dur:.9s;--d:0s;height:8px"></i><i style="--dur:1.1s;--d:.1s;height:18px"></i><i style="--dur:.8s;--d:.2s;height:24px"></i><i style="--dur:1.2s;--d:.05s;height:12px"></i><i style="--dur:.95s;--d:.3s;height:20px"></i><i style="--dur:1.05s;--d:.15s;height:9px"></i><i style="--dur:.85s;--d:.25s;height:22px"></i><i style="--dur:1.15s;--d:.35s;height:14px"></i><i style="--dur:.9s;--d:.12s;height:6px"></i><i style="--dur:1s;--d:.22s;height:16px"></i><i style="--dur:.8s;--d:.4s;height:11px"></i><i style="--dur:1.1s;--d:.08s;height:19px"></i></div>
+    <div class="fd-steps">
+      <div class="fd-pair">
+        <div class="fd-step rv" style="--d:.3s">
+          <span class="fd-step__k">1 · Talk</span>
+          <div class="fd-step__meta"><span>Kestrel · capture</span><span id="fd-timer">0:00</span></div>
+          <div class="fd-wave" id="fd-wave"></div>
+          <span class="fd-step__foot">Sixty seconds, one hand, in the car.</span>
         </div>
-        <h4>Sixty seconds, one hand, in the car</h4>
-        <p>Talk, paste or type, after the visit.</p>
-        <span class="fd-step__arrow fd-on" data-fd="arrow1">→</span>
+        <div class="fd-step rv" style="--d:.4s">
+          <span class="fd-step__k">2 · Match</span>
+          <span class="fd-step__head" id="fd-match-head"></span>
+          <div class="fd-rows" id="fd-match"></div>
+          <span class="fd-step__foot">A fixed list of questions, and the AI cannot invent one.</span>
+        </div>
       </div>
-
-      <div class="fd-step" style="--d:.5s">
-        <span class="label label--accent">2 · Match</span>
-        <div class="fd-step__art fd-mini">
-          <div class="fd-on" data-fd="m-head"><span>hardware_rental</span><span class="k">19 cards</span></div>
-          <div class="ok fd-on" data-fd="m-incumbent"><span>incumbent_system</span><span>confirmed</span></div>
-          <div class="ok fd-on" data-fd="m-rental"><span>rental_contracts</span><span>confirmed</span></div>
-          <div class="inf fd-on" data-fd="m-dm"><span>decision_maker</span><span>inferred</span></div>
-          <div class="gap fd-on" data-fd="m-gap1"><span>chemical_licence</span><span>not_discussed</span></div>
-          <div class="gap fd-on" data-fd="m-gap2"><span>budget</span><span>not_discussed</span></div>
+      <div class="fd-pair">
+        <div class="fd-step rv" style="--d:.5s">
+          <span class="fd-step__k">3 · Confirm</span>
+          <div class="fd-card fd-card--viab" data-fd="rent"><span class="fd-card__t">Rental counter on a second system</span><span class="fd-card__m">confirm before onboarding</span></div>
+          <div class="fd-card fd-card--conf" data-fd="dm"><span>Decision maker · Ted?</span><span>✓</span></div>
+          <div class="fd-card fd-card--gap" data-fd="gap">Never came up: budget, timeline, chemical licence</div>
         </div>
-        <h4>Checked against this kind of shop</h4>
-        <p>A fixed list of questions. The AI cannot invent one.</p>
-        <span class="fd-step__arrow fd-on" data-fd="arrow2">→</span>
-      </div>
-
-      <div class="fd-step" style="--d:.8s">
-        <span class="label label--accent">3 · Confirm</span>
-        <div class="fd-step__art fd-cards">
-          <div class="fd-card fd-card--viab fd-on" data-fd="c-viab"><p class="fd-card__l">Rental counter on a second system</p><p class="fd-card__m">confirm before onboarding</p></div>
-          <div class="fd-card fd-card--conf fd-on" data-fd="c-conf"><span>Decision maker · Ted?</span><span class="fd-card__tick">✓</span></div>
-          <div class="fd-card fd-card--gap fd-on" data-fd="c-gap">Never came up: budget, timeline, chemical licence</div>
+        <div class="fd-step fd-step--dark rv" style="--d:.6s">
+          <span class="fd-step__k">4 · Hand off</span>
+          <span class="fd-step__head" id="fd-rec-head"></span>
+          <div class="fd-rows" id="fd-rec"></div>
+          <span class="fd-step__foot">Plain CRM fields, a quote under every answer.</span>
         </div>
-        <h4>The rep sees only the gaps</h4>
-        <p>The red card is the one that could sink the deal.</p>
-        <span class="fd-step__arrow fd-on" data-fd="arrow3">→</span>
-      </div>
-
-      <div class="fd-step" style="--d:1.1s">
-        <span class="label label--accent">4 · Hand off</span>
-        <div class="fd-step__art fd-mini">
-          <div class="fd-on" data-fd="r-head"><span>Opportunity</span><span class="k">006Ax0001</span></div>
-          <div class="fd-on" data-fd="r-status"><span class="k">Discovery_Status</span><span>Open gaps</span></div>
-          <div class="fd-on fd-tint" data-fd="r-flag"><span class="k">Viability_Flag</span><span class="flag">rental_contracts</span></div>
-          <div class="fd-on" data-fd="r-shift"><span class="k">Golive_Shift</span><span>+3 wks</span></div>
-          <div class="fd-on" data-fd="r-open"><span class="k">Discovery_Open</span><span>3 items</span></div>
-        </div>
-        <h4>Written to the record they already use</h4>
-        <p>Plain CRM fields, a quote under every answer.</p>
       </div>
     </div>
 
-    <div class="fd-next" id="fd-next">
-      <div class="fd-next__cell">
-        <span class="k">5 · Propose</span>
-        <h4>The next step, written for a person to approve</h4>
-        <p>After the write, the tool reads what the record already holds and proposes the next discovery update, or an engineer escalation when the gap could move the go-live date. Nothing it proposes reaches Salesforce on its own. A person approves, edits or rejects each one, and approve is the only path to a write.</p>
-      </div>
-      <div class="fd-next__cell">
-        <span class="k">Rules that hold in code</span>
-        <h4>Read before write, one per kind, no contradiction</h4>
-        <p>A proposal for a record the tool has not read is refused, a second update in one run is refused, and an update that contradicts the extraction is refused with the cards named. A record read that fails forbids every write for that deal. Below full, the tool drops to the checklist and says so in the header.</p>
-      </div>
-      <div class="fd-next__cell">
-        <span class="k">Measured · 22 Sep 2026</span>
-        <h4>Eight of eight, zero hard fails, and one honest number</h4>
-        <p>Every golden transcript passes and both viability signals are recalled. On twelve hand-written proposal fixtures: zero unnecessary writes, escalation recall and precision both 100%. Ten planted instructions, five runs each: 80% of runs unchanged, and six of the ten fixtures moved a proposal at least once, which is why approval stays with a person.</p>
+    <div class="cols cols--48 fd-inj" id="fd-inj" data-in>
+      <div class="case rv rv--fade" id="fd-case"></div>
+      <div class="stack stack--14">
+        <h3 class="h3">Ten planted instructions, five runs each, forty of fifty unchanged.</h3>
+        <div class="inj" id="inj-grid"></div>
+        <div class="legend"><span><i class="d" style="background:var(--ink)"></i>unchanged</span><span><i class="d" style="background:var(--alert)"></i>moved a proposal</span></div>
+        <span class="caption">Totals from the 22 Sep run · which runs moved is laid out for the mock</span>
+        <p class="plain"><strong>In plain terms:</strong> I hid sneaky instructions in the notes to see if I could trick it, and it held steady most of the time but slipped often enough that a person still approves every change.</p>
       </div>
     </div>
+    <div class="results" data-results="discovery"></div>
+  </section>
 
-    <div class="fd-foot">
-      <p class="finding fd-on" data-fd="finding"><strong>What it found: </strong>only the reader in step 2 needs a network. A rep in a dead zone still gets a checklist in under a second.</p>
-      <span class="fd-foot__stack fd-on" data-fd="stack">Anthropic API · Cloudflare Workers · Salesforce REST · IndexedDB · PWA · Shadow mode</span>
+  <!-- ── LIFE IN PIXELS: RAG + MCP ────────────────────────── -->
+  <section class="sec px" id="pixels" data-in>
+    <div class="stack narrow rv">
+      <span class="eyebrow">RAG + MCP · Life in Pixels · six months of my own daily data</span>
+      <h2 class="h2">Ask it a question in plain language, and every day it cites is checked before you see the answer.</h2>
+      <p class="plain"><strong>In plain terms:</strong> it works like a search engine for my own daily log that has to show which days the answer came from, and it double-checks those days are real before it answers.</p>
     </div>
-  </div>
-  <div id="result-discovery"></div>
-</section>
+    <div class="cols cols--24">
+      <div class="px-run rv rv--fade" style="--d:.15s">
+        <span class="px-run__k">a replayed run</span>
+        <div class="px-run__q"><span class="ok">?</span><span id="px-q"></span></div>
+        <div class="px-run__route" id="px-route"></div>
+        <div class="px-run__days" id="px-days"></div>
+        <p class="px-run__a" id="px-a"></p>
+        <div class="px-run__check" id="px-check"><span class="ok" id="px-check-t"></span><span>shown</span></div>
+      </div>
+      <div class="stack stack--14">
+        <div class="card stack stack--14 rv rv--fade" style="--d:.3s">
+          <span class="fd-step__k">MCP · the same pipeline, as a local server</span>
+          <div class="mcp">
+            <span>Claude Desktop</span><span class="mcp__srv">pixels-rag · stdio</span><span class="mcp__disk">daily data · on disk</span>
+            <i class="mcp__pkt" id="mcp-pkt"></i>
+          </div>
+          <span class="card-note">Two read-only tools, the same router and validator, and the data never leaves the machine.</span>
+          <p class="plain"><strong>In plain terms:</strong> this lets Claude on my laptop ask the same questions directly, and my data never gets uploaded anywhere.</p>
+        </div>
+        <div class="hairgrid hairgrid--2">
+          <div class="stat"><span class="stat__n" id="px-valid">0/26</span><span class="stat__l">valid citations, 26 questions</span></div>
+          <div class="stat"><span class="stat__n">3</span><span class="stat__l">routes: search, filter, sum</span></div>
+        </div>
+        <a class="px-more" href="/pixels/">Replay all 26 questions →</a>
+      </div>
+    </div>
+  </section>
 
-<!-- ── SIGNAL — the flagship ───────────────────────────────── -->
-<section class="section" id="signal">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">Also live</span>
-      <h2>Messy documents go in and a read you can act on comes out.</h2>
+  <!-- ── FINE-TUNING ──────────────────────────────────────── -->
+  <section class="sec sec--tight ft" id="fine-tuning" data-in>
+    <div class="stack rv rv--fade">
+      <span class="eyebrow eyebrow--muted">Fine-tuning · in progress</span>
+      <h2 class="h2 h2--sub">Card matching, tuned against prompted, on the same golden set.</h2>
+      <p class="body ft__body">Every model call on this page is a prompted Haiku or Sonnet under a schema, and the next build is a small tuned model on the one task that is a closed classification, which may end with keep prompting, and that goes here either way.</p>
+      <p class="plain"><strong>In plain terms:</strong> I am testing whether training a small model on one narrow job beats just asking a big model well, and if it does not, I will say so here.</p>
     </div>
-    <a class="label label--mid" href="https://samievargas.com/signal/">samievargas.com/signal ↗</a>
-  </div>
-  <div class="signal rule-top">
-    <div>
-      <p class="label label--accent">LLM app · in use · built solo</p>
-      <h3>Signal</h3>
-      <p class="lead">Reads messy account files, images and PDFs included, for second-order sentiment and turns them into revenue-risk, relationship-health, and pre-call briefs. Haiku summarizes each document and Sonnet synthesizes, which cut the main call from roughly 23k to about 1k input tokens on long transcripts, and every section of the brief names the sources it came from.</p>
-      <div class="sig-flow">
-        <div class="sig-in" id="sig-in">
-          <p class="panel-label">What you paste in</p>
-          <div class="sig-in__stage" id="sig-scraps"></div>
-        </div>
-        <div class="sig-flow__arrow">→</div>
-        <div class="sig-out" id="sig-out">
-          <p class="panel-label">What comes back, 51 seconds later</p>
-          <div id="sig-rows"></div>
-        </div>
-      </div>
-      <div class="sig-stack">
-        <a class="btn btn--accent btn--md" href="https://samievargas.com/signal/">Try it on your own notes</a>
-        <span class="sig-stack__note">Anthropic API · Cloudflare Workers · source-weighted prompts</span>
+    <div class="ft__bars">
+      <div class="ft__bar rv rv--fade" style="--d:.2s"><span>prompted Haiku</span><div class="ft__track"><i style="background:var(--meta)"></i></div></div>
+      <div class="ft__bar rv rv--fade" style="--d:.35s"><span>prompted Sonnet</span><div class="ft__track"><i style="background:var(--ink)"></i></div></div>
+      <div class="ft__bar rv rv--fade" style="--d:.5s"><span class="ft__tuned">tuned small model</span><div class="ft__track ft__track--dash"></div></div>
+      <span class="caption">bars are placeholders until the scores publish together</span>
+    </div>
+  </section>
+
+  <!-- ── SIGNAL ───────────────────────────────────────────── -->
+  <section class="sec sig" id="signal" data-in>
+    <div class="stack rv">
+      <div class="row-between row-between--c"><span class="eyebrow">Structured outputs · Signal · LLM app, in use</span><a class="btn btn--accent btn--44" href="https://samievargas.com/signal/">Try it on your own notes ↗</a></div>
+      <div class="stack narrow">
+        <h2 class="h2">Messy documents go in and a read you can act on comes out.</h2>
+        <p class="body">Haiku summarizes each document and Sonnet synthesizes, which cut the main call from roughly 23k to about 1k input tokens, and every section of the brief names its sources.</p>
+        <p class="plain"><strong>In plain terms:</strong> you drop in a pile of messy account notes and get back a short read on whether the customer is at risk, who actually matters, and the one thing to do today.</p>
       </div>
     </div>
-    <div>
-      <div class="sig-shot" id="viz-read">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--rule)">
-          <span class="label label--mid" style="color:var(--ink)">Contact read</span>
-          <span class="label" style="font-size:9px;color:var(--faint)">Signal output · one account</span>
-        </div>
-        <div style="padding:4px 18px 16px">
-          <div id="read-rows"></div>
-          <div style="padding-top:12px">
-            <p id="read-sec-hd" style="margin:0 0 8px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);opacity:0">Secondary contacts</p>
-            <div id="read-sec"></div>
+    <div class="sig-flow">
+      <div class="sig-in">
+        <span class="micro">What you paste in</span>
+        <div id="sig-pile"></div>
+        <div class="sig-legend" id="sig-legend"></div>
+      </div>
+      <div class="sig-arrow" id="sig-arrow" aria-hidden="true">→</div>
+      <div class="card sig-out">
+        <span class="micro">What comes back, 51 seconds later</span>
+        <div id="sig-out"></div>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="stack">
+        <h3 class="h3 h3--22">A mood with no event behind it is read right in seven of twenty.</h3>
+        <div class="sig20" id="sig20"></div>
+        <span class="caption">ablation, 20 runs per arm · which runs is laid out for the mock</span>
+        <p class="plain"><strong>In plain terms:</strong> it is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, which is why that number is on the page.</p>
+      </div>
+      <div class="hairgrid hairgrid--3 sig-stats">
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">input tokens, from ~23k</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-prep">60</span><span class="stat__l">minutes of prep</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-sec">0s</span><span class="stat__l">paste to read</span></div>
+      </div>
+    </div>
+    <div class="results" data-results="signal"></div>
+  </section>
+
+  <!-- ── BRAIN DUMP (dark band) ───────────────────────────── -->
+  <section class="band bd" id="braindump" data-in>
+    <div class="stack rv">
+      <div class="row-between row-between--c"><span class="eyebrow bd__eyebrow">Structured outputs · Brain Dump</span><a class="btn btn--on-dark btn--44" href="https://samievargas.com/brain-dump">Try it here ↗</a></div>
+      <div class="stack narrow">
+        <h2 class="h2">Five minutes in, four piles out.</h2>
+        <p class="body bd__body">The system prompt is assembled from the energy state you pick, and the model sorts every item into one of four buckets under a strict JSON contract, so change the state and watch the same dump re-sort.</p>
+        <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how you are feeling, and it sorts the pile into what to do today, what can wait, what to keep, and what to let go.</p>
+      </div>
+    </div>
+    <div class="cols cols--24">
+      <div class="bd-dump">
+        <span class="bd__micro">Raw dump · five minutes, no editing</span>
+        <p class="bd-dump__text"><span id="bd-words"></span><span class="cursor cursor--dark" id="bd-cursor" aria-hidden="true">▍</span></p>
+        <span class="bd__cap" id="bd-caption">highlighted as the model reads it, one bucket per item, strict JSON</span>
+      </div>
+      <div class="stack">
+        <div class="row-between row-between--c"><span class="bd__micro">How are you right now?</span><span class="bd__cap" id="bd-cap"></span></div>
+        <div class="bd-states" id="bd-states" role="group" aria-label="Energy state"></div>
+        <div class="bd-bins" id="bd-bins" aria-live="polite"></div>
+        <p class="bd-note" id="bd-note"></p>
+        <span class="bd__cap">the five states and their caps are the product's own · the piles are predicted from its rules until the five-state run is recorded</span>
+      </div>
+    </div>
+    <div class="results results--dark" data-results="braindump"></div>
+  </section>
+
+  <!-- ── ANALYSIS ─────────────────────────────────────────── -->
+  <section class="sec sec--plain an" id="analysis" data-in>
+    <div class="row-between rv rv--fade"><h2 class="h2">The analysis work</h2><span class="meta">both start from a question I actually had</span></div>
+    <div class="card dag-card" id="dag-card" data-in>
+      <div class="row-between"><span class="fd-step__k" id="dag-head"></span><span class="dag-meta"><span class="dag-meta__n">tests passing <strong id="dag-tests">0</strong>/35</span><span>data flowing left to right</span></span></div>
+      <div class="dag-scroll"><div class="dag" id="dag"></div></div>
+    </div>
+    <p class="plain"><strong>In plain terms:</strong> raw grocery orders go in on the left, get cleaned and joined in steps, and come out on the right as tidy tables, with 35 automatic checks making sure nothing broke along the way.</p>
+    <div class="cols">
+      <div class="stack stack--14" id="reorder" data-in>
+        <span class="eyebrow">Instacart · 3.4M orders</span>
+        <h3 class="h3 h3--26">I rebuilt one cited number until it split in half.</h3>
+        <div class="split">
+          <div class="split__pooled"><i id="split-pooled"></i><span id="split-pooled-l">0.60 pooled</span></div>
+          <div class="split__rows">
+            <div class="split__track"><i id="split-new" style="background:var(--ink)"></i></div><span>new · 0.221</span>
+            <div class="split__track"><i id="split-vet" style="background:var(--accent)"></i></div><span>veteran · 0.670</span>
           </div>
         </div>
+        <p class="an__p">New shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither, and a random forest at 0.9886 AUC for veterans against 0.8566 for new users confirmed the split was real.</p>
+        <p class="plain"><strong>In plain terms:</strong> people who are new to the app rarely buy the same thing twice and regulars almost always do, so the one average everyone quotes is really two very different groups mashed together and it fits neither of them.</p>
+        <a class="an__link" href="https://github.com/SamieVargas/instacart-project">See the models ↗</a>
       </div>
-      <div class="callouts" id="sig-notes"></div>
-      <p class="finding"><strong>What it found: </strong>the contact read is the sleeper feature, it makes explicit what experienced managers do instinctively.</p>
-    </div>
-  </div>
-  <div id="result-signal"></div>
-</section>
-
-<!-- ── BRAIN DUMP ──────────────────────────────────────────── -->
-<section class="section section--dark" id="braindump">
-  <div class="section__head">
-    <div class="section__head-l">
-      <span class="section__num">Try it here</span>
-      <h2>Five minutes in, four piles out.</h2>
-    </div>
-    <a class="label" href="https://samievargas.com/brain-dump">samievargas.com/brain-dump ↗</a>
-  </div>
-  <div class="bd rule-top">
-    <div>
-      <h3>Brain Dump</h3>
-      <p class="bd__lead">Turns an unstructured brain dump into an energy-state-aware plan. The system prompt is assembled at request time from the energy state you pick, the model sorts every item into one of four buckets under a strict JSON contract the page renders from directly, and an emergency one-thing mode has its own prompt, its own schema, and a hard-coded fallback if the call fails.</p>
-      <p class="bd__note">The part I care about is matching the output to the state someone is actually in, so change the state below and watch the same dump re-sort.</p>
-      <div class="bd-dump">
-        <p class="panel-label">Raw dump · five minutes, no editing</p>
-        <div class="bd-dump__stage" id="bd-bits"></div>
+      <div class="stack stack--14" id="drift" data-in>
+        <span class="eyebrow">ATX Foodie · Socrata API · 21,160 records · 84 brands</span>
+        <h3 class="h3 h3--26">Venues drift about two points worse across their inspection history.</h3>
+        <div class="drift">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" id="drift-svg" aria-hidden="true"><polyline id="drift-line" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline></svg>
+          <span class="drift__first">90.5 · 1st visit</span><span class="drift__last">92.6 · 14th</span><span class="drift__up">↑ fewer</span><span class="drift__down">↓ more</span>
+        </div>
+        <div class="drift__axis"><span>inspection 1</span><span>down is more violations</span><span>14</span></div>
+        <p class="plain"><strong>In plain terms:</strong> the more times a restaurant gets inspected, the slightly worse it tends to score, so getting flagged does not seem to make places clean up.</p>
+        <a class="an__link" href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">See the findings ↗</a>
       </div>
     </div>
-    <div>
-      <div class="bd-states" id="bd-states"></div>
-      <div class="bd-piles" id="bd-piles"></div>
-      <p class="bd__state-note" id="bd-note"></p>
-      <a class="btn btn--dark btn--md" href="https://samievargas.com/brain-dump">Open Brain Dump</a>
+    <div class="cols cols--24 cols--start">
+      <div class="kv" data-results-kv="instacart"></div>
+      <div class="kv" data-results-kv="atx"></div>
     </div>
-  </div>
-  <div id="result-braindump"></div>
-</section>
+  </section>
 
-<!-- ── THE ANALYSIS WORK ───────────────────────────────────── -->
-<section class="section" id="work">
-  <div class="section__head">
-    <div class="section__head-l">
-      <h2>The analysis work</h2>
+  <!-- ── EXPERIENCE ───────────────────────────────────────── -->
+  <section class="sec ex" id="experience" data-in>
+    <div class="row-between"><h2 class="h2">Experience</h2><button type="button" class="chip ex__all" id="roles-all">Expand all</button></div>
+    <div class="row-between ex__co">
+      <span class="stack ex__co-l"><span class="ex__glg">GLG</span><span class="meta">Austin, TX · Remote · Jul 2018 – present</span></span>
+      <span class="meta">8 years · 6 roles · IC to people manager</span>
     </div>
-    <span class="label label--mid">Both start from a question I actually had</span>
-  </div>
+    <p class="plain"><strong>In plain terms:</strong> I spent eight years running big customer accounts and then the teams that run them, which is where I learned what customers actually need before I started building for them.</p>
+    <div class="rail"><div class="rail__track"><i id="rail-fill"></i></div><div class="rail__ticks"><span>2018</span><span>2020</span><span>2022</span><span>2024</span><span>now</span></div></div>
+    <div class="roles" id="roles"></div>
+  </section>
 
-  <div class="dag-wrap">
-    <div class="dag-head">
-      <p class="label label--accent" style="letter-spacing:.14em">The Instacart pipeline · sources through marts · 35 tests passing</p>
-      <span class="label" style="white-space:nowrap;color:var(--faint-deco)">Data flowing left to right</span>
-    </div>
-    <div class="dag" id="dag"></div>
-  </div>
-
-  <div id="annotated"></div>
-
-  <div class="qconsole" id="qconsole">
-    <div class="qconsole__head">
-      <span class="label label--mid" style="color:#8fd6bf">Run one of these against the marts</span>
-      <span class="label" style="font-size:9px;color:#6d6a5c">read only · cached result sets</span>
-    </div>
-    <div class="qc-presets" id="qc-presets"></div>
-    <pre class="qc-sql" id="qc-sql"></pre>
-    <p class="qc-meta" id="qc-meta"></p>
-    <div class="qc-table" id="qc-table"></div>
-    <p class="qc-note" id="qc-note"></p>
-  </div>
-
-  <div class="also" id="alsobuilt">
-    <p class="label label--mid" style="margin:0">Also built</p>
-    <div>
-      <p>I ran a random-forest reorder model on the same Instacart data, 0.9886 AUC for veterans against 0.8566 for new users, which is what confirmed the segment split was real rather than an artifact of the pipeline. <a href="https://github.com/SamieVargas/instacart-project">Model and notebook ↗</a></p>
-      <p class="also__more">In progress right now is review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game, and the personal tools (Life OS, Life in Pixels, the tarot tracker) live on <a href="/life">/life</a>, while fifteen small single-purpose toys live on <a href="/apps/">/apps</a>.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── EXPERIENCE ──────────────────────────────────────────── -->
-<section class="section section--alt" id="experience">
-  <div class="section__head">
-    <div class="section__head-l">
-      <h2>Experience</h2>
-    </div>
-    <button type="button" class="btn btn--ghost btn--sm" id="roles-toggle-all">Expand all</button>
-  </div>
-  <div class="rule-top" style="padding-top:26px">
-    <div class="exp-co">
-      <div class="exp-co__l">
-        <h3>GLG</h3>
-        <span class="label label--mid">Austin, TX · Remote · Jul 2018 – present</span>
+  <!-- ── SKILLS + CERTS ───────────────────────────────────── -->
+  <section class="sec sec--tight sk" id="skills" data-in>
+    <div class="cols cols--48 cols--start rv rv--fade">
+      <div class="stack stack--18">
+        <div class="sechead"><h2>Skills</h2><span class="meta">five areas</span></div>
+        <div class="sk__tabs" id="skill-tabs" role="tablist" aria-label="Skill areas"></div>
+        <p class="sk__line" id="skill-line" role="tabpanel"></p>
       </div>
-      <span class="label" style="letter-spacing:.1em;white-space:nowrap;color:var(--faint-deco)">8 years · 6 roles · IC to people manager</span>
+      <div class="stack stack--18">
+        <div class="sechead"><h2>Certs</h2><span class="meta">each one verifiable</span></div>
+        <div class="certs" id="certs"></div>
+      </div>
     </div>
-    <div class="rail" id="rail"><i></i></div>
-    <div class="rail-ticks" id="rail-ticks"></div>
-    <div id="roles"></div>
-  </div>
-</section>
+  </section>
 
-<!-- ── SKILLS ──────────────────────────────────────────────── -->
-<section class="section" id="skills">
-  <div class="section__head">
-    <div class="section__head-l">
-      <h2>Skills and credentials</h2>
+  <!-- ── OFF THE CLOCK ────────────────────────────────────── -->
+  <section class="sec sec--tight oc" id="offclock" data-in>
+    <div class="cols cols--start oc__cols">
+      <div class="stack rv rv--fade">
+        <span class="eyebrow eyebrow--muted">Off the clock</span>
+        <h2 class="h2 h2--sub">The same habit, pointed at things that do not pay.</h2>
+      </div>
+      <div class="oc__doors" id="oc-doors"></div>
     </div>
-  </div>
-  <div class="skills rule-top" style="padding-top:26px">
-    <div>
-      <div class="skill-tabs" role="tablist" id="skill-tabs"></div>
-      <p class="skill-line" id="skill-line"><span id="skill-typed"></span><span class="sig-cursor" id="skill-cursor" hidden>▍</span></p>
-    </div>
-    <div>
-      <div id="certs"></div>
-      <p class="certs-more">Also: Google Business Intelligence, GA4, Databricks Fundamentals, PMI, Six Sigma White Belt.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── S6 — OFF THE CLOCK: one band, three doors out ─────── -->
-<section class="section" id="offclock">
-  <div class="tail">
-    <div>
-      <p class="section__num">Off the clock</p>
-      <h2 class="tail__line">The same habit, pointed at things that do not pay.</h2>
-      <p class="tail__body">Fifteen small apps, a year of Christie logged one book at a time, the Greenbelt at fifteen of twenty-one miles, and a field of things I noticed and then plotted, which is the same instinct as the work above and none of it is on a roadmap.</p>
-    </div>
-    <div class="tail__doors">
-      <a href="/apps/"><span><strong>The arcade</strong><em>Fifteen apps, free play, no quarters.</em></span><span class="tail__cta">All fifteen →</span></a>
-      <a href="/life"><span><strong>/life</strong><em>The noticing field, seven decks, twenty-one miles.</em></span><span class="tail__cta">Go there →</span></a>
-      <a href="/life#notes"><span><strong>Notes</strong><em>What the data I live in keeps telling me.</em></span><span class="tail__cta">Read four →</span></a>
-    </div>
-  </div>
-</section>
+</main>
 
-<!-- ── CONTACT ─────────────────────────────────────────────── -->
-<section class="section section--dark" id="contact" style="border-bottom:none">
-  <div class="contact">
-    <div>
-      <p class="contact__kicker">Contact</p>
-      <h2>Come say <em>howdy</em>.</h2>
+<!-- ── CONTACT (dark) ───────────────────────────────────── -->
+<section class="contact" id="contact" data-in>
+  <div class="contact__in">
+    <div class="stack stack--18">
+      <span class="eyebrow bd__eyebrow">Contact</span>
+      <h2 class="contact__h">Come say <em>howdy</em>.</h2>
       <p class="contact__blurb">Open to anything where a messy workflow needs a system built around it.</p>
-      <div class="cmdlines">
-        <p style="--d:0s"><span class="kw">SELECT</span> * <span class="kw">FROM</span> conversations <span class="kw">WHERE</span> topic = 'ai'</p>
-        <p style="--d:.14s">dbt run --select samie.availability</p>
-        <p style="--d:.28s">mail sammisnv@gmail.com<span class="cursor">▍</span></p>
-      </div>
-      <button type="button" class="btn btn--dark" data-copy-email>Copy my email</button>
+      <div class="contact__cmd" id="contact-cmd" aria-label="mail sammisnv@gmail.com"></div>
+      <button type="button" class="btn btn--line-dark contact__copy" data-copy-email>Copy my email</button>
     </div>
     <div class="contact__links" id="contact-links"></div>
   </div>
-</section>
-</main>
-
-<!-- ── FOOTER ──────────────────────────────────────────────── -->
-<footer class="footer footer--dark" style="align-items:center">
-  <span class="label">© 2026 Samie Vargas</span>
-  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
-    <span class="label">Austin, TX · Remote · no framework, no build step</span>
-    <a class="footer__toolkit" href="/toolkit">Site toolkit ↗</a>
+  <div class="contact__foot">
+    <span>© 2026 Samie Vargas</span>
+    <span class="foot__links"><span>Austin, TX · Remote · no framework, no build step</span><a href="/toolkit">Site toolkit ↗</a></span>
   </div>
-</footer>
+</section>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<script type="module" src="js/app.js?v=20260923g"></script>
-<script type="module" src="js/console.js?v=20260923g"></script>
+<script type="module" src="js/app.js?v=20260924a"></script>
 </body>
 </html>

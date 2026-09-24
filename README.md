@@ -61,9 +61,13 @@ I made this decision early and I would make it the same way again, because I did
 **Structure:**
 
 ```
-index.html           -- the work page: nav, hero with three front doors, Field discovery,
-                        Signal, Brain Dump, projects, experience, skills, off the clock, contact
-life.html            -- /life
+index.html           -- the work page: hero and eval log, the four-pattern spine, Field discovery,
+                        Life in Pixels, fine-tuning, Signal, Brain Dump, analysis, experience,
+                        skills and certs, off the clock, contact
+life.html            -- /life, with the notes at /life#notes
+pixels/              -- /pixels, the recorded Life in Pixels runs
+design/
+  samie-3a-style.md  -- the 3a style guide every page follows
 apps/                -- the arcade index plus fifteen self-contained apps
 toolkit.html         -- /toolkit, the build notes
 resume.html          -- printable résumé; Resume.pdf is printed from it
@@ -71,15 +75,16 @@ raccoon/             -- the raccoon invoice
 css/
   styles.css         -- design tokens and every style, one accent colour
 js/
+  reveal.js          -- the shared scroll load-in and motion helpers
   app.js             -- renders the work page from data/, wires every control
-  console.js         -- the query console: keyed presets, cached result sets, real render time
+  pixels.js          -- replays the recorded runs in data/pixels-runs.json
   staged-loader.js   -- one three-stage loader shared by the API-backed apps
   life.js            -- the field, the crate, the Christie ledger, the notes, the dragon
   arcade.js          -- the apps index
   toolkit.js         -- the change log, pushes per week, and repo age, read from data/changelog.json
 data/
-  content.js         -- projects, roles, skills, certs, result lines, observations,
-                        quick facts, interests, contact links, the field, the arcade
+  content.js         -- the work page's evals and case studies, roles, skills, certs,
+                        result lines, notes, the field, the arcade, the toolkit
   changelog.json     -- written by the Action below on every push to main
 assets/              -- charts and screenshots, one folder per project
 .github/
@@ -97,17 +102,15 @@ The LLM apps talk to the Anthropic API through a Cloudflare Worker, so the key s
 
 ## Features worth noting
 
-**Three front doors** -- the hero has three claims, one each for AI tools, analysis, and operations, and picking one reorders the page so the matching section comes first. The choice is remembered in localStorage and restored before first paint, so it never flashes.
+**Four patterns, one row each** -- the work page is organised around agents, RAG, fine-tuning and MCP, with one dot per test case under each and the cases that still break drawn in red, so the evals are the first thing you see and every project also carries one "In plain terms" sentence for the reader who does not live in this vocabulary.
 
 **Result lines** -- every project ends on the same four fields: what it replaced, what it took, what it costs to run, and what still breaks. The last one is filled from the project's own eval, not from optimism.
 
 **Working case studies** -- Field discovery, Signal and Brain Dump are on the homepage as things you can watch rather than screenshots, so you can see what goes in, what comes back, and how long it took.
 
-**The query console** -- run one of a few keyed presets against the Instacart marts. Nothing is executed; the result sets ship cached, and the millisecond figure is the real render time, labelled as such.
-
 **The field** -- a plot of everything on /life, placed by whether I only noticed it or actually built something, and whether it came from work or from my life, so you click a dot and the panel next to it changes, and the two halves turn out to look the same.
 
-**Notes** -- on /life, a carousel of short-form writing about things I have noticed in data, and the raccoon one has a scrubable chart of my body battery going to the floor for ten days. This is the part of the site I want to keep adding to the most.
+**Notes** -- at /life#notes, four short pieces about things I have noticed in data, each with its chart pinned beside the text while you read. This is the part of the site I want to keep adding to the most.
 
 **The dragon** -- Ring Fit Adventure, level 32, with an HP bar, because it turns out I need a dragon to fight to stay motivated.
 
@@ -115,9 +118,7 @@ The LLM apps talk to the Anthropic API through a Cloudflare Worker, so the key s
 
 **Site toolkit** -- a public page about how the site is built, linked from the footer instead of the nav since it is for the people who want to look under it: the design tokens, the component set, the copy decisions and why each one reads the way it does, the `<head>` block, and a change log snapshotted from this repo's history by `.github/workflows/changelog.yml` on every push to main. It used to ask the GitHub API from the browser, which stopped working while the repo was private and whenever the rate limit ran out, so now it updates itself when I push and never calls the API at all.
 
-**Mobile as an app** -- on narrow screens the layout collapses to one column and a four-item tab bar pins to the bottom, so navigation stays under a thumb.
-
-**Scroll reveal** -- IntersectionObserver and CSS transitions with no library, and content is visible by default so nothing depends on the animation firing.
+**Scroll load-ins** -- one IntersectionObserver in `js/reveal.js` with a bounding-rect safety tick, so tall sections on phones still fire, counters that land exactly on the source number, and with reduced motion every end state renders at once.
 
 ---
 
@@ -148,14 +149,14 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260923g" --include=*.html --include=*.js .
+grep -rln "?v=20260924a" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.
 
 ### Regenerating the résumé PDF
 
-`Resume.pdf` is printed from `resume.html` with headless Chromium, with the Google Fonts link swapped for embedded Newsreader and IBM Plex Mono so the PDF carries its own type. Regenerate it whenever the résumé copy changes, and check the page count before committing.
+`Resume.pdf` is printed from `resume.html` with headless Chromium, with the Google Fonts link swapped for embedded Young Serif, Onest and Geist Mono so the PDF carries its own type. Regenerate it whenever the résumé copy changes, and check the page count before committing.
 
 ---
 
