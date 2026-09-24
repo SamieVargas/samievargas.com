@@ -23,266 +23,324 @@
   gtag('js', new Date());
   gtag('config', 'G-K7B7NDTKEL');
 </script>
+<script>document.documentElement.classList.add('js');</script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* ── Résumé ──
+     Self-contained on purpose: this page has to print on its own, so it
+     does not load css/styles.css. The tokens below are copied from that
+     file's :root with the same names and values; change them there first. */
+  :root {
+    --paper:   #fafaf9;
+    --card:    #ffffff;
+    --sunk:    #f3f2ee;
+    --ink:     #161513;
+    --body:    #3a3833;
+    --muted:   #55534c;
+    --meta:    #77746b;
+    --rule:    #e4e2dc;
+    --outline: #bdbab1;
+    --accent:      #1a6b5a;
+    --accent-tint: #e6f1ec;
+    --serif: 'Young Serif', Georgia, serif;
+    --sans:  Onest, Helvetica, Arial, sans-serif;
+    --mono:  'Geist Mono', ui-monospace, monospace;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+    --edge: 40px;
+    --max:  1200px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, p, ul { margin: 0; padding: 0; }
   body {
-    background: #f4f1e8;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #16150f;
+    margin: 0;
+    background: var(--sunk);
+    font-family: var(--sans);
+    color: var(--ink);
     -webkit-font-smoothing: antialiased;
     text-wrap: pretty;
   }
-  a { color: #1a6b5a; text-decoration: none; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--ink); }
+  [hidden] { display: none !important; }
 
-  .bar {
-    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
-    padding: 14px 24px; background: #fbf9f3; border-bottom: 1px solid #e2ddce;
+  /* ── Bar (screen only) ── */
+  .cv-bar {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(250, 250, 249, .94);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
   }
-  .bar a.brand { font: 400 17px 'Newsreader', Georgia, serif; color: #16150f; }
-  .bar .actions { display: flex; gap: 8px; }
-  .bar .btn {
-    font: 400 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase;
-    padding: 9px 14px; white-space: nowrap; cursor: pointer;
+  .cv-bar__in {
+    max-width: var(--max); margin: 0 auto; padding: 14px var(--edge);
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
   }
-  .bar .solid { background: #16150f; color: #fbf9f3; border: 1px solid #16150f; }
-  .bar .solid:hover { background: #1a6b5a; border-color: #1a6b5a; color: #fbf9f3; }
-  .bar .ghost { border: 1px solid #c9c3b1; color: #16150f; background: none; }
-  .bar .ghost:hover { border-color: #16150f; }
+  .cv-brand { font: 400 18px var(--serif); color: var(--ink); }
+  .cv-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cv-btn {
+    font: 500 12px var(--mono); padding: 9px 13px; white-space: nowrap; cursor: pointer;
+    border: 1px solid transparent; transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .cv-btn--line { color: var(--ink); border-color: var(--outline); background: none; }
+  .cv-btn--line:hover { border-color: var(--ink); color: var(--ink); }
+  .cv-btn--tint { color: var(--accent); background: var(--accent-tint); border-color: var(--accent); }
+  .cv-btn--tint:hover { color: var(--accent); background: var(--card); }
+  .cv-btn--fill { color: #fff; background: var(--accent); border-color: var(--accent); }
+  .cv-btn--fill:hover { color: #fff; background: var(--ink); border-color: var(--ink); }
 
-  .sheet {
-    max-width: 8.5in; margin: 28px auto; background: #fff;
-    padding: 0.55in; border: 1px solid #e2ddce;
-    box-shadow: 0 2px 14px rgba(22, 21, 15, .07);
+  /* ── Sheet ── */
+  .cv-sheet {
+    position: relative;
+    max-width: 8.5in; margin: 32px auto 48px; background: var(--card);
+    padding: 0.55in; border: 1px solid var(--rule);
+    box-shadow: 0 2px 14px rgba(22, 21, 19, .06);
   }
 
-  .doc-head {
-    display: block;
-    padding-bottom: 12px; border-bottom: 1.5px solid #16150f; margin-bottom: 16px;
+  .cv-head {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    padding-bottom: 12px; border-bottom: 2px solid var(--ink); margin-bottom: 16px;
   }
-  .doc-head h1 { font: 400 34px/1 'Newsreader', Georgia, serif; letter-spacing: -.02em; }
-  .doc-head p { font: 400 9.5px/1.7 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #3a382e; text-align: left; margin-top: 6px; }
+  .cv-head h1 { font: 400 34px/1 var(--serif); }
+  .cv-head p { font: 400 9.5px/1.7 var(--mono); color: var(--body); text-align: right; }
 
-  section { margin-bottom: 14px; }
-  .sec-label {
-    margin-bottom: 6px;
+  .cv-sec { margin-bottom: 14px; }
+  .cv-sec:last-child { margin-bottom: 0; }
+  .cv-label {
+    margin-bottom: 8px;
     /* Tracking is capped at .08em on print-visible uppercase mono: above that,
        pdfminer reads the labels as spaced letters ("S U M M A R Y"). */
-    font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #1a6b5a;
+    font: 500 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
   }
-  .summary { font-size: 10.5px; line-height: 1.6; color: #16150f; }
+  .cv-sec:first-of-type .cv-label { margin-bottom: 6px; }
+  .cv-summary { font-size: 10.5px; line-height: 1.6; }
 
-  .comp { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 6px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
-  .comp span:first-child { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #16150f; }
-  .comp span:last-child { font-size: 10px; line-height: 1.55; color: #3a382e; }
+  .cv-comp { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 14px; padding: 6px 0; border-top: 1px solid var(--rule); break-inside: avoid; }
+  .cv-comp > span:first-child { font: 500 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .cv-comp > span:last-child { font-size: 10px; line-height: 1.55; color: var(--body); }
 
-  .co { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 6px; border-bottom: 1px solid #16150f; margin-bottom: 2px; }
-  .co h2 { font: 500 15px 'Newsreader', Georgia, serif; }
-  .mono-meta { font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: #6d6a5c; white-space: nowrap; }
-  .co-desc { display: block; white-space: normal; margin: 3px 0 1px; }
+  .cv-co { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
+  .cv-co h2 { font: 400 16px var(--serif); }
+  .cv-meta { font: 400 9px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .cv-co-desc { display: block; white-space: normal; margin-top: 4px; }
   /* Hyphenated compounds never break at the hyphen: parsers read
      "high-\ngrowth" as two words or none. Applied by the script below. */
   .nb { white-space: nowrap; }
 
-  .role { padding: 10px 0 4px; }
-  .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 7px; }
-  .role-head h3 { font: 400 13px 'Newsreader', Georgia, serif; color: #16150f; }
-  .role ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-  .role li, .proj-body { position: relative; padding-left: 14px; font-size: 10px; line-height: 1.55; color: #16150f; break-inside: avoid; }
-  .role li::before, .proj-body::before { content: '—'; position: absolute; left: 0; color: #1a6b5a; }
-
-  .proj { padding: 8px 0; border-top: 1px solid #e2ddce; break-inside: avoid; }
-  .proj h3 { margin-bottom: 2px; font: 400 13px 'Newsreader', Georgia, serif; }
-  .proj .stack { margin-bottom: 4px; font: 400 9px 'IBM Plex Mono', monospace; letter-spacing: .04em; color: #6d6a5c; }
-
-  .cert-line { padding: 5px 0; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
-  .edu { padding-top: 6px; border-top: 1px solid #e2ddce; font-size: 10px; line-height: 1.55; color: #16150f; }
-  .avoid-break { break-inside: avoid; }
-  section:last-child { margin-bottom: 0; }
-
-  @media (max-width: 700px) {
-    .sheet { margin: 0; border: none; padding: 24px 18px; }
-    .doc-head { flex-wrap: wrap; }
-    .doc-head p { text-align: left; }
-    .comp { grid-template-columns: 1fr; gap: 3px; }
+  .cv-role { padding: 10px 0 4px; }
+  .cv-role-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+  .cv-role-head h3 { font: 400 13px var(--serif); }
+  .cv-role ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .cv-role li, .cv-pt {
+    display: grid; grid-template-columns: 12px minmax(0, 1fr);
+    font-size: 10px; line-height: 1.55; break-inside: avoid;
   }
+  .cv-pt { margin-bottom: 3px; }
+  .cv-pt:last-child { margin-bottom: 0; }
+  .cv-role li > i, .cv-pt > i { display: block; width: 4px; height: 4px; margin-top: 6px; background: var(--accent); }
 
-  .sheet { position: relative; }
+  .cv-proj { padding: 8px 0; border-top: 1px solid var(--rule); break-inside: avoid; }
+  .cv-proj h3 { margin-bottom: 2px; font: 400 13px var(--serif); }
+  .cv-stack { margin-bottom: 4px; font: 400 9px var(--mono); color: var(--muted); }
+
+  .cv-cert { padding: 5px 0; border-top: 1px solid var(--rule); font-size: 10px; line-height: 1.55; }
+  .cv-edu { padding-top: 6px; border-top: 1px solid var(--rule); font-size: 10px; line-height: 1.55; }
+  .cv-avoid { break-inside: avoid; }
+
+  /* Load-in: each block rises in turn, 110ms apart. Only with JS, so the
+     sheet is never blank if the script fails. */
+  .js .cv-rv { opacity: 0; transform: translateY(10px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .js .cv-rv--fade { transform: none; }
+  .js .cv-rv.is-in { opacity: 1; transform: none; }
 
   /* R1 — the page box, inset by the real @page margin read at runtime. */
   .guide {
     position: absolute; inset: var(--page-margin, 0.55in);
-    border: 1px dashed #1a6b5a; pointer-events: none;
+    border: 1px dashed var(--accent); pointer-events: none;
     transition: opacity .25s ease;
   }
   .guide.is-off { opacity: 0; }
   .guide__lab {
-    position: absolute; right: 0; top: -13px;
-    font: 400 8.5px 'IBM Plex Mono', monospace; letter-spacing: .08em;
-    text-transform: uppercase; color: #1a6b5a;
+    position: absolute; right: 0; top: -14px;
+    font: 400 8.5px var(--mono); letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent);
   }
 
   /* R3 — freshness stamp; renders only when the commit lookup succeeds. */
   .stamp {
-    max-width: 8.5in; margin: 0 auto 34px; background: #f4f1e8;
-    border: 1px solid #e2ddce; padding: 16px 20px;
+    max-width: 8.5in; margin: -16px auto 48px; background: var(--paper);
+    border: 1px solid var(--rule); padding: 16px 20px;
     display: flex; flex-direction: column; gap: 9px;
   }
-  /* display:flex would otherwise beat the hidden attribute. */
-  .stamp[hidden] { display: none; }
-  .stamp__file { font: 400 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #9a9686; }
-  .stamp__age { font: 500 15px 'IBM Plex Mono', monospace; color: #16150f; }
-  .stamp__sha { font: 400 10.5px 'IBM Plex Mono', monospace; color: #1a6b5a; }
+  .stamp__file { font: 400 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--meta); }
+  .stamp__age { font: 500 15px var(--mono); color: var(--ink); }
+  .stamp__sha { font: 400 11px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+
+  @media (max-width: 720px) {
+    :root { --edge: 20px; }
+    .cv-sheet { margin: 0; border: none; box-shadow: none; padding: 24px var(--edge); }
+    .guide { inset: 24px var(--edge); }
+    .cv-head p { text-align: left; }
+    .cv-comp { grid-template-columns: 1fr; gap: 3px; }
+    .cv-co, .cv-role-head { flex-wrap: wrap; row-gap: 2px; }
+    .stamp { margin: 0 var(--edge) 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .cv-rv { opacity: 1; transform: none; transition: none; }
+    .guide { transition: none; }
+  }
 
   @page { size: letter; margin: 0.55in; }
   @media print {
     body { background: #fff; }
-    .bar { display: none; }
-    .sheet { max-width: none; margin: 0; padding: 0; border: none; box-shadow: none; }
+    .cv-bar { display: none; }
+    .cv-sheet { max-width: none; margin: 0; padding: 0; border: none; box-shadow: none; }
     /* Screen-only, both of them. */
     .guide, .stamp { display: none !important; }
+    .js .cv-rv { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
 </style>
 </head>
 <body>
 
-<div class="bar">
-  <a class="brand" href="/">Samie Vargas</a>
-  <div class="actions">
-    <a class="btn ghost" href="/">← Back to the site</a>
-    <button type="button" class="btn ghost" id="guide-btn" aria-pressed="true">Hide page box</button>
-    <a class="btn solid" href="/Resume.pdf" download>Download PDF ↓</a>
+<div class="cv-bar">
+  <div class="cv-bar__in">
+    <a class="cv-brand" href="/">Samie Vargas</a>
+    <div class="cv-actions">
+      <a class="cv-btn cv-btn--line" href="/">← Back to the site</a>
+      <button type="button" class="cv-btn cv-btn--tint" id="guide-btn" aria-pressed="true">Hide page box</button>
+      <a class="cv-btn cv-btn--fill" href="/Resume.pdf" download>Download PDF ↓</a>
+    </div>
   </div>
 </div>
 
-<main class="sheet">
+<main class="cv-sheet">
   <div class="guide" id="guide" aria-hidden="true"><span class="guide__lab">margin</span></div>
-  <header class="doc-head">
+  <header class="cv-head cv-rv">
     <h1>Samie Vargas</h1>
     <p>Austin, TX · Remote · 214-587-3539<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
   </header>
 
-  <section>
-    <p class="sec-label">00 — Summary</p>
-    <p class="summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full post-sales lifecycle for a $14M+ B2B portfolio of professional services firms including Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, from scoping and success criteria through implementation, enablement, value realization, and expansion. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
+  <section class="cv-sec cv-rv">
+    <p class="cv-label">00 · Summary</p>
+    <p class="cv-summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full post-sales lifecycle for a $14M+ B2B portfolio of professional services firms including Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, from scoping and success criteria through implementation, enablement, value realization, and expansion. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
   </section>
 
-  <section>
-    <p class="sec-label" style="margin-bottom:10px">01 — Skills</p>
-    <div class="comp"><span>Applied AI</span><span>Generative AI / LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · LLM Evaluation (Golden Sets &amp; Ablations) · Model Routing · RAG · Context Management · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
-    <div class="comp"><span>Build</span><span>Python (pandas) · Machine Learning (scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · ELT Data Pipelines (dbt Cloud) · Salesforce REST API (OAuth) · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · Vector Database (ChromaDB) · Hugging Face Embedding Models (sentence-transformers) · MCP Servers (Python SDK)</span></div>
-    <div class="comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Post-Sales Account Management · Implementation &amp; Rollout · Value Realization &amp; Business Outcome Metrics · Executive Business Reviews (QBR / MBR) · Playbooks &amp; Best Practices · Workshops &amp; Design Sessions · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
-    <div class="comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Marketing Analytics (GA4) · Looker Studio · Tableau</span></div>
-    <div class="comp"><span>Stack</span><span>Claude · Claude Code · Anthropic API · MCP · Hugging Face Hub · ChatGPT · Gemini · Salesforce · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · GA4</span></div>
+  <section class="cv-sec cv-rv">
+    <p class="cv-label">01 · Skills</p>
+    <div class="cv-comp"><span>Applied AI</span><span>Generative AI / LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · LLM Evaluation (Golden Sets &amp; Ablations) · Model Routing · RAG · Context Management · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
+    <div class="cv-comp"><span>Build</span><span>Python (pandas) · Machine Learning (scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · ELT Data Pipelines (dbt Cloud) · Salesforce REST API (OAuth) · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · Vector Database (ChromaDB) · Hugging Face Embedding Models (sentence-transformers) · MCP Servers (Python SDK)</span></div>
+    <div class="cv-comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Post-Sales Account Management · Implementation &amp; Rollout · Value Realization &amp; Business Outcome Metrics · Executive Business Reviews (QBR / MBR) · Playbooks &amp; Best Practices · Workshops &amp; Design Sessions · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
+    <div class="cv-comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Marketing Analytics (GA4) · Looker Studio · Tableau</span></div>
+    <div class="cv-comp"><span>Stack</span><span>Claude · Claude Code · Anthropic API · MCP · Hugging Face Hub · ChatGPT · Gemini · Salesforce · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · GA4</span></div>
   </section>
 
-  <section>
-    <p class="sec-label" style="margin-bottom:10px">02 — Professional experience</p>
-    <div class="co">
+  <section class="cv-sec cv-rv">
+    <p class="cv-label">02 · Professional experience</p>
+    <div class="cv-co">
       <h2>GLG</h2>
-      <span class="mono-meta">Austin, TX · Remote · Jul 2018 – Present</span>
+      <span class="cv-meta">Austin, TX · Remote · Jul 2018 – Present</span>
     </div>
-    <p class="mono-meta co-desc">Enterprise customer success, implementation &amp; account management for professional services firms · B2B</p>
+    <p class="cv-meta cv-co-desc">Enterprise customer success, implementation &amp; account management for professional services firms · B2B</p>
 
-    <div class="role">
-      <div class="role-head">
+    <div class="cv-role">
+      <div class="cv-role-head">
         <h3>Senior Manager, Service</h3>
-        <span class="mono-meta">Oct 2023 – Present</span>
+        <span class="cv-meta">Oct 2023 – Present</span>
       </div>
       <ul>
-        <li>Lead 3–10 client-facing managers per quarter on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools for account analysis, QBR prep, escalation drafting, and data synthesis; cut MBR prep from 3 hours per account per month to 1 hour per month across four accounts.</li>
-        <li>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling; the main outcome was a tool that raised the share of client deliverables (subject-matter experts available for scheduling) produced within the first hour from 10% to ~25% in a single quarter.</li>
-        <li>Built the team's internal SharePoint, used daily by 60+ people and adopted as the model for three other BUs: enabling it for AI governance with guardrails for answer accuracy, coaching other teams to build their own, and owning its long-term data governance.</li>
-        <li>Manage a direct team of 5–10 (10 at peak) alongside the portfolio.</li>
-        <li>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio at 100% retention, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</li>
-        <li>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</li>
-        <li>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</li>
-        <li>Drove 5% YoY portfolio growth by mapping new use cases and operational gaps through structured discovery, and led enablement sessions for stakeholder layers from end users to senior executives.</li>
+        <li><i></i><span>Lead 3–10 client-facing managers per quarter on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools for account analysis, QBR prep, escalation drafting, and data synthesis; cut MBR prep from 3 hours per account per month to 1 hour per month across four accounts.</span></li>
+        <li><i></i><span>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling; the main outcome was a tool that raised the share of client deliverables (subject-matter experts available for scheduling) produced within the first hour from 10% to ~25% in a single quarter.</span></li>
+        <li><i></i><span>Built the team's internal SharePoint, used daily by 60+ people and adopted as the model for three other BUs: enabling it for AI governance with guardrails for answer accuracy, coaching other teams to build their own, and owning its long-term data governance.</span></li>
+        <li><i></i><span>Manage a direct team of 5–10 (10 at peak) alongside the portfolio.</span></li>
+        <li><i></i><span>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio at 100% retention, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</span></li>
+        <li><i></i><span>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</span></li>
+        <li><i></i><span>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</span></li>
+        <li><i></i><span>Drove 5% YoY portfolio growth by mapping new use cases and operational gaps through structured discovery, and led enablement sessions for stakeholder layers from end users to senior executives.</span></li>
       </ul>
     </div>
 
-    <div class="role">
-      <div class="role-head">
+    <div class="cv-role">
+      <div class="cv-role-head">
         <h3>Manager, Client Solutions — Team Lead</h3>
-        <span class="mono-meta">Mar 2022 – Oct 2023</span>
+        <span class="cv-meta">Mar 2022 – Oct 2023</span>
       </div>
       <ul>
-        <li>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, cutting new-hire ramp to revenue production from 3 months to 1 and standardizing quality.</li>
-        <li>Managed a team of 5 client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</li>
-        <li>Built renewal forecasting models and pipeline tracking in Salesforce that recognized $300K per quarter in revenue opportunities that would previously have gone untracked, and surfaced at-risk accounts earlier.</li>
+        <li><i></i><span>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, cutting new-hire ramp to revenue production from 3 months to 1 and standardizing quality.</span></li>
+        <li><i></i><span>Managed a team of 5 client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</span></li>
+        <li><i></i><span>Built renewal forecasting models and pipeline tracking in Salesforce that recognized $300K per quarter in revenue opportunities that would previously have gone untracked, and surfaced at-risk accounts earlier.</span></li>
       </ul>
     </div>
 
-    <div class="role">
-      <div class="role-head">
+    <div class="cv-role">
+      <div class="cv-role-head">
         <h3>Senior Client Solutions Manager</h3>
-        <span class="mono-meta">Jul 2018 – Feb 2022</span>
+        <span class="cv-meta">Jul 2018 – Feb 2022</span>
       </div>
       <ul>
-        <li>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted twice in four years.</li>
-        <li>Built custom Salesforce reporting infrastructure for account-health visibility that became the team standard.</li>
+        <li><i></i><span>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted twice in four years.</span></li>
+        <li><i></i><span>Built custom Salesforce reporting infrastructure for account-health visibility that became the team standard.</span></li>
       </ul>
     </div>
   </section>
 
-  <section>
-    <p class="sec-label" style="margin-bottom:10px">03 — Applied AI &amp; analytics projects</p>
-    <div class="proj">
+  <section class="cv-sec cv-rv">
+    <p class="cv-label">03 · Applied AI &amp; analytics projects</p>
+    <div class="cv-proj">
       <h3>Field Discovery Broker — AI Requirements Triage for Field Sales</h3>
-      <p class="stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Human-Approved Proposals · Shadow Mode · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
-      <p class="proj-body">Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce. A second stage reads the record Salesforce already holds and proposes the next discovery update or an engineer escalation; a person approves, edits or rejects each proposal, approve is the only path to a write, and read-before-write, one-per-kind and no-contradiction rules are enforced in code, with a shadow mode that records proposals without showing them.</p>
-      <p class="proj-body">Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</p>
+      <p class="cv-stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Human-Approved Proposals · Shadow Mode · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
+      <p class="cv-pt"><i></i><span>Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce. A second stage reads the record Salesforce already holds and proposes the next discovery update or an engineer escalation; a person approves, edits or rejects each proposal, approve is the only path to a write, and read-before-write, one-per-kind and no-contradiction rules are enforced in code, with a shadow mode that records proposals without showing them.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
-      <p class="stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
-      <p class="proj-body">Built and shipped an LLM tool that turns unstructured brain dumps into energy-state-aware task plans: a system prompt assembled at request time from the chosen energy state (caps, tone rules, banned phrasing), a strict JSON contract the UI renders from, model-driven sorting into four buckets, and a second prompt and schema for an emergency one-thing mode with a hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</p>
-      <p class="proj-body">Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 22 September 2026: on the anxious state, 20 of 20 plans parsed under the native contract with the cap, schema and strategy rules at 100%, the banned-phrase rule caught "need to" in 6 of 20 plans, routing matched the fixture on 18 of 20, and three of five revisions dropped an item the user had not mentioned. The first run also found the output budget too small for the model, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</p>
+      <p class="cv-stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
+      <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into energy-state-aware task plans: a system prompt assembled at request time from the chosen energy state (caps, tone rules, banned phrasing), a strict JSON contract the UI renders from, model-driven sorting into four buckets, and a second prompt and schema for an emergency one-thing mode with a hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 22 September 2026: on the anxious state, 20 of 20 plans parsed under the native contract with the cap, schema and strategy rules at 100%, the banned-phrase rule caught "need to" in 6 of 20 plans, routing matched the fixture on 18 of 20, and three of five revisions dropped an item the user had not mentioned. The first run also found the output budget too small for the model, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
-      <p class="stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Paired Ablation Evals · samievargas.com/signal</p>
-      <p class="proj-body">Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</p>
-      <p class="proj-body">Evaluated on 13 hand-written account cases, 20 runs each under both arms of a source-weighting ablation, 21 and 22 September 2026: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy (93% against 69%), all of it on the three cases built around the most-mentioned name.</p>
+      <p class="cv-stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Paired Ablation Evals · samievargas.com/signal</p>
+      <p class="cv-pt"><i></i><span>Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 13 hand-written account cases, 20 runs each under both arms of a source-weighting ablation, 21 and 22 September 2026: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy (93% against 69%), all of it on the three cases built around the most-mentioned name.</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
-      <p class="stack">dbt Cloud · BigQuery · SQL · scikit-learn · github.com/SamieVargas/instacart-project</p>
-      <p class="proj-body">Built a staging → mart dbt pipeline across 3.4M orders with 35 passing tests; found a 0.60 reorder ratio hides a 3x segment gap (0.221 new vs 0.670 veteran users), validated with random forest (AUC 0.989 vs 0.857).</p>
+      <p class="cv-stack">dbt Cloud · BigQuery · SQL · scikit-learn · github.com/SamieVargas/instacart-project</p>
+      <p class="cv-pt"><i></i><span>Built a staging → mart dbt pipeline across 3.4M orders with 35 passing tests; found a 0.60 reorder ratio hides a 3x segment gap (0.221 new vs 0.670 veteran users), validated with random forest (AUC 0.989 vs 0.857).</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>samievargas.com — The Site and Its Arcade</h3>
-      <p class="stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
-      <p class="proj-body">Built and shipped the portfolio site with no framework and no build step: two LLM apps behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</p>
+      <p class="cv-stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
+      <p class="cv-pt"><i></i><span>Built and shipped the portfolio site with no framework and no build step: two LLM apps behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>Life in Pixels RAG + Life OS — Personal Data Tools</h3>
-      <p class="stack">Python · ChromaDB · Hugging Face Embeddings (MiniLM · bge · e5) · Cross-Encoder Reranking · Anthropic SDK · Code-Enforced Citations · Golden-Set Evals · MCP Server · Apps Script · github.com/SamieVargas/pixels-rag</p>
-      <p class="proj-body">Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local Hugging Face embeddings in ChromaDB (MiniLM by default, bge-small and e5 as measured arms, a cross-encoder reranker measured against plain top-k), and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and aggregates run in code and only the search goes through retrieval. Every answer is checked in code against the retrieved days and the computed table, with one reject-and-retry on an uncited date or an invented number, and follow-ups are rewritten from the last three turns before anything is retrieved. The same router, validator and model call are exposed as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it stays on the machine. It surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</p>
-      <p class="proj-body">Evaluated on 26 hand-written questions over a seeded synthetic export, 22 September 2026: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else.</p>
+      <p class="cv-stack">Python · ChromaDB · Hugging Face Embeddings (MiniLM · bge · e5) · Cross-Encoder Reranking · Anthropic SDK · Code-Enforced Citations · Golden-Set Evals · MCP Server · Apps Script · github.com/SamieVargas/pixels-rag</p>
+      <p class="cv-pt"><i></i><span>Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local Hugging Face embeddings in ChromaDB (MiniLM by default, bge-small and e5 as measured arms, a cross-encoder reranker measured against plain top-k), and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and aggregates run in code and only the search goes through retrieval. Every answer is checked in code against the retrieved days and the computed table, with one reject-and-retry on an uncited date or an invented number, and follow-ups are rewritten from the last three turns before anything is retrieved. The same router, validator and model call are exposed as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it stays on the machine. It surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 26 hand-written questions over a seeded synthetic export, 22 September 2026: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else.</span></p>
     </div>
-    <div class="proj">
+    <div class="cv-proj">
       <h3>ATX Foodie — Public Health Compliance Analysis</h3>
-      <p class="stack">Python · Socrata API · folium · kaggle.com/code/samievargas/atx-foodie-inspection</p>
-      <p class="proj-body">Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections score 8 points below routine visits, evidence of a broken corrective loop.</p>
+      <p class="cv-stack">Python · Socrata API · folium · kaggle.com/code/samievargas/atx-foodie-inspection</p>
+      <p class="cv-pt"><i></i><span>Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections score 8 points below routine visits, evidence of a broken corrective loop.</span></p>
     </div>
   </section>
 
-  <section class="avoid-break" style="margin-bottom:18px">
-    <p class="sec-label" style="margin-bottom:10px">04 — Certifications</p>
-    <p class="cert-line">Anthropic AI Fluency — Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
-    <p class="cert-line">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
-    <p class="cert-line">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; PSM I — Professional Scrum Master · Scrum.org · May 2026 &nbsp;·&nbsp; PMP — Project Management Professional · PMI &nbsp;·&nbsp; Snowflake Hands-On Essentials</p>
-    <p class="cert-line">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals · Six Sigma White Belt</p>
+  <section class="cv-sec cv-avoid cv-rv">
+    <p class="cv-label">04 · Certifications</p>
+    <p class="cv-cert">Anthropic AI Fluency — Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
+    <p class="cv-cert">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
+    <p class="cv-cert">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; Snowflake Hands-On Essentials: Data Warehousing Workshop &nbsp;·&nbsp; PMP — Project Management Professional · PMI</p>
+    <p class="cv-cert">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals · Six Sigma White Belt</p>
   </section>
 
-  <section class="avoid-break">
-    <p class="sec-label" style="margin-bottom:10px">05 — Education</p>
-    <p class="edu">B.S. Biochemistry · The University of Texas at Austin</p>
+  <section class="cv-sec cv-avoid cv-rv cv-rv--fade">
+    <p class="cv-label">05 · Education</p>
+    <p class="cv-edu">B.S. Biochemistry · The University of Texas at Austin</p>
   </section>
 </main>
 
@@ -315,7 +373,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260923g';
+import { TK_REPO } from './data/content.js?v=20260924a';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
@@ -332,6 +390,18 @@ function pageMargin() {
   }
   return null;
 }
+
+// ── Load-in ── header then each section, 110ms apart; the last two
+// (certifications, education) arrive together. Print and reduced motion
+// render the end state straight away (see the CSS).
+const blocks = [...document.querySelectorAll('.cv-rv')];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+blocks.forEach((el, i) => {
+  const at = Math.min(i, 5) * 110;
+  if (REDUCED) el.classList.add('is-in');
+  else setTimeout(() => el.classList.add('is-in'), at);
+});
+window.addEventListener('beforeprint', () => blocks.forEach((el) => el.classList.add('is-in')));
 
 const guide = document.getElementById('guide');
 const guideBtn = document.getElementById('guide-btn');
