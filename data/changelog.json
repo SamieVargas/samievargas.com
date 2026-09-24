@@ -1,66 +1,66 @@
 {
-  "generated": "2026-09-23T20:14:42Z",
+  "generated": "2026-09-24T00:28:57Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 274,
+  "total": 284,
   "commits": [
+    {
+      "sha": "c01eb1083243b27033ea9e4dc1f3638b62e5d890",
+      "date": "2026-09-24T00:23:29Z",
+      "message": "Rebuild the work page in the 3a style around the four-pattern spine"
+    },
+    {
+      "sha": "8eb61ca0852990de3ce9ff65075652ff72ac16be",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Redraw the favicon and social card in Young Serif"
+    },
+    {
+      "sha": "f1370628d98069e63886ce03d2a5edc69592e56c",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Rebuild the 404 page in the 3a style"
+    },
+    {
+      "sha": "78cda814fe2ee46c4c17ddac71d4714830263ebd",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Rebuild /pixels in the 3a style, still reading the real recorded runs"
+    },
+    {
+      "sha": "babec4b2faedbf31150e684ffb398888714ef30f",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Rebuild the toolkit in the 3a style, reading swatches from the live tokens"
+    },
+    {
+      "sha": "dc910dd233ff723ee5d4c75f90f537746394ee8e",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Rebuild the résumé in the 3a style and reprint the PDF"
+    },
+    {
+      "sha": "b3156318da4d3b19102e562978cfe459c0e14caa",
+      "date": "2026-09-24T00:23:16Z",
+      "message": "Rebuild the arcade in the 3a style with the cleaned screenshots"
+    },
+    {
+      "sha": "e44cbf39ca8aceb2e87dc1d2b1eeca2be6fad125",
+      "date": "2026-09-24T00:23:15Z",
+      "message": "Rebuild /life and /life#notes in the 3a style"
+    },
+    {
+      "sha": "be8768d308f16c012643fd81369c1cbccd3ec2a8",
+      "date": "2026-09-24T00:07:33Z",
+      "message": "Lay the 3a foundation: tokens, fonts, shared load-in module, style guide"
+    },
     {
       "sha": "3b0446e3b8555cc3e8806ee306ea55c1547548e7",
       "date": "2026-09-23T20:14:12Z",
       "message": "/pixels: say that S01's kept violation is the validator's mistake"
-    },
-    {
-      "sha": "b571d5697094606c7ad2e719f78dab7a9eab27dc",
-      "date": "2026-09-23T20:10:56Z",
-      "message": "Brain Dump: drop the thirty-line claim, state the measured cost"
-    },
-    {
-      "sha": "51ad4a6f7db2863c3d2b0a84f260d9c570efbe81",
-      "date": "2026-09-23T20:01:18Z",
-      "message": "A pattern index on the homepage and /pixels, the RAG pipeline replayed run by run"
-    },
-    {
-      "sha": "66001d4f7cc7531212e115a6c8bf2585124af152",
-      "date": "2026-09-23T19:47:39Z",
-      "message": "README: bring it up to date with the projects that are actually on the site"
-    },
-    {
-      "sha": "302894b25dcff137372086fc219d10b9ee9228f7",
-      "date": "2026-09-23T19:34:48Z",
-      "message": "Name the MCP server and the Hugging Face models that already ship"
-    },
-    {
-      "sha": "bb56bbe07c8b5910dca5a219c9d55342f16b8147",
-      "date": "2026-09-22T20:30:46Z",
-      "message": "Resume.pdf: regenerated from the page after the four eval entries"
-    },
-    {
-      "sha": "328008eaba4409685f3c071250e44e14135f58e9",
-      "date": "2026-09-22T20:19:30Z",
-      "message": "Brain Dump: the first eval numbers on the résumé and results row"
-    },
-    {
-      "sha": "b5e006dbe8542bb25c25307c3593f4e8a234e918",
-      "date": "2026-09-22T18:01:55Z",
-      "message": "Signal: the ablation numbers on the résumé and the results row"
-    },
-    {
-      "sha": "261c093a396b72c10c245b9bf6ed2893d3c3bc32",
-      "date": "2026-09-22T16:04:19Z",
-      "message": "Life in Pixels: the router, the citations, and the numbers"
-    },
-    {
-      "sha": "bd522c9cebaaf2096ff04b996be07316c3b1b1da",
-      "date": "2026-09-22T15:50:28Z",
-      "message": "Field discovery: say what it does next, with the numbers"
     }
   ],
   "weeks": [
     0,
     0,
     57,
-    95,
-    32,
+    98,
+    29,
     0,
     3,
     0,
@@ -73,12 +73,12 @@
     0,
     26,
     16,
-    14,
-    1,
-    30
+    15,
+    0,
+    40
   ],
   "resume": {
-    "sha": "3b0446e3b8555cc3e8806ee306ea55c1547548e7",
-    "date": "2026-09-23T20:14:12Z"
+    "sha": "dc910dd233ff723ee5d4c75f90f537746394ee8e",
+    "date": "2026-09-24T00:23:16Z"
   }
 }
