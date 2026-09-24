@@ -1,9 +1,19 @@
 {
-  "generated": "2026-09-24T23:08:54Z",
+  "generated": "2026-09-24T23:21:45Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 295,
+  "total": 298,
   "commits": [
+    {
+      "sha": "9578046c2b893eabdc5e8d1bd61f8ae574b179b6",
+      "date": "2026-09-24T23:18:54Z",
+      "message": "Rebuild the ATX Foodie drift chart with a real scale"
+    },
+    {
+      "sha": "9cc5fdcb9dc7eaf446066152d1e0dab32f8f3593",
+      "date": "2026-09-24T23:13:12Z",
+      "message": "Bring back the CRT power-on on the arcade page"
+    },
     {
       "sha": "36ecf108c7e86f20a05cee3441604ab5ae715b8b",
       "date": "2026-09-24T23:01:36Z",
@@ -43,22 +53,12 @@
       "sha": "c01eb1083243b27033ea9e4dc1f3638b62e5d890",
       "date": "2026-09-24T00:23:29Z",
       "message": "Rebuild the work page in the 3a style around the four-pattern spine"
-    },
-    {
-      "sha": "8eb61ca0852990de3ce9ff65075652ff72ac16be",
-      "date": "2026-09-24T00:23:16Z",
-      "message": "Redraw the favicon and social card in Young Serif"
-    },
-    {
-      "sha": "f1370628d98069e63886ce03d2a5edc69592e56c",
-      "date": "2026-09-24T00:23:16Z",
-      "message": "Rebuild the 404 page in the 3a style"
     }
   ],
   "weeks": [
     0,
-    9,
-    48,
+    12,
+    45,
     99,
     28,
     0,
@@ -75,10 +75,10 @@
     16,
     15,
     0,
-    51
+    54
   ],
   "resume": {
-    "sha": "36ecf108c7e86f20a05cee3441604ab5ae715b8b",
-    "date": "2026-09-24T23:01:36Z"
+    "sha": "9578046c2b893eabdc5e8d1bd61f8ae574b179b6",
+    "date": "2026-09-24T23:18:54Z"
   }
 }
