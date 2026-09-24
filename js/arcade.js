@@ -1,13 +1,14 @@
 // ============================================================
 // js/arcade.js
 // /apps: the title ticker, the badge filter, six featured cards and
-// the other nine as rows, all built from ARCADE_APPS. The only state
+// the other nine as rows, all built from ARCADE_APPS, behind a CRT
+// power-on the first time the page opens in a session. The only state
 // is the badge filter. Motion respects prefers-reduced-motion through
 // reveal.js and the stylesheet.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260925b';
-import { $, esc, onSeen } from './reveal.js?v=20260925b';
+import { ARCADE_APPS } from '../data/content.js?v=20260925c';
+import { $, esc, onSeen, REDUCED } from './reveal.js?v=20260925c';
 
 const TOTAL = ARCADE_APPS.length;
 const APPS = ARCADE_APPS.map((a, i) => ({ ...a, num: `${String(i + 1).padStart(2, '0')} / ${TOTAL}` }));
@@ -38,7 +39,7 @@ function renderFilters() {
 }
 
 function shot(a, cls) {
-  return `<div class="${cls}"><img src="${esc(a.shot)}?v=20260925b" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
+  return `<div class="${cls}"><img src="${esc(a.shot)}?v=20260925c" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
 }
 
 const cardHtml = (a, i) => `
@@ -97,6 +98,25 @@ function wireFilters() {
 }
 
 // ── Boot ─────────────────────────────────────────────────────
+// ── CRT power-on, once per session ───────────────────────────
+// Two dark halves close on a bright scan line, then the line fades, the way an
+// old set warms up. Skipped with reduced motion, and on repeat visits in the
+// same tab session.
+function crtPowerOn() {
+  if (REDUCED) return;
+  try {
+    if (sessionStorage.getItem('samie-arcade-crt')) return;
+    sessionStorage.setItem('samie-arcade-crt', '1');
+  } catch (err) { return; }
+  const crt = document.createElement('div');
+  crt.className = 'arc-crt';
+  crt.setAttribute('aria-hidden', 'true');
+  crt.innerHTML = '<i class="arc-crt__half arc-crt__half--top"></i><i class="arc-crt__line"></i><i class="arc-crt__half arc-crt__half--bot"></i>';
+  document.body.appendChild(crt);
+  setTimeout(() => crt.remove(), 750);
+}
+
+crtPowerOn();
 renderTicker();
 renderFilters();
 renderLists();

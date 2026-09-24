@@ -854,6 +854,15 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
 }
 
 /* ── Arcade ── */
+/* CRT power-on overlay, once per session (js/arcade.js) */
+@keyframes arcCrtHalf { 0%, 40% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@keyframes arcCrtLine { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
+.arc-crt { position: fixed; inset: 0; z-index: 400; pointer-events: none; display: flex; flex-direction: column; }
+.arc-crt i { display: block; }
+.arc-crt__half { flex: 1; background: var(--dark); animation: arcCrtHalf .55s ease-in forwards; }
+.arc-crt__half--top { transform-origin: top; }
+.arc-crt__half--bot { transform-origin: bottom; }
+.arc-crt__line { height: 2px; background: var(--accent-dark); box-shadow: 0 0 14px 2px var(--accent-dark); animation: arcCrtLine .6s ease-out forwards; }
 /* /apps: a ticker of every title, the header with the badge filter, six
    featured cards with screenshots, and the other nine as rows. */
 
