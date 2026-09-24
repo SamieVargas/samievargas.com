@@ -14,8 +14,8 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   RECORDS, CHRISTIE, RING_FIT, READING, PLAYING, OBSERVATIONS, LIFE_NOTES,
-} from '../data/content.js?v=20260924a';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260924a';
+} from '../data/content.js?v=20260924b';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260924b';
 
 // Category hues: same lightness and chroma, hue only. "Built" is the accent.
 const KIND_COLOR = {
@@ -249,7 +249,7 @@ function noteChart(i) {
     const lo = Math.min(...c.scores) - 0.3;
     const hi = Math.max(...c.scores) + 0.2;
     const n = c.scores.length - 1;
-    const points = c.scores.map((s, k) => `${((k / n) * 100).toFixed(2)},${(((s - lo) / (hi - lo)) * 100).toFixed(2)}`).join(' ');
+    const points = c.scores.map((s, k) => `${((k / n) * 100).toFixed(2)},${((1 - (s - lo) / (hi - lo)) * 100).toFixed(2)}`).join(' ');
     return `
       <div class="nc nc--line" data-chart="line">
         <span class="life-micro life-micro--faint">${esc(c.label)}</span>
@@ -348,7 +348,7 @@ function playNote(article) {
     const svg = $('.nc-line svg', article);
     tween(1800, (p) => { svg.style.clipPath = `inset(-10px ${((1 - p) * 100).toFixed(1)}% -10px -10px)`; }, 400);
     const c = LIFE_NOTES[Number(article.dataset.note)].chart;
-    countUp($('.nc-gap', article), c.gap, { ms: 1000, delay: 1600, fmt: (v) => `−${Math.round(v)}`, final: `−${c.gap}` });
+    countUp($('.nc-gap', article), c.gap, { ms: 1000, delay: 1600, fmt: (v) => `−${v.toFixed(1)}`, final: `−${c.gap}` });
   }
   // The rebuild rows stage themselves in CSS off .is-in.
 }

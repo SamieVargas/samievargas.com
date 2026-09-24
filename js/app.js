@@ -10,8 +10,8 @@ import {
   PX_REPLAY, SIGNAL_PILE, BD_BUCKETS, BD_DUMP, BD_STATES, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260924a';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260924a';
+} from '../data/content.js?v=20260924b';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260924b';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -216,10 +216,45 @@ function signal() {
 }
 
 // ── Brain Dump: the dump types, lights up, and drops into bins ──
-function brainDump() {
+// Bins show a recorded run per state from data/braindump-runs.json (written by
+// scripts/record-braindump.mjs) and fall back to the predicted piles in
+// BD_STATES, captioned as predictions, for any state not yet recorded.
+const BD_API = { do_it: 'today', decide_later: 'not', capture_it: 'keep', release_it: 'down' };
+function recordedPiles(rec, name) {
+  const st = rec && rec.states && rec.states[name];
+  const run = st && st.runs && st.runs[st.shown || 0];
+  if (!run || !run.buckets) return null;
+  return Object.fromEntries(Object.entries(BD_API).map(([api, k]) => [k, run.buckets[api] || []]));
+}
+// Which bin a dump item landed in, by whole words it shares with the recorded
+// chips. An item the model merged or reworded past recognition stays unlit.
+const BD_STOP = new Set(['the', 'and', 'for', 'not', 'why', 'am', 'is', 'i', 'still', 'about', 'thing', 'thinking', 'keep', 'getting', 'doing', 'back', 'properly', 'worse']);
+const bdWords = (t) => (t.toLowerCase().match(/[a-z0-9']+/g) || []).filter((w) => w.length > 1 && !BD_STOP.has(w));
+function binOf(item, piles) {
+  const words = bdWords(item);
+  let best = null, hits = 0;
+  Object.entries(piles).forEach(([k, chips]) => chips.forEach((c) => {
+    const have = new Set(bdWords(c));
+    const n = words.filter((w) => have.has(w)).length;
+    if (n > hits) { hits = n; best = k; }
+  }));
+  return best;
+}
+
+function brainDump(rec) {
   const words = $('#bd-words');
   const color = (k) => (BD_BUCKETS[k].quiet ? 'oklch(0.74 0.03 70)' : `oklch(0.8 0.1 ${BD_BUCKETS[k].h})`);
-  words.innerHTML = BD_DUMP.map((w) => `<mark style="--hl:${color(w.b)}"></mark><span></span>`).join('');
+  const pilesFor = (i) => recordedPiles(rec, BD_STATES[i].n) || BD_STATES[i].p;
+  const first = recordedPiles(rec, BD_STATES[0].n);
+  const lit = BD_DUMP.map((w) => (first ? binOf(w.t, first) : w.b));
+  words.innerHTML = BD_DUMP.map((w, i) => `<mark style="--hl:${lit[i] ? color(lit[i]) : 'transparent'}"></mark><span></span>`).join('');
+  const setSource = (i) => {
+    const r = rec && rec.recorded && recordedPiles(rec, BD_STATES[i].n);
+    $('#bd-source').textContent = r
+      ? `the five states and their caps are the product's own · these piles are one recorded run of ${rec.runs_per_state}, ${rec.recorded}, ${rec.model}, prompt ${rec.prompt_version}`
+      : 'the five states and their caps are the product\'s own · the piles are predicted from its rules until the five-state run is recorded';
+  };
+  setSource(0);
   const marks = $$('mark', words);
   const seps = $$('span', words);
   const full = BD_DUMP.map((w) => w.t).join(', ');
@@ -246,7 +281,7 @@ function brainDump() {
     $('#bd-note').textContent = st.note;
     let n = 0;
     $('#bd-bins').innerHTML = Object.keys(BD_BUCKETS).map((k) => {
-      const chips = (st.p[k] || []).map((t) => `<span class="bd-chip" data-n="${n++}">${esc(t)}</span>`).join('');
+      const chips = (pilesFor(current)[k] || []).map((t) => `<span class="bd-chip" data-n="${n++}">${esc(t)}</span>`).join('');
       return `<div class="bd-bin" style="--hl:${color(k)}"><span class="bd-bin__k">${esc(BD_BUCKETS[k].k)}</span><div class="bd-bin__chips">${chips}</div></div>`;
     }).join('');
     if (delay == null) return;
@@ -264,6 +299,7 @@ function brainDump() {
     $$('button', statesEl).forEach((x, j) => x.setAttribute('aria-pressed', String(j === i)));
     marks.forEach((m) => m.classList.remove('is-lit'));
     $('#bd-caption').textContent = `the same dump, re-sorted for ${BD_STATES[i].n}`;
+    setSource(i);
     renderBins(seen || REDUCED ? 400 : null);
   }));
 
@@ -271,9 +307,9 @@ function brainDump() {
     seen = true;
     const cursor = $('#bd-cursor');
     const done = () => { cursor.hidden = true; };
-    if (REDUCED) { renderDump(full.length); done(); marks.forEach((m) => m.classList.add('is-lit')); return; }
+    if (REDUCED) { renderDump(full.length); done(); marks.forEach((m, i) => { if (lit[i]) m.classList.add('is-lit'); }); return; }
     linearTween(3400, (p) => renderDump(Math.round(p * full.length)), 300).then(done);
-    marks.forEach((m, i) => setTimeout(() => { if (!changed) m.classList.add('is-lit'); }, 4000 + i * 220));
+    marks.forEach((m, i) => setTimeout(() => { if (!changed && lit[i]) m.classList.add('is-lit'); }, 4000 + i * 220));
     if (changed) renderBins(400);
     else setTimeout(() => { if (!changed) renderBins(0); }, 5800);
   });
@@ -307,7 +343,7 @@ function analysis() {
   });
 
   const lo = 89.5, span = 3.3;
-  $('#drift-line').setAttribute('points', ATX_DRIFT.map((s, i) => `${(i / (ATX_DRIFT.length - 1) * 100).toFixed(2)},${((s - lo) / span * 100).toFixed(2)}`).join(' '));
+  $('#drift-line').setAttribute('points', ATX_DRIFT.map((s, i) => `${(i / (ATX_DRIFT.length - 1) * 100).toFixed(2)},${((1 - (s - lo) / span) * 100).toFixed(2)}`).join(' '));
   onSeen($('#drift'), () => {
     const svg = $('#drift-svg');
     tween(2000, (p) => { svg.style.clipPath = `inset(-10px ${((1 - p) * 100).toFixed(1)}% -10px -10px)`; }, 300);
@@ -419,7 +455,7 @@ injection();
 results();
 pixels();
 signal();
-brainDump();
+fetch('data/braindump-runs.json?v=20260924b').then((r) => (r.ok ? r.json() : null)).catch(() => null).then(brainDump);
 analysis();
 experience();
 skills();

@@ -46,7 +46,7 @@ Every project line on the site ends in a dated eval paragraph, and nothing goes 
 
 **Instacart** -- dbt Cloud on BigQuery across 3.4M orders, five staging models into one join and three marts with 35 passing tests, and the reorder rate everybody cites at 0.60 splits into 0.221 for new shoppers and 0.670 for veterans once you segment it, confirmed with a random forest at 0.989 AUC for veterans against 0.857 for new users. Repo at [SamieVargas/instacart-project](https://github.com/SamieVargas/instacart-project). The homepage has a read-only query console over cached result sets from the marts.
 
-**ATX Foodie** -- 21,160 City of Austin inspection records through the Socrata API, a brand compliance scorecard across 84 local chains, a folium choropleth by zip, and an audit of my own regular spots because of course I did. Scores drift about two points worse across a venue's inspection history, 90.5 at the first visit and 92.6 by the fourteenth, and being flagged is not what fixes it. Notebook at [kaggle.com/code/samievargas/atx-foodie-inspection](https://www.kaggle.com/code/samievargas/atx-foodie-inspection).
+**ATX Foodie** -- 21,160 City of Austin inspection records through the Socrata API, a brand compliance scorecard across 84 local chains, a folium choropleth by zip, and an audit of my own regular spots because of course I did. Austin scores out of 100 with points off for each violation, and read that way round a venue's average climbs from 90.5 at its first inspection to 92.6 by its fifteenth, while follow-up visits average 84.4 against 90.9 for routine ones. Notebook at [kaggle.com/code/samievargas/atx-foodie-inspection](https://www.kaggle.com/code/samievargas/atx-foodie-inspection).
 
 **In progress** -- review-bombing detection across 31M+ Steam reviews, to catch when a score is being driven by something other than the game.
 
@@ -87,6 +87,8 @@ data/
                         result lines, notes, the field, the arcade, the toolkit
   changelog.json     -- written by the Action below on every push to main
 assets/              -- charts and screenshots, one folder per project
+scripts/
+  record-braindump.mjs -- records the Brain Dump piles the work page shows into data/braindump-runs.json
 .github/
   workflows/changelog.yml   -- snapshots the commit log into data/changelog.json
   scripts/changelog.mjs     -- the script it runs
@@ -149,7 +151,7 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260924a" --include=*.html --include=*.js .
+grep -rln "?v=20260924b" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.
