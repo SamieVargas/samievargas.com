@@ -7,11 +7,11 @@
 
 import {
   HERO_LOG, SPINE, FD_SEGMENTS, FD_MATCH, FD_RECORD, FD_CASE, FD_INJECTION,
-  PX_REPLAY, SIGNAL_PILE, BD_BUCKETS, BD_DUMP, BD_STATES, DAG, REORDER, ATX_DRIFT,
+  PX_REPLAY, SIGNAL_PILE, BD_V3, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260924c';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260924c';
+} from '../data/content.js?v=20260925a';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925a';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -215,103 +215,82 @@ function signal() {
   });
 }
 
-// ── Brain Dump: the dump types, lights up, and drops into bins ──
-// Bins show a recorded run per state from data/braindump-runs.json (written by
-// scripts/record-braindump.mjs) and fall back to the predicted piles in
-// BD_STATES, captioned as predictions, for any state not yet recorded.
-const BD_API = { do_it: 'today', decide_later: 'not', capture_it: 'keep', release_it: 'down' };
-function recordedPiles(rec, name) {
-  const st = rec && rec.states && rec.states[name];
-  const run = st && st.runs && st.runs[st.shown || 0];
-  if (!run || !run.buckets) return null;
-  return Object.fromEntries(Object.entries(BD_API).map(([api, k]) => [k, run.buckets[api] || []]));
-}
-// Which bin a dump item landed in, by whole words it shares with the recorded
-// chips. An item the model merged or reworded past recognition stays unlit.
-const BD_STOP = new Set(['the', 'and', 'for', 'not', 'why', 'am', 'is', 'i', 'still', 'about', 'thing', 'thinking', 'keep', 'getting', 'doing', 'back', 'properly', 'worse']);
-const bdWords = (t) => (t.toLowerCase().match(/[a-z0-9']+/g) || []).filter((w) => w.length > 1 && !BD_STOP.has(w));
-function binOf(item, piles) {
-  const words = bdWords(item);
-  let best = null, hits = 0;
-  Object.entries(piles).forEach(([k, chips]) => chips.forEach((c) => {
-    const have = new Set(bdWords(c));
-    const n = words.filter((w) => have.has(w)).length;
-    if (n > hits) { hits = n; best = k; }
-  }));
-  return best;
-}
+// ── Brain Dump: the dump types, then a recorded plan drops in ──
+// Four real sort@v3 runs of one dump (BD_V3). Picking a run swaps the plan and
+// lights the words in the dump that its "now" steps quote back.
+const BD_SHOW = { later: 5, letGo: 3 };
+const bdLabel = (r, i, all) => {
+  const again = all.slice(0, i).some((o) => o.level === r.level && o.anxious === r.anxious);
+  return `${r.level}${r.anxious ? ' · anxious' : ''}${again ? ' · again' : ''}`;
+};
 
-function brainDump(rec) {
-  const words = $('#bd-words');
-  const color = (k) => (BD_BUCKETS[k].quiet ? 'oklch(0.74 0.03 70)' : `oklch(0.8 0.1 ${BD_BUCKETS[k].h})`);
-  const pilesFor = (i) => recordedPiles(rec, BD_STATES[i].n) || BD_STATES[i].p;
-  const first = recordedPiles(rec, BD_STATES[0].n);
-  const lit = BD_DUMP.map((w) => (first ? binOf(w.t, first) : w.b));
-  words.innerHTML = BD_DUMP.map((w, i) => `<mark style="--hl:${lit[i] ? color(lit[i]) : 'transparent'}"></mark><span></span>`).join('');
-  const setSource = (i) => {
-    const r = rec && rec.recorded && recordedPiles(rec, BD_STATES[i].n);
-    $('#bd-source').textContent = r
-      ? `the five states and their caps are the product's own · these piles are one recorded run of ${rec.runs_per_state}, ${rec.recorded}, ${rec.model}, prompt ${rec.prompt_version}`
-      : 'the five states and their caps are the product\'s own · the piles are predicted from its rules until the five-state run is recorded';
-  };
-  setSource(0);
-  const marks = $$('mark', words);
-  const seps = $$('span', words);
-  const full = BD_DUMP.map((w) => w.t).join(', ');
+function brainDump() {
+  const B = BD_V3;
+  const dumpEl = $('#bd-dump');
+  dumpEl.innerHTML = B.dump.map((d) => (d.gap
+    ? `<span class="bd-gap"></span>`
+    : `<span${d.hl ? ` class="bd-hl" data-hl="${d.hl}"` : ''}></span>`)).join('') + '<span class="cursor cursor--dark" id="bd-cursor" aria-hidden="true">▍</span>';
+  const parts = $$('span:not(.cursor)', dumpEl);
+  const full = B.dump.reduce((n, d) => n + d.t.length, 0);
   const renderDump = (len) => {
     let left = len;
-    BD_DUMP.forEach((w, i) => {
-      const sep = i < BD_DUMP.length - 1 ? ', ' : '';
-      const show = (w.t + sep).slice(0, Math.max(0, left));
-      left -= w.t.length + sep.length;
-      marks[i].textContent = show.slice(0, w.t.length);
-      seps[i].textContent = show.slice(w.t.length);
-    });
+    B.dump.forEach((d, i) => { parts[i].textContent = d.t.slice(0, Math.max(0, left)); left -= d.t.length; });
   };
+  $('#bd-caption').textContent = `an excerpt of the ${B.dumpChars.toLocaleString()}-character dump · lit where the plan quotes it back`;
 
   let current = 0;
-  let changed = false;
   let seen = false;
-  const statesEl = $('#bd-states');
-  statesEl.innerHTML = BD_STATES.map((s, i) => `<button type="button" aria-pressed="${i === current}">${esc(s.n)}</button>`).join('');
+  let typed = REDUCED;
+  const runsEl = $('#bd-runs');
+  runsEl.innerHTML = B.runs.map((r, i, all) => `<button type="button" aria-pressed="${i === current}">${esc(bdLabel(r, i, all))}</button>`).join('');
 
-  const renderBins = (delay) => {
-    const st = BD_STATES[current];
-    $('#bd-cap').textContent = st.cap;
-    $('#bd-note').textContent = st.note;
-    let n = 0;
-    $('#bd-bins').innerHTML = Object.keys(BD_BUCKETS).map((k) => {
-      const chips = (pilesFor(current)[k] || []).map((t) => `<span class="bd-chip" data-n="${n++}">${esc(t)}</span>`).join('');
-      return `<div class="bd-bin" style="--hl:${color(k)}"><span class="bd-bin__k">${esc(BD_BUCKETS[k].k)}</span><div class="bd-bin__chips">${chips}</div></div>`;
-    }).join('');
-    if (delay == null) return;
-    $$('.bd-chip').forEach((c) => {
-      const at = delay + Number(c.dataset.n) * 180;
-      if (REDUCED) c.classList.add('is-on');
-      else setTimeout(() => requestAnimationFrame(() => c.classList.add('is-on')), at);
-    });
+  const light = () => {
+    const srcs = new Set(B.runs[current].now.map((n) => n.src));
+    $$('.bd-hl', dumpEl).forEach((el) => el.classList.toggle('is-lit', typed && srcs.has(el.dataset.hl)));
   };
-  renderBins(REDUCED ? 0 : null);
+  const renderPlan = (animate) => {
+    const r = B.runs[current];
+    const lv = B.levels[r.level];
+    $('#bd-cap').textContent = `now cap ${lv.cap} · ${lv.timer}-minute timer${r.anxious ? ' · no "should" or "need to"' : ''}`;
+    const more = (n, shown) => (n > shown ? `<li class="bd-more">+ ${n - shown} more</li>` : '');
+    $('#bd-plan').innerHTML = `
+      <div class="bd-sec">
+        <div class="bd-sec__h"><span>now</span><span>one at a time, in this order</span></div>
+        <ol class="bd-now">${r.now.map((n, i) => `<li class="bd-step bd-in" data-k="${i}"><span class="bd-step__n">${i + 1}</span><div><strong>${esc(n.label)}</strong><p>${esc(n.detail)}</p><span class="bd-step__why">${esc(n.why)} · ${esc(n.strategy)}</span></div></li>`).join('')}</ol>
+      </div>
+      <div class="bd-sec">
+        <div class="bd-sec__h"><span>later</span><span>safe here for later</span></div>
+        <ul class="bd-list">${r.later.slice(0, BD_SHOW.later).map((l, i) => `<li class="bd-in" data-k="${r.now.length + i}"><span class="bd-tag bd-tag--${l.t}">${esc(l.t)}</span>${esc(l.x)}</li>`).join('')}${more(r.later.length, BD_SHOW.later)}</ul>
+      </div>
+      <div class="bd-sec">
+        <div class="bd-sec__h"><span>let go</span><span>you can set these down</span></div>
+        <ul class="bd-list bd-list--go">${r.letGo.slice(0, BD_SHOW.letGo).map((l, i) => `<li class="bd-in" data-k="${r.now.length + BD_SHOW.later + i}">${esc(l)}</li>`).join('')}${more(r.letGo.length, BD_SHOW.letGo)}</ul>
+      </div>`;
+    const items = $$('.bd-in', $('#bd-plan'));
+    if (REDUCED || animate === 'now') { items.forEach((el) => el.classList.add('is-on')); return; }
+    if (animate == null) return;
+    items.forEach((el) => setTimeout(() => requestAnimationFrame(() => el.classList.add('is-on')), animate + Number(el.dataset.k) * 110));
+  };
+  $('#bd-source').textContent = `four real runs of the same dump, ${B.date}, ${B.model}, prompt ${B.prompt}, ${B.cost} · the page shows the first few of each list`;
+  renderPlan(null);
 
-  $$('button', statesEl).forEach((b, i) => b.addEventListener('click', () => {
+  $$('button', runsEl).forEach((b, i) => b.addEventListener('click', () => {
     current = i;
-    changed = true;
-    $$('button', statesEl).forEach((x, j) => x.setAttribute('aria-pressed', String(j === i)));
-    marks.forEach((m) => m.classList.remove('is-lit'));
-    $('#bd-caption').textContent = `the same dump, re-sorted for ${BD_STATES[i].n}`;
-    setSource(i);
-    renderBins(seen || REDUCED ? 400 : null);
+    $$('button', runsEl).forEach((x, j) => x.setAttribute('aria-pressed', String(j === i)));
+    light();
+    renderPlan(seen ? 150 : null);
   }));
 
   onSeen($('#braindump'), () => {
     seen = true;
     const cursor = $('#bd-cursor');
-    const done = () => { cursor.hidden = true; };
-    if (REDUCED) { renderDump(full.length); done(); marks.forEach((m, i) => { if (lit[i]) m.classList.add('is-lit'); }); return; }
-    linearTween(3400, (p) => renderDump(Math.round(p * full.length)), 300).then(done);
-    marks.forEach((m, i) => setTimeout(() => { if (!changed && lit[i]) m.classList.add('is-lit'); }, 4000 + i * 220));
-    if (changed) renderBins(400);
-    else setTimeout(() => { if (!changed) renderBins(0); }, 5800);
+    if (REDUCED) { renderDump(full); cursor.hidden = true; light(); renderPlan('now'); return; }
+    linearTween(3400, (p) => renderDump(Math.round(p * full)), 300).then(() => {
+      cursor.hidden = true;
+      typed = true;
+      light();
+      renderPlan(300);
+    });
   });
 }
 
@@ -455,7 +434,7 @@ injection();
 results();
 pixels();
 signal();
-fetch('data/braindump-runs.json?v=20260924c').then((r) => (r.ok ? r.json() : null)).catch(() => null).then(brainDump);
+brainDump();
 analysis();
 experience();
 skills();

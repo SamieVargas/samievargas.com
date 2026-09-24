@@ -117,39 +117,36 @@ export const SIGNAL_PILE = {
   strip: { runs: 20, right: [1, 4, 6, 9, 12, 15, 18] },
 };
 
-// Brain Dump. The five states are the product's own (brain-dump
-// worker/contracts.js CAPS and worker/prompts.js STATE_RULES), and each
-// note paraphrases that state's rules. The piles are predictions from those
-// rules until the five-state run is recorded, and the page says so.
-export const BD_BUCKETS = {
-  today: { k: 'Energy for today', h: 145 },
-  not:   { k: 'Real but not now', h: 70 },
-  keep:  { k: 'Worth keeping', h: 250 },
-  down:  { k: 'Put it down', h: 70, quiet: true },
+// Brain Dump, sort@v3 (brain-dump worker/contracts.js): three levels with a
+// separate "feeling anxious" switch, three buckets, and "now" capped per level
+// with a task timer. The four runs are real, one long voice-note dump given
+// to the live page on 24 Sep 2026, copied from its exported plans: two at
+// "a little", one at "none", one at "none" with anxious on, $0.05 for all
+// four on claude-sonnet-5. The page shows the first few of each list.
+export const BD_V3 = {
+  date: '24 Sep 2026', model: 'claude-sonnet-5', prompt: 'sort@v3', cost: '$0.05 for all four runs',
+  levels: { plenty: { cap: 3, timer: 25 }, 'a little': { cap: 2, timer: 15 }, none: { cap: 1, timer: 5 } },
+  dumpChars: 2732,
+  // An excerpt of the dump, in order; `hl` marks the words a run quoted back.
+  dump: [
+    { t: "okay so um I have like so much in my head right now and I don't really know where to start I guess I'll just go I need to " },
+    { t: 'call the pharmacy', hl: 'pharmacy' },
+    { t: ' I need to call the pharmacy to ask them to switch my prescription to a 90 day one' },
+    { t: ' […] ', gap: true },
+    { t: "and I need to order groceries cuz " },
+    { t: "I don't have anything for lunch and it's already like almost eleven", hl: 'lunch' },
+    { t: ' […] ', gap: true },
+    { t: "I think that's everything I think " },
+    { t: 'the pharmacy is the one I keep coming back to', hl: 'pharmacy' },
+    { t: ' so I should probably just call' },
+  ],
+  runs: [
+    {"level": "a little", "anxious": false, "now": [{"label": "order groceries.", "detail": "open the delivery app already on your phone and order just enough for lunch today, not the whole week.", "why": "you said \"I don't have anything for lunch and it's already like almost eleven\"", "strategy": "micro-commitment", "src": "lunch"}, {"label": "call the pharmacy.", "detail": "make the one call, ask for the 90-day refill switch, and you're done once you've said it.", "why": "you said \"the pharmacy is the one I keep coming back to\"", "strategy": "5-min rule", "src": "pharmacy"}], "later": [{"t": "do", "x": "Check the lease renewal date in the calendar to confirm it's the right one."}, {"t": "do", "x": "Clear the couch boxes out of the living room."}, {"t": "do", "x": "Ping Matt for the missing QBR notes."}, {"t": "do", "x": "Write the QBR recap email for your boss before sending it to the group."}, {"t": "decide", "x": "Decide whether to keep the storage seats or the regular ones before scheduling pickup."}, {"t": "do", "x": "Figure out the chaise lounge setup so the storage area is reachable."}, {"t": "do", "x": "Hang the Lego sets on the wall instead of the dining table."}, {"t": "decide", "x": "Decide whether to go to pottery class tonight."}, {"t": "do", "x": "Pick a costume for the friend's birthday."}, {"t": "idea", "x": "Download mods for Stardew Valley to have ready for the new Steam machine."}, {"t": "idea", "x": "Excitement about the new Steam machine and the games waiting for it."}, {"t": "do", "x": "Restart strength training, even just a short session."}, {"t": "decide", "x": "Decide on weekend plans, including dinner with the guys."}, {"t": "do", "x": "Go back to the calming podcast episodes."}, {"t": "idea", "x": "The day-at-a-glance display idea."}], "letGo": ["The couch boxes sitting out do not mean you're behind.", "The clutter around the storage seats does not define how capable you are.", "Missing pottery class tonight, if that happens, does not undo the fact that you try.", "Two weeks without strength training does not cancel how much you like it when you do it.", "The day-at-a-glance idea does not need to be perfect before it starts.", "Being scared about the lease date is not the same as having missed it."]},
+    {"level": "a little", "anxious": false, "now": [{"label": "call the pharmacy.", "detail": "one call, ask for the 90-day switch, and that's the whole task today.", "why": "you said \"the pharmacy is the one I keep coming back to\" so it goes first.", "strategy": "5-min rule", "src": "pharmacy"}, {"label": "order groceries.", "detail": "open the app already on your phone and press order on the first lunch option you see.", "why": "you don't have anything for lunch and it's already almost eleven.", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "check the lease renewal date already sitting in your calendar."}, {"t": "do", "x": "move the couch boxes out of the living room."}, {"t": "do", "x": "ping Matt for the missing QBR notes."}, {"t": "do", "x": "write and send the QBR recap email to your boss."}, {"t": "decide", "x": "decide between keeping the storage seats or the regular ones before scheduling pickup."}, {"t": "do", "x": "move the chaise lounge so the storage is reachable."}, {"t": "do", "x": "hang the Lego sets on the wall instead of the dining table."}, {"t": "decide", "x": "decide whether to go to pottery class tonight."}, {"t": "decide", "x": "decide on a costume for your friend's birthday."}, {"t": "idea", "x": "download the mods for Stardew before you play."}, {"t": "idea", "x": "look forward to trying the games you've wanted on the new Steam Machine."}, {"t": "do", "x": "ease back into strength training, even a short session."}, {"t": "decide", "x": "decide about dinner with the guys this weekend."}, {"t": "do", "x": "put on the calming podcast you like, even a familiar episode."}, {"t": "idea", "x": "sketch a rough version of the day-at-a-glance display idea."}], "letGo": ["the lease renewal date is already saved in your calendar, not a countdown to disaster.", "missing a class you signed up for doesn't undo the parts of you that do show up.", "the boxes and clutter around you are just objects, not a verdict on how you're doing.", "two weeks without strength training is a pause, not a failure."]},
+    {"level": "none", "anxious": false, "now": [{"label": "order lunch.", "detail": "open the delivery app already on your phone and press order on the first thing that looks good.", "why": "you said \"I need to order groceries cuz I don't have anything for lunch and it's already like almost eleven\" — this is the body need underneath everything else on the list", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "call the pharmacy to ask them to switch the prescription to a 90-day fill"}, {"t": "do", "x": "check the lease renewal date already sitting in the calendar"}, {"t": "do", "x": "break down and move the couch boxes out of the living room"}, {"t": "do", "x": "write and send the QBR recap email to your boss before it goes to the group"}, {"t": "do", "x": "ping Matt for the missing notes"}, {"t": "decide", "x": "decide whether to keep the storage seats or the regular ones"}, {"t": "do", "x": "figure out how to get to the storage seat past the chaise lounge setup"}, {"t": "do", "x": "hang the Lego sets on the wall instead of the dining table"}, {"t": "decide", "x": "decide whether to go to pottery class tonight"}, {"t": "do", "x": "put together a costume for your friend's birthday"}, {"t": "idea", "x": "download the mods for Stardew Valley so it's ready to play"}, {"t": "idea", "x": "look into the new Steam machine and the games you want to play on it"}, {"t": "do", "x": "restart strength training, even a short session"}, {"t": "decide", "x": "decide whether to go to dinner with the guys this weekend"}, {"t": "idea", "x": "go back to the calming podcast episodes"}, {"t": "idea", "x": "the idea for a display that shows your whole day at a glance"}], "letGo": ["missing the exact lease date is not a disaster waiting to happen, it's just a number to check when you're", "ready.", "the couch boxes and storage clutter are not a reflection of you, they're just things waiting for a slower day.", "skipping pottery tonight, if that's what happens, doesn't erase that part of you that wanted to try it.", "two weeks without strength training doesn't undo how much you like it when you do it.", "the day-at-a-glance display doesn't have to be perfect before it's allowed to exist."]},
+    {"level": "none", "anxious": true, "now": [{"label": "order lunch.", "detail": "open the app already on your phone and press order on the first thing you see.", "why": "you said \"I don't have anything for lunch and it's already like almost eleven\"", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "when you're ready, call the pharmacy and ask about switching to the 90-day prescription."}, {"t": "do", "x": "double-check the lease renewal date already in the calendar."}, {"t": "do", "x": "unpack or move the couch boxes still sitting in the living room."}, {"t": "do", "x": "write the QBR recap email for your boss before it goes to the group."}, {"t": "do", "x": "message Matt for the missing notes."}, {"t": "decide", "x": "decide whether to keep the storage seats or the regular ones for the couch setup."}, {"t": "do", "x": "schedule the couch pickup once the seat decision is made."}, {"t": "do", "x": "hang the Lego sets on the wall."}, {"t": "decide", "x": "decide whether tonight feels like a pottery class night."}, {"t": "decide", "x": "decide on a costume for your friend's birthday party."}, {"t": "do", "x": "download the mods for Stardew Valley when it feels good to sit with that."}, {"t": "idea", "x": "look forward to playing games on the new Steam Machine once it arrives."}, {"t": "do", "x": "ease back into strength training with whatever length feels okay, even ten minutes."}, {"t": "do", "x": "order groceries for the rest of the week."}, {"t": "decide", "x": "decide whether dinner with the guys this weekend sounds good."}, {"t": "idea", "x": "put on an episode of the podcast you like, new or familiar, whichever feels calming."}, {"t": "idea", "x": "the day-at-a-glance display idea, to build whenever it feels fun rather than heavy."}], "letGo": ["missing the lease date by a little bit is not a disaster waiting to happen.", "skipping pottery tonight doesn't undo your good intentions or who you are.", "two weeks without strength training doesn't erase the progress you already built.", "the display idea doesn't have to be perfect before it's allowed to exist.", "the clutter in the living room is just boxes, not a measure of your worth.", "having this much in your head right now doesn't mean you're behind."]},
+  ],
 };
-export const BD_DUMP = [
-  { t: 'deck for thursday not started', b: 'today' },
-  { t: 'call the vendor back', b: 'today' },
-  { t: 'why am i still thinking about the q2 thing', b: 'down' },
-  { t: 'laundry', b: 'not' },
-  { t: 'learn snowflake properly', b: 'keep' },
-  { t: "haven't eaten", b: 'today' },
-  { t: 'the greenbelt run i keep not doing', b: 'keep' },
-  { t: 'is the knee thing getting worse', b: 'not' },
-  { t: 'text back', b: 'not' },
-];
-export const BD_STATES = [
-  { n: 'overwhelmed', cap: 'cap 5 · focus 3', note: 'Overwhelmed caps the first pile at five and the focus list at three, groups what can stack, and says you had a lot in there before it asks for anything.',
-    p: { today: ['Eat something first', 'Vendor callback, before five', 'Deck, open the file'], not: ['Laundry, tonight', 'The knee, book a check'], keep: ['Snowflake, properly'], down: ['The Q2 thing is done'] } },
-  { n: 'scattered', cap: 'cap 5 · time-boxed', note: 'Scattered time-boxes every focus task, lowest activation first, and lets go of the rabbit holes that feel urgent and are not.',
-    p: { today: ['Laundry, runs while you work', 'Vendor callback', 'Deck, 20 minutes only'], not: ['The knee thing', 'Text back'], keep: ['Snowflake, one lane at a time'], down: ['The Q2 rabbit hole'] } },
-  { n: 'anxious', cap: 'cap 3 · no "should"', note: 'Anxious caps the first pile at three, bans "should" and "need to", and sends every what-will-they-think item to the last pile as a statement of release.',
-    p: { today: ['Eat something', 'Text back, one line is enough'], not: ['Deck, when you are ready', 'The knee, if it feels okay'], keep: ['Snowflake'], down: ['The Q2 thing is not a verdict on you'] } },
-  { n: 'low energy', cap: 'cap 2 · physical only', note: 'Low energy allows two physical tasks at most, makes the decisions inside the task text, and says outright that this is enough for today.',
-    p: { today: ['Eat, whatever takes least thought', 'Laundry in, that is it'], not: ['Thursday deck', 'Vendor callback'], keep: ['Greenbelt run', 'Snowflake'], down: ['The Q2 thing, again'] } },
-  { n: 'foggy', cap: 'cap 1 · one gesture', note: 'Foggy gets one automatic physical gesture and nothing to decide, and the ambiguous items go to keeping or letting go instead of waiting in the middle.',
-    p: { today: ['Eat something.'], not: ['Vendor callback'], keep: ['Deck', 'Snowflake, still here after the fog'], down: ['The knee worry', 'The Q2 thing'] } },
-];
 
 // The Instacart dbt DAG: [x, y, tier, delay in seconds, text]. Tier hues
 // follow the style guide: source 60, staging 200, intermediate 145, marts 330.
@@ -286,13 +283,14 @@ const RESULTS = {
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
     signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
-    // Brain Dump README: the 47 tabs, one file, a Worker holding the prompts, five energy
-    // states, no database. "What still breaks" is the 2026-09-22 eval on the
-    // anxious state: "need to" in 6 of 20 plans despite the ban, and three of
-    // five revisions dropping an item. Cost is the brain-dump repo's recost of
-    // that run at Sonnet 5 list price ($2 in / $10 out, read 2026-09-23):
-    // $0.0101 to $0.0363 per plan, median $0.0178.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, five energy states', 'One to four cents a sort at list price, on Cloudflare\'s free tier, no database', 'Anxious plans still said "need to" in 6 runs of 20, and three revisions in five dropped an item'],
+    // Brain Dump README (sort@v3, redesign of 2026-09-24): the 47 tabs, one
+    // file, a Worker holding the prompts, three levels and the anxious switch,
+    // no database. Cost: the README's 120-plan eval grid averaged $0.0134 a
+    // plan, and the four live runs of one long dump on 24 Sep came to $0.05.
+    // "What still breaks": the same grid, "need to" in 8 of 60 plans with
+    // anxious on, and the two "a little" runs on BD_V3 put the same two tasks
+    // in opposite orders.
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', 'About a cent a sort at list price, $0.05 for four runs of one long dump, on Cloudflare\'s free tier, no database', 'With anxious on, 8 of 60 eval plans still said "need to", which the page rewrites, and the same dump at the same level can come back in a different order'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs

@@ -14,8 +14,8 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   RECORDS, CHRISTIE, RING_FIT, READING, PLAYING, OBSERVATIONS, LIFE_NOTES,
-} from '../data/content.js?v=20260924c';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260924c';
+} from '../data/content.js?v=20260925a';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260925a';
 
 // Category hues: same lightness and chroma, hue only. "Built" is the accent.
 const KIND_COLOR = {
