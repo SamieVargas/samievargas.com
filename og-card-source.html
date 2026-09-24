@@ -3,31 +3,33 @@
 <head>
 <meta charset="utf-8">
 <title>OG card</title>
+<!-- Source for og-card.png: screenshot #og at 1200x630. -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box}
-  body{margin:0;background:#e8e5dd;padding:24px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
-  #og{width:1200px;height:630px;background:#fbf9f3;padding:76px 70px 64px;display:flex;flex-direction:column;justify-content:space-between;text-wrap:pretty}
+  body{margin:0;background:#e4e2dc;padding:24px;font-family:Onest,Helvetica,Arial,sans-serif}
+  #og{width:1200px;height:630px;background:#fafaf9;padding:72px 70px 60px;display:flex;flex-direction:column;justify-content:space-between;text-wrap:pretty;border-top:6px solid #161513}
   .row{display:flex;align-items:baseline;justify-content:space-between;gap:24px}
-  .mono{font:400 17px 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
-  h1{margin:0;font:300 86px/1.02 Newsreader,Georgia,serif;letter-spacing:-.028em;color:#16150f;max-width:23ch}
-  h1 em{font-style:italic;color:#1a6b5a}
-  .proof{display:flex;gap:56px;border-top:1px solid #e2ddce;padding-top:26px}
-  .proof span{font:400 19px 'IBM Plex Mono',monospace;letter-spacing:.04em;color:#6d6a5c;white-space:nowrap}
+  .mono{font:400 19px 'Geist Mono',monospace;white-space:nowrap}
+  h1{margin:0;font:400 64px/1.08 'Young Serif',Georgia,serif;letter-spacing:-.01em;color:#161513;max-width:26ch}
+  h1 em{font-style:normal;color:#1a6b5a}
+  .proof{display:flex;gap:44px;border-top:1px solid #e4e2dc;padding-top:24px;align-items:center}
+  .proof span{font:400 19px 'Geist Mono',monospace;color:#55534c;white-space:nowrap;display:flex;gap:10px;align-items:center}
+  .dots{display:flex;gap:4px}.dots i{width:12px;height:12px;border-radius:50%;background:#1a6b5a}.dots i.r{background:oklch(0.6 0.16 28)}.dots i.k{background:#161513}
 </style>
 </head>
 <body>
   <div id="og">
     <div class="row">
-      <span class="mono" style="color:#1a6b5a">Samie Vargas · Austin, remote</span>
-      <span class="mono" style="color:#9a9686">samievargas.com</span>
+      <span class="mono" style="color:#1a6b5a">Samie Vargas · applied AI · Austin, remote</span>
+      <span class="mono" style="color:#99968c">samievargas.com</span>
     </div>
-    <h1>I ship AI tools that replace work I used to do <em>by hand</em>.</h1>
+    <h1>I build AI into the workflows customers already run, and I publish <em>how often it breaks</em>.</h1>
     <div class="proof">
-      <span>Signal · 60 min → 1</span>
-      <span>3.4M orders in dbt</span>
-      <span>21,160 inspections</span>
+      <span><span class="dots"><i class="r"></i><i class="k"></i><i class="r"></i><i class="r"></i><i class="k"></i><i class="r"></i><i class="k"></i><i class="r"></i><i class="r"></i><i class="k"></i></span>agents</span>
+      <span>26/26 cited · RAG</span>
+      <span>0 / 520 parse failures</span>
     </div>
   </div>
 </body>
