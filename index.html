@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260924c">
+  <link rel="stylesheet" href="css/styles.css?v=20260925a">
 </head>
 <body>
 
@@ -244,23 +244,22 @@
     <div class="stack rv">
       <div class="row-between row-between--c"><span class="eyebrow bd__eyebrow">Structured outputs · Brain Dump</span><a class="btn btn--on-dark btn--44" href="https://samievargas.com/brain-dump">Try it here ↗</a></div>
       <div class="stack narrow">
-        <h2 class="h2">Five minutes in, four piles out.</h2>
-        <p class="body bd__body">The system prompt is assembled from the energy state you pick, and the model sorts every item into one of four buckets under a strict JSON contract, so change the state and watch the same dump re-sort.</p>
-        <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how you are feeling, and it sorts the pile into what to do today, what can wait, what to keep, and what to let go.</p>
+        <h2 class="h2">Five minutes in, one thing to do first.</h2>
+        <p class="body bd__body">You say how much you have, plenty, a little or none, and whether you are feeling anxious, and the sorter puts every item into now, later or let go under a strict JSON contract, with now capped by that level and each step quoting back the words it came from.</p>
+        <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how much energy you have, and it hands back the one or two things to do first, a safe list for later, and the worries you can set down.</p>
       </div>
     </div>
     <div class="cols cols--24">
       <div class="bd-dump">
-        <span class="bd__micro">Raw dump · five minutes, no editing</span>
-        <p class="bd-dump__text"><span id="bd-words"></span><span class="cursor cursor--dark" id="bd-cursor" aria-hidden="true">▍</span></p>
-        <span class="bd__cap" id="bd-caption">highlighted as the model reads it, one bucket per item, strict JSON</span>
+        <span class="bd__micro">One long voice note · the same dump for all four runs</span>
+        <p class="bd-dump__text" id="bd-dump"></p>
+        <span class="bd__cap" id="bd-caption"></span>
       </div>
       <div class="stack">
-        <div class="row-between row-between--c"><span class="bd__micro">How are you right now?</span><span class="bd__cap" id="bd-cap"></span></div>
-        <div class="bd-states" id="bd-states" role="group" aria-label="Energy state"></div>
-        <div class="bd-bins" id="bd-bins" aria-live="polite"></div>
-        <p class="bd-note" id="bd-note"></p>
-        <span class="bd__cap" id="bd-source">the five states and their caps are the product's own · the piles are predicted from its rules until the five-state run is recorded</span>
+        <div class="row-between row-between--c"><span class="bd__micro">How much do you have?</span><span class="bd__cap" id="bd-cap"></span></div>
+        <div class="bd-runs" id="bd-runs" role="group" aria-label="Recorded runs"></div>
+        <div class="bd-plan" id="bd-plan" aria-live="polite"></div>
+        <span class="bd__cap" id="bd-source"></span>
       </div>
     </div>
     <div class="results results--dark" data-results="braindump"></div>
@@ -365,6 +364,6 @@
   </div>
 </section>
 
-<script type="module" src="js/app.js?v=20260924c"></script>
+<script type="module" src="js/app.js?v=20260925a"></script>
 </body>
 </html>

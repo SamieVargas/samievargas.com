@@ -300,8 +300,8 @@
     <div class="cv-proj">
       <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
       <p class="cv-stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
-      <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into energy-state-aware task plans: a system prompt assembled at request time from the chosen energy state (caps, tone rules, banned phrasing), a strict JSON contract the UI renders from, model-driven sorting into four buckets, and a second prompt and schema for an emergency one-thing mode with a hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 22 September 2026: on the anxious state, 20 of 20 plans parsed under the native contract with the cap, schema and strategy rules at 100%, the banned-phrase rule caught "need to" in 6 of 20 plans, routing matched the fixture on 18 of 20, and three of five revisions dropped an item the user had not mentioned. The first run also found the output budget too small for the model, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
+      <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into a plan matched to how much someone has left: three levels (plenty, a little, none) and a separate feeling-anxious switch set the cap on what to do now and the tone, a strict JSON contract sorts every item into now, later or let go with each now step quoting the words it came from, the page re-checks every plan against the same rules before showing it, and an emergency one-thing mode has its own prompt, schema and hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan costs $0.0134 on average. An earlier run found the output budget too small, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
     </div>
     <div class="cv-proj">
       <h3>Signal — Account Intelligence for CS Professionals</h3>
@@ -375,7 +375,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260924c';
+import { TK_REPO } from './data/content.js?v=20260925a';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
