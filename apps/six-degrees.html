@@ -41,6 +41,27 @@ input, button { font: inherit; }
 .btn-ex:hover { border-color: #5ee0c0; color: #5ee0c0; }
 .btn-alt { text-align: left; background: transparent; border: 1px solid #23313b; color: #b8ccd4; padding: 11px 15px; font-family: 'Space Mono', monospace; font-size: 11px; cursor: pointer; }
 .btn-alt:hover { border-color: #5ee0c0; color: #5ee0c0; }
+/* The path wraps instead of scrolling: each card and edge is a direct flex item
+   (the per-node wrapper uses display: contents), laid out at its minimum and
+   grown towards its full width, so a two- or three-degree path fits one row. */
+.stat { flex: none; }
+.stat-label { font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794; white-space: nowrap; }
+.chain { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: stretch; row-gap: 16px; }
+.chain-node { display: contents; }
+.chain-card { flex: 1 1 140px; max-width: 220px; min-width: 0; box-sizing: border-box; overflow-wrap: anywhere; }
+.chain-edge { flex: 1 1 84px; max-width: 130px; min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 4px; box-sizing: border-box; }
+.chain-line { width: 100%; height: 1px; background: #5ee0c0; transform-origin: left; }
+.ask-grid { display: grid; grid-template-columns: 1fr 40px 1fr auto; gap: 16px; margin-top: 34px; align-items: end; }
+@keyframes drawdown { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@media (max-width: 640px) {
+  .ask-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .ask-arrow { display: none; }
+  .ask-grid #connectBtn { justify-self: start; margin-bottom: 18px; }
+  .chain { flex-direction: column; flex-wrap: nowrap; row-gap: 0; }
+  .chain-card { flex: none; max-width: none; width: 100%; }
+  .chain-edge { flex: none; max-width: none; flex-direction: row; justify-content: flex-start; gap: 12px; padding: 0 0 0 22px; min-height: 58px; }
+  .chain-line { order: -1; width: 1px; height: auto; align-self: stretch; transform-origin: top; animation-name: drawdown !important; }
+}
 .footer-link { color: inherit; text-decoration: none; }
 .footer-link:hover { color: #d8fff5; }
 </style>
@@ -58,13 +79,13 @@ input, button { font: inherit; }
         <p style="font-family: 'Space Mono', monospace; font-size: 11.5px; line-height: 1.9; color: #6f8794; text-align: right; max-width: 300px; animation: rise 520ms ease both; animation-delay: 180ms">TWO THINGS, ONE PATH BETWEEN THEM<br>PEOPLE · FILMS · BANDS · COMPANIES · TOWNS</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 40px 1fr auto; gap: 16px; margin-top: 34px; align-items: end; animation: rise 520ms ease both; animation-delay: 260ms">
+      <div class="ask-grid" style="animation: rise 520ms ease both; animation-delay: 260ms">
         <div>
           <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">FROM</div>
           <input id="inputA" type="text" value="Agatha Christie" placeholder="Anything in Wikidata" class="term-input">
           <div id="statusA" style="font-family: 'Space Mono', monospace; font-size: 11px; color: #5ee0c0; margin-top: 8px; min-height: 16px">&nbsp;</div>
         </div>
-        <div style="font-family: 'Space Mono', monospace; font-size: 22px; color: #3d5563; text-align: center; padding-bottom: 34px">→</div>
+        <div class="ask-arrow" style="font-family: 'Space Mono', monospace; font-size: 22px; color: #3d5563; text-align: center; padding-bottom: 34px">→</div>
         <div>
           <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">TO</div>
           <input id="inputB" type="text" value="Stardew Valley" placeholder="Anything else" class="term-input">
@@ -301,17 +322,17 @@ function renderMain() {
       const edge = i < edges.length && edges[i] ? propName(edges[i].pid) : "";
       const edgeProp = i < edges.length && edges[i] ? edges[i].pid : "";
       chainHtml +=
-        '<div style="display: flex; align-items: stretch; flex: none">' +
-          '<div style="border: 1px solid ' + (isMid ? "#5ee0c0" : "#2b3b47") + '; background: ' + (isMid ? "#12241f" : "transparent") + '; padding: 20px 22px; width: 220px; box-sizing: border-box; animation: nodeIn 480ms ease both; animation-delay: ' + (i * 160) + 'ms">' +
+        '<div class="chain-node">' +
+          '<div class="chain-card" style="border: 1px solid ' + (isMid ? "#5ee0c0" : "#2b3b47") + '; background: ' + (isMid ? "#12241f" : "transparent") + '; padding: 20px 22px; animation: nodeIn 480ms ease both; animation-delay: ' + (i * 160) + 'ms">' +
             '<div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 1.6px; color: ' + (isMid ? "#5ee0c0" : "#6f8794") + '">' + esc(tags[i]) + '</div>' +
             '<div style="font-size: 19px; font-weight: 500; line-height: 1.2; margin-top: 8px; color: #e6eef2">' + esc(n.label) + '</div>' +
             '<div style="font-family: \'Space Mono\', monospace; font-size: 10.5px; line-height: 1.5; margin-top: 8px; color: #7f97a3">' + esc(d ? d.slice(0, 70) : "no description on file") + '</div>' +
             (art ? '<a href="' + esc(art) + '" target="_blank" rel="noopener" style="display: inline-block; margin-top: 12px; font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 1.4px; border-bottom: 1px solid #5ee0c0">WIKIPEDIA ↗</a>' : '') +
           '</div>' +
           (hasEdge ?
-            '<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 4px; min-width: 130px">' +
+            '<div class="chain-edge">' +
               '<div style="font-family: \'Space Mono\', monospace; font-size: 10px; color: #5ee0c0; text-align: center; line-height: 1.4; padding-bottom: 6px">' + esc(edge) + '</div>' +
-              '<div style="width: 100%; height: 1px; background: #5ee0c0; transform-origin: left; animation: drawline 520ms ease both; animation-delay: ' + (i * 160 + 240) + 'ms"></div>' +
+              '<div class="chain-line" style="animation: drawline 520ms ease both; animation-delay: ' + (i * 160 + 240) + 'ms"></div>' +
               '<div style="font-family: \'Space Mono\', monospace; font-size: 9px; color: #4a6472; padding-top: 6px">' + esc(edgeProp) + '</div>' +
             '</div>' : '') +
         '</div>';
@@ -342,12 +363,12 @@ function renderMain() {
     mainEl.innerHTML =
       '<div style="padding: 42px 0; animation: rise 320ms ease both">' +
         '<div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: baseline; border-bottom: 1px solid #1e2a33; padding-bottom: 24px">' +
-          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">DEGREES</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px; color: #5ee0c0; animation: countGlow 900ms ease both">' + esc(r.degrees) + '</div></div>' +
-          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">NEIGHBOURS SCANNED</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(s.scanned ? s.scanned.toLocaleString() : "0") + '</div></div>' +
-          '<div><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">SHARED LINKS FOUND</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(r.shared) + '</div></div>' +
-          '<div style="flex: 1; min-width: 240px"><div style="font-family: \'Space Mono\', monospace; font-size: 9.5px; letter-spacing: 2px; color: #6f8794">METHOD</div><div style="font-family: \'Space Mono\', monospace; font-size: 12px; line-height: 1.6; margin-top: 8px; color: #8ba3af">' + esc(method) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">DEGREES</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px; color: #5ee0c0; animation: countGlow 900ms ease both">' + esc(r.degrees) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">NEIGHBOURS SCANNED</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(s.scanned ? s.scanned.toLocaleString() : "0") + '</div></div>' +
+          '<div class="stat"><div class="stat-label">SHARED LINKS FOUND</div><div style="font-size: 42px; font-weight: 700; line-height: 1; margin-top: 6px">' + esc(r.shared) + '</div></div>' +
+          '<div style="flex: 1; min-width: min(240px, 100%)"><div class="stat-label">METHOD</div><div style="font-family: \'Space Mono\', monospace; font-size: 12px; line-height: 1.6; margin-top: 8px; color: #8ba3af">' + esc(method) + '</div></div>' +
         '</div>' +
-        '<div style="margin-top: 40px; display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding-bottom: 10px">' + chainHtml + '</div>' +
+        '<div class="chain">' + chainHtml + '</div>' +
         '<p style="font-family: \'Space Grotesk\', sans-serif; font-size: 25px; line-height: 1.45; margin: 44px 0 0; max-width: 840px; color: #cfe0e7; animation: rise 600ms ease both; animation-delay: ' + (nodes.length * 160 + 300) + 'ms">' + esc(sentence) + '</p>' +
         altHtml +
       '</div>';

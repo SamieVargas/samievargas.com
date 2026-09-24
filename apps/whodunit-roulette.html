@@ -54,7 +54,7 @@ button, textarea, input { font: inherit; }
   <div style="max-width: 1180px; margin: 0 auto; padding: 36px 40px 80px">
 
     <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-      <div style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52">TONIGHT'S MOOD</div>
+      <div style="font-size: 10.5px; letter-spacing: 3px; color: #8a6f52; white-space: nowrap">TONIGHT'S MOOD</div>
       <button type="button" id="importToggle" class="hoverDark" style="background: transparent; border: 1px solid #c9b494; color: #8a6f52; padding: 9px 15px; font-size: 11px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">IMPORT GOODREADS / STORYGRAPH</button>
     </div>
     <div id="moodRow" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center"></div>
@@ -134,7 +134,7 @@ button, textarea, input { font: inherit; }
 </div>
 
 <script type="module">
-import { stagedLoader } from '../js/staged-loader.js?v=20260924a';
+import { stagedLoader } from '../js/staged-loader.js?v=20260924b';
 
 const BOOKS = [
   { t: "The Moving Finger", a: "AGATHA CHRISTIE", y: 1942, d: "MISS MARPLE", m: ["cozy", "mean"], b: "Poison-pen letters in a small village. Everyone is lying and the vicar's wife knows it.", len: "SHORT", f: "SCRUPULOUS", bod: 3 },

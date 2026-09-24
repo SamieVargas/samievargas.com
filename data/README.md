@@ -7,3 +7,4 @@ Everything the pages render from, as plain files.
 - `pixels-runs.json` is built from the eval files in `github.com/SamieVargas/pixels-rag` (`evals/results/2026-09-22.json`, the golden set, the follow-up run and the chunking ablation) and read by `/pixels/`. Every number on that page is in this file. Rebuild it from the repo's results when a new eval lands rather than editing it.
 
 Numbers that reach a page have to trace to a results file, a notebook or the code. The comments above `RESULTS` in `content.js` say where each result line came from; keep that habit.
+- `braindump-runs.json` holds recorded Brain Dump sorts of the homepage's dump, one entry per energy state, written by `scripts/record-braindump.mjs` (it needs an API key and a brain-dump checkout, and uses that Worker's own request body). While a state has no recorded run, the work page shows its predicted pile and says so.

@@ -8,8 +8,8 @@
 // sample in the HTML is the real class from css/styles.css.
 // ============================================================
 
-import { $, $$, esc, onSeen, autoReveal, wait } from './reveal.js?v=20260924a';
-import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260924a';
+import { $, $$, esc, onSeen, autoReveal, wait } from './reveal.js?v=20260924b';
+import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260924b';
 
 const TZ = 'America/Chicago';
 const day = (iso) => new Date(iso.length <= 10 ? `${iso}T12:00:00Z` : iso);

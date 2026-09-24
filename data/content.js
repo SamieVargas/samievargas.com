@@ -164,9 +164,12 @@ export const DAG = {
 };
 // Reorder rate: pooled 0.60, new 0.221, veteran 0.670 (instacart README).
 export const REORDER = { pooled: 0.60, fresh: 0.221, veteran: 0.670 };
-// ATX drift: mean score by inspection number, 1 through 14 (notebook). Higher
-// is more violations, so the chart flips it and labels the axis.
-export const ATX_DRIFT = [90.5, 90.6, 90.55, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6];
+// ATX drift: mean score by inspection number, 1 through 15, from the
+// notebook's "Operational drift" chart (burnout_trend, groupby cumcount 0-14).
+// Only the ends are printed there (90.5 and 92.6); the points between are read
+// off the chart. Austin scores out of 100 and each violation deducts points,
+// so a higher score is fewer violations and the chart is drawn upright.
+export const ATX_DRIFT = [90.5, 90.6, 90.55, 90.6, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6];
 
 export const SKILL_AREAS = [
   { label: 'AI enablement', line: 'LLM workflow design & deployment · Team-level AI adoption · Prompt engineering · AI tool evaluation · Human-in-the-loop process design · AI fluency enablement' },
@@ -255,10 +258,10 @@ const OBSERVATIONS = [
       'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_DAYS } },
-  { tag: 'May 2026 · 21,160 inspection records', title: 'Being flagged does not fix it',
+  { tag: 'May 2026, reread Sep 2026 · 21,160 inspection records', title: 'I read the inspection scale upside down, and the finding flipped with it',
     paragraphs: [
-      'I started by querying every restaurant I actually eat at against the city health inspection API, and places that failed and were sent for a follow-up visit scored eight points lower on average than routine visits, which is the opposite direction of what I expected.',
-      'A second pattern showed up across 84 local brands, scores decay measurably by the fifth or sixth inspection cycle, so repeat offenders are identifiable before it gets bad, and the city already has the data, the question is whether anyone has built the workflow to act on it.'],
+      'I started by querying every restaurant I actually eat at against the city health inspection API, and my first pass treated a lower score as a cleaner kitchen, which is backwards, because Austin scores out of 100 and every violation takes points off, and my own notebook even charted risk as points deducted from a perfect score while the rest of it read the scale the other way round.',
+      'Read the right way round, follow-up visits average 84.4 against 90.9 for routine ones, which is what you would expect since a follow-up only happens after a bad inspection, and across a venue\'s history the average climbs from 90.5 at the first inspection to 92.6 by the fifteenth, so places tend to get a little cleaner, although only the venues still open for a fifteenth visit reach the end of that line.'],
     sourceText: 'City of Austin open data ·', linkText: 'Full analysis ↗', linkHref: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection' },
   { tag: 'May 2026 · systems', title: 'Every productivity system I have built has the same failure mode',
     paragraphs: [
@@ -299,8 +302,9 @@ const RESULTS = {
     // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
     instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
     // ATX: the pest-sighting post and "where I eat" on this page; 21,160 records,
-    // 84 brands, folium; Kaggle-hosted; the zip_performance.png disagreement.
-    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Two zips sit on the 90.6 line and the notebook and map disagree'],
+    // 84 brands, folium; Kaggle-hosted. "What still breaks" is survivorship in
+    // the drift line: point 15 only averages venues inspected fifteen times.
+    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Only venues inspected fifteen times reach the end of the drift line, so part of the rise may be which places stay open'],
   },
 };
 
@@ -502,9 +506,11 @@ export const LIFE_NOTES = [
     chart: { label: 'reorder rate · pooled, then split', pooled: 0.60, split: [{ k: 'new', v: 0.221 }, { k: 'veteran', v: 0.670 }] } },
   { plain: 'my body was stressed for days before I knew why, and it stayed stressed for more than a week after the problem was gone.',
     chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 27', found: 'May 1' } },
-  { plain: 'getting caught by the health inspector does not seem to make a place cleaner, and you can see which ones are sliding years before they get bad.',
-    chart: { label: 'average score by inspection number', scores: [90.5, 90.6, 90.55, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6],
-      first: '90.5 · 1st visit', last: '92.6 · 14th', gapLabel: 'Follow-up visits against routine ones', gap: 8 } },
+  // Gap: the notebook's printed impact table, follow-up 84.409091 (110 visits)
+  // against routine 90.863883 (18,440), so 6.45 points.
+  { plain: 'a higher health score means fewer problems, and once I read it that way round the places that keep getting inspected tend to get a little cleaner over time.',
+    chart: { label: 'average score by inspection number', scores: ATX_DRIFT,
+      first: '90.5 · 1st visit', last: '92.6 · 15th', gapLabel: 'Follow-up visits against routine ones', gap: 6.45 } },
   { plain: 'every version of my to-do setup gets better, and every version still needs me at my most tired, which is the design problem worth solving and why Brain Dump exists.',
     chart: { label: 'four rebuilds, one shared weak spot', versions: ['v1', 'v2', 'v3', 'v4'], gapLabel: 'same gap',
       caption: 'bar is how much better each one got · the dot is the moment it asks too much',
