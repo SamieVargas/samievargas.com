@@ -6,8 +6,8 @@
 // reveal.js and the stylesheet.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260924a';
-import { $, esc, onSeen } from './reveal.js?v=20260924a';
+import { ARCADE_APPS } from '../data/content.js?v=20260924b';
+import { $, esc, onSeen } from './reveal.js?v=20260924b';
 
 const TOTAL = ARCADE_APPS.length;
 const APPS = ARCADE_APPS.map((a, i) => ({ ...a, num: `${String(i + 1).padStart(2, '0')} / ${TOTAL}` }));
