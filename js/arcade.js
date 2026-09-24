@@ -7,8 +7,8 @@
 // reveal.js and the stylesheet.
 // ============================================================
 
-import { ARCADE_APPS } from '../data/content.js?v=20260925c';
-import { $, esc, onSeen, REDUCED } from './reveal.js?v=20260925c';
+import { ARCADE_APPS } from '../data/content.js?v=20260925d';
+import { $, esc, onSeen, REDUCED } from './reveal.js?v=20260925d';
 
 const TOTAL = ARCADE_APPS.length;
 const APPS = ARCADE_APPS.map((a, i) => ({ ...a, num: `${String(i + 1).padStart(2, '0')} / ${TOTAL}` }));
@@ -39,7 +39,7 @@ function renderFilters() {
 }
 
 function shot(a, cls) {
-  return `<div class="${cls}"><img src="${esc(a.shot)}?v=20260925c" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
+  return `<div class="${cls}"><img src="${esc(a.shot)}?v=20260925d" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
 }
 
 const cardHtml = (a, i) => `

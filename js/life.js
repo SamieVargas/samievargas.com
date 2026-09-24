@@ -14,8 +14,9 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   RECORDS, CHRISTIE, RING_FIT, READING, PLAYING, OBSERVATIONS, LIFE_NOTES,
-} from '../data/content.js?v=20260925c';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260925c';
+} from '../data/content.js?v=20260925d';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260925d';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925d';
 
 // Category hues: same lightness and chroma, hue only. "Built" is the accent.
 const KIND_COLOR = {
@@ -246,18 +247,10 @@ function noteChart(i) {
       </div>`;
   }
   if (c.scores) {
-    const lo = Math.min(...c.scores) - 0.3;
-    const hi = Math.max(...c.scores) + 0.2;
-    const n = c.scores.length - 1;
-    const points = c.scores.map((s, k) => `${((k / n) * 100).toFixed(2)},${((1 - (s - lo) / (hi - lo)) * 100).toFixed(2)}`).join(' ');
     return `
       <div class="nc nc--line" data-chart="line">
         <span class="life-micro life-micro--faint">${esc(c.label)}</span>
-        <div class="nc-line">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="${points}" vector-effect="non-scaling-stroke"/></svg>
-          <span class="nc-line__first">${esc(c.first)}</span><span class="nc-line__last">${esc(c.last)}</span>
-          <span class="nc-line__up">↑ fewer</span><span class="nc-line__down">↓ more</span>
-        </div>
+        ${driftChart(c.scores, { first: c.first, last: c.last })}
         <div class="nc-foot"><span>${esc(c.gapLabel)}</span><span class="nc-foot__n"><span class="nc-gap">−0</span> pts</span></div>
       </div>`;
   }
@@ -345,8 +338,7 @@ function playNote(article) {
     const bars = $$('.nc-days i', article);
     tween(1200, (p) => bars.forEach((el, k) => { el.style.height = `${(RACCOON_LIFE[k].v * p).toFixed(1)}%`; }), 300);
   } else if (kind === 'line') {
-    const svg = $('.nc-line svg', article);
-    tween(1800, (p) => { svg.style.clipPath = `inset(-10px ${((1 - p) * 100).toFixed(1)}% -10px -10px)`; }, 400);
+    revealDrift(article, 400);
     const c = LIFE_NOTES[Number(article.dataset.note)].chart;
     countUp($('.nc-gap', article), c.gap, { ms: 1000, delay: 1600, fmt: (v) => `−${v.toFixed(1)}`, final: `−${c.gap}` });
   }
