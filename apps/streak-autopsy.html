@@ -38,13 +38,25 @@ input, textarea, button { font: inherit; }
 .input-habit:focus { border-color: #2a2622; }
 .textarea-answer:focus { border-color: #2a2622; }
 .case-anim { animation: fadein 300ms ease both; }
+/* Habit card stats: labels on one row, values on the next, each row aligned on
+   its own baseline, so a smaller value ("Aug 19") sits level with the others. */
+.habit-stats { display: grid; grid-auto-flow: column; grid-template-rows: auto auto; justify-content: start; column-gap: 26px; row-gap: 1px; align-items: baseline; margin-top: 12px; font-size: 11.5px; color: #6b6357; white-space: nowrap; }
+.habit-dots { display: flex; gap: 6px; margin-top: 14px; }
+.stamp { display: inline-block; border: 3px solid #b3372c; color: #b3372c; font-size: 11px; letter-spacing: 2.4px; padding: 4px 9px; margin: 2px 6px 0 0; transform: rotate(8deg); white-space: nowrap; }
+@media (max-width: 600px) {
+  .page { padding: 28px 12px 70px !important; }
+  .sheet { padding: 24px 18px !important; }
+  .habit-card { padding: 16px 14px !important; }
+  .habit-stats { column-gap: 18px; }
+  .habit-dots { gap: 4px; }
+}
 .footer-link { color: inherit; text-decoration: none; }
 .footer-link:hover { color: #2a2622; }
 </style>
 </head>
 <body>
-<div style="min-height: 100vh; background: #e6e1d4; padding: 52px 40px 90px; box-sizing: border-box; color: #2a2622; font-family: 'Chivo Mono', monospace">
-  <div style="max-width: 1160px; margin: 0 auto; background: #f2efe6; border: 2px solid #2a2622; padding: 40px">
+<div class="page" style="min-height: 100vh; background: #e6e1d4; padding: 52px 40px 90px; box-sizing: border-box; color: #2a2622; font-family: 'Chivo Mono', monospace">
+  <div class="sheet" style="max-width: 1160px; margin: 0 auto; background: #f2efe6; border: 2px solid #2a2622; padding: 40px">
 
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; border-bottom: 2px solid #2a2622; padding-bottom: 22px">
       <div>
@@ -55,7 +67,7 @@ input, textarea, button { font: inherit; }
       <div style="display: flex; gap: 22px; font-size: 10.5px; line-height: 1.6; color: #8c8577; white-space: nowrap; animation: fadein 520ms ease both; animation-delay: 260ms"><div>TODAY<br><span id="st-today" style="color: #2a2622; font-size: 14px"></span></div><div>ALIVE<br><span id="st-alive" style="color: #2a2622; font-size: 14px"></span></div><div>ON FILE<br><span id="st-deaths" style="color: #b3372c; font-size: 14px"></span></div><div>REVIVED<br><span id="st-res" style="color: #2a2622; font-size: 14px"></span></div></div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 44px; margin-top: 34px; align-items: start">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 44px; margin-top: 34px; align-items: start">
 
       <div>
         <div style="font-size: 10px; letter-spacing: 2px; color: #8c8577">UNDER OBSERVATION</div>
@@ -209,25 +221,27 @@ function renderHabits() {
         : pulse;
       dots.push('<div style="width: 15px; height: 15px; background: ' + bg + '; border: 1px solid ' + border + '; animation: ' + anim + '" title="' + esc(pretty(k)) + '"></div>');
     }
-    return '<div style="border: 1.5px solid ' + (dead ? "#b3372c" : "#cfc8b8") + '; background: ' + (dead ? "#fbf1ef" : "#fff") + '; padding: 18px 20px; position: relative' + (isNewCard ? '; animation: fadein 420ms ease both; animation-delay: ' + (i * 90) + 'ms' : '') + '">' +
+    return '<div class="habit-card" style="border: 1.5px solid ' + (dead ? "#b3372c" : "#cfc8b8") + '; background: ' + (dead ? "#fbf1ef" : "#fff") + '; padding: 18px 20px; position: relative' + (isNewCard ? '; animation: fadein 420ms ease both; animation-delay: ' + (i * 90) + 'ms' : '') + '">' +
       '<div style="display: flex; justify-content: space-between; gap: 14px; align-items: baseline; flex-wrap: wrap">' +
         '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 22px">' + esc(h.name) + '</div>' +
-        '<div style="font-size: 10.5px; letter-spacing: 1.4px; color: ' + statusColor + '">' + (dead ? "DECEASED" : (doneToday ? "ALIVE · DONE TODAY" : "ALIVE · DUE TODAY")) + '</div>' +
+        // A dead habit gets the stamp in place of the status text, never both.
+        (dead
+          ? '<div class="stamp"' + (wasDead ? '' : ' style="animation: stamp 340ms ease both"') + '>DECEASED</div>'
+          : '<div style="font-size: 10.5px; letter-spacing: 1.4px; color: ' + statusColor + '">' + (doneToday ? "ALIVE · DONE TODAY" : "ALIVE · DUE TODAY") + '</div>') +
       '</div>' +
-      '<div style="display: flex; gap: 26px; margin-top: 12px; font-size: 11.5px; color: #6b6357">' +
-        '<div>STREAK<br><span style="font-size: 19px; color: #2a2622">' + streakOf(log) + '</span></div>' +
-        '<div>LAST DONE<br><span style="font-size: 15px; color: #2a2622">' + esc(pretty(last)) + '</span></div>' +
-        '<div>GAP<br><span style="font-size: 19px; color: ' + statusColor + '">' + (gap > 30 ? "30+ d" : gap + "d") + '</span></div>' +
-        '<div>BEST<br><span style="font-size: 15px; color: #2a2622">' + bestOf(log) + 'd</span></div>' +
+      '<div class="habit-stats">' +
+        '<div>STREAK</div><div style="font-size: 19px; color: #2a2622">' + streakOf(log) + '</div>' +
+        '<div>LAST DONE</div><div style="font-size: 15px; color: #2a2622">' + esc(pretty(last)) + '</div>' +
+        '<div>GAP</div><div style="font-size: 19px; color: ' + statusColor + '">' + (gap > 30 ? "30+ d" : gap + "d") + '</div>' +
+        '<div>BEST</div><div style="font-size: 15px; color: #2a2622">' + bestOf(log) + 'd</div>' +
       '</div>' +
-      '<div style="display: flex; gap: 6px; margin-top: 14px">' + dots.join("") + '</div>' +
+      '<div class="habit-dots">' + dots.join("") + '</div>' +
       '<div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap">' +
         '<button type="button" data-action="today" data-idx="' + i + '" style="border: 1.5px solid #2a2622; background: ' + (doneToday ? "#2a2622" : "transparent") + '; color: ' + (doneToday ? "#f2efe6" : "#2a2622") + '; padding: 10px 16px; font-size: 11.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">' + (doneToday ? "DONE TODAY ✓" : "I DID IT TODAY") + '</button>' +
         '<button type="button" data-action="yesterday" data-idx="' + i + '" class="btn-yesterday" style="border: 1px solid #cfc8b8; background: transparent; color: #6b6357; padding: 10px 14px; font-size: 11.5px; white-space: nowrap; cursor: pointer">also yesterday</button>' +
         (dead ? '<button type="button" data-action="case" data-idx="' + i + '" class="btn-opencase" style="border: 1.5px solid #b3372c; background: transparent; color: #b3372c; padding: 10px 16px; font-size: 11.5px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer">OPEN THE CASE</button>' : '') +
         '<button type="button" data-action="remove" data-idx="' + i + '" class="btn-remove" style="border: none; background: transparent; color: #b0a894; padding: 10px 6px; font-size: 15px; cursor: pointer">×</button>' +
       '</div>' +
-      (dead ? '<div style="position: absolute; top: 14px; right: 96px; border: 3px solid #b3372c; color: #b3372c; font-size: 11px; letter-spacing: 2.4px; padding: 4px 9px; transform: rotate(8deg)' + (wasDead ? '' : '; animation: stamp 340ms ease both') + '">DECEASED</div>' : '') +
     '</div>';
   }).join("");
   renderedHabitCards = state.habits.length;

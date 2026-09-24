@@ -31,6 +31,24 @@ input, button { font: inherit; }
 .sug-btn { background: transparent; border: 1px solid #d9b36a; color: #d9b36a; padding: 10px 16px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.2px; white-space: nowrap; cursor: pointer; }
 .sug-btn:hover { background: #d9b36a; color: #101418; }
 .dyn-card:hover { border-color: #d9b36a !important; }
+/* The deepest line wraps instead of scrolling: each portrait and thread is a
+   direct flex item (the per-generation wrapper uses display: contents), laid out
+   at its minimum and grown towards full width, so four generations fit a row. */
+.stat-label { font-size: 9.5px; letter-spacing: 2px; color: #85908f; white-space: nowrap; }
+.line { display: flex; flex-wrap: wrap; align-items: flex-start; row-gap: 20px; margin-top: 26px; }
+.gen { display: contents; }
+.gen-card { flex: 1 1 128px; max-width: 172px; min-width: 0; }
+.gen-card a { overflow-wrap: anywhere; }
+.gen-thread { flex: 1 1 72px; max-width: 86px; min-width: 0; box-sizing: border-box; padding: 96px 4px 0; display: flex; flex-direction: column; align-items: center; }
+.gen-rule { width: 100%; height: 1px; background: #6b5c3a; transform-origin: left; }
+@keyframes threadDown { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@media (max-width: 560px) {
+  .line { flex-direction: column; flex-wrap: nowrap; row-gap: 0; }
+  .gen-card { flex: none; width: 172px; max-width: 100%; }
+  .gen-thread { flex: none; max-width: none; flex-direction: row; gap: 12px; padding: 0 0 0 20px; height: 52px; align-items: center; }
+  .gen-thread > div:first-child { padding-bottom: 0 !important; }
+  .gen-rule { order: -1; width: 1px; height: 100%; transform-origin: top; animation-name: threadDown !important; }
+}
 .foot-link { color: inherit; text-decoration: none; }
 .foot-link:hover { color: #f6ecd8; }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -89,7 +107,7 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
-import { stagedLoader } from '../js/staged-loader.js?v=20260924a';
+import { stagedLoader } from '../js/staged-loader.js?v=20260924b';
 
 // ---- Wikidata access (no keys, browser-friendly endpoints) ----
 const SPARQL = "https://query.wikidata.org/sparql";
@@ -376,8 +394,8 @@ function renderData() {
     const delay = (i * 130) + "ms";
     const threadDelay = (i * 130 + 220) + "ms";
     const wikiUrl = s.wiki[id] || "";
-    return '<div style="display: flex; align-items: flex-start; flex: none">' +
-      '<div data-mid="' + esc(id) + '" style="width: 172px; animation: portrait 520ms ease both; animation-delay: ' + delay + '">' +
+    return '<div class="gen">' +
+      '<div data-mid="' + esc(id) + '" class="gen-card" style="animation: portrait 520ms ease both; animation-delay: ' + delay + '">' +
         '<div style="height: 196px; background: #191f24; border: 1px solid #2b333a; overflow: hidden; position: relative">' +
           (p.img
             ? '<img src="' + esc(p.img) + '" alt="' + esc(p.label) + '" style="width: 100%; height: 100%; object-fit: cover; display: block; animation: develop 900ms ease both; animation-delay: ' + delay + '" loading="lazy">'
@@ -389,9 +407,9 @@ function renderData() {
         (wikiUrl ? wikiLinkHtml(wikiUrl) : '') +
       '</div>' +
       (i < ids.length - 1
-        ? '<div style="min-width: 86px; padding: 96px 10px 0; display: flex; flex-direction: column; align-items: center">' +
+        ? '<div class="gen-thread">' +
             '<div style="font-size: 9px; letter-spacing: 1.2px; color: #d9b36a; padding-bottom: 6px; white-space: nowrap">PARENT OF</div>' +
-            '<div style="width: 100%; height: 1px; background: #6b5c3a; transform-origin: left; animation: thread 480ms ease both; animation-delay: ' + threadDelay + '"></div>' +
+            '<div class="gen-rule" style="animation: thread 480ms ease both; animation-delay: ' + threadDelay + '"></div>' +
           '</div>'
         : '') +
     '</div>';
@@ -414,12 +432,12 @@ function renderData() {
 
   return '<div style="padding: 34px 0">' +
 
-    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 28px; border-bottom: 1px solid #242c33; padding-bottom: 26px">' +
-      '<div style="animation: rise 420ms ease both"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">IN THE TRADE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + (s.totalInTrade ? s.totalInTrade.toLocaleString() : "—") + '</div></div>' +
-      '<div style="animation: rise 420ms ease both; animation-delay: 70ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">WITH A RELATIVE IN IT</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + nepoCount.toLocaleString() + '</div></div>' +
-      '<div style="animation: rise 420ms ease both; animation-delay: 140ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">SHARE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + share + '</div></div>' +
-      '<div style="animation: rise 420ms ease both; animation-delay: 210ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">GENERATIONS DEEP</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.longest.length + '</div></div>' +
-      '<div style="animation: rise 420ms ease both; animation-delay: 280ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">DYNASTIES FOUND</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.groups.length + '</div></div>' +
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 28px; border-bottom: 1px solid #242c33; padding-bottom: 26px">' +
+      '<div style="animation: rise 420ms ease both"><div class="stat-label">IN THE TRADE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + (s.totalInTrade ? s.totalInTrade.toLocaleString() : "—") + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 70ms"><div class="stat-label">WITH A RELATIVE IN IT</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + nepoCount.toLocaleString() + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 140ms"><div class="stat-label">SHARE</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px; color: #d9b36a">' + share + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 210ms"><div class="stat-label">GENERATIONS DEEP</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.longest.length + '</div></div>' +
+      '<div style="animation: rise 420ms ease both; animation-delay: 280ms"><div class="stat-label">DYNASTIES FOUND</div><div style="font-family: \'Playfair Display\', serif; font-size: 36px; line-height: 1; margin-top: 6px">' + g.groups.length + '</div></div>' +
     '</div>' +
 
     '<div style="margin-top: 36px">' +
@@ -430,7 +448,7 @@ function renderData() {
         '</div>' +
         '<div style="font-size: 11px; line-height: 1.7; color: #85908f; text-align: right">' + esc(lineSpan) + '</div>' +
       '</div>' +
-      '<div style="display: flex; align-items: flex-start; gap: 0; margin-top: 26px; overflow-x: auto; padding-bottom: 14px">' + lineHtml + '</div>' +
+      '<div class="line">' + lineHtml + '</div>' +
     '</div>' +
 
     '<div style="margin-top: 42px; border-top: 1px solid #242c33; padding-top: 26px">' +
@@ -438,10 +456,10 @@ function renderData() {
         '<div style="font-size: 10px; letter-spacing: 3px; color: #85908f">OTHER DYNASTIES IN THIS TRADE</div>' +
         '<div id="filter-row" style="display: flex; gap: 8px; flex-wrap: wrap">' + filterRowHtml() + '</div>' +
       '</div>' +
-      '<div id="dyn-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 22px">' + dynastyCardsHtml(g, ids) + '</div>' +
+      '<div id="dyn-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 20px; margin-top: 22px">' + dynastyCardsHtml(g, ids) + '</div>' +
     '</div>' +
 
-    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 42px; border-top: 1px solid #242c33; padding-top: 26px">' +
+    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 30px; margin-top: 42px; border-top: 1px solid #242c33; padding-top: 26px">' +
       '<div>' +
         '<div style="font-size: 9.5px; letter-spacing: 2px; color: #85908f">THE FINDING</div>' +
         '<p style="font-family: \'Playfair Display\', serif; font-style: italic; font-size: 22px; line-height: 1.45; margin: 10px 0 0">' + esc(finding) + '</p>' +

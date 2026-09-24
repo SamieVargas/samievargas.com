@@ -38,7 +38,7 @@ function renderFilters() {
 }
 
 function shot(a, cls) {
-  return `<div class="${cls}"><img src="${esc(a.shot)}" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
+  return `<div class="${cls}"><img src="${esc(a.shot)}?v=20260924b" alt="${esc(a.title)}" loading="lazy" decoding="async"></div>`;
 }
 
 const cardHtml = (a, i) => `

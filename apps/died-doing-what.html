@@ -30,6 +30,14 @@ input, button { font: inherit; }
 .preset:hover { color: #7a2e26; border-color: #7a2e26; }
 .cause-row { text-align: left; background: transparent; border: none; border-bottom: 1px solid #ddd8cb; padding: 15px 12px; cursor: pointer; display: grid; grid-template-columns: 1fr 54px; gap: 14px; align-items: center; }
 .cause-row:hover, .cause-row.selected { background: #e5e0d4; }
+.stat { flex: none; }
+.stat-label { font-size: 9.5px; letter-spacing: 2px; color: #8b8377; white-space: nowrap; }
+.main-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 44px; margin-top: 32px; align-items: start; }
+.side-col { position: sticky; top: 24px; }
+@media (max-width: 760px) {
+  .main-grid { grid-template-columns: minmax(0, 1fr); }
+  .side-col { position: static; }
+}
 .footlink { color: inherit; text-decoration: none; }
 .footlink:hover { color: #241f1c; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -85,14 +93,14 @@ input, button { font: inherit; }
 
       <div id="comparePanel" hidden style="margin-top: 28px; border: 1.5px solid #241f1c; background: #f7f5ef; padding: 24px 26px"></div>
 
-      <div style="display: grid; grid-template-columns: 1fr 320px; gap: 44px; margin-top: 32px; align-items: start">
+      <div class="main-grid">
         <div>
           <div style="font-size: 10px; letter-spacing: 3px; color: #8b8377">CAUSES, MOST COMMON FIRST</div>
           <div id="causesList" style="display: flex; flex-direction: column; gap: 0; margin-top: 18px"></div>
           <div id="coverage" style="font-size: 11px; line-height: 1.7; color: #8b8377; margin-top: 18px"></div>
         </div>
 
-        <div style="position: sticky; top: 24px">
+        <div class="side-col">
           <div id="selCard" style="border: 1.5px solid #241f1c; background: #f7f5ef; padding: 24px; animation: rise 240ms ease both"></div>
 
           <div style="border: 1px solid #cfc9ba; padding: 20px 22px; margin-top: 16px">
@@ -133,7 +141,7 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
-import { stagedLoader } from '../js/staged-loader.js?v=20260924a';
+import { stagedLoader } from '../js/staged-loader.js?v=20260924b';
 
 // ---- Wikidata access layer (keyless public endpoints) ----
 const SPARQL_URL = "https://query.wikidata.org/sparql";
@@ -426,11 +434,11 @@ function renderData() {
   const d = derived;
 
   statsRow.innerHTML =
-    '<div style="animation: rise 420ms ease both"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">DEATHS ON RECORD</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.total.toLocaleString()) + '</div></div>' +
-    '<div style="animation: rise 420ms ease both; animation-delay: 80ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">DISTINCT CAUSES</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.causes.length + (d.causes.length === 14 ? "+" : "")) + '</div></div>' +
-    '<div style="animation: rise 420ms ease both; animation-delay: 160ms"><div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">MEDIAN AGE AT DEATH</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.median ? d.median : "—") + '</div></div>' +
-    '<div style="flex: 1; min-width: 240px; align-self: flex-end; animation: rise 420ms ease both; animation-delay: 240ms">' +
-      '<div style="font-size: 9.5px; letter-spacing: 2px; color: #8b8377">THE OCCUPATIONAL HAZARD</div>' +
+    '<div class="stat" style="animation: rise 420ms ease both"><div class="stat-label">DEATHS ON RECORD</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.total.toLocaleString()) + '</div></div>' +
+    '<div class="stat" style="animation: rise 420ms ease both; animation-delay: 80ms"><div class="stat-label">DISTINCT CAUSES</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.causes.length + (d.causes.length === 14 ? "+" : "")) + '</div></div>' +
+    '<div class="stat" style="animation: rise 420ms ease both; animation-delay: 160ms"><div class="stat-label">MEDIAN AGE AT DEATH</div><div style="font-family: \'Libre Caslon Text\', serif; font-size: 40px; line-height: 1; margin-top: 6px">' + esc(d.median ? d.median : "—") + '</div></div>' +
+    '<div style="flex: 1; min-width: min(240px, 100%); align-self: flex-end; animation: rise 420ms ease both; animation-delay: 240ms">' +
+      '<div class="stat-label">THE OCCUPATIONAL HAZARD</div>' +
       '<div style="font-family: \'Libre Caslon Text\', serif; font-size: 20px; margin-top: 6px; color: #7a2e26">' + esc(d.hazardCause ? d.hazardCause.label : "nothing unusual") + '</div>' +
     '</div>';
 
