@@ -10,8 +10,9 @@ import {
   PX_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925b';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925b';
+} from '../data/content.js?v=20260925d';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925d';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925d';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -342,12 +343,8 @@ function analysis() {
     }, 900);
   });
 
-  const lo = 89.5, span = 3.3;
-  $('#drift-line').setAttribute('points', ATX_DRIFT.map((s, i) => `${(i / (ATX_DRIFT.length - 1) * 100).toFixed(2)},${((1 - (s - lo) / span) * 100).toFixed(2)}`).join(' '));
-  onSeen($('#drift'), () => {
-    const svg = $('#drift-svg');
-    tween(2000, (p) => { svg.style.clipPath = `inset(-10px ${((1 - p) * 100).toFixed(1)}% -10px -10px)`; }, 300);
-  });
+  $('#drift-chart').innerHTML = driftChart(ATX_DRIFT, { first: '90.5 · 1st visit', last: '92.6 · 15th', end: '15' });
+  onSeen($('#drift'), () => revealDrift($('#drift-chart')));
 }
 
 // ── Experience: the rail fills, rows open with + / − ─────────

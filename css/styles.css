@@ -497,15 +497,6 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
 .split__track i { display: block; height: 100%; width: 60%; }
 .an__p { font-size: 14.5px; line-height: 1.6; color: var(--body); }
 .an__link { font: 500 12.5px var(--mono); text-decoration: none; }
-.drift { position: relative; height: 170px; margin: 0 0 14px 52px; border-left: 1px solid var(--control); border-bottom: 1px solid var(--control); color: var(--accent); }
-.drift svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; clip-path: inset(-10px 100% -10px -10px); }
-.drift span { position: absolute; font: 400 10.5px var(--mono); white-space: nowrap; }
-.drift__first { left: 8px; bottom: 8px; color: var(--meta); }
-.drift__last { right: 0; top: -4px; transform: translateY(-100%); color: var(--accent); }
-.drift__up, .drift__down { left: -8px; font-size: 10px !important; color: var(--faint); transform: translateX(-100%); }
-.drift__up { top: 0; }
-.drift__down { bottom: 0; }
-.drift__axis { display: flex; justify-content: space-between; gap: 8px; font: 400 10.5px var(--mono); color: var(--faint); }
 .kv { display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
 .kv > div { background: var(--paper); padding: 10px 14px; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px; }
 .kv > div > :first-child { font: 500 10.5px/1.7 var(--mono); color: var(--meta); }
@@ -583,7 +574,6 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
   .hairgrid--3 { grid-template-columns: 1fr 1fr 1fr; }
   .contact__h { font-size: 42px; }
   .contact__in { padding-top: 56px; }
-  .drift { margin-left: 44px; }
   .role__btn { grid-template-columns: minmax(0, 1fr) 28px; gap: 6px 14px; }
   .role__p { grid-column: 1; grid-row: 3; text-align: left; }
   .role__m { grid-row: 2; grid-column: 1; }
@@ -805,16 +795,8 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
 .nc-read__d { font: 500 11px var(--mono); color: var(--accent); }
 .nc-read__n { font-size: 14px; line-height: 1.45; }
 
-/* 03 · drift line, upright: up is a higher score, fewer violations */
+/* 03 · drift line: the shared chart (.dc) at the end of this file */
 .nc--line { padding-bottom: 30px; }
-.nc-line { position: relative; height: 170px; margin-left: 52px; border-left: 1px solid var(--control); border-bottom: 1px solid var(--control); }
-.nc-line svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; clip-path: inset(-10px 100% -10px -10px); }
-.nc-line polyline { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
-.nc-line__first { position: absolute; left: 8px; bottom: 8px; font: 400 10.5px var(--mono); color: var(--meta); }
-.nc-line__last { position: absolute; right: 0; top: -4px; transform: translateY(-100%); font: 400 10.5px var(--mono); color: var(--accent); }
-.nc-line__up, .nc-line__down { position: absolute; left: -8px; transform: translateX(-100%); font: 400 10px var(--mono); color: var(--faint); white-space: nowrap; }
-.nc-line__up { top: 0; }
-.nc-line__down { bottom: 0; }
 .nc-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; border-top: 1px solid var(--track); font-size: 14px; line-height: 1.45; }
 .nc-foot__n { font: 400 28px var(--serif); color: var(--alert-ink); white-space: nowrap; }
 
@@ -854,6 +836,15 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
 }
 
 /* ── Arcade ── */
+/* CRT power-on overlay, once per session (js/arcade.js) */
+@keyframes arcCrtHalf { 0%, 40% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@keyframes arcCrtLine { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
+.arc-crt { position: fixed; inset: 0; z-index: 400; pointer-events: none; display: flex; flex-direction: column; }
+.arc-crt i { display: block; }
+.arc-crt__half { flex: 1; background: var(--dark); animation: arcCrtHalf .55s ease-in forwards; }
+.arc-crt__half--top { transform-origin: top; }
+.arc-crt__half--bot { transform-origin: bottom; }
+.arc-crt__line { height: 2px; background: var(--accent-dark); box-shadow: 0 0 14px 2px var(--accent-dark); animation: arcCrtLine .6s ease-out forwards; }
 /* /apps: a ticker of every title, the header with the badge filter, six
    featured cards with screenshots, and the other nine as rows. */
 
@@ -1253,3 +1244,22 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
   .nf-h1 { font-size: 44px; }
   .nf-row { grid-template-columns: 70px minmax(0, 1fr) auto; gap: 8px; }
 }
+
+/* ── ATX drift chart (js/drift-chart.js), work page and /life#notes ── */
+.dc { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.dc__plot { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; }
+.dc__y { position: relative; height: 180px; }
+.dc__y span { position: absolute; right: 0; transform: translateY(-50%); font: 400 10.5px var(--mono); color: var(--faint); }
+.dc__area { position: relative; height: 180px; border-bottom: 1px solid var(--control); margin-right: 5px; }
+.dc__area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.dc__area line { stroke: var(--track); stroke-width: 1; }
+.dc__line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; clip-path: inset(-10px 100% -10px -10px); }
+.dc__dot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--paper); opacity: 0; transition: opacity .4s; }
+.dc__lab { position: absolute; font: 400 10.5px/1 var(--mono); white-space: nowrap; opacity: 0; transition: opacity .4s .1s; }
+.dc__lab--first { left: 8px; margin-top: 10px; line-height: 1.35; color: var(--meta); }
+.dc__lab--last { right: 12px; margin-top: -5px; color: var(--accent); font-weight: 500; }
+.dc.is-on .dc__dot, .dc.is-on .dc__lab { opacity: 1; }
+.dc__x { display: flex; justify-content: space-between; gap: 8px; padding-left: 34px; font: 400 10.5px var(--mono); color: var(--faint); white-space: nowrap; }
+.dc__x span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.nc .dc__dot { box-shadow: 0 0 0 2px var(--card); }
+@media (prefers-reduced-motion: reduce) { .dc__line { clip-path: none; } .dc__dot, .dc__lab { opacity: 1; } }
