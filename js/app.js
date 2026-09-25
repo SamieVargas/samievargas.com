@@ -10,9 +10,9 @@ import {
   PX_REPLAY, AS_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925f';
-import { driftChart, revealDrift } from './drift-chart.js?v=20260925f';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925f';
+} from '../data/content.js?v=20260925g';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925g';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925g';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -416,12 +416,14 @@ function skills() {
   });
   pick(0);
 
+  const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const count = (n) => WORDS[n] || String(n);
   $('#certs').innerHTML = CERT_LIST.map((c, i) => {
     const verify = (href, label) => (href
       ? `<a class="pill" href="${esc(href)}" target="_blank" rel="noopener">${label}</a>`
       : '<span class="pill pill--missing">Add verify link</span>');
     const action = c.subs
-      ? `<button type="button" class="pill" aria-expanded="false" aria-controls="cert-subs-${i}">Show six +</button>`
+      ? `<button type="button" class="pill" aria-expanded="false" aria-controls="cert-subs-${i}" data-n="${count(c.subs.length)}">Show ${count(c.subs.length)} +</button>`
       : verify(c.href, 'Verify ↗');
     const subs = c.subs
       ? `<div class="cert__subs" id="cert-subs-${i}" hidden>${c.subs.map((s) => (s.href
@@ -433,7 +435,7 @@ function skills() {
   $$('#certs button[aria-controls]').forEach((b) => b.addEventListener('click', () => {
     const open = b.getAttribute('aria-expanded') !== 'true';
     b.setAttribute('aria-expanded', String(open));
-    b.textContent = open ? 'Hide six −' : 'Show six +';
+    b.textContent = open ? `Hide ${b.dataset.n} −` : `Show ${b.dataset.n} +`;
     document.getElementById(b.getAttribute('aria-controls')).hidden = !open;
   }));
 }

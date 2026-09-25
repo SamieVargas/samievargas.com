@@ -249,15 +249,14 @@
     <div class="cv-role">
       <div class="cv-role-head">
         <h3>Senior Manager, Service</h3>
-        <span class="cv-meta">Oct 2023 – Present</span>
+        <span class="cv-meta">Oct 2023 – Present · Senior Team Leader until the org flattened</span>
       </div>
       <ul>
         <li><i></i><span>Designed a Claude-ready knowledge base over the PSF Emerging segment's ~110-document library, with an orientation layer that directs the model to cite each document and its date, quote compliance guidance verbatim, surface conflicting guidance rather than resolve it, respect a restricted-content boundary, and report gaps instead of inventing process; in a paired test on 10 simple requests it cut an average of three back-and-forth turns and answered accurately on all 10.</span></li>
         <li><i></i><span>Piloting it with a 60-person team through September 2026, with rollout to four more pods (about 240 people) in October gated on no increase in back-and-forth against the paired baseline, and 1x1s with high-usage users shaping revisions.</span></li>
-        <li><i></i><span>Lead 3–10 client-facing managers per quarter on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools for account analysis, QBR prep, escalation drafting, and data synthesis; cut MBR prep from 3 hours per account per month to 1 hour per month across four accounts.</span></li>
+        <li><i></i><span>Lead a team of 5 client-facing managers, between 5 and 10 per quarter as account needs shift, on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools for account analysis, QBR prep, escalation drafting, and data synthesis; cut MBR prep from 3 hours per account per month to 1 hour per month across four accounts.</span></li>
         <li><i></i><span>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling; the main outcome was a tool that raised the share of client deliverables (subject-matter experts available for scheduling) produced within the first hour from 10% to ~25% in a single quarter.</span></li>
         <li><i></i><span>Built the team's internal SharePoint, used daily by 60+ people and adopted as the model for three other BUs: enabling it for AI governance with guardrails for answer accuracy, coaching other teams to build their own, and owning its long-term data governance.</span></li>
-        <li><i></i><span>Manage a direct team of 5–10 (10 at peak) alongside the portfolio.</span></li>
         <li><i></i><span>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio at 100% retention, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</span></li>
         <li><i></i><span>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</span></li>
         <li><i></i><span>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</span></li>
@@ -267,8 +266,8 @@
 
     <div class="cv-role">
       <div class="cv-role-head">
-        <h3>Manager, Client Solutions · Team Lead</h3>
-        <span class="cv-meta">Mar 2022 – Oct 2023</span>
+        <h3>Team Leader</h3>
+        <span class="cv-meta">May 2022 – Oct 2023</span>
       </div>
       <ul>
         <li><i></i><span>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, cutting new-hire ramp to revenue production from 3 months to 1 and standardizing quality.</span></li>
@@ -279,11 +278,11 @@
 
     <div class="cv-role">
       <div class="cv-role-head">
-        <h3>Senior Client Solutions Manager</h3>
-        <span class="cv-meta">Jul 2018 – Feb 2022</span>
+        <h3>Client Solutions Associate to Senior Client Solutions Manager</h3>
+        <span class="cv-meta">Jul 2018 – May 2022</span>
       </div>
       <ul>
-        <li><i></i><span>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted twice in four years.</span></li>
+        <li><i></i><span>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted three times in under four years.</span></li>
         <li><i></i><span>Built custom Salesforce reporting infrastructure for account-health visibility that became the team standard.</span></li>
       </ul>
     </div>
@@ -298,10 +297,15 @@
       <p class="cv-pt"><i></i><span>Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</span></p>
     </div>
     <div class="cv-proj">
+      <h3>Guideline Assist: Live Agent Assist and Post-Call QA</h3>
+      <p class="cv-stack">Anthropic API · Prompt Caching · Validator-Enforced Next Steps · Post-Call QA · Context Ablation · samievargas.com/assist</p>
+      <p class="cv-pt"><i></i><span>Built a live assist that names a support agent's next step from the written guidelines, with the whole 55-section library in a cached prompt, a validator in code that rejects any step the section does not list, and a post-call QA pass on the finished chat. Evaluated on 100 frozen ABCD test chats, 24 September 2026: the right next action on 258 of 349 agent actions (73.9%) on Sonnet 5, at $122 per 1,000 chats against $48 on Haiku 4.5 at 50.1%, with the cached library cheaper and faster than looking up one section; the QA still flags 20 of 100 clean chats, and 2 of 10 injection fixtures moved a suggestion.</span></p>
+    </div>
+    <div class="cv-proj">
       <h3>Brain Dump: LLM Planner for Executive-Function Support</h3>
       <p class="cv-stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
       <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into a plan matched to how much someone has left: three levels (plenty, a little, none) and a separate feeling-anxious switch set the cap on what to do now and the tone, a strict JSON contract sorts every item into now, later or let go with each now step quoting the words it came from, the page re-checks every plan against the same rules before showing it, and an emergency one-thing mode has its own prompt, schema and hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan cost $0.0134 on average, and tuning the prompt (sort@v4) and running it at medium effort then cut the median sort from 14.0 s to 7.3 s and the cost to $0.0071 a plan, which is what the live Worker runs. An earlier run found the output budget too small, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan cost $0.0134 on average, and a tuned prompt at medium effort, which the live Worker runs, cut that to $0.0071 and the median sort from 14.0 s to 7.3 s.</span></p>
     </div>
     <div class="cv-proj">
       <h3>Signal: Account Intelligence for CS Professionals</h3>
@@ -335,9 +339,8 @@
   <section class="cv-sec cv-avoid cv-rv">
     <p class="cv-label">04 · Certifications</p>
     <p class="cv-cert">Anthropic AI Fluency: Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
-    <p class="cv-cert">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
-    <p class="cv-cert">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; Snowflake Hands-On Essentials: Data Warehousing Workshop &nbsp;·&nbsp; PMP (Project Management Professional) · PMI</p>
-    <p class="cv-cert">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals · Six Sigma White Belt</p>
+    <p class="cv-cert">Databricks: AI Agent Fundamentals · Generative AI Fundamentals · Databricks Fundamentals &nbsp;·&nbsp; dbt Fundamentals &nbsp;·&nbsp; Snowflake Hands-On Essentials</p>
+    <p class="cv-cert">Google: AI Professional · Advanced Data Analytics · Business Intelligence · Data Analytics · GA4 &nbsp;·&nbsp; PMP · PMI</p>
   </section>
 
   <section class="cv-sec cv-avoid cv-rv cv-rv--fade">
@@ -375,7 +378,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260925f';
+import { TK_REPO } from './data/content.js?v=20260925g';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
