@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Life in Pixels, replayed — Samie Vargas</title>
+  <title>Life in Pixels, replayed · Samie Vargas</title>
   <meta name="description" content="Twenty-six questions asked of six months of daily data, replayed run by run from the eval: the router's decision, the days it pulled, the answer it wrote, and what the validator said.">
   <link rel="canonical" href="https://samievargas.com/pixels/">
   <meta name="theme-color" content="#1a6b5a">
@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css?v=20260925e">
+  <link rel="stylesheet" href="../css/styles.css?v=20260925f">
 </head>
 <body>
 
@@ -45,9 +45,11 @@
   <div class="nav__in">
     <a class="nav__name" href="/">Samie Vargas</a>
     <div class="nav__links">
-      <a href="/">← The work</a>
-      <a href="/life">/life</a>
-      <span class="is-here--accent" aria-current="page">/pixels</span>
+      <a href="/">Work</a>
+      <a href="/life">Life</a>
+      <a href="/life#notes">Notes</a>
+      <a href="/apps/">Arcade</a>
+      <a href="/resume">Résumé</a>
       <a class="nav__fill" href="https://github.com/SamieVargas/pixels-rag">Repo ↗</a>
     </div>
   </div>
@@ -59,7 +61,7 @@
   <header class="px-hero" data-in>
     <span class="eyebrow rv">samievargas.com/pixels · RAG + MCP · recorded runs</span>
     <h1 class="px-h1 rv" style="--d:.06s">Life in Pixels, <em>replayed</em>.</h1>
-    <p class="px-lead rv" style="--d:.12s">Six months of my own daily data, askable in plain language. Below are the twenty-six questions from the eval, played back one real run at a time: what the router decided, which days it pulled or computed, the answer it wrote, and what the validator said about it before anything was shown.</p>
+    <p class="px-lead rv" style="--d:.12s">Six months of my own daily data can be asked questions in plain language, and below are the twenty-six questions from the eval, played back one real run at a time: what the router decided, which days it pulled or computed, the answer it wrote, and what the validator said about it before anything was shown.</p>
     <p class="px-fine rv" style="--d:.18s">Nothing on this page is live. Every run is copied from <code>evals/results/2026-09-22.json</code> in the repo, and the data behind it is a seeded synthetic export shaped like mine, because mine stays on my machine. The answers are the model's, as recorded; when the validator disagreed with one, you will see that too.</p>
     <p class="plain px-plain rv" style="--d:.24s"><strong>In plain terms:</strong> you pick a question, and you watch the tool decide what kind of question it is, find the right days, write an answer, and then check its own answer before showing it.</p>
     <div class="px-stats rv" style="--d:.3s" id="px-stats" aria-label="Eval aggregate, 22 September 2026"></div>
@@ -104,7 +106,7 @@
   <section class="px-sec px-split px-split--center" id="mcp" data-in>
     <div class="px-stack">
       <h2 class="px-h2 px-h2--32 rv"><span class="px-num">03</span>The same pipeline as an MCP server</h2>
-      <p class="px-body rv" style="--d:.06s">The router, the validator and the model call are exposed over stdio as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it never leaves the machine. There is no write tool, on purpose. The config and the two tool schemas are in the repo.</p>
+      <p class="px-body rv" style="--d:.06s">The router, the validator and the model call are exposed over stdio as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it never leaves the machine, and there is deliberately no write tool, and the config and the two tool schemas are in the repo.</p>
       <div class="px-actions rv" style="--d:.12s">
         <a class="btn btn--sm btn--accent" href="https://github.com/SamieVargas/pixels-rag">Read the repo ↗</a>
         <a class="btn btn--sm btn--tint" href="/#patterns">Back to the pattern index</a>
@@ -122,10 +124,10 @@
 <footer class="foot foot--light px-foot">
   <div class="foot__in">
     <span>Recorded 22 September 2026 · model and prices named in the stats above</span>
-    <a href="/toolkit">how this site is built</a>
+    <span class="foot__links"><a href="/toolkit">Site toolkit ↗</a><a href="/">← back to the work</a></span>
   </div>
 </footer>
 
-<script type="module" src="../js/pixels.js?v=20260925e"></script>
+<script type="module" src="../js/pixels.js?v=20260925f"></script>
 </body>
 </html>

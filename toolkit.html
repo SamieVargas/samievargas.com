@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Site toolkit — Samie Vargas</title>
+  <title>Site toolkit · Samie Vargas</title>
   <meta name="description" content="How samievargas.com is put together: the design tokens, the components, the marks, the copy decisions, and every change with the reason attached.">
   <link rel="canonical" href="https://samievargas.com/toolkit">
   <meta name="theme-color" content="#1a6b5a">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://samievargas.com/toolkit">
   <meta property="og:title" content="How this site is put together">
-  <meta property="og:description" content="The tokens, the components, the marks, the copy decisions, and a change log pulled live from the repo.">
+  <meta property="og:description" content="The tokens, the components, the marks, the copy decisions, and a change log the repo writes into the site on every push.">
   <meta property="og:image" content="https://samievargas.com/og-card.png">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925e">
+  <link rel="stylesheet" href="css/styles.css?v=20260925f">
 </head>
 <body>
 
@@ -44,9 +44,11 @@
   <div class="nav__in">
     <a class="nav__name" href="/">Samie Vargas</a>
     <div class="nav__links">
-      <a href="/">← The work</a>
-      <a href="/life">/life</a>
-      <span class="is-here--accent">/toolkit</span>
+      <a href="/">Work</a>
+      <a href="/life">Life</a>
+      <a href="/life#notes">Notes</a>
+      <a href="/apps/">Arcade</a>
+      <a href="/resume">Résumé</a>
     </div>
   </div>
 </nav>
@@ -57,8 +59,8 @@
   <header class="tk-hero" data-in>
     <span class="eyebrow rv rv--fade" style="--d:0s">samievargas.com/toolkit</span>
     <h1 class="tk-h1 rv" style="--d:.1s">How this site is <em>put together</em>.</h1>
-    <p class="tk-lead rv rv--fade" style="--d:.25s">I always wanted my own website, and I wanted to teach myself to code past HTML. This page is the part I would normally keep in a scratch file: the tokens, the components, the marks, the copy decisions, and every change I have made with the reason attached.</p>
-    <p class="tk-aside rv rv--fade" style="--d:.35s">It is public because I found <a href="https://www.evebouffard.com/">evebouffard.com</a> and loved being able to see the thinking that went into a site alongside the site. So here is mine.</p>
+    <p class="tk-lead rv rv--fade" style="--d:.25s">I always wanted my own website, and I wanted to teach myself to code past HTML, and this page is the part I would normally keep in a scratch file: the tokens, the components, the marks, the copy decisions, and every change I have made with the reason attached.</p>
+    <p class="tk-aside rv rv--fade" style="--d:.35s">It is public because I found <a href="https://www.evebouffard.com/">evebouffard.com</a> and loved being able to see the thinking that went into a site alongside the site, so here is mine.</p>
     <p class="plain tk-plain rv rv--fade" style="--d:.45s"><strong>In plain terms:</strong> this is the behind-the-scenes page, the colors and fonts and building blocks the site is made of, and a log of what changed and why.</p>
     <div class="tk-stats">
       <div class="stat tk-stat"><span class="stat__n" id="tk-first">May 20</span><span class="stat__l" id="tk-age">first commit, 2026</span></div>
@@ -88,7 +90,7 @@
         <div id="tk-notes" class="tk-col"></div>
         <div class="tk-backlog">
           <span class="micro">Backlog</span>
-          <p>Empty, everything I know about is shipped, and I am pushing the rest right now.</p>
+          <p>The fine-tuning build is the one open item, and it is on the work page with its bars drawn as placeholders until the scores publish.</p>
         </div>
       </div>
     </div>
@@ -105,7 +107,7 @@
     <div class="tk-type">
       <div class="tk-type__card tk-up" style="--d:.15s"><span class="micro tk-micro">Speaks</span><span class="tk-type__name tk-f-serif">Young Serif</span><span class="tk-type__sample tk-s-serif">Sixty seconds in the car becomes a record.</span></div>
       <div class="tk-type__card tk-up" style="--d:.27s"><span class="micro tk-micro">Reads</span><span class="tk-type__name tk-f-sans">Onest</span><span class="tk-type__sample tk-s-sans">A rep talks into their phone in a parking lot, and onboarding gets a record.</span></div>
-      <div class="tk-type__card tk-up" style="--d:.39s"><span class="micro tk-micro">Labels</span><span class="tk-type__name tk-f-mono">Geist Mono</span><span class="tk-type__sample tk-s-mono">golden transcripts · 8/8 pass · $0.03</span></div>
+      <div class="tk-type__card tk-up" style="--d:.39s"><span class="micro tk-micro">Labels</span><span class="tk-type__name tk-f-mono">Geist Mono</span><span class="tk-type__sample tk-s-mono">golden transcripts · 8/8 pass · $0.0313</span></div>
     </div>
 
     <div class="tk-tokens" id="tk-tokens"></div>
@@ -204,7 +206,7 @@
     <div class="tk-col rv">
       <h2 class="tk-h2"><span class="tk-num">05</span>How it is built</h2>
       <p class="tk-how__p">Plain HTML, CSS custom properties, and vanilla JavaScript modules, deployed on GitHub Pages, with no framework and no build step, which was the point, because I wanted to understand every part of it rather than inherit someone else's structure.</p>
-      <p class="tk-how__p">The two LLM apps on the site, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times.</p>
+      <p class="tk-how__p">The two live LLM apps, Signal and Brain Dump, talk to the Anthropic API through a Cloudflare Worker, so the key stays on the server and the front end can stay public, and it is the same pattern both times, while Field discovery, Life in Pixels and Guideline Assist are replayed on the site from their recorded eval runs.</p>
       <p class="tk-how__p">I built it with Claude Opus, and I am saying so here because the alternative is pretending I did not, and what I brought was the judgement about what to cut, what to prove, and which numbers I am willing to defend.</p>
     </div>
     <div class="tk-built rv" style="--d:.12s">
@@ -220,11 +222,11 @@
 
 <footer class="foot foot--light">
   <div class="foot__in">
-    <a href="/" class="tk-foot-back">← Back to the work</a>
-    <span>Austin, TX · Remote · no framework, no build step</span>
+    <span>© 2026 Samie Vargas · Austin, TX · Remote · no framework, no build step</span>
+    <span class="foot__links"><a href="/">← back to the work</a></span>
   </div>
 </footer>
 
-<script type="module" src="js/toolkit.js?v=20260925e"></script>
+<script type="module" src="js/toolkit.js?v=20260925f"></script>
 </body>
 </html>

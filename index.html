@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://samievargas.com/">
   <meta property="og:title" content="I build AI into the workflows customers already run, and I publish how often it breaks">
-  <meta property="og:description" content="Agents, RAG, fine-tuning and MCP, one row each, with a dot for every test case. Field discovery, Life in Pixels, Signal and Brain Dump, each with its evals.">
+  <meta property="og:description" content="Agents, RAG, agent assist, fine-tuning and MCP, a dot for every test case, and five builds with their evals, from Field discovery to Guideline Assist.">
   <meta property="og:image" content="https://samievargas.com/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925e">
+  <link rel="stylesheet" href="css/styles.css?v=20260925f">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
       <a href="/life">Life</a>
       <a href="/life#notes">Notes</a>
       <a href="/apps/">Arcade</a>
-      <a class="nav__ink" href="/resume">Résumé</a>
+      <a href="/resume">Résumé</a>
     </div>
   </div>
 </nav>
@@ -65,13 +65,13 @@
     <div class="hero__copy">
       <span class="eyebrow rv" style="--d:.05s">Applied AI · customer-facing builds · Austin, remote</span>
       <h1 class="h1 rv" style="--d:.15s">I build AI into the workflows customers already run, and I publish how often it breaks.</h1>
-      <p class="lead rv" style="--d:.35s">Eight years running a $14M+ enterprise book at GLG, where I was the AI person on a non-AI team, and five builds with dated evals on every one, so the log on the right is the last run.</p>
+      <p class="lead rv" style="--d:.35s">Eight years at GLG, most recently running a $14M+ enterprise book as the AI person on a non-AI team, and five builds with dated evals on every one, so the log on the right is the last run.</p>
       <div class="hero__actions rv rv--fade" style="--d:.5s">
         <a class="btn btn--ink" href="#field-discovery">See the builds ↓</a>
         <button type="button" class="btn btn--line" data-copy-email>Copy my email</button>
       </div>
     </div>
-    <div class="term hero__log rv" style="--d:.3s" aria-label="Eval log, last run 22 September 2026">
+    <div class="term hero__log rv" style="--d:.3s" aria-label="Eval log, last run 24 September 2026">
       <div class="term__head"><span id="log-head"></span><span id="log-clock">00:00.0</span></div>
       <div class="hero__rows" id="log-rows"></div>
       <span class="cursor cursor--dark" aria-hidden="true">▍</span>
@@ -144,7 +144,7 @@
         <div class="inj" id="inj-grid"></div>
         <div class="legend"><span><i class="d" style="background:var(--ink)"></i>unchanged</span><span><i class="d" style="background:var(--alert)"></i>moved a proposal</span></div>
         <span class="caption">Totals from the 22 Sep run · which runs moved is laid out for the mock</span>
-        <p class="plain"><strong>In plain terms:</strong> I hid sneaky instructions in the notes to see if I could trick it, and it held steady most of the time but slipped often enough that a person still approves every change.</p>
+        <p class="body">I hid sneaky instructions in the notes to see if I could trick it, and it held steady most of the time and slipped often enough that a person still approves every change.</p>
       </div>
     </div>
     <div class="results" data-results="discovery"></div>
@@ -173,8 +173,7 @@
             <span>Claude Desktop</span><span class="mcp__srv">pixels-rag · stdio</span><span class="mcp__disk">daily data · on disk</span>
             <i class="mcp__pkt" id="mcp-pkt"></i>
           </div>
-          <span class="card-note">Two read-only tools, the same router and validator, and the data never leaves the machine.</span>
-          <p class="plain"><strong>In plain terms:</strong> this lets Claude on my laptop ask the same questions directly, and my data never gets uploaded anywhere.</p>
+          <span class="card-note">Two read-only tools and the same router and validator, so Claude on my laptop can ask the same questions directly and the data never leaves the machine.</span>
         </div>
         <div class="hairgrid hairgrid--2">
           <div class="stat"><span class="stat__n" id="px-valid">0/26</span><span class="stat__l">valid citations, 26 questions</span></div>
@@ -221,7 +220,7 @@
     <div class="stack rv rv--fade">
       <span class="eyebrow eyebrow--muted">Fine-tuning · in progress</span>
       <h2 class="h2 h2--sub">Card matching, tuned against prompted, on the same golden set.</h2>
-      <p class="body ft__body">Every model call on this page is a prompted Haiku or Sonnet under a schema, and the next build is a small tuned model on the one task that is a closed classification, which may end with keep prompting, and that goes here either way.</p>
+      <p class="body ft__body">Every model call on this page is a prompted Haiku or Sonnet under a schema, and the next build tunes a small model on card matching, the one task here that is a closed classification, and the result goes on this page even if it says to keep prompting.</p>
       <p class="plain"><strong>In plain terms:</strong> I am testing whether training a small model on one narrow job beats just asking a big model well, and if it does not, I will say so here.</p>
     </div>
     <div class="ft__bars">
@@ -259,7 +258,7 @@
         <h3 class="h3 h3--22">A mood with no event behind it is read right in seven of twenty.</h3>
         <div class="sig20" id="sig20"></div>
         <span class="caption">ablation, 20 runs per arm · which runs is laid out for the mock</span>
-        <p class="plain"><strong>In plain terms:</strong> it is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, which is why that number is on the page.</p>
+        <p class="body">It is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, which is why that number is on the page.</p>
       </div>
       <div class="hairgrid hairgrid--3 sig-stats">
         <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">input tokens, from ~23k</span></div>
@@ -273,9 +272,9 @@
   <!-- ── BRAIN DUMP (dark band) ───────────────────────────── -->
   <section class="band bd" id="braindump" data-in>
     <div class="stack rv">
-      <div class="row-between row-between--c"><span class="eyebrow bd__eyebrow">Structured outputs · Brain Dump</span><a class="btn btn--on-dark btn--44" href="https://samievargas.com/brain-dump">Try it here ↗</a></div>
+      <div class="row-between row-between--c"><span class="eyebrow bd__eyebrow">Structured outputs · Brain Dump · LLM app, in use</span><a class="btn btn--on-dark btn--44" href="https://samievargas.com/brain-dump">Try it here ↗</a></div>
       <div class="stack narrow">
-        <h2 class="h2">Five minutes in, one thing to do first.</h2>
+        <h2 class="h2">Five minutes of talking comes back as one thing to do first and a list that can wait.</h2>
         <p class="body bd__body">You say how much you have, plenty, a little or none, and whether you are feeling anxious, and the sorter puts every item into now, later or let go under a strict JSON contract, with now capped by that level and each step quoting back the words it came from.</p>
         <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how much energy you have, and it hands back the one or two things to do first, a safe list for later, and the worries you can set down.</p>
       </div>
@@ -308,7 +307,7 @@
       <div class="row-between"><span class="fd-step__k" id="dag-head"></span><span class="dag-meta"><span class="dag-meta__n">tests passing <strong id="dag-tests">0</strong>/35</span><span>data flowing left to right</span></span></div>
       <div class="dag-scroll"><div class="dag" id="dag"></div></div>
     </div>
-    <p class="plain"><strong>In plain terms:</strong> raw grocery orders go in on the left, get cleaned and joined in steps, and come out on the right as tidy tables, with 35 automatic checks making sure nothing broke along the way.</p>
+    <p class="an__p">Raw grocery orders go in on the left, get cleaned and joined in steps, and come out on the right as tidy tables, with 35 automatic checks making sure nothing broke along the way.</p>
     <div class="cols">
       <div class="stack stack--14" id="reorder" data-in>
         <span class="eyebrow">Instacart · 3.4M orders</span>
@@ -326,8 +325,9 @@
       </div>
       <div class="stack stack--14" id="drift" data-in>
         <span class="eyebrow">ATX Foodie · Socrata API · 21,160 records · 84 brands</span>
-        <h3 class="h3 h3--26">Venues score about two points higher by their fifteenth inspection than at their first.</h3>
+        <h3 class="h3 h3--26">Venues score 2.1 points higher by their fifteenth inspection than at their first.</h3>
         <div id="drift-chart"></div>
+        <span class="caption">the ends, 90.5 and 92.6, are printed in the notebook · the points between are read off its chart</span>
         <p class="plain"><strong>In plain terms:</strong> restaurants tend to score a little better the more times they get inspected, though the places still open for a fifteenth visit may just be the ones that were already doing fine.</p>
         <a class="an__link" href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">See the findings ↗</a>
       </div>
@@ -370,7 +370,7 @@
     <div class="cols cols--start oc__cols">
       <div class="stack rv rv--fade">
         <span class="eyebrow eyebrow--muted">Off the clock</span>
-        <h2 class="h2 h2--sub">The same habit, pointed at things that do not pay.</h2>
+        <h2 class="h2 h2--sub">I point the same habit at things that do not pay.</h2>
       </div>
       <div class="oc__doors" id="oc-doors"></div>
     </div>
@@ -396,6 +396,6 @@
   </div>
 </section>
 
-<script type="module" src="js/app.js?v=20260925e"></script>
+<script type="module" src="js/app.js?v=20260925f"></script>
 </body>
 </html>
