@@ -2,12 +2,13 @@
 // js/drift-chart.js
 // The ATX Foodie drift line, shared by the work page and /life#notes.
 // A real y-scale with whole-point gridlines, so a two-point change
-// reads as two points, dots on the first and last inspection with
+// reads as two points, flipped the way the notebook draws it because a
+// higher score here is more violations, so down is worse, dots on the first and last inspection with
 // their labels beside them, and a clip-path wipe (never dash-offset,
 // since the line uses a non-scaling stroke).
 // ============================================================
 
-import { REDUCED, esc, tween } from './reveal.js?v=20260925g';
+import { REDUCED, esc, tween } from './reveal.js?v=20260925h';
 
 // Whole-point bounds around the data, e.g. 89.8–92.6 → 89–93.
 function bounds(scores) {
@@ -16,13 +17,13 @@ function bounds(scores) {
   return hi - lo < 2 ? [lo - 1, hi + 1] : [lo, hi];
 }
 
-export function driftChart(scores, { first, last, axis = 'higher score, fewer violations', end = String(scores.length) } = {}) {
+export function driftChart(scores, { first, last, axis = '↑ fewer violations · ↓ more', end = String(scores.length) } = {}) {
   const [lo, hi] = bounds(scores);
   const n = scores.length - 1;
-  const y = (s) => ((hi - s) / (hi - lo)) * 100;
+  const y = (s) => ((s - lo) / (hi - lo)) * 100;
   const x = (i) => (i / n) * 100;
   const ticks = [];
-  for (let t = hi; t >= lo; t -= 1) ticks.push(t);
+  for (let t = lo; t <= hi; t += 1) ticks.push(t);
   const pts = scores.map((s, i) => `${x(i).toFixed(2)},${y(s).toFixed(2)}`).join(' ');
   const y0 = y(scores[0]).toFixed(2);
   const yN = y(scores[n]).toFixed(2);

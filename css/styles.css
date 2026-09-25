@@ -1355,7 +1355,8 @@ i.d { display: block; font-style: normal; }  /* data marks drawn as <i> */
 .dc__dot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--paper); opacity: 0; transition: opacity .4s; }
 .dc__lab { position: absolute; font: 400 10.5px/1 var(--mono); white-space: nowrap; opacity: 0; transition: opacity .4s .1s; }
 .dc__lab--first { left: 8px; margin-top: 10px; line-height: 1.35; color: var(--meta); }
-.dc__lab--last { right: 12px; margin-top: -5px; color: var(--accent); font-weight: 500; }
+.dc__lab--last { right: 12px; margin-top: -18px; color: var(--alert-ink); font-weight: 500; }
+.dc__dot--last { background: var(--alert); }
 .dc.is-on .dc__dot, .dc.is-on .dc__lab { opacity: 1; }
 .dc__x { display: flex; justify-content: space-between; gap: 8px; padding-left: 34px; font: 400 10.5px var(--mono); color: var(--faint); white-space: nowrap; }
 .dc__x span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }

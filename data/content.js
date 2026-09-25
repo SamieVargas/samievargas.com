@@ -200,8 +200,8 @@ export const REORDER = { pooled: 0.60, fresh: 0.221, veteran: 0.670 };
 // ATX drift: mean score by inspection number, 1 through 15, from the
 // notebook's "Operational drift" chart (burnout_trend, groupby cumcount 0-14).
 // Only the ends are printed there (90.5 and 92.6); the points between are read
-// off the chart. Austin scores out of 100 and each violation deducts points,
-// so a higher score is fewer violations and the chart is drawn upright.
+// off the chart. As in the notebook, a higher score here is more violations,
+// so the chart is drawn flipped, down is worse, and the axis says so.
 export const ATX_DRIFT = [90.5, 90.6, 90.55, 90.6, 91.05, 91.15, 89.8, 90.1, 90.85, 90.5, 91.8, 91.15, 90.9, 91.3, 92.6];
 
 export const SKILL_AREAS = [
@@ -310,10 +310,10 @@ const OBSERVATIONS = [
       'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_LIFE } },
-  { tag: 'May 2026, reread Sep 2026 · 21,160 inspection records', title: 'I read the inspection scale upside down, and the finding flipped with it',
+  { tag: 'May 2026 · 21,160 inspection records', title: 'Being flagged does not fix it',
     paragraphs: [
-      'I started by querying every restaurant I actually eat at against the city health inspection API, and my first pass treated a lower score as a cleaner kitchen, which is backwards, because Austin scores out of 100 and every violation takes points off, and my own notebook even charted risk as points deducted from a perfect score while the rest of it read the scale the other way round.',
-      'Read the right way round, follow-up visits average 84.4 against 90.9 for routine ones, which is what you would expect since a follow-up only happens after a bad inspection, and across a venue\'s history the average climbs from 90.5 at the first inspection to 92.6 by the fifteenth, so places tend to get a little cleaner, although only the venues still open for a fifteenth visit reach the end of that line.'],
+      'I started by querying every restaurant I actually eat at against the city health inspection API, and places that were sent for a follow-up visit averaged 84.4 against 90.9 for routine visits, 6.45 points apart, which is the opposite direction of what I expected.',
+      'A second pattern showed up across a venue\'s inspection history, the average score drifts from 90.5 at the first inspection to 92.6 by the fifteenth, which is 2.1 points toward more violations and starts to show by the fifth or sixth visit, so being flagged does not seem to be what fixes it, and the city already has the data to spot the ones sliding, although only the venues still open for a fifteenth visit reach the end of that line.'],
     sourceText: 'City of Austin open data ·', linkText: 'Full analysis ↗', linkHref: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection' },
   { tag: 'May 2026 · systems', title: 'Every productivity system I have built has the same failure mode',
     paragraphs: [
@@ -365,7 +365,7 @@ const RESULTS = {
     // ATX: the pest-sighting post and "where I eat" on this page; 21,160 records,
     // 84 brands, folium; Kaggle-hosted. "What still breaks" is survivorship in
     // the drift line: point 15 only averages venues inspected fifteen times.
-    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Only venues inspected fifteen times reach the end of the drift line, so part of the rise may be which places stay open'],
+    atx:       ['Anecdotes about where I eat, and one pest-sighting post', '21,160 records through the Socrata API, 84 brands, a folium choropleth', 'Nothing, it is a Kaggle notebook and static images on this page', 'Only venues inspected fifteen times reach the end of the drift line, so part of the drift may be which places stay open'],
   },
 };
 
@@ -554,7 +554,7 @@ export const LIFE_NOTES = [
     chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 25', found: 'Apr 29' } },
   // Gap: the notebook's printed impact table, follow-up 84.409091 (110 visits)
   // against routine 90.863883 (18,440), so 6.45 points.
-  { plain: 'a higher health score means fewer problems, and once I read it that way round the places that keep getting inspected tend to get a little cleaner over time.',
+  { plain: 'getting caught by the health inspector does not seem to make a place cleaner, and the restaurants that keep getting inspected tend to slide a little further with every visit.',
     chart: { label: 'average score by inspection number', scores: ATX_DRIFT,
       first: '90.5 · 1st visit', last: '92.6 · 15th', gapLabel: 'Follow-up visits against routine ones', gap: 6.45 } },
   { plain: 'every version of my to-do setup gets better, and every version still needs me at my most tired, which is the design problem worth solving and why Brain Dump exists.',
