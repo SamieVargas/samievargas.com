@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const OUT = 'data/changelog.json';
-const REPO = 'SamieVargas/samievargas.com';
+const REPO = 'SamieVargas/samievargas.github.io';
 // The snapshot commits themselves never count, or every push would show
 // up twice.
 const SKIP = '^Snapshot the change log';

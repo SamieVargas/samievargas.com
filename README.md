@@ -76,6 +76,7 @@ design/
 apps/                -- the arcade index plus fifteen self-contained apps
 toolkit.html         -- /toolkit, the build notes
 resume.html          -- printable résumé; Resume.pdf is printed from it
+CERTIFICATIONS.md    -- every cert with its verify and course links; the site and résumé carry a subset
 raccoon/             -- the raccoon invoice
 css/
   styles.css         -- design tokens and every style, one accent colour
@@ -157,7 +158,7 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260925f" --include=*.html --include=*.js .
+grep -rln "?v=20260925g" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.

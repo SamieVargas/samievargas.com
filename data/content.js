@@ -212,19 +212,29 @@ export const SKILL_AREAS = [
   { label: 'Stack', line: 'Anthropic API · Claude · Claude Code · MCP · Hugging Face Hub · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
 ];
 
-// Every cert verifiable; a sub without an href renders an "Add verify link" pill.
+// Every cert verifiable; a sub without an href renders an "Add verify link"
+// pill. The full list, with every course link, is CERTIFICATIONS.md at the
+// repo root, and this is the subset most relevant to applied AI and data.
 export const CERT_LIST = [
   { name: 'Anthropic AI Fluency, full credential set', issuer: 'Anthropic Academy · Jun 2026 · six courses, each verifiable', subs: [
-    { name: 'Claude 101', href: 'https://verify.skilljar.com/c/m33jy7xt39an' },
-    { name: 'Claude Code 101', href: 'https://academy.claude.com/badges/9bd2cc2f-37ac-4859-9ddb-6fe827dd4713' },
+    { name: 'Claude 101', href: 'https://verify.skilljar.com/c/9u7jnb7vvof6' },
+    { name: 'Claude Code 101', href: 'https://verify.skilljar.com/c/m33jy7xt39an' },
     { name: 'Intro to Agent Skills', href: 'https://verify.skilljar.com/c/mcpdh7rajijd' },
     { name: 'Intro to Claude Cowork', href: 'https://verify.skilljar.com/c/akk8bvgh8u8i' },
     { name: 'AI Capabilities & Limitations', href: 'https://verify.skilljar.com/c/5on46yhihy7j' },
     { name: 'AI Fluency Framework & Foundations', href: 'https://verify.skilljar.com/c/ju2k6b9v4ruu' },
   ] },
-  { name: 'Snowflake Hands-On Essentials: Data Warehousing Workshop', issuer: 'Snowflake University · Badge ID 184380098', href: 'https://achieve.snowflake.com/e3201335-75c2-4604-98c1-4c8063699131' },
+  { name: 'Databricks accreditations', issuer: 'Databricks Academy · Jun 2026 · three accreditations, each verifiable', subs: [
+    { name: 'AI Agent Fundamentals', href: 'https://credentials.databricks.com/77b2e833-0cf3-4f03-bdb7-5ac7ce9e8024#acc.6YmWJv4O' },
+    { name: 'Generative AI Fundamentals', href: 'https://credentials.databricks.com/8d3a5c2b-f47b-43d1-8ce7-86f71f844a2d#acc.maCtXnr3' },
+    { name: 'Databricks Fundamentals', href: 'https://credentials.databricks.com/86e01edd-79c7-4c9b-a796-0273ae36c80c#acc.oQhUiTNj' },
+  ] },
+  { name: 'Google AI Professional Certificate', issuer: 'Google / Coursera · ID 719MATVYL9UZ · Jun 2026', href: 'https://coursera.org/verify/professional-cert/719MATVYL9UZ' },
   { name: 'Google Advanced Data Analytics', issuer: 'Google / Coursera · ID 4REOBHKQJ0DS · Jun 2026', href: 'https://coursera.org/verify/professional-cert/4REOBHKQJ0DS' },
+  { name: 'Google Business Intelligence', issuer: 'Google / Coursera · Jun 2026', href: 'https://www.coursera.org/account/accomplishments/specialization/CLF3CXNNZO4L' },
+  { name: 'Snowflake Hands-On Essentials: Data Warehouse', issuer: 'Snowflake · Badge ID 184380098 · Jun 2026', href: 'https://achieve.snowflake.com/e3201335-75c2-4604-98c1-4c8063699131' },
   { name: 'dbt Fundamentals', issuer: 'dbt Labs · May 2026', href: 'https://credentials.getdbt.com/5470c199-7753-4f90-99a3-07e8f8c6fe51' },
+  { name: 'Google Analytics Certification (GA4)', issuer: 'Google Skillshop · ID 182987115 · May 2026', href: 'https://skillshop.credential.net/da7f2a2d-1e02-4267-aaca-d6bfbfc3036e#acc.5RV2vAUu' },
 ];
 
 export const OFF_CLOCK = [
@@ -236,47 +246,54 @@ export const OFF_CLOCK = [
 export const CONTACT_CMD = ["SELECT * FROM conversations WHERE topic = 'ai'", 'dbt run --select samie.availability', 'mail sammisnv@gmail.com'];
 
 const ROLES = [
-  { title: 'Senior Manager, Service', period: 'Oct 2023 – present', meta: 'People manager · $14M+ book · ~$3.5M quarterly target', bullets: [
+  { title: 'Senior Manager, Service', period: 'Oct 2023 – present', meta: 'People manager · Senior Team Leader until the org flattened · $14M+ book · ~$3.5M quarterly target', bullets: [
     'Designed a Claude-ready knowledge base over the PSF Emerging segment\'s ~110-document library, with an orientation layer that directs the model to cite each document and its date, quote compliance guidance verbatim, surface conflicting guidance rather than resolve it, respect a restricted-content boundary, and report gaps instead of inventing process; in a paired test on 10 simple requests it cut an average of three back-and-forth turns and answered accurately on all 10.',
     'Piloting it with a 60-person team through September 2026, with rollout to four more pods (about 240 people) in October gated on no increase in back-and-forth against the paired baseline, and 1x1s with high-usage users shaping revisions.',
     'Accountable for revenue performance and 5% YoY growth strategy across a $14M+ annual enterprise book spanning global strategy and management consulting firms; quarterly revenue target of ~$3.5M.',
-    'Lead a team of 3 client-facing managers, scaled 3–10 per quarter based on account needs, with full accountability for onboarding, performance management, and development across seniority levels.',
+    'Lead a team of 5 client-facing managers, which has run between 5 and 10 per quarter as people move to where the accounts need them, with full accountability for onboarding, performance management, and development across seniority levels.',
     'Architect and operate a multi-metric account health system, a custom internal dashboard plus SFDC, tracking engagement pipeline, project yield, renewal risk, and health signals across the full portfolio in real time.',
     'Built AI-powered workflows using Claude, ChatGPT, Gemini, Copilot, and in-house GPT/Claude tools to accelerate analysis and output quality; drove adoption across the team.',
     'Manage 2–3 active contract renewals concurrently, owning the full lifecycle from health assessment through negotiation and close.'] },
-  { title: 'Team Leader → Manager, Service', period: 'May 2022 – Oct 2023', meta: 'People manager · founded the Center of Excellence', bullets: [
-    'Led teams of 3–10 client-facing managers per quarter, adapting coverage to account needs and growth cycles while maintaining performance standards during scaling.',
+  { title: 'Team Leader', period: 'May 2022 – Oct 2023', meta: 'People manager · founded the Center of Excellence', bullets: [
+    'Led a team of 5 client-facing managers while carrying a personal enterprise book, adapting coverage to account needs and growth cycles while maintaining performance standards during scaling.',
     'Founded and scaled a Center of Excellence: lifecycle playbooks, engagement templates, escalation frameworks, and onboarding guides, adopted org-wide and reducing new manager ramp time.',
     'Designed and built virtual Kanban and sprint performance boards giving the team real-time visibility into account health, delivery milestones, and individual performance.',
     'Designed structured reporting cadences that gave leadership consistent visibility into retention risk, team performance, and revenue pipeline.'] },
-  { title: 'Senior Manager, Client Solutions', period: 'Jul 2021 – May 2022', meta: 'Individual contributor · 30+ concurrent engagements', bullets: [
+  { title: 'Senior Client Solutions Manager', period: 'Jul 2021 – May 2022', meta: 'Individual contributor · Senior Project Manager · 30+ concurrent engagements', bullets: [
     'Managed 30+ concurrent enterprise engagements weekly across global strategy and consulting firm clients, ensuring delivery quality and positive client outcomes.',
     'Generated $1M+ in annual revenue within a flagship account through relationship development, use case expansion, and proactive engagement strategy.',
     'Designed and executed a large-scale outreach campaign engaging 700+ users, achieving the highest response rate to date.'] },
-  { title: 'Manager, Client Solutions', period: 'Jul 2020 – Jul 2021', meta: 'Individual contributor · ~$900K annual revenue', bullets: [
+  { title: 'Client Solutions Manager', period: 'Jul 2020 – Jul 2021', meta: 'Individual contributor · Project Manager · ~$900K annual revenue', bullets: [
     'Managed 20+ concurrent client engagements, generating roughly $900K in annual revenue through high-quality delivery and strong stakeholder relationships.',
     'Collaborated cross-functionally to adapt to evolving client needs and deliver customized solutions aligned to client objectives.',
     'Led internal engagement initiatives through an ERG, organizing networking and community-building events.'] },
-  { title: 'Junior → Senior Associate, Client Solutions', period: 'Jul 2018 – Jun 2020', meta: 'Where it started · 10+ projects weekly', bullets: [
+  { title: 'Junior → Senior Client Solutions Associate', period: 'Jul 2018 – Jun 2020', meta: 'Where it started · Project Analyst, then Project Associate from Jan 2019 · 10+ projects weekly', bullets: [
     'Managed over 10 projects weekly from inception to completion, ensuring timely delivery for enterprise clients.',
     'Analyzed value chains across industries to sharpen client problem-solving and execution strategies.',
     'Recruited subject matter experts across diverse industries to strengthen client engagements.'] },
 ];
 
-const RACCOON_DAYS = [
-  { d: 'Apr 24', v: 62, note: 'Normal week. No idea anything was coming.' },
-  { d: 'Apr 25', v: 41, note: 'First bad night. Blamed the podcast.' },
-  { d: 'Apr 26', v: 18, note: 'Cancelled plans.' },
-  { d: 'Apr 27', v: 5, note: 'The floor. Five out of a hundred.' },
-  { d: 'Apr 28', v: 5, note: 'Still the floor.' },
-  { d: 'Apr 29', v: 5, note: 'Still the floor. Sleep score 53.' },
-  { d: 'Apr 30', v: 5, note: 'HRV 26ms, my worst on record.' },
-  { d: 'May 1', v: 5, note: 'Found them. Mother raccoon and babies on the balcony.' },
-  { d: 'May 3', v: 5, note: 'Raccoons removed. I expected instant relief. Body battery: still 5.' },
-  { d: 'May 5', v: 22, note: 'First movement in ten days.' },
-  { d: 'May 7', v: 44, note: 'Climbing.' },
-  { d: 'May 9', v: 58, note: 'Almost back.' },
-  { d: 'May 11', v: 74, note: 'Baseline. Eight days after the threat was gone.' },
+
+
+// Garmin body battery, from the readings on /raccoon (Apr 24 has none).
+const RACCOON_LIFE = [
+  { d: 'Apr 23', v: 23, note: 'A normal day, with nothing on the balcony that I knew about.' },
+  { d: 'Apr 25', v: 5, note: 'The floor, five out of a hundred, and I blamed the podcast.' },
+  { d: 'Apr 26', v: 5, note: 'Still the floor, and I felt bad all day without knowing why.' },
+  { d: 'Apr 27', v: 5, note: 'Still the floor, and another day of feeling off for no reason I could name.' },
+  { d: 'Apr 28', v: 5, note: 'Still the floor, with a sleep score of 53 against a baseline of 81 and HRV at 26 ms, my worst on record, and I cancelled plans.' },
+  { d: 'Apr 29', v: 5, note: 'Found them on Wednesday morning before work, a mother raccoon and her babies on the balcony.' },
+  { d: 'Apr 30', v: 13, note: 'A little movement while I made calls and waited on pest control.' },
+  { d: 'May 1', v: 21, note: 'The best reading of the week, with the raccoons still out there.' },
+  { d: 'May 2', v: 11, note: 'Down again after the pest company only inspected and quoted removal for next week.' },
+  { d: 'May 3', v: 5, note: 'Raccoons removed and I expected instant relief, but body battery was back at 5.' },
+  { d: 'May 4', v: 6, note: 'The day after removal, still at the floor.' },
+  { d: 'May 5', v: 23, note: 'The first real movement since they were gone.' },
+  { d: 'May 6', v: 18, note: 'Slipping back a little, two steps forward and one back.' },
+  { d: 'May 7', v: 26, note: 'The highest reading of the whole stretch.' },
+  { d: 'May 8', v: 18, note: 'Back down, still not linear.' },
+  { d: 'May 9', v: 11, note: 'One more dip on the way back.' },
+  { d: 'May 10', v: 17, note: 'Back in my normal range of 15 to 25, a week after the threat was gone.' },
 ];
 
 const OBSERVATIONS = [
@@ -289,10 +306,10 @@ const OBSERVATIONS = [
   { tag: 'Apr–May 2026 · personal biometric data', title: 'My nervous system knew about the raccoon before I did',
     paragraphs: [
       'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans, and then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.',
-      'The wearable data told the story better than I could, five consecutive days at a body battery of 5 out of 100, which is the floor, before I knew what the threat was, and my sleep score fell from a baseline of 81 to 53.',
+      'The wearable data told the story better than I could, five consecutive days at a body battery of 5 out of 100, which is the floor, most of them before I knew what the threat was, and my sleep score fell from a baseline of 81 to 53.',
       'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
-    chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_DAYS } },
+    chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_LIFE } },
   { tag: 'May 2026, reread Sep 2026 · 21,160 inspection records', title: 'I read the inspection scale upside down, and the finding flipped with it',
     paragraphs: [
       'I started by querying every restaurant I actually eat at against the city health inspection API, and my first pass treated a lower score as a cleaner kitchen, which is backwards, because Austin scores out of 100 and every violation takes points off, and my own notebook even charted risk as points deducted from a perfect score while the rest of it read the scale the other way round.',
@@ -503,21 +520,6 @@ const CHRISTIE = [
   { t: 'The Unexpected Guest', y: 1999, r: 4, d: 'Feb 3', n: 'the Osborne novelisation' },
 ];
 
-const RACCOON_LIFE = [
-  { d: 'Apr 24', v: 62, note: 'A normal week, and I had no idea anything was coming.' },
-  { d: 'Apr 25', v: 41, note: 'First bad night, which I blamed on the podcast.' },
-  { d: 'Apr 26', v: 18, note: 'Cancelled plans.' },
-  { d: 'Apr 27', v: 5, note: 'The floor, five out of a hundred.' },
-  { d: 'Apr 28', v: 5, note: 'Still the floor.' },
-  { d: 'Apr 29', v: 5, note: 'Still the floor, with a sleep score of 53 against a baseline of 81.' },
-  { d: 'Apr 30', v: 5, note: 'HRV 26ms, my worst on record.' },
-  { d: 'May 1', v: 5, note: 'Found them, a mother raccoon and babies on the balcony.' },
-  { d: 'May 3', v: 5, note: 'Raccoons removed and I expected instant relief, but body battery was still 5.' },
-  { d: 'May 5', v: 22, note: 'First movement in ten days.' },
-  { d: 'May 7', v: 44, note: 'Climbing.' },
-  { d: 'May 9', v: 58, note: 'Almost back.' },
-  { d: 'May 11', v: 74, note: 'Back to baseline, eight days after the threat was gone.' },
-];
 
 const PROGRESS = [
   { title: 'The full Greenbelt, out and back', note: '15 of 21 miles', pct: 71 },
@@ -549,7 +551,7 @@ export const LIFE_NOTES = [
   { plain: 'new shoppers rarely rebuy and regulars almost always do, so the one famous average is two different groups mashed together and it fits neither of them.',
     chart: { label: 'reorder rate · pooled, then split', pooled: 0.60, split: [{ k: 'new', v: 0.221 }, { k: 'veteran', v: 0.670 }] } },
   { plain: 'my body was stressed for days before I knew why, and it stayed stressed for more than a week after the problem was gone.',
-    chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 27', found: 'May 1' } },
+    chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 25', found: 'Apr 29' } },
   // Gap: the notebook's printed impact table, follow-up 84.409091 (110 visits)
   // against routine 90.863883 (18,440), so 6.45 points.
   { plain: 'a higher health score means fewer problems, and once I read it that way round the places that keep getting inspected tend to get a little cleaner over time.',
@@ -563,7 +565,7 @@ export const LIFE_NOTES = [
 
 // ── Toolkit page ─────────────────────────────────────────────
 
-const TK_REPO = 'SamieVargas/samievargas.com';
+const TK_REPO = 'SamieVargas/samievargas.github.io';
 
 const TK_FALLBACK = [
   { message: 'Add the launch kit: favicon set, social card, 404, manifest', date: '2026-08-22' },
