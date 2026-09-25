@@ -1,9 +1,19 @@
 {
-  "generated": "2026-09-25T21:29:58Z",
+  "generated": "2026-09-25T21:34:46Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 302,
+  "total": 305,
   "commits": [
+    {
+      "sha": "6ca2a423ea027378dc0b6f0cc467f8cf2289371f",
+      "date": "2026-09-25T21:32:30Z",
+      "message": "Voice pass on the raccoon page, fix its dead links, and finish the version bump"
+    },
+    {
+      "sha": "c92a577f442ce175f653d81503261e72eb70f2bd",
+      "date": "2026-09-25T21:32:13Z",
+      "message": "Voice pass on the fifteen arcade apps"
+    },
     {
       "sha": "7251e9ca85a35f68a819123aec0cf83666bde4fb",
       "date": "2026-09-25T21:29:23Z",
@@ -43,16 +53,6 @@
       "sha": "6a6c464a233aad0e23da7f69fdf96ee76c4bfa65",
       "date": "2026-09-24T15:56:06Z",
       "message": "Add the PSF Emerging knowledge base and its pilot to the current role"
-    },
-    {
-      "sha": "8ec233934bc2de79d1abd38e4c25c593bde608d4",
-      "date": "2026-09-24T00:54:35Z",
-      "message": "Fix the layout bugs in six arcade apps and re-shoot two"
-    },
-    {
-      "sha": "837d0c6dd1b0ab55862007ec1548a34ca1508e82",
-      "date": "2026-09-24T00:43:43Z",
-      "message": "Bump the staged-loader import token on two apps"
     }
   ],
   "weeks": [
@@ -75,7 +75,7 @@
     16,
     15,
     0,
-    58
+    61
   ],
   "resume": {
     "sha": "7251e9ca85a35f68a819123aec0cf83666bde4fb",
