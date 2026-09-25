@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-24T23:21:45Z",
+  "generated": "2026-09-25T18:09:34Z",
   "repo": "SamieVargas/samievargas.com",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 298,
+  "total": 299,
   "commits": [
+    {
+      "sha": "537e4628634368c200d39f4b1a503be697b6e222",
+      "date": "2026-09-25T13:09:26-05:00",
+      "message": "Add /assist, the Guideline Assist replay, and its row on the work page (#43)"
+    },
     {
       "sha": "9578046c2b893eabdc5e8d1bd61f8ae574b179b6",
       "date": "2026-09-24T23:18:54Z",
@@ -48,19 +53,14 @@
       "sha": "3b029a2b6e6dc5e9623fa852c1640b55dfadfab9",
       "date": "2026-09-24T00:43:16Z",
       "message": "Read the Austin inspection scale the right way round"
-    },
-    {
-      "sha": "c01eb1083243b27033ea9e4dc1f3638b62e5d890",
-      "date": "2026-09-24T00:23:29Z",
-      "message": "Rebuild the work page in the 3a style around the four-pattern spine"
     }
   ],
   "weeks": [
     0,
-    12,
-    45,
-    99,
-    28,
+    35,
+    22,
+    110,
+    17,
     0,
     3,
     0,
@@ -75,10 +75,10 @@
     16,
     15,
     0,
-    54
+    55
   ],
   "resume": {
-    "sha": "9578046c2b893eabdc5e8d1bd61f8ae574b179b6",
-    "date": "2026-09-24T23:18:54Z"
+    "sha": "537e4628634368c200d39f4b1a503be697b6e222",
+    "date": "2026-09-25T13:09:26-05:00"
   }
 }
