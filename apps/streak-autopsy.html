@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Streak Autopsy — Samie Vargas</title>
-<meta name="description" content="A habit tracker that counts the days for you — miss two and the habit coroner opens a case, asks one question, and files the report.">
+<title>Streak Autopsy · Samie Vargas</title>
+<meta name="description" content="A habit tracker that counts the days for you, and if you miss two the habit coroner opens a case, asks one question and files the report.">
 <link rel="canonical" href="https://samievargas.com/apps/streak-autopsy">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -62,7 +62,7 @@ input, textarea, button { font: inherit; }
       <div>
         <div style="font-size: 10px; letter-spacing: 4px; color: #8c8577; animation: fadein 480ms ease both"><span style="color: #b3372c">[ FIG. 08 ]</span>&nbsp;&nbsp;OFFICE OF THE HABIT CORONER</div>
         <h1 style="font-family: 'Libre Caslon Text', serif; font-size: 46px; margin: 10px 0 0; font-weight: 400; line-height: 1; animation: fadein 520ms ease both; animation-delay: 90ms">Streak Autopsy</h1>
-        <div style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 18px; color: #6b6357; margin-top: 10px; animation: fadein 520ms ease both; animation-delay: 180ms">It counts the days for you. Miss two and it opens a case.</div>
+        <div style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 18px; color: #6b6357; margin-top: 10px; animation: fadein 520ms ease both; animation-delay: 180ms">It counts the days for you, and if you miss two it opens a case.</div>
       </div>
       <div style="display: flex; gap: 22px; font-size: 10.5px; line-height: 1.6; color: #8c8577; white-space: nowrap; animation: fadein 520ms ease both; animation-delay: 260ms"><div>TODAY<br><span id="st-today" style="color: #2a2622; font-size: 14px"></span></div><div>ALIVE<br><span id="st-alive" style="color: #2a2622; font-size: 14px"></span></div><div>ON FILE<br><span id="st-deaths" style="color: #b3372c; font-size: 14px"></span></div><div>REVIVED<br><span id="st-res" style="color: #2a2622; font-size: 14px"></span></div></div>
     </div>
@@ -261,7 +261,7 @@ function renderForecast() {
   if (wetDay && rainDeaths >= 2) text = "Rain has killed " + rainDeaths + " of your habits, and there is a " + wetDay.rain + "% chance of it on " + dayName(wetDay) + ". Consider this notice.";
   else if (wetDay) text = dayName(wetDay) + " carries a " + wetDay.rain + "% chance of rain. Nothing on file blames the weather yet, but the coroner is watching.";
   else if (hotDay) text = dayName(hotDay) + " hits " + hotDay.temp + "°. Heat is the Austin excuse and it works on everyone.";
-  else text = "Five clear days ahead. You have no weather to hide behind.";
+  else text = "There are five clear days ahead, so you have no weather to hide behind.";
   const border = days.some(d => (d.rain || 0) >= 50 || (d.temp || 0) >= 100) ? "#b3372c" : "#cfc8b8";
   const bg = days.some(d => (d.rain || 0) >= 50) ? "#fbf1ef" : "#f7f4ea";
   const chips = days.map(d => {
@@ -316,7 +316,7 @@ function renderFinding() {
   const fc = factorCounts();
   const note = fc.top && fc.counts[fc.top] > 1
     ? "“" + fc.top + "” now appears in " + fc.counts[fc.top] + " of " + state.records.length + " deaths on file. The coroner is no longer treating it as coincidence."
-    : "Filed. One more death and the file starts finding patterns.";
+    : "Filed, and one more death means the file starts finding patterns.";
   el.innerHTML = '<div style="border: 1.5px solid #b3372c; background: #fbf1ef; padding: 24px 26px; margin-top: 22px; animation: fadein 300ms ease both">' +
     '<div style="font-size: 10px; letter-spacing: 3px; color: #b3372c">CORONER\'S FINDING</div>' +
     '<p style="font-family: \'Libre Caslon Text\', serif; font-size: 23px; line-height: 1.4; margin: 12px 0 0">' + esc(state.finding) + '</p>' +
@@ -352,7 +352,7 @@ function renderCert() {
 function renderFile() {
   const el = document.getElementById("file-body");
   if (state.records.length === 0) {
-    el.innerHTML = '<div style="padding: 0 22px 22px; font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 17px; color: #8c8577">No deaths on file. Suspicious, but we\'ll allow it.</div>';
+    el.innerHTML = '<div style="padding: 0 22px 22px; font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 17px; color: #8c8577">No deaths are on file, which is suspicious, but we\'ll allow it.</div>';
     return;
   }
   el.innerHTML = state.records.map(r =>
@@ -383,8 +383,8 @@ function renderPattern() {
   if (state.records.length < 3) { el.innerHTML = ""; return; }
   const fc = factorCounts();
   const pattern = fc.top && fc.counts[fc.top] >= 2
-    ? "Across " + state.records.length + " autopsies, the cause is usually “" + fc.top + ".” The habit isn't the problem. " + fc.top.toLowerCase() + " is."
-    : "Across " + state.records.length + " autopsies, no repeating cause. Every one died in its own way, which is somehow worse.";
+    ? "Across " + state.records.length + " autopsies, the cause is usually “" + fc.top + ",” so the coroner blames " + fc.top.toLowerCase() + " and clears the habit."
+    : "Across " + state.records.length + " autopsies there is no repeating cause, and every one died in its own way, which is somehow worse.";
   el.innerHTML = '<p style="font-family: \'Libre Caslon Text\', serif; font-style: italic; font-size: 19px; line-height: 1.45; margin: 24px 0 0; border-top: 1px solid #ddd5c3; padding-top: 20px">' + esc(pattern) + '</p>';
 }
 
@@ -422,10 +422,10 @@ function fileReport(resurrect) {
   const rec = { habit: h.name, days: days, factor: state.factor, answer: answerEl.value || "No statement given.", tod: pretty(last) };
   const records = [rec].concat(state.records).slice(0, 14);
   try { localStorage.setItem("streak.file", JSON.stringify(records)); } catch (e) {}
-  let finding = "Death by ordinary Tuesday. Nothing dramatic happened. That's the whole finding.";
-  if (days < 14) finding = "Death by early frost. Under two weeks is not a habit, it's an intention with a start date.";
-  else if (days >= 90) finding = "Death after a long life. This one earned an obituary rather than an autopsy.";
-  else if (days >= 30) finding = "Death by success. It survived long enough to feel automatic, and automatic things stop being defended.";
+  let finding = "Death by ordinary Tuesday: nothing dramatic happened, and that's the whole finding.";
+  if (days < 14) finding = "Death by early frost: under two weeks makes it an intention with a start date, and a habit takes longer than that.";
+  else if (days >= 90) finding = "Death after a long life: this one earned an obituary rather than an autopsy.";
+  else if (days >= 30) finding = "Death by success: it survived long enough to feel automatic, and automatic things stop being defended.";
 
   if (resurrect) {
     state.resurrections += 1;

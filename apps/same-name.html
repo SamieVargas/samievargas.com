@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Same Name, Different Life — Samie Vargas</title>
-<meta name="description" content="One name, every person who carried it, arranged by the century they were born into — queried live from Wikidata.">
+<title>Same Name, Different Life · Samie Vargas</title>
+<meta name="description" content="One name, every person who carried it, arranged by the century they were born into, queried live from Wikidata.">
 <link rel="canonical" href="https://samievargas.com/apps/same-name">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -76,7 +76,7 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
-import { stagedLoader } from '../js/staged-loader.js?v=20260925e';
+import { stagedLoader } from '../js/staged-loader.js?v=20260925f';
 
 const PRESETS = ["Peter Jackson", "John Williams", "Mary Shelley", "David Jones", "Grace Lee", "Michael Jordan"];
 const SPARQL_URL = "https://query.wikidata.org/sparql";
@@ -164,7 +164,7 @@ function derive() {
       desc: (function (d) {
         if (!d) return "No description on file, which is its own kind of life.";
         const stripped = d.replace(/^\(?-?\d{3,4}\s*[\u2013-]\s*-?\d{0,4}\)?\s*/, "").trim();
-        return stripped || "Recorded only by dates.";
+        return stripped || "This life is recorded only by dates.";
       })(v(r, "pDescription")),
       occ: occ || "trade not recorded",
       occFirst: occ ? occ.split(",")[0].trim() : "",
@@ -190,7 +190,7 @@ function derive() {
     const n = state.ran;
     if (topOcc && occCounts[topOcc] > 2) closing = "There have been " + occCounts[topOcc] + " " + topOcc + "s called " + n + ". At three, it stops being coincidence.";
     else if (years.length >= 2) closing = years.length + " dated lives across " + (Math.max.apply(null, years) - Math.min.apply(null, years)) + " years, and no two of them did the same thing twice.";
-    else closing = "One life on record under that name.";
+    else closing = "There is one life on record under that name.";
   }
 
   return { people, occCounts, occKeys, topOcc, shared, dated, years, undated, closing };
@@ -254,9 +254,9 @@ function versusBoxHTML() {
   ];
   let finding = "";
   if (A && B) {
-    if (A.topTrade === B.topTrade) finding = "Both names run to " + A.topTrade + "s. Either the trade is enormous or the name means nothing \u2014 usually the former.";
+    if (A.topTrade === B.topTrade) finding = "Both names run to " + A.topTrade + "s. Either the trade is enormous or the name means nothing, and usually it is the former.";
     else if (A.total > B.total * 1.5) finding = state.ran + " carries " + A.total + " lives against " + B.total + ", and skews to " + A.topTrade + "s where " + state.ranB + " skews to " + B.topTrade + "s.";
-    else finding = state.ran + " skews to " + A.topTrade + "s, " + state.ranB + " to " + B.topTrade + "s. Same era, different work.";
+    else finding = state.ran + " skews to " + A.topTrade + "s while " + state.ranB + " skews to " + B.topTrade + "s, so the two names ended up doing different work.";
   }
   const title = (state.ran || "").toUpperCase() + " \u25a0 vs \u25a0 " + (state.ranB || "").toUpperCase();
   const meta = state.busyB ? "querying\u2026" : "both queried live";
@@ -488,7 +488,7 @@ async function run() {
       Object.assign(state, { loading: false, failed: false, rows: rows, ran: name, note: "" });
     }
   } catch (e) {
-    const msg = e.message === "TIMEOUT" ? "The public query service timed out. It does that \u2014 run it again."
+    const msg = e.message === "TIMEOUT" ? "The public query service timed out. It does that, so run it again."
       : (e.message === "RATE_LIMIT" ? "Wikidata is rate-limiting this browser. Wait a moment and retry." : "Could not reach the Wikidata query service.");
     Object.assign(state, { loading: false, failed: true, note: msg });
     // The app's own panel carries the recovery copy; the stage row only

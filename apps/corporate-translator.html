@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corporate Translator — Samie Vargas</title>
-<meta name="description" content="One input, one slider, one output: rewrite a work email anywhere from passive-aggressive to Texan warm, or read the subtext of the one they sent you — rule-based, nothing leaves your browser.">
+<title>Corporate Translator · Samie Vargas</title>
+<meta name="description" content="One input, one slider, one output: rewrite a work email anywhere from passive-aggressive to Texan warm, or read the subtext of the one they sent you, and it is rule-based, so nothing leaves your browser.">
 <link rel="canonical" href="https://samievargas.com/apps/corporate-translator">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -126,41 +126,41 @@ const TONES = [
 ];
 
 const SWAPS = [
-  [/per my last email,?\s*/gi, ["Per my last email, ", "Following up: ", "Checking in on this — ", "Hey — quick nudge on this. ", "Hey! Just floating this back up. "]],
+  [/per my last email,?\s*/gi, ["Per my last email, ", "Following up: ", "Checking in on this: ", "Hey, quick nudge on this. ", "Hey! Just floating this back up. "]],
   [/just circling back( on this)?\.?\s*/gi, ["Circling back again. ", "Following up. ", "Checking in. ", "Wanted to check in on this. ", "Hey, no rush at all, just checking in. "]],
-  [/not sure if you saw my message below\.?\s*/gi, ["Not sure if you saw my message below. ", "In case it got buried: ", "It may have gotten buried. ", "It might've gotten buried in your inbox. ", "Totally possible it got buried — inboxes are a mess. "]],
+  [/not sure if you saw my message below\.?\s*/gi, ["Not sure if you saw my message below. ", "In case it got buried: ", "It may have gotten buried. ", "It might've gotten buried in your inbox. ", "Totally possible it got buried, inboxes are a mess. "]],
   [/i'?m still waiting on/gi, ["I'm still waiting on", "I still need", "I'm looking for", "I'd love to get", "Whenever you get a sec, I'd love to grab"]],
   [/you said would be ready/gi, ["you said would be ready", "that was due", "we'd targeted for", "we'd talked about for", "we'd loosely aimed at for"]],
-  [/let me know either way\.?/gi, ["Let me know either way.", "A yes or no works.", "Either way is fine.", "Either way works — just let me know.", "Either way's fine by me, just holler."]],
-  [/as discussed on the call,?\s*/gi, ["As discussed on the call, ", "From the call: ", "Coming out of the call, ", "One thing from our call — ", "Hey! Circling back on something from our call. "]],
+  [/let me know either way\.?/gi, ["Let me know either way.", "A yes or no works.", "Either way is fine.", "Either way works, just let me know.", "Either way's fine by me, just holler."]],
+  [/as discussed on the call,?\s*/gi, ["As discussed on the call, ", "From the call: ", "Coming out of the call, ", "One thing from our call: ", "Hey! Circling back on something from our call. "]],
   [/i'?d like to understand what happened here\.?/gi, ["I'd like to understand what happened here.", "I want to understand what happened.", "Can you walk me through what happened?", "Would you walk me through it when you get a chance?", "Would love to hear how it played out, no blame at all."]],
-  [/friendly reminder that/gi, ["Friendly reminder that", "A reminder that", "Noting that", "Quick note that", "Real quick — I think"]],
-  [/happy to jump on a call if that'?s easier for you\.?/gi, ["Happy to jump on a call if that's easier for you.", "A call works if that's easier.", "Happy to hop on a call.", "Happy to hop on a call if that's easier.", "Happy to hop on a call, or we can keep it right here — whatever's easiest."]],
+  [/friendly reminder that/gi, ["Friendly reminder that", "A reminder that", "Noting that", "Quick note that", "Real quick, I think"]],
+  [/happy to jump on a call if that'?s easier for you\.?/gi, ["Happy to jump on a call if that's easier for you.", "A call works if that's easier.", "Happy to hop on a call.", "Happy to hop on a call if that's easier.", "Happy to hop on a call, or we can keep it right here, whatever's easiest."]],
   [/this was owned by your team\.?/gi, ["this was owned by your team.", "your team owned this.", "this sat with your team.", "I think this one sat with your team.", "I had this one down as your team's, though I could be off."]],
   [/the deadline was friday\.?/gi, ["the deadline was Friday.", "Friday was the deadline.", "Friday was the date.", "Friday was the date we'd set.", "Friday was the date we'd landed on."]]
 ];
 
-const CLOSERS = ["", "", "", "\n\nThanks!", "\n\nThanks so much — appreciate you."];
+const CLOSERS = ["", "", "", "\n\nThanks!", "\n\nThanks so much, appreciate you."];
 
 const TELLS_INBOUND = [
   { re: /per my last email/i, reading: "They have a record of asking and they are showing it to you." },
-  { re: /just circling back|following up again/i, reading: "This is not the first ask. It is the one they decided to make visible." },
-  { re: /not sure if you saw/i, reading: "A polite fiction. They know you saw it." },
+  { re: /just circling back|following up again/i, reading: "They have asked before, and this is the ask they decided to make visible." },
+  { re: /not sure if you saw/i, reading: "This is a polite fiction, and they know you saw it." },
   { re: /as discussed|as we agreed/i, reading: "They are establishing a shared record before making a claim against it." },
   { re: /friendly reminder|gentle reminder/i, reading: "The word doing the work is not ‘friendly.’" },
   { re: /i'?d like to understand|help me understand/i, reading: "This is an audit opening, phrased as curiosity." },
   { re: /going forward/i, reading: "Something happened that they do not want repeated." },
   { re: /looping in|adding|cc'?ing/i, reading: "The audience just changed, and that is the message." },
-  { re: /when you get a chance|whenever you can/i, reading: "Genuinely soft, or a deadline in disguise. Check whether a date follows." },
+  { re: /when you get a chance|whenever you can/i, reading: "This is either genuinely soft or a deadline in disguise, so check whether a date follows." },
   { re: /any update|status/i, reading: "They are asking for a number and will accept a date instead." },
-  { re: /happy to jump on a call/i, reading: "They want it out of writing. Consider why." },
+  { re: /happy to jump on a call/i, reading: "They want it out of writing, so consider why." },
   { re: /no rush/i, reading: "There is a rush." }
 ];
 
 const WORRY = ["Not at all", "Barely", "A little", "Somewhat", "Quite", "Yes"];
 const WORRY_NOTE = [
-  "Nothing loaded in here. It is a normal email.",
-  "One soft tell. Probably just how they write.",
+  "Nothing is loaded in here and it is a normal email.",
+  "There is one soft tell, and it is probably just how they write.",
   "There is a subtext, but it is not aimed at you yet.",
   "They are building a record. Reply in writing, with a date.",
   "This is a documented ask. Answer it precisely and keep the thread.",
@@ -281,10 +281,10 @@ function render() {
 
   // What changed
   const moves = [];
-  if (state.tone <= 1) moves.push("Nothing softened. The subtext stays visible on purpose.");
+  if (state.tone <= 1) moves.push("Nothing was softened, so the subtext stays visible on purpose.");
   if (state.tone === 2) moves.push("Passive tells removed, no warmth added.");
-  if (state.tone >= 3) { moves.push("Blame language traded for shared uncertainty (“I could be off”)."); moves.push("Deadline stated as a decision you both made, not a rule they broke."); }
-  if (state.tone === 4) moves.push("Closing line gives them an out. That's the whole trick.");
+  if (state.tone >= 3) { moves.push("Blame language traded for shared uncertainty (“I could be off”)."); moves.push("Deadline framed as a decision you both made, so nobody broke a rule."); }
+  if (state.tone === 4) moves.push("Closing line gives them an out, and that's the whole trick.");
   if (tells > 0) moves.push(tells + " passive tell" + (tells === 1 ? "" : "s") + " detected in the original.");
   movesList.innerHTML = moves.map(m =>
     `<div style="display: flex; gap: 12px; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.5; color: #b9b3d9"><span style="color: #ffbf7f">→</span><span>${esc(m)}</span></div>`
@@ -318,7 +318,7 @@ function render() {
   else if (tells === 1) subtext = "“I have noticed, and I want you to know I noticed.”";
   else if (hedges >= 3) subtext = "“I am asking for something and hoping you won't notice I'm asking.”";
   else if (!words) subtext = "Nothing to read yet.";
-  else subtext = "“This is a normal email.” Rare. Send it.";
+  else subtext = "“This is a normal email.” That is rare, so send it.";
   subtextEl.textContent = subtext;
 }
 

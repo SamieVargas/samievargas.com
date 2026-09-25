@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backlog Reaper — Samie Vargas</title>
-<meta name="description" content="The Backlog Reaper picks one unplayed game from your pile, makes the case against it, and dares you to delete it forever. One must go. You chose this.">
+<title>Backlog Reaper · Samie Vargas</title>
+<meta name="description" content="The Backlog Reaper picks one unplayed game from your pile, makes the case against it, and dares you to delete it forever, because one must go and you chose this.">
 <link rel="canonical" href="https://samievargas.com/apps/backlog-reaper">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -72,10 +72,10 @@ input, button { font: inherit; }
 
         <div id="importPanel" style="display: none; margin-top: 22px; border: 1px solid #33333d; border-radius: 10px; background: #14141a; padding: 22px 24px">
           <div style="font-size: 10.5px; letter-spacing: 2px; color: #7a7a88">IMPORT YOUR OWN LIBRARY</div>
-          <p style="font-size: 12.5px; line-height: 1.75; color: #b0b0be; margin: 12px 0 0">Steam blocks browsers from calling its API directly, so nothing here can log into your account — which also means nothing here can leak it. Fetch the JSON yourself and paste it in:</p>
+          <p style="font-size: 12.5px; line-height: 1.75; color: #b0b0be; margin: 12px 0 0">Steam blocks browsers from calling its API directly, so nothing here can log into your account, which also means nothing here can leak it. Fetch the JSON yourself and paste it in:</p>
           <div style="background: #0c0c0f; border: 1px solid #26262e; border-radius: 6px; padding: 12px 14px; margin-top: 12px; font-size: 11px; line-height: 1.7; color: #8f8f9e; word-break: break-all">1. Get a key at steamcommunity.com/dev/apikey<br>2. Open: api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=YOURKEY&amp;steamid=YOURID&amp;include_appinfo=1&amp;include_played_free_games=1<br>3. Copy the whole page, paste below.</div>
-          <p style="font-size: 12px; line-height: 1.7; color: #7a7a88; margin: 12px 0 0">Or paste plain lines instead: <span style="color: #b0b0be">Title, 2y, 0.4</span> (title, owned, hours played) — one per line. Works for any platform.</p>
-          <textarea id="pasteBox" rows="6" placeholder='{"response":{"games":[...]}}   —   or   —   Persona 5 Royal, 4y, 0.4' style="width: 100%; box-sizing: border-box; margin-top: 14px; background: #0c0c0f; border: 1px solid #33333d; border-radius: 8px; color: #e4e4ea; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.6; padding: 14px; outline: none; resize: vertical"></textarea>
+          <p style="font-size: 12px; line-height: 1.7; color: #7a7a88; margin: 12px 0 0">Or paste plain lines instead: <span style="color: #b0b0be">Title, 2y, 0.4</span> (title, owned, hours played), one per line, and it works for any platform.</p>
+          <textarea id="pasteBox" rows="6" placeholder='{"response":{"games":[...]}}   or   Persona 5 Royal, 4y, 0.4' style="width: 100%; box-sizing: border-box; margin-top: 14px; background: #0c0c0f; border: 1px solid #33333d; border-radius: 8px; color: #e4e4ea; font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.6; padding: 14px; outline: none; resize: vertical"></textarea>
           <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center">
             <button type="button" id="btnRunImport" style="background: #ff4d6d; color: #0c0c0f; border: none; border-radius: 8px; padding: 13px 22px; font-size: 11.5px; font-weight: 700; letter-spacing: 1.4px; cursor: pointer">IMPORT THE PILE</button>
             <span id="importNote" style="font-size: 11.5px; color: #8f8f9e"></span>
@@ -133,7 +133,7 @@ const DEMO = [
 const CASES = [
   "Owned {owned}. Played {played}. It is {length} hours long. You were never going to.",
   "You have owned this longer than most people keep a car. The save file is from a different apartment.",
-  "{played} hours in {owned}. That is not a backlog entry, that is a monument.",
+  "{played} hours in {owned}, so at this point it is a monument.",
   "Every year you say this is the year. It is not the year.",
   "You bought this on sale for the version of you who has weekends."
 ];
@@ -337,7 +337,7 @@ function runImport() {
         }
         return { title: g.name || ("App " + g.appid), owned: owned, played: hrs, length: 30, price: 0 };
       }).filter(g => g.played <= 20);
-    } catch (e) { state.importNote = "That isn't valid JSON — copy the whole page."; state.importOk = false; renderImportUI(); return; }
+    } catch (e) { state.importNote = "That isn't valid JSON, so copy the whole page."; state.importOk = false; renderImportUI(); return; }
   } else {
     parsed = raw.split(/\n+/).map(line => {
       const p = line.split(",").map(x => x.trim());

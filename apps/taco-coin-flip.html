@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taco Coin Flip — Samie Vargas</title>
-<meta name="description" content="A coin flip that settles lunch — live City of Austin health inspection scores break the tie, and the coin defers when one spot's record is materially worse.">
+<title>Taco Coin Flip · Samie Vargas</title>
+<meta name="description" content="A coin flip that settles lunch, where live City of Austin health inspection scores break the tie and the coin defers when one spot's record is materially worse.">
 <link rel="canonical" href="https://samievargas.com/apps/taco-coin-flip">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -45,7 +45,7 @@ input, button { font: inherit; }
     <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap">
       <div>
         <h1 style="font-family: 'Bungee', cursive; font-size: 58px; margin: 0; line-height: 0.95; text-shadow: 4px 4px 0 #b31f5b; animation: rise 480ms ease both">TACO<br>COIN FLIP</h1>
-        <div style="font-size: 15px; margin-top: 12px; color: #ffd9e8; animation: rise 480ms ease both; animation-delay: 120ms">Settles lunch. Health inspections break the tie.</div>
+        <div style="font-size: 15px; margin-top: 12px; color: #ffd9e8; animation: rise 480ms ease both; animation-delay: 120ms">It settles lunch, and health inspections break the tie.</div>
       </div>
       <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.9; color: #ffd9e8; text-align: right; animation: rise 480ms ease both; animation-delay: 200ms"><span style="color: #ffd44f">[ FIG. 04 ]</span><br>LIVE FROM THE CITY OF AUSTIN<br>OPEN DATA PORTAL · <span id="status">READY</span></div>
     </div>
@@ -103,7 +103,7 @@ input, button { font: inherit; }
 </div>
 
 <script type="module">
-import { stagedLoader } from '../js/staged-loader.js?v=20260925e';
+import { stagedLoader } from '../js/staged-loader.js?v=20260925f';
 
 const ENDPOINT = "https://data.austintexas.gov/resource/ecmv-9xxi.json";
 
@@ -249,7 +249,7 @@ function render() {
       '</div>');
   } else {
     setRegion(els.verdict,
-      '<div style="border: 2px dashed #ffb3cf; border-radius: 16px; padding: 26px 28px; font-size: 15px; line-height: 1.65; color: #ffd9e8">Pick two places, then flip. The coin decides — unless one of them has a materially worse inspection record, in which case the coin defers.</div>');
+      '<div style="border: 2px dashed #ffb3cf; border-radius: 16px; padding: 26px 28px; font-size: 15px; line-height: 1.65; color: #ffd9e8">Pick two places, then flip. The coin decides unless one of them has a materially worse inspection record, in which case the coin defers.</div>');
   }
 
   // Record
@@ -292,10 +292,10 @@ function findNearby() {
       if (!list.length) throw new Error("empty");
       setState({ nearby: list, nearbyBusy: false, nearbyNote: zip + " · " + list.length + " venues, cleanest first" });
     } catch (e) {
-      setState({ nearbyBusy: false, nearbyNote: "could not work out your zip — search by name instead" });
+      setState({ nearbyBusy: false, nearbyNote: "could not work out your zip, so search by name instead" });
     }
   }, () => {
-    setState({ nearbyBusy: false, nearbyNote: "location declined — search by name instead" });
+    setState({ nearbyBusy: false, nearbyNote: "location declined, so search by name instead" });
   }, { timeout: 9000 });
 }
 
@@ -373,9 +373,9 @@ function flip() {
       winner = other;
       reason = (heads ? "Heads" : "Tails") + " said " + coinPick.name + ", but it scored " + coinPick.score + " against " + other.score + " on its last inspection. The coin defers.";
     } else if (Math.abs(gap) <= 5) {
-      reason = (heads ? "Heads" : "Tails") + ". Scores are within five points (" + p[0].score + " vs " + p[1].score + "), so the coin stands unchallenged.";
+      reason = (heads ? "Heads" : "Tails") + ", and the scores are within five points (" + p[0].score + " vs " + p[1].score + "), so the coin stands unchallenged.";
     } else {
-      reason = (heads ? "Heads" : "Tails") + " — and it happens to be the cleaner one, " + coinPick.score + " to " + other.score + ". Go eat.";
+      reason = (heads ? "Heads" : "Tails") + ", and it happens to be the cleaner one, " + coinPick.score + " to " + other.score + ", so go eat.";
     }
     const wins = Object.assign({}, state.wins);
     wins[winner.name] = (wins[winner.name] || 0) + 1;

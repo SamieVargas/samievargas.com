@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SQL Tarot — Samie Vargas</title>
-<meta name="description" content="A three-card query horoscope: past clause, present clause, and the clause that will ruin Friday — plus the SQL it implies, runnable live against Austin open data.">
+<title>SQL Tarot · Samie Vargas</title>
+<meta name="description" content="A three-card query horoscope: past clause, present clause, and the clause that will ruin Friday, plus the SQL it implies, which runs live against Austin open data.">
 <link rel="canonical" href="https://samievargas.com/apps/sql-tarot">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -60,7 +60,7 @@ button { font: inherit; }
         <div id="historyWrap" style="display: none; margin-top: 26px; border-top: 1px solid #3d2a52; padding-top: 18px">
           <div style="font-size: 10px; letter-spacing: 3px; color: #9a86b5; white-space: nowrap">READING HISTORY</div>
           <div id="historyList" style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px"></div>
-          <div style="font-size: 11px; line-height: 1.7; color: #6f6288; margin-top: 12px">Kept in this browser. Patterns across days are the joke and the point.</div>
+          <div style="font-size: 11px; line-height: 1.7; color: #6f6288; margin-top: 12px">This is kept in this browser, and patterns across days are the joke and the point.</div>
         </div>
 
         <div style="display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap">
@@ -99,24 +99,24 @@ button { font: inherit; }
 </div>
 <script type="module">
 const DECK = [
-  { c: "SELECT *", n: "0", up: "Curiosity without a plan. You will get everything, including the columns you did not want to know about.", rev: "Restraint arrives late. Someone has finally asked what you actually need." },
-  { c: "GROUP BY", n: "III", up: "Clarity through gathering. Things that belonged together find each other.", rev: "You aggregated too early and lost the row that mattered." },
-  { c: "HAVING", n: "VII", up: "A judgment applied after the fact, and correctly.", rev: "A filter applied too late. The work was already done." },
-  { c: "LEFT JOIN", n: "VI", up: "Generosity. You keep everyone, even the ones with nothing to offer.", rev: "Nulls where you expected people. Someone is missing from the table." },
-  { c: "INNER JOIN", n: "V", up: "Only what matches survives. Efficient, and a little cold.", rev: "You have quietly dropped the rows that disagreed with you." },
-  { c: "DISTINCT", n: "IX", up: "A wish for uniqueness that the data will not grant.", rev: "Duplicates were the finding, and you deleted them." },
-  { c: "ORDER BY", n: "II", up: "Priority made visible. Someone will finally see what is on top.", rev: "You sorted by the wrong column and believed the top row." },
-  { c: "WHERE 1=1", n: "XIII", up: "A door propped open for future conditions. Prepared, if superstitious.", rev: "A filter that filters nothing. Comforting and useless." },
-  { c: "LIMIT 10", n: "IV", up: "Wise humility. Look before you load.", rev: "You presented ten rows as though they were the population." },
-  { c: "CROSS JOIN", n: "XVI", up: "The Tower. Every row meets every other row. Cancel the query.", rev: "Averted, narrowly, by someone reading it before you ran it." },
-  { c: "WINDOW", n: "XI", up: "Perspective without losing detail. The rare card.", rev: "A frame drawn so wide that nothing stands out." },
-  { c: "COALESCE", n: "XIV", up: "Patience with missing things. A zero where a null once was.", rev: "You papered over an absence that someone needed to see." },
-  { c: "CTE", n: "VIII", up: "Order out of nesting. Your future self sends thanks.", rev: "Six CTEs deep and no one, including you, can follow it." },
-  { c: "TRUNCATE", n: "XX", up: "Judgment. A clean slate, deliberately chosen.", rev: "A clean slate, not deliberately chosen. Check the backups." }
+  { c: "SELECT *", n: "0", up: "Curiosity without a plan means you will get everything, including the columns you did not want to know about.", rev: "Restraint arrives late. Someone has finally asked what you actually need." },
+  { c: "GROUP BY", n: "III", up: "Clarity comes through gathering, and things that belonged together find each other.", rev: "You aggregated too early and lost the row that mattered." },
+  { c: "HAVING", n: "VII", up: "A judgment is applied after the fact, and correctly.", rev: "The filter was applied too late, after the work was already done." },
+  { c: "LEFT JOIN", n: "VI", up: "Generosity, because you keep everyone, even the ones with nothing to offer.", rev: "There are nulls where you expected people, and someone is missing from the table." },
+  { c: "INNER JOIN", n: "V", up: "Only what matches survives, which is efficient and a little cold.", rev: "You have quietly dropped the rows that disagreed with you." },
+  { c: "DISTINCT", n: "IX", up: "You wish for a uniqueness that the data will not grant.", rev: "Duplicates were the finding, and you deleted them." },
+  { c: "ORDER BY", n: "II", up: "Priority is made visible, and someone will finally see what is on top.", rev: "You sorted by the wrong column and believed the top row." },
+  { c: "WHERE 1=1", n: "XIII", up: "A door is propped open for future conditions, which is prepared, if superstitious.", rev: "This filter filters nothing, and it is comforting and useless." },
+  { c: "LIMIT 10", n: "IV", up: "Wise humility says to look before you load.", rev: "You presented ten rows as though they were the population." },
+  { c: "CROSS JOIN", n: "XVI", up: "This is the Tower, where every row meets every other row, so cancel the query.", rev: "Disaster was averted, narrowly, by someone reading it before you ran it." },
+  { c: "WINDOW", n: "XI", up: "You get perspective without losing detail, which makes this the rare card.", rev: "The frame is drawn so wide that nothing stands out." },
+  { c: "COALESCE", n: "XIV", up: "Patience with missing things puts a zero where a null once was.", rev: "You papered over an absence that someone needed to see." },
+  { c: "CTE", n: "VIII", up: "Order comes out of nesting, and your future self sends thanks.", rev: "It is six CTEs deep and no one, including you, can follow it." },
+  { c: "TRUNCATE", n: "XX", up: "Judgment arrives as a clean slate, deliberately chosen.", rev: "The clean slate was not deliberately chosen, so check the backups." }
 ];
 const POSITIONS = ["WHAT YOU INHERITED", "WHAT YOU ARE WRITING", "WHAT SHIPS TO PROD"];
 const MOONS = ["Snowflake", "BigQuery", "a Postgres replica", "an untracked CSV", "dbt run at 4:02 AM", "a Looker explore nobody owns"];
-const OMENS = ["47 seconds. Suspiciously fast.", "Nine minutes. Someone will ask why.", "It finishes, but the plan has a full scan in it.", "Cached. You have learned nothing.", "Spills to disk. As foretold."];
+const OMENS = ["47 seconds, suspiciously fast.", "Nine minutes, and someone will ask why.", "It finishes, but the plan has a full scan in it.", "Cached, so you have learned nothing.", "Spills to disk, as foretold."];
 
 function shuffle(a) { const c = a.slice(); for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; }
 
@@ -132,10 +132,10 @@ function reading() {
   const revs = s.cards.filter(c => c.rev).length;
   const names = s.cards.map(c => c.card.c);
   if (names.indexOf("CROSS JOIN") !== -1) return "There is a CROSS JOIN in your spread. Whatever else is true today, read the query aloud before you run it.";
-  if (revs === 0) return "Three upright. You will ask for " + names[0] + ", write " + names[1] + ", and ship " + names[2] + " — and all three will be the same intention.";
-  if (revs === 3) return "Three reversed. Nothing here is wrong exactly, but every one of them is happening in the wrong order.";
-  if (revs === 2) return "Two reversed around " + names[1] + ". The work is sound. The sequence is not.";
-  return "One reversal, in " + s.cards.filter(c => c.rev)[0].card.c + ". A small correction, made early, saves the afternoon.";
+  if (revs === 0) return "All three are upright, so you will ask for " + names[0] + ", write " + names[1] + " and ship " + names[2] + ", and all three will be the same intention.";
+  if (revs === 3) return "All three are reversed, and nothing here is wrong exactly, but every one of them is happening in the wrong order.";
+  if (revs === 2) return "Two cards are reversed around " + names[1] + ", so the work is sound and the sequence is not.";
+  return "There is one reversal, in " + s.cards.filter(c => c.rev)[0].card.c + ", and a small correction made early saves the afternoon.";
 }
 
 function buildQuery(names) {
@@ -306,7 +306,7 @@ let copyTimer = null;
 function copy() {
   const s = state.spread;
   if (!s) return;
-  const text = "SQL Tarot: " + s.cards.map(c => c.card.c + (c.rev ? " (rev.)" : "")).join(" · ") + " — " + reading();
+  const text = "SQL Tarot: " + s.cards.map(c => c.card.c + (c.rev ? " (rev.)" : "")).join(" · ") + ". " + reading();
   try { navigator.clipboard.writeText(text).catch(() => {}); } catch (e) {}
   state.copied = true;
   renderCopy();

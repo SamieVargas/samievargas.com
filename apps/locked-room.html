@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Locked Room Generator — Samie Vargas</title>
-<meta name="description" content="A generated case file every time: a house, a body, six guests, one impossible exit. Pick the culprit, make your accusation, then read how it was done.">
+<title>Locked Room Generator · Samie Vargas</title>
+<meta name="description" content="Every visit generates a new case file with a house, a body, six guests and one impossible exit, and you pick the culprit, make your accusation and then read how it was done.">
 <link rel="canonical" href="https://samievargas.com/apps/locked-room">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -100,7 +100,7 @@ const ROOMS = ["STUDY", "CONSERVATORY", "LIBRARY", "BILLIARD ROOM", "CELLAR", "M
 const SEALS = ["bolted from the inside", "locked with the only key still in the dead man's waistcoat", "barred with a chair no one could have moved from outside", "sealed with wet paint across the frame", "shut with a padlock rusted closed since spring"];
 const DETAILS = ["The window has been painted shut since 1962.", "The tea was still warm.", "The dog did not bark, which is either meaningless or the entire case.", "Every clock in the house is eleven minutes fast except one.", "There were two glasses, and only one set of prints.", "The snow outside was unbroken in every direction.", "The gramophone had been playing the same four bars for an hour."];
 const GUESTS = ["THE HEIRESS", "THE VALET", "THE VICAR", "THE CHESS RIVAL", "THE COOK", "THE STEPSON", "THE NURSE", "THE BOTANIST", "THE UNINVITED COUSIN", "THE INSPECTOR'S BROTHER", "YOU"];
-const METHODS = ["The door was never locked. It was locked afterwards, by someone with an excellent reason to be first on the scene.", "The bolt was thrown with a length of fishing line through the keyhole, then the line was burned in the grate.", "There were two rooms. The body was moved between them while everyone stared at the wrong door.", "The victim locked the door himself. He was already dying, and he wanted it to look like this.", "The room was never sealed — the clocks were wrong, and the murder happened an hour before anyone thought it had.", "The window opened inward. Nobody checked, because nobody ever checks."];
+const METHODS = ["The door was never locked. It was locked afterwards, by someone with an excellent reason to be first on the scene.", "The bolt was thrown with a length of fishing line through the keyhole, then the line was burned in the grate.", "There were two rooms. The body was moved between them while everyone stared at the wrong door.", "The victim locked the door himself. He was already dying, and he wanted it to look like this.", "The room was never sealed: the clocks were wrong, and the murder happened an hour before anyone thought it had.", "The window opened inward. Nobody checked, because nobody ever checks."];
 
 function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 function shuffle(a) { const c = a.slice(); for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; }
@@ -128,7 +128,7 @@ function renderPlan() {
     const mark = i === 0 ? "✕ ▨" : "";
     const markDelay = (i * 60 + 500) + "ms";
     const cellDelay = (i * 90) + "ms";
-    const note = i === 0 ? "SCENE — DOOR BOLTED" : "";
+    const note = i === 0 ? "SCENE · DOOR BOLTED" : "";
     const bg = i === 0 ? "rgba(240,168,160,0.07)" : "transparent";
     const placed = c.guests.filter((g, gi) => gi % c.rooms.length === i).map(g => g.replace("THE ", ""));
     const chips = placed.length
@@ -162,7 +162,7 @@ function renderAccusation() {
   if (state.scored) {
     const scoreText = state.scored === "right"
       ? "Correct. " + c.culprit.replace("THE ", "The ") + " did it, and you saw it before the summation."
-      : "Wrong. It was " + c.culprit.replace("THE ", "the ") + ". Read the particulars again — the detail was doing the work.";
+      : "Wrong. It was " + c.culprit.replace("THE ", "the ") + ". Read the particulars again, because the detail was doing the work.";
     const scoreColor = state.scored === "right" ? "#a8e0b8" : "#f0a8a0";
     extra += '<div style="margin-top: 16px; font-family: \'Special Elite\', cursive; font-size: 19px; line-height: 1.5; color: ' + scoreColor + '; animation: fadein 300ms ease both">' + esc(scoreText) + '</div>';
   }

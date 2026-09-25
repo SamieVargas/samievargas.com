@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One-Question Oracle — Samie Vargas</title>
-<meta name="description" content="Bring it a question. It keeps the question and returns a harder one.">
+<title>One-Question Oracle · Samie Vargas</title>
+<meta name="description" content="Bring it a question and it keeps that question, then returns a harder one.">
 <link rel="canonical" href="https://samievargas.com/apps/oracle">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -47,7 +47,7 @@ input, button { font: inherit; }
     <div style="text-align: center">
       <div style="font-size: 10.5px; letter-spacing: 5px; color: #8b82b8; animation: rise 520ms ease both"><span style="color: #8f7dff">[ FIG. 11 ]</span>&nbsp;&nbsp;IT HAS NEVER ONCE ANSWERED</div>
       <h1 style="font-family: 'Instrument Serif', serif; font-size: 60px; margin: 12px 0 0; font-weight: 400; line-height: 1; animation: rise 560ms ease both; animation-delay: 100ms">One-Question Oracle</h1>
-      <div style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 21px; color: #b3a9d9; margin-top: 14px; animation: rise 560ms ease both; animation-delay: 200ms">Bring it a question. It keeps the question and returns a harder one.</div>
+      <div style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 21px; color: #b3a9d9; margin-top: 14px; animation: rise 560ms ease both; animation-delay: 200ms">Bring it a question and it keeps that question, then returns a harder one.</div>
     </div>
 
     <div style="max-width: 620px; margin: 44px auto 0">
@@ -102,7 +102,7 @@ const RULES = [
   { test: /hire|headcount|team|backfill/i, tag: "it asks what stops", q: ["What work stops the day they start?", "If the role were frozen for a year, what would you stop doing?", "Who trains them, and what do they stop doing?"], why: "Headcount questions are almost always sequencing questions." },
   { test: /should we (sunset|kill|deprecate|shut)/i, tag: "it asks who remains", q: ["Who is still using it, and what do they use it for?", "What breaks that you don't currently see?", "What are you actually trying to free up?"], why: "Endings are easy to decide and hard to schedule." },
   { test: /take the (job|role|offer)|bigger title|new (job|role)/i, tag: "it sees a wager", q: ["Which version of yourself is this a bet on?", "What would make you regret staying?", "In two years, which one gives you a better story about your judgment?"], why: "Career forks are rarely about the two options on the table." },
-  { test: /rebuild|refactor|patch|rewrite/i, tag: "it asks who inherits", q: ["How many more times can you patch it before the patch is the system?", "What do you learn from the rebuild that you can't learn now?", "Who owns it after it's rebuilt?"], why: "The question is not whether to rebuild but who inherits it." },
+  { test: /rebuild|refactor|patch|rewrite/i, tag: "it asks who inherits", q: ["How many more times can you patch it before the patch is the system?", "What do you learn from the rebuild that you can't learn now?", "Who owns it after it's rebuilt?"], why: "The real question is who inherits it after the rebuild." },
   { test: /when|deadline|timeline|by (friday|monday|q[1-4])/i, tag: "it doubts the date", q: ["What is actually happening on that date?", "Who chose that date, and were they in the room for the work?", "What would you cut to make it true?"], why: "A date question is usually a scope question in costume." },
   { test: /how do i|how can i|how should i/i, tag: "it looks for the near-miss", q: ["What have you already tried that almost worked?", "Who has solved this in front of you?", "What's the smallest version of this you could do today?"], why: "You asked for method. Method usually already exists nearby." },
   { test: /\?/, tag: "it goes to the base", q: ["What would you do if nobody would ever ask you to justify it?", "Which part of this have you already decided?", "What are you actually afraid of here?"], why: "Nothing specific to grab, so the oracle went for the base of it." }
@@ -117,9 +117,9 @@ const DESCENT = [
 ];
 const HEARD = [
   "It is holding your first answer now. It will not give that back.",
-  "You are answering the stone's questions, not your own. That is the point.",
-  "Four questions in. Whatever you started with has changed shape.",
-  "This is the floor. Nothing under it but the thing you came in with."
+  "You are answering the stone's questions now instead of your own, and that is the point.",
+  "Four questions in, whatever you started with has changed shape.",
+  "This is the floor, and there is nothing under it but the thing you came in with."
 ];
 
 const state = { answer: null, heard: "", why: "", tag: "", turn: 0, shaking: false, history: [], askedText: "", used: [], copied: false };
@@ -241,7 +241,7 @@ function copyDescent() {
   const lines = state.history.concat([{ asked: state.askedText, replied: state.answer }])
     .filter(h => h.asked && h.replied)
     .map((h, i) => (i + 1) + ". I asked: " + h.asked + "\n   It asked: " + h.replied);
-  const text = "ONE-QUESTION ORACLE — a descent\n\n" + lines.join("\n\n") + "\n\nIt never answered. samievargas.com";
+  const text = "ONE-QUESTION ORACLE · a descent\n\n" + lines.join("\n\n") + "\n\nIt never answered. samievargas.com";
   try { navigator.clipboard.writeText(text); } catch (e) {}
   state.copied = true;
   updateCopyLabel();
@@ -267,8 +267,8 @@ function ask() {
     const joints = (text.match(/,|and|but/gi) || []).length;
     let heard;
     if (turn > 1) heard = HEARD[Math.min(HEARD.length - 1, turn - 2)];
-    else if (words < 6) heard = "Six words or fewer. Short questions hide their constraint.";
-    else if (joints === 0) heard = "A " + words + "-word question with one clean clause. Rarer than it sounds.";
+    else if (words < 6) heard = "Six words or fewer, and short questions hide their constraint.";
+    else if (joints === 0) heard = "A " + words + "-word question with one clean clause, which is rarer than it sounds.";
     else heard = "A " + words + "-word question with " + joints + " joint" + (joints === 1 ? "" : "s") + " in it. That makes it more than one question.";
     Object.assign(state, {
       shaking: false, answer: q, heard: heard, why: rule.why, tag: rule.tag, turn: turn, askedText: text,

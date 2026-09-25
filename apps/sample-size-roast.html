@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sample Size Roast — Samie Vargas</title>
+<title>Sample Size Roast · Samie Vargas</title>
 <meta name="description" content="Paste a stat and its sample size, see the real margin of error, and receive consequences.">
 <link rel="canonical" href="https://samievargas.com/apps/sample-size-roast">
 <meta name="theme-color" content="#1a6b5a">
@@ -177,7 +177,7 @@ function compute() {
   let tier, roast, bg;
   if (n < 15) {
     tier = "NOT A SAMPLE, A TABLE";
-    roast = Math.round(p * n) + " of " + n + " people. That's not a preference, that's a lunch table.";
+    roast = Math.round(p * n) + " of " + n + " people is a lunch table, which is a long way from a preference.";
     bg = "#ff5c39";
   } else if (n < 60) {
     tier = "DIRECTIONAL AT BEST";
@@ -189,7 +189,7 @@ function compute() {
     bg = "#ffe066";
   } else {
     tier = "ACTUALLY DEFENSIBLE";
-    roast = "±" + moe.toFixed(1) + " points at n=" + n + ". Nothing to roast. Put it on the slide.";
+    roast = "±" + moe.toFixed(1) + " points at n=" + n + " leaves nothing to roast, so put it on the slide.";
     bg = "#9be8c8";
   }
   if (pct === 100 || pct === 0) roast = "A clean " + pct + "% at n=" + n + " means nobody disagreed yet. Ask one more person.";
@@ -243,11 +243,11 @@ function updateAll() {
   const c = compare();
   const crosses = c.lo <= 0 && c.hi >= 0;
   const sig = c.p < 0.05 && !crosses;
-  diffAnswer.textContent = sig ? "Probably, yes." : "No — not at these sample sizes.";
+  diffAnswer.textContent = sig ? "Probably, yes." : "No, not at these sample sizes.";
   diffAnswer.style.color = sig ? "#9be8c8" : "#ff5c39";
   diffExplain.textContent = sig
     ? "The gap is " + Math.abs(c.diff).toFixed(1) + " points and the interval around it never touches zero, so at n=" + c.n1 + " and n=" + c.n2 + " you can say one is higher. Say the interval too."
-    : "The gap is " + Math.abs(c.diff).toFixed(1) + " points, but the interval runs from " + c.lo.toFixed(1) + " to " + c.hi.toFixed(1) + " — straight through zero. The two claims are indistinguishable, and reporting one as the winner is the mistake.";
+    : "The gap is " + Math.abs(c.diff).toFixed(1) + " points, but the interval runs from " + c.lo.toFixed(1) + " to " + c.hi.toFixed(1) + ", straight through zero. The two claims are indistinguishable, and reporting one as the winner is the mistake.";
   diffGap.textContent = (c.diff >= 0 ? "+" : "") + c.diff.toFixed(1) + " pts";
   diffCi.textContent = c.lo.toFixed(1) + " to " + c.hi.toFixed(1);
   diffZ.textContent = c.z.toFixed(2);
@@ -300,7 +300,7 @@ randomBtn.addEventListener("click", () => {
 
 copyBtn.addEventListener("click", () => {
   const v = compute();
-  const text = claimInput.value + " — n=" + v.n + ", so the true value is somewhere between " + v.lo + "% and " + v.hi + "%. " + v.roast;
+  const text = claimInput.value + " (n=" + v.n + "), so the true value is somewhere between " + v.lo + "% and " + v.hi + "%. " + v.roast;
   try { navigator.clipboard.writeText(text); } catch (e) {}
   copied = true;
   updateAll();

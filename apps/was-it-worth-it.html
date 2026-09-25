@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Was It Worth It? — Samie Vargas</title>
-<meta name="description" content="A regret audit for your purchases: log what you bought, wait thirty days, then answer yes or no — nothing else.">
+<title>Was It Worth It? · Samie Vargas</title>
+<meta name="description" content="A regret audit for your purchases: log what you bought, wait thirty days, then answer yes or no and nothing else.">
 <link rel="canonical" href="https://samievargas.com/apps/was-it-worth-it">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -111,7 +111,7 @@ input, button { font: inherit; }
           <div style="text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 2px">REGRET AUDIT SERVICES</div>
           <div style="text-align: center; font-size: 10px; color: #6b6459; margin-top: 4px"><span id="ledgerCount"></span> ITEMS ON FILE</div>
           <div style="border-top: 1.5px dashed #23211c; margin: 16px 0"></div>
-          <div id="ledgerEmpty" style="display: none; font-size: 12px; color: #6b6459; line-height: 1.7">Nothing on file. Log something you bought this month and come back in thirty days.</div>
+          <div id="ledgerEmpty" style="display: none; font-size: 12px; color: #6b6459; line-height: 1.7">Nothing is on file yet, so log something you bought this month and come back in thirty days.</div>
           <div id="ledgerList" style="display: flex; flex-direction: column; gap: 11px"></div>
           <div style="border-top: 1.5px dashed #23211c; margin: 18px 0 12px"></div>
           <div style="font-size: 11px; line-height: 1.8">TOTAL LOGGED &nbsp;<span id="totalLogged"></span><br>REGRET RATE &nbsp;<span id="regretRate"></span></div>
@@ -169,9 +169,9 @@ function render() {
   const rate = judged.length ? Math.round((regret.length / judged.length) * 100) : 0;
 
   let verdict;
-  if (!judged.length) verdict = "Nothing judged yet. The ledger only becomes interesting once something has been sitting in it for a month.";
-  else if (rate >= 60) verdict = "You regret " + rate + "% of what you've judged. The pattern isn't the money, it's the thirty days — you buy for a version of your week that doesn't exist.";
-  else if (rate >= 30) verdict = money(wasted) + " on things you stopped caring about. Ordinary. Keep logging, the rate is the useful number.";
+  if (!judged.length) verdict = "Nothing has been judged yet, and the ledger only becomes interesting once something has been sitting in it for a month.";
+  else if (rate >= 60) verdict = "You regret " + rate + "% of what you've judged, and the thirty days tell the story better than the money does, because you buy for a version of your week that doesn't exist.";
+  else if (rate >= 30) verdict = money(wasted) + " went on things you stopped caring about, which is ordinary, so keep logging because the rate is the useful number.";
   else verdict = "A " + rate + "% regret rate is genuinely good. Either your judgment is sound or you haven't logged the embarrassing ones.";
 
   // Pattern: regret rate by price band.
@@ -197,7 +197,7 @@ function render() {
   let headline;
   if (!judged.length) headline = "";
   else if (worstBand && worstBand.rate >= 50) headline = "You regret " + worstBand.rate + "% of purchases in the " + worstBand.label.toLowerCase() + " band. That is where the money goes wrong.";
-  else if (worstBand) headline = "No band is a disaster. The worst is " + worstBand.label.toLowerCase() + " at " + worstBand.rate + "% regret.";
+  else if (worstBand) headline = "No band is a disaster, and the worst is " + worstBand.label.toLowerCase() + " at " + worstBand.rate + "% regret.";
   else headline = "Judge a few more and the bands start to separate.";
 
   // Lifetime audit
