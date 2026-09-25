@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Six Degrees of Anything — Samie Vargas</title>
-<meta name="description" content="Two things, one path between them — graph search over 100M+ Wikidata statements connecting people, films, bands, companies, and towns.">
+<title>Six Degrees of Anything · Samie Vargas</title>
+<meta name="description" content="Two things and one path between them, found by graph search over 100M+ Wikidata statements connecting people, films, bands, companies, and towns.">
 <link rel="canonical" href="https://samievargas.com/apps/six-degrees">
 <meta name="theme-color" content="#1a6b5a">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -121,12 +121,12 @@ input, button { font: inherit; }
       <div style="border: 1px solid #1e2a33; padding: 28px 30px; margin-top: 4px">
         <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #6f8794">HOW IT FINDS A PATH</div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; margin-top: 18px; font-size: 14px; line-height: 1.7; color: #b8ccd4">
-          <div><span style="color: #5ee0c0">1 · Resolve</span><br>Each box of text goes to the Wikidata search API and comes back as a QID. No guessing at identifiers.</div>
+          <div><span style="color: #5ee0c0">1 · Resolve</span><br>Each box of text goes to the Wikidata search API and comes back as a QID, so nothing guesses at identifiers.</div>
           <div><span style="color: #5ee0c0">2 · Expand</span><br>One SPARQL query per endpoint pulls every item it links to or from, in both directions, with the property that joins them.</div>
           <div><span style="color: #5ee0c0">3 · Intersect</span><br>Bidirectional search: the two neighbour sets are intersected in the browser. Anything in both is a two-degree bridge.</div>
           <div><span style="color: #5ee0c0">4 · Rank</span><br>Bridges are scored by how specific the connecting property is, so “married to” beats “country of citizenship.”</div>
         </div>
-        <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.7; color: #6f8794; margin-top: 20px">Two queries, not six. Bidirectional intersection means a path of length 2 costs two expansions instead of walking the graph outward one hop at a time.</div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.7; color: #6f8794; margin-top: 20px">It takes two queries rather than six, because bidirectional intersection means a path of length 2 costs two expansions instead of walking the graph outward one hop at a time.</div>
       </div>
     </div>
   </div>
@@ -222,7 +222,7 @@ function esc(s) {
 const state = {
   a: null, b: null, aStatus: "", bStatus: "", aOk: true, bOk: true,
   searching: false, steps: [], progress: "", result: null, alternates: [],
-  message: "Two boxes, two things, and one path between them. Try one of the pairs below — the graph almost always finds something.",
+  message: "Two boxes, two things, and one path between them. Try one of the pairs below, because the graph almost always finds something.",
   msgTag: "READY", msgOk: true, showHow: false, scanned: 0, hardMode: true, wiki: {}, dailyPlayed: false
 };
 
@@ -340,13 +340,13 @@ function renderMain() {
 
     let sentence = "";
     if (r.degrees === 3) sentence = r.a.label + " → " + r.hops[0].label + " → " + r.hops[1].label + " → " + r.b.label + ". Hard mode threw out the lazy connection and paid for a third hop to get a real one.";
-    else if (r.degrees === 1) sentence = r.a.label + " links straight to " + r.b.label + " — one degree, no bridge needed.";
-    else if (r.weak) sentence = "The only thing " + r.a.label + " and " + r.b.label + " share is " + r.mid.label + ", and only as a generic attribute rather than a real relationship. Technically two degrees. Honestly, a coincidence.";
-    else sentence = r.a.label + " → " + r.mid.label + " → " + r.b.label + ". Two degrees, found by intersecting " + s.scanned.toLocaleString() + " neighbour statements in your browser.";
+    else if (r.degrees === 1) sentence = r.a.label + " links straight to " + r.b.label + ", one degree away with no bridge needed.";
+    else if (r.weak) sentence = "The only thing " + r.a.label + " and " + r.b.label + " share is " + r.mid.label + ", and only as a generic attribute rather than a real relationship, so it is technically two degrees and honestly a coincidence.";
+    else sentence = r.a.label + " → " + r.mid.label + " → " + r.b.label + ". That is two degrees, found by intersecting " + s.scanned.toLocaleString() + " neighbour statements in your browser.";
 
     const method = r.degrees === 1 ? "Direct statement between the two items"
       : (r.degrees === 3 ? "Hard mode · batched third-hop expansion after rejecting generic bridges"
-      : (r.weak ? "Only generic attributes shared — weak bridge" : "Bidirectional neighbour expansion, intersected client-side"));
+      : (r.weak ? "Only generic attributes shared · weak bridge" : "Bidirectional neighbour expansion, intersected client-side"));
 
     const hasAlternates = s.alternates.length > 0 && r.degrees === 2;
     let altHtml = "";
@@ -566,7 +566,7 @@ async function connect() {
     if (!bridges.length) {
       finish({
         searching: false,
-        message: a.label + " and " + b.label + " share no direct neighbour. They are connected somewhere further out — this tool stops at two degrees on purpose, because three would mean tens of thousands of queries against a public endpoint.",
+        message: a.label + " and " + b.label + " share no direct neighbour. They are connected somewhere further out, but this tool stops at two degrees on purpose, because three would mean tens of thousands of queries against a public endpoint.",
         msgTag: "NO TWO-DEGREE PATH", msgOk: false, scanned: Object.keys(an).length + Object.keys(bn).length
       });
       return;
@@ -576,7 +576,7 @@ async function connect() {
 
     // Hard mode refuses a junk bridge and pays for a third hop instead.
     if (!good.length && state.hardMode) {
-      step("Every shared neighbour is a generic attribute — rejecting", "×", "#e08a6f");
+      step("Every shared neighbour is a generic attribute, rejecting all of them", "×", "#e08a6f");
       setProgress("HARD MODE · SEARCHING FOR A THREE-DEGREE PATH…");
       let three = null;
       try { three = await thirdDegree(an, bn); } catch (e) { three = null; }
@@ -595,7 +595,7 @@ async function connect() {
       }
       finish({
         searching: false, scanned: Object.keys(an).length + Object.keys(bn).length,
-        message: a.label + " and " + b.label + " share only generic attributes — a language, a country, a class of thing — and no three-degree path came back either. Hard mode refuses to call that a connection. Turn hard mode off to see the weak bridge anyway.",
+        message: a.label + " and " + b.label + " share only generic attributes (a language, a country, a class of thing), and no three-degree path came back either. Hard mode refuses to call that a connection. Turn hard mode off to see the weak bridge anyway.",
         msgTag: "HARD MODE · REJECTED", msgOk: false
       });
       return;
@@ -620,7 +620,7 @@ async function connect() {
       msg = "Wikidata has nothing called “" + String(e.message).split(":")[1] + ".” Try the fuller name, or the thing it is best known as.";
       tag = "NOT FOUND";
     } else if (e.message === "TIMEOUT") {
-      msg = "The public query service timed out expanding one of those. Very well-connected things (countries, big companies) blow past the limit — try something more specific.";
+      msg = "The public query service timed out expanding one of those. Very well-connected things (countries, big companies) blow past the limit, so try something more specific.";
       tag = "TIMED OUT";
     } else if (e.message === "RATE_LIMIT") {
       msg = "Wikidata is rate-limiting this browser. Give it a minute.";

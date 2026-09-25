@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Died Doing What — Samie Vargas</title>
+<title>Died Doing What · Samie Vargas</title>
 <meta name="description" content="Pick a line of work and Wikidata reports how the people who did it actually died.">
 <link rel="canonical" href="https://samievargas.com/apps/died-doing-what">
 <meta name="theme-color" content="#1a6b5a">
@@ -57,7 +57,7 @@ input, button { font: inherit; }
           <div style="font-size: 10px; letter-spacing: 5px; color: #8b8377; animation: rise 480ms ease both"><span style="color: #7a2e26">[ FIG. 02 ]</span>&nbsp;&nbsp;CAUSE OF DEATH, BY TRADE</div>
           <h1 style="font-family: 'Libre Caslon Text', serif; font-size: 54px; margin: 12px 0 0; font-weight: 400; line-height: 1; animation: rise 520ms ease both; animation-delay: 90ms">Died Doing What</h1>
         </div>
-        <p style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 19px; line-height: 1.45; color: #6b6459; max-width: 330px; margin: 0; animation: rise 520ms ease both; animation-delay: 180ms">Pick a line of work. Wikidata reports how the people who did it actually died.</p>
+        <p style="font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 19px; line-height: 1.45; color: #6b6459; max-width: 330px; margin: 0; animation: rise 520ms ease both; animation-delay: 180ms">Pick a line of work and Wikidata reports how the people who did it actually died.</p>
       </div>
 
       <div style="display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; align-items: flex-end; animation: rise 520ms ease both; animation-delay: 260ms">
@@ -294,11 +294,11 @@ function compute() {
   if (causes.length && total) {
     const topShare = Math.round((causes[0].n / total) * 100);
     if (hazardCause && hazardCause.i > 0) {
-      finding = "Most " + occLabel + "s die the way everyone does. The one that stands out is " + hazardCause.label.toLowerCase() + " — " + hazardCause.n + " of " + total + " recorded deaths.";
+      finding = "Most " + occLabel + "s die the way everyone does. The one that stands out is " + hazardCause.label.toLowerCase() + ", at " + hazardCause.n + " of " + total + " recorded deaths.";
     } else if (hazardCause) {
       finding = "For " + occLabel + "s, the leading recorded cause is " + hazardCause.label.toLowerCase() + " at " + Math.round((hazardCause.n / total) * 100) + "% of deaths on file. That is the job showing up in the data.";
     } else {
-      finding = topShare + "% of recorded " + occLabel + " deaths fall under one cause, and it's an ordinary one. No occupational hazard visible here.";
+      finding = topShare + "% of recorded " + occLabel + " deaths fall under one cause, and it's an ordinary one, so no occupational hazard shows up here.";
     }
   }
 
@@ -327,7 +327,7 @@ function updateEras() {
     btn.style.color = on ? "#efece3" : "#4a443b";
   });
   eraNote.textContent = state.era === "all"
-    ? "All eras together. Tuberculosis wins almost any trade this way — narrow the era to see the job itself."
+    ? "All eras together. Tuberculosis wins almost any trade this way, so narrow the era to see the job itself."
     : "Filtered by year of death, so the cause reflects that era's medicine rather than all of history.";
 }
 
@@ -488,7 +488,7 @@ async function run() {
     const counts = await sparql(countQuery(occ.id), 30000);
     if (!counts.length) {
       state.loading = false; state.failed = true;
-      state.status = "Wikidata records no causes of death for " + occ.label + ". Try a broader trade — “poet” rather than “lyric poet.”";
+      state.status = "Wikidata records no causes of death for " + occ.label + ". Try a broader trade, like “poet” rather than “lyric poet.”";
       loader.fail("Wikidata returned no causes of death");
       render();
       return;
@@ -507,7 +507,7 @@ async function run() {
   } catch (e) {
     let msg = "Could not reach the Wikidata query service.";
     if (e.message === "NO_ENTITY") msg = "Wikidata has no occupation called “" + term + ".” Try a plainer word.";
-    else if (e.message === "TIMEOUT") msg = "The public endpoint timed out. Very large occupations (“writer”, “politician”) sometimes do that — try something narrower.";
+    else if (e.message === "TIMEOUT") msg = "The public endpoint timed out. Very large occupations (“writer”, “politician”) sometimes do that, so try something narrower.";
     else if (e.message === "RATE_LIMIT") msg = "Wikidata is rate-limiting this browser. Wait a moment.";
     state.loading = false; state.failed = true; state.status = msg; state.statusOk = false;
     // The app's own panel carries the recovery copy.
