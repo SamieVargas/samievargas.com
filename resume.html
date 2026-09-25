@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Résumé — Samie Vargas</title>
-<meta name="description" content="Samie Vargas — applied-AI operator in enterprise customer success. Austin, TX · remote. Printable résumé.">
+<title>Résumé · Samie Vargas</title>
+<meta name="description" content="Samie Vargas, applied-AI operator in enterprise customer success. Austin, TX · remote. Printable résumé.">
 <link rel="canonical" href="https://samievargas.com/resume">
 <meta name="theme-color" content="#1a6b5a">
 <meta name="robots" content="noindex">
@@ -267,7 +267,7 @@
 
     <div class="cv-role">
       <div class="cv-role-head">
-        <h3>Manager, Client Solutions — Team Lead</h3>
+        <h3>Manager, Client Solutions · Team Lead</h3>
         <span class="cv-meta">Mar 2022 – Oct 2023</span>
       </div>
       <ul>
@@ -292,51 +292,51 @@
   <section class="cv-sec cv-rv">
     <p class="cv-label">03 · Applied AI &amp; analytics projects</p>
     <div class="cv-proj">
-      <h3>Field Discovery Broker — AI Requirements Triage for Field Sales</h3>
+      <h3>Field Discovery Broker: AI Requirements Triage for Field Sales</h3>
       <p class="cv-stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Human-Approved Proposals · Shadow Mode · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
       <p class="cv-pt"><i></i><span>Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce. A second stage reads the record Salesforce already holds and proposes the next discovery update or an engineer escalation; a person approves, edits or rejects each proposal, approve is the only path to a write, and read-before-write, one-per-kind and no-contradiction rules are enforced in code, with a shadow mode that records proposals without showing them.</span></p>
       <p class="cv-pt"><i></i><span>Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</span></p>
     </div>
     <div class="cv-proj">
-      <h3>Brain Dump — LLM Planner for Executive-Function Support</h3>
+      <h3>Brain Dump: LLM Planner for Executive-Function Support</h3>
       <p class="cv-stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
       <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into a plan matched to how much someone has left: three levels (plenty, a little, none) and a separate feeling-anxious switch set the cap on what to do now and the tone, a strict JSON contract sorts every item into now, later or let go with each now step quoting the words it came from, the page re-checks every plan against the same rules before showing it, and an emergency one-thing mode has its own prompt, schema and hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan costs $0.0134 on average. An earlier run found the output budget too small, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan cost $0.0134 on average, and tuning the prompt (sort@v4) and running it at medium effort then cut the median sort from 14.0 s to 7.3 s and the cost to $0.0071 a plan, which is what the live Worker runs. An earlier run found the output budget too small, 483 of 500 replies cut off at 1,024 tokens, and the budget was set from the measured plan lengths.</span></p>
     </div>
     <div class="cv-proj">
-      <h3>Signal — Account Intelligence for CS Professionals</h3>
+      <h3>Signal: Account Intelligence for CS Professionals</h3>
       <p class="cv-stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Paired Ablation Evals · samievargas.com/signal</p>
       <p class="cv-pt"><i></i><span>Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
       <p class="cv-pt"><i></i><span>Evaluated on 13 hand-written account cases, 20 runs each under both arms of a source-weighting ablation, 21 and 22 September 2026: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy (93% against 69%), all of it on the three cases built around the most-mentioned name.</span></p>
     </div>
     <div class="cv-proj">
-      <h3>Instacart dbt + ML — When Does Data Become Trustworthy?</h3>
+      <h3>Instacart dbt + ML: When Does Data Become Trustworthy?</h3>
       <p class="cv-stack">dbt Cloud · BigQuery · SQL · scikit-learn · github.com/SamieVargas/instacart-project</p>
       <p class="cv-pt"><i></i><span>Built a staging → mart dbt pipeline across 3.4M orders with 35 passing tests; found a 0.60 reorder ratio hides a 3x segment gap (0.221 new vs 0.670 veteran users), validated with random forest (AUC 0.989 vs 0.857).</span></p>
     </div>
     <div class="cv-proj">
-      <h3>samievargas.com — The Site and Its Arcade</h3>
+      <h3>samievargas.com: The Site and Its Arcade</h3>
       <p class="cv-stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
       <p class="cv-pt"><i></i><span>Built and shipped the portfolio site with no framework and no build step: two LLM apps behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</span></p>
     </div>
     <div class="cv-proj">
-      <h3>Life in Pixels RAG + Life OS — Personal Data Tools</h3>
+      <h3>Life in Pixels RAG + Life OS: Personal Data Tools</h3>
       <p class="cv-stack">Python · ChromaDB · Hugging Face Embeddings (MiniLM · bge · e5) · Cross-Encoder Reranking · Anthropic SDK · Code-Enforced Citations · Golden-Set Evals · MCP Server · Apps Script · github.com/SamieVargas/pixels-rag</p>
       <p class="cv-pt"><i></i><span>Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local Hugging Face embeddings in ChromaDB (MiniLM by default, bge-small and e5 as measured arms, a cross-encoder reranker measured against plain top-k), and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and aggregates run in code and only the search goes through retrieval. Every answer is checked in code against the retrieved days and the computed table, with one reject-and-retry on an uncited date or an invented number, and follow-ups are rewritten from the last three turns before anything is retrieved. The same router, validator and model call are exposed as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it stays on the machine. It surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</span></p>
       <p class="cv-pt"><i></i><span>Evaluated on 26 hand-written questions over a seeded synthetic export, 22 September 2026: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else.</span></p>
     </div>
     <div class="cv-proj">
-      <h3>ATX Foodie — Public Health Compliance Analysis</h3>
+      <h3>ATX Foodie: Public Health Compliance Analysis</h3>
       <p class="cv-stack">Python · Socrata API · folium · kaggle.com/code/samievargas/atx-foodie-inspection</p>
-      <p class="cv-pt"><i></i><span>Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections average 84.4 against 90.9 for routine visits, and venues score about two points higher by their fifteenth inspection than their first.</span></p>
+      <p class="cv-pt"><i></i><span>Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections average 84.4 against 90.9 for routine visits, and venues score 2.1 points higher by their fifteenth inspection than their first.</span></p>
     </div>
   </section>
 
   <section class="cv-sec cv-avoid cv-rv">
     <p class="cv-label">04 · Certifications</p>
-    <p class="cv-cert">Anthropic AI Fluency — Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
+    <p class="cv-cert">Anthropic AI Fluency: Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
     <p class="cv-cert">Google Advanced Data Analytics · ID 4REOBHKQJ0DS · June 2026</p>
-    <p class="cv-cert">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; Snowflake Hands-On Essentials: Data Warehousing Workshop &nbsp;·&nbsp; PMP — Project Management Professional · PMI</p>
+    <p class="cv-cert">dbt Fundamentals · dbt Labs · May 2026 &nbsp;·&nbsp; Snowflake Hands-On Essentials: Data Warehousing Workshop &nbsp;·&nbsp; PMP (Project Management Professional) · PMI</p>
     <p class="cv-cert">Google Data Analytics · Google Business Intelligence · GA4 (Skillshop) · Databricks Fundamentals · Six Sigma White Belt</p>
   </section>
 
