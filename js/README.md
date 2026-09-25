@@ -6,9 +6,10 @@ Vanilla ES modules, one per page, no bundler.
 | --- | --- | --- |
 | `reveal.js` | every page | The shared scroll load-in (`onSeen`, `autoReveal`), the `REDUCED` flag, and the tween, counter, typing and copy-email helpers. |
 | `drift-chart.js` | `/`, `/life` | The ATX Foodie drift line both pages draw: whole-point y-scale and gridlines, labelled end dots, a clip-path wipe. |
-| `app.js` | `/` | Renders the work page from `data/content.js`: the eval log, the four-pattern spine, field discovery, Pixels, Signal, Brain Dump, the analysis visualisations, experience, skills and certs. |
+| `app.js` | `/` | Renders the work page from `data/content.js`: the eval log, the five-pattern spine, field discovery, Pixels, Guideline Assist, Signal, Brain Dump, the analysis visualisations, experience, skills and certs. |
 | `life.js` | `/life` | The noticing field, progress, Ring Fit, the Christie shelf, the records, the raccoon invoice, and the four notes at `#notes`. |
 | `pixels.js` | `/pixels/` | Replays the recorded Life in Pixels runs from `data/pixels-runs.json`. Formats only; computes nothing. |
+| `assist.js` | `/assist/` | Replays the recorded Guideline Assist chats, QA copies and ablation from `data/assist-replay.json`. Formats and counts only. |
 | `arcade.js` | `/apps/` | The apps index. |
 | `staged-loader.js` | `/apps/*` | One three-stage loader shared by the API-backed apps, advanced by real events with a budget that trips a failure path. |
 | `toolkit.js` | `/toolkit` | The change log, pushes per week and repo age, read from `data/changelog.json`. |

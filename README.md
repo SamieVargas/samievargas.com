@@ -61,11 +61,12 @@ I made this decision early and I would make it the same way again, because I did
 **Structure:**
 
 ```
-index.html           -- the work page: hero and eval log, the four-pattern spine, Field discovery,
-                        Life in Pixels, fine-tuning, Signal, Brain Dump, analysis, experience,
+index.html           -- the work page: hero and eval log, the five-pattern spine, Field discovery,
+                        Life in Pixels, Guideline Assist, fine-tuning, Signal, Brain Dump, analysis, experience,
                         skills and certs, off the clock, contact
 life.html            -- /life, with the notes at /life#notes
 pixels/              -- /pixels, the recorded Life in Pixels runs
+assist/              -- /assist, the recorded Guideline Assist chats and QA
 design/
   samie-3a-style.md  -- the 3a style guide every page follows
 apps/                -- the arcade index plus fifteen self-contained apps
@@ -78,6 +79,7 @@ js/
   reveal.js          -- the shared scroll load-in and motion helpers
   app.js             -- renders the work page from data/, wires every control
   pixels.js          -- replays the recorded runs in data/pixels-runs.json
+  assist.js          -- replays the recorded chats in data/assist-replay.json
   staged-loader.js   -- one three-stage loader shared by the API-backed apps
   life.js            -- the field, the crate, the Christie ledger, the notes, the dragon
   arcade.js          -- the apps index
@@ -86,6 +88,8 @@ data/
   content.js         -- the work page's evals and case studies, roles, skills, certs,
                         result lines, notes, the field, the arcade, the toolkit
   changelog.json     -- written by the Action below on every push to main
+  pixels-runs.json   -- the recorded Life in Pixels runs
+  assist-replay.json -- the recorded Guideline Assist chats, QA copies and ablation
 assets/              -- charts and screenshots, one folder per project
 .github/
   workflows/changelog.yml   -- snapshots the commit log into data/changelog.json
@@ -102,7 +106,7 @@ The LLM apps talk to the Anthropic API through a Cloudflare Worker, so the key s
 
 ## Features worth noting
 
-**Four patterns, one row each** -- the work page is organised around agents, RAG, fine-tuning and MCP, with one dot per test case under each and the cases that still break drawn in red, so the evals are the first thing you see and every project also carries one "In plain terms" sentence for the reader who does not live in this vocabulary.
+**Five patterns, one row each** -- the work page is organised around agents, RAG, agent assist and QA, fine-tuning and MCP, with one dot per test case under each and the cases that still break drawn in red, so the evals are the first thing you see and every project also carries one "In plain terms" sentence for the reader who does not live in this vocabulary.
 
 **Result lines** -- every project ends on the same four fields: what it replaced, what it took, what it costs to run, and what still breaks. The last one is filled from the project's own eval, not from optimism.
 
@@ -149,7 +153,7 @@ Open `localhost:8000` or `localhost:3000` depending on which you used. The JS us
 The stylesheet, the page modules, and `data/content.js` are all referenced with a `?v=` version token, because without one a browser will happily pair freshly deployed HTML with a cached copy of the old JS and the page renders half-updated. When you change anything in `css/` or `js/` or `data/`, bump the token everywhere in one pass:
 
 ```bash
-grep -rln "?v=20260925d" --include=*.html --include=*.js .
+grep -rln "?v=20260925e" --include=*.html --include=*.js .
 ```
 
 Every hit needs the same new value, including the `data/content.js` imports at the top of each module, since a module import is cached under its own URL.

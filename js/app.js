@@ -7,12 +7,12 @@
 
 import {
   HERO_LOG, SPINE, FD_SEGMENTS, FD_MATCH, FD_RECORD, FD_CASE, FD_INJECTION,
-  PX_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
+  PX_REPLAY, AS_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925d';
-import { driftChart, revealDrift } from './drift-chart.js?v=20260925d';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925d';
+} from '../data/content.js?v=20260925e';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925e';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925e';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -181,6 +181,26 @@ function pixels() {
       if (t < 8600) requestAnimationFrame(move);
     };
     requestAnimationFrame(move);
+  });
+}
+
+// ── Guideline Assist: one recorded call, typed in order ──────
+function assist() {
+  const R = AS_REPLAY;
+  $('#as-chat').textContent = R.chat;
+  $('#as-r-intent span:last-child').textContent = R.intent;
+  $('#as-r-section span:last-child').textContent = R.section;
+  $('#as-r-next span:last-child').textContent = R.next;
+  $('#as-check-t').textContent = R.check;
+  $('#as-ms').textContent = R.ms;
+  onSeen($('#assist'), () => {
+    typeText($('#as-cust'), R.customer, { cps: R.customer.length, delay: 400 });
+    on($('#as-r-intent'), 1600);
+    on($('#as-r-section'), 2000);
+    on($('#as-r-next'), 2400);
+    typeText($('#as-say'), R.say, { cps: R.say.length / 1.6, delay: 2900 });
+    on($('#as-check'), 4800);
+    countUp($('#as-next-pct'), 73.9, { ms: 1800, delay: 800, fmt: (v) => `${v.toFixed(1)}%` });
   });
 }
 
@@ -451,6 +471,7 @@ fieldDiscovery();
 injection();
 results();
 pixels();
+assist();
 signal();
 brainDump();
 bdTuning();
