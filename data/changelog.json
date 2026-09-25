@@ -1,9 +1,14 @@
 {
-  "generated": "2026-09-25T21:34:46Z",
+  "generated": "2026-09-25T22:17:28Z",
   "repo": "SamieVargas/samievargas.github.io",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 305,
+  "total": 307,
   "commits": [
+    {
+      "sha": "e5b4f214739de16cd2b57126bba253ffbe0109cd",
+      "date": "2026-09-25T21:50:56Z",
+      "message": "Fix roles, the raccoon timeline, certs and repo links, add Guideline Assist to the résumé"
+    },
     {
       "sha": "6ca2a423ea027378dc0b6f0cc467f8cf2289371f",
       "date": "2026-09-25T21:32:30Z",
@@ -48,11 +53,6 @@
       "sha": "5681269f21acfd7203484fbd0dd7e66e0ea71be3",
       "date": "2026-09-24T21:24:40Z",
       "message": "Replay four real Brain Dump runs in the current three-level format"
-    },
-    {
-      "sha": "6a6c464a233aad0e23da7f69fdf96ee76c4bfa65",
-      "date": "2026-09-24T15:56:06Z",
-      "message": "Add the PSF Emerging knowledge base and its pilot to the current role"
     }
   ],
   "weeks": [
@@ -75,10 +75,10 @@
     16,
     15,
     0,
-    61
+    63
   ],
   "resume": {
-    "sha": "7251e9ca85a35f68a819123aec0cf83666bde4fb",
-    "date": "2026-09-25T21:29:23Z"
+    "sha": "e5b4f214739de16cd2b57126bba253ffbe0109cd",
+    "date": "2026-09-25T21:50:56Z"
   }
 }
