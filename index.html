@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Samie Vargas · applied AI</title>
-  <meta name="description" content="I build AI into the workflows customers already run, and I publish how often it breaks. Four builds with dated evals, eight years at GLG. Austin, remote.">
+  <meta name="description" content="I build AI into the workflows customers already run, and I publish how often it breaks. Five builds with dated evals, eight years at GLG. Austin, remote.">
   <link rel="canonical" href="https://samievargas.com/">
   <meta name="theme-color" content="#1a6b5a">
 
@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925d">
+  <link rel="stylesheet" href="css/styles.css?v=20260925e">
 </head>
 <body>
 
@@ -65,7 +65,7 @@
     <div class="hero__copy">
       <span class="eyebrow rv" style="--d:.05s">Applied AI · customer-facing builds · Austin, remote</span>
       <h1 class="h1 rv" style="--d:.15s">I build AI into the workflows customers already run, and I publish how often it breaks.</h1>
-      <p class="lead rv" style="--d:.35s">Eight years running a $14M+ enterprise book at GLG, where I was the AI person on a non-AI team, and four builds with dated evals on every one, so the log on the right is the last run.</p>
+      <p class="lead rv" style="--d:.35s">Eight years running a $14M+ enterprise book at GLG, where I was the AI person on a non-AI team, and five builds with dated evals on every one, so the log on the right is the last run.</p>
       <div class="hero__actions rv rv--fade" style="--d:.5s">
         <a class="btn btn--ink" href="#field-discovery">See the builds ↓</a>
         <button type="button" class="btn btn--line" data-copy-email>Copy my email</button>
@@ -78,7 +78,7 @@
     </div>
   </header>
 
-  <!-- ── SPINE: four patterns ─────────────────────────────── -->
+  <!-- ── SPINE: five patterns ─────────────────────────────── -->
   <section class="sec sec--major spine" id="patterns" data-in>
     <div class="row-between"><h2 class="spine__title" id="spine-title"></h2><span class="meta" id="spine-note"></span></div>
     <div class="spine__rows" id="spine-rows"></div>
@@ -183,6 +183,37 @@
         <a class="px-more" href="/pixels/">Replay all 26 questions →</a>
       </div>
     </div>
+  </section>
+
+  <!-- ── GUIDELINE ASSIST: AGENT ASSIST + QA ──────────────── -->
+  <section class="sec as" id="assist" data-in>
+    <div class="stack narrow rv">
+      <span class="eyebrow">Agent assist + QA · Guideline Assist · ASAPP's ABCD support chats</span>
+      <h2 class="h2">It tells a support agent the next step while the chat is still going, and every step it names has to be in the written guideline or it gets rejected.</h2>
+      <p class="plain"><strong>In plain terms:</strong> it works like a colleague reading over a support agent's shoulder who has memorized the rulebook and whispers the next step, and then checks the finished conversation for steps that were skipped or done wrong.</p>
+    </div>
+    <div class="cols cols--24">
+      <div class="as-run rv rv--fade" style="--d:.15s">
+        <span class="as-run__k">one recorded call · chat <span id="as-chat"></span></span>
+        <div class="as-run__c"><span>customer</span><span id="as-cust"></span></div>
+        <div class="as-run__rows">
+          <div class="as-run__row" id="as-r-intent"><span>intent</span><span class="ok"></span></div>
+          <div class="as-run__row" id="as-r-section"><span>section</span><span></span></div>
+          <div class="as-run__row" id="as-r-next"><span>next step</span><span class="ok"></span></div>
+        </div>
+        <p class="as-run__say" id="as-say"></p>
+        <div class="as-run__check" id="as-check"><span class="ok" id="as-check-t"></span><span id="as-ms"></span></div>
+      </div>
+      <div class="stack stack--14">
+        <div class="hairgrid hairgrid--2">
+          <div class="stat"><span class="stat__n" id="as-next-pct">0%</span><span class="stat__l">right next step, 349 agent actions</span></div>
+          <div class="stat"><span class="stat__n">79.5%</span><span class="stat__l">shadow: matched what the agent did next, 176 actions</span></div>
+        </div>
+        <span class="caption">Sonnet 5 with the whole guideline library in a cached prompt, 100 frozen test chats, 24 September 2026. ABCD is role-played by trained crowdworkers, no real customers, MIT licensed, Copyright (c) 2021 ASAPP Research.</span>
+        <a class="px-more" href="/assist/">Replay six chats and the QA →</a>
+      </div>
+    </div>
+    <div class="results" data-results="assist"></div>
   </section>
 
   <!-- ── FINE-TUNING ──────────────────────────────────────── -->
@@ -365,6 +396,6 @@
   </div>
 </section>
 
-<script type="module" src="js/app.js?v=20260925d"></script>
+<script type="module" src="js/app.js?v=20260925e"></script>
 </body>
 </html>

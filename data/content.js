@@ -9,33 +9,39 @@
 // site with its date: field discovery from the 22 Sep 2026 run, Pixels
 // from evals/results/2026-09-22.json, Signal from the README ablation,
 // the parse count from the structured-output tally across Signal, Brain
-// Dump and field discovery (0 failures in 520 runs).
+// Dump and field discovery (0 failures in 520 runs), and the guideline row
+// from guideline-assist's evals/results/assist-2026-09-24.json (Sonnet 5,
+// arm A, 258 of 349 action points).
 export const HERO_LOG = {
-  head: 'evals · last run 22 Sep 2026',
+  head: 'evals · last run 24 Sep 2026',
   rows: [
     { p: 'field_disc', k: 'golden transcripts', v: '8/8 pass', tone: 'ok' },
     { p: 'field_disc', k: 'escalation recall · precision', v: '1.00 · 1.00', tone: 'ok' },
     { p: 'field_disc', k: 'unneeded writes, 12 fixtures', v: '0', tone: 'ok' },
     { p: 'field_disc', k: 'planted instructions, 50 runs', v: '40 unchanged', tone: 'warn' },
     { p: 'pixels_rag', k: 'valid citations, 26 questions', v: '26/26', tone: 'ok' },
+    { p: 'guideline', k: 'next action, 349 agent turns', v: '73.9%', tone: 'warn' },
     { p: 'structured', k: 'parse failures', v: '0 / 520', tone: 'ok' },
     { p: 'signal', k: 'mood with no event', v: '7/20', tone: 'bad' },
     { p: 'cost', k: 'per capture', v: '$0.0313 · 21.5s', tone: '' },
   ],
 };
 
-// The four-pattern spine. `dots` is one per test case; `bad` lists which
-// dots are drawn red, which is laid out for the mock (the total is real).
+// The pattern spine. `dots` is one per test case; `bad` lists which dots
+// are drawn red, which is laid out for the mock (the total is real), except
+// on the Assist row, where the red dots are the two fixtures (inj01, inj08)
+// that moved a suggestion in guideline-assist's injection-2026-09-24.json.
 export const SPINE = {
-  title: 'Four patterns, one row each',
+  title: 'Five patterns, one row each',
   note: 'one dot per test case · red is a case that still breaks',
   rows: [
     { label: 'Agents', name: 'Field discovery', line: 'voice note to CRM record, a person approves every write', dots: 10, bad: [0, 2, 3, 5, 7, 8], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.03 →', href: '#field-discovery' },
     { label: 'RAG', name: 'Life in Pixels', line: 'a router in front of retrieval, every answer checked against its cited days', dots: 26, bad: [], cap: '26 questions · 26 valid citations', cta: '100% · watch it run →', href: '/pixels/' },
+    { label: 'Assist + QA', name: 'Guideline Assist', line: 'a live next-step suggestion for a support agent, and a QA pass on the finished chat, both held to the written guidelines', dots: 10, bad: [0, 7], cap: '10 injection fixtures · 2 moved a suggestion at least once', cta: '73.9% next action · watch it run →', href: '/assist/' },
     { label: 'Fine-tuning', name: 'Card matching, tuned vs prompted', line: 'a small open model against Haiku and Sonnet', pending: true, cap: 'baselines scored · tuned run not yet', cta: 'in progress', href: '#fine-tuning' },
     { label: 'MCP', name: 'Pixels server', line: 'the same retrieval, for Claude Desktop and Claude Code, data stays local', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
   ],
-  rule: 'under all four · 0 parse failures in 520 structured calls',
+  rule: 'across the earlier builds · 0 parse failures in 520 structured calls',
   plain: 'each row is one common way companies put AI to work, and each dot is a test I ran on it, so you can see at a glance what holds up and what still slips.',
 };
 
@@ -86,6 +92,19 @@ export const PX_REPLAY = {
   days: ['06-08', '06-09', '06-10', '06-11', '06-12', '06-13'],
   a: 'The week of June 8-14 was challenging overall. On 2026-06-08, you had a low mood with poor sleep and moderate stress, though productivity was high. On 2026-06-09, you experienced irritability and high stress with another poor night.',
   check: '✓ 6 of 6 cited days exist in the data',
+};
+
+// Guideline Assist: one recorded call, from data/assist-replay.json (chat
+// 812, the call before turn 9, Sonnet 5 on arm A, 24 Sep 2026).
+export const AS_REPLAY = {
+  chat: '812',
+  customer: 'Order ID: 3044561205',
+  intent: 'status_delivery_time',
+  section: 'Order Issue / Status Delivery Time',
+  next: 'verify-identity(Albert Sanders, RUTM9QSZML, 3044561205)',
+  say: 'Verify identity with the provided name, account ID, and order ID.',
+  check: '✓ the agent did verify-identity next',
+  ms: '2.2 s',
 };
 
 // Signal: the four sharp scraps and the faded pile behind them. Hue is the
@@ -316,6 +335,13 @@ const RESULTS = {
     // proposal at least once in five runs), which is why a person approves
     // every write. The 9-in-20 modal id set from the stability arm still holds.
     discovery: ['Four lines typed into a CRM field that cannot tell silence from a resolved requirement', 'A local requirements library, one LLM call under a closed enum, a proposal step a person approves, and an idempotent Salesforce upsert', 'Three cents and twenty seconds per capture, and nothing at all while the published demo runs canned', 'Planted instructions moved a proposal in six of ten fixtures, so a person still approves every write and confirms every card'],
+    // guideline-assist README and docs/deployment-readout.md (2026-09-24/25):
+    // the agent reading a policy library mid-chat and a supervisor sampling
+    // chats afterwards; arm A (the whole library cached) and the validator;
+    // $122 per 1,000 chats on Sonnet 5 arm A and $48 on Haiku 4.5 arm A at
+    // 50.1% next action; 20 of 100 clean chats flagged
+    // by the QA and 2 of 10 injection fixtures that moved a suggestion.
+    assist:    ['An agent looking up the next step in a policy library mid-chat, and a supervisor reading a sample of chats afterwards', 'One model call per agent turn with the whole guideline library in a cached prompt, a validator that rejects any step the guideline section does not list, and a QA call on the finished chat', 'About $122 per 1,000 chats on Sonnet 5 at 3.2 s p95 per turn, or $48 on Haiku 4.5, which picks the right next step about half the time', 'The QA still flags 20 of 100 clean chats, half its wrong-value flags are wrong, and one planted line pulled the suggestion toward a refund in 2 of 5 runs'],
     // Instacart README: "most projects go straight to ML"; the input line on
     // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
     instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
@@ -564,7 +590,7 @@ const TK_META = [
     why: 'This is the line that shows up in someone\'s Slack, which is how most people get here, so it should be the claim, since my name is already on the card as the domain.' },
   { name: 'Social description', attr: 'og:description', key: 'og:description', max: 200, current: 'Agents, RAG, fine-tuning and MCP, one row each, with a dot for every test case. Field discovery, Life in Pixels, Signal and Brain Dump, each with its evals.', status: 'Live · 156 chars',
     why: 'The title makes the claim, so this carries proof instead of repeating it, and every number here is one I can walk someone through.' },
-  { name: 'Search description', attr: 'meta name="description"', key: 'description', max: 160, current: 'I build AI into the workflows customers already run, and I publish how often it breaks. Four builds with dated evals, eight years at GLG. Austin, remote.', status: 'Live · 153 chars',
+  { name: 'Search description', attr: 'meta name="description"', key: 'description', max: 160, current: 'I build AI into the workflows customers already run, and I publish how often it breaks. Five builds with dated evals, eight years at GLG. Austin, remote.', status: 'Live · 153 chars',
     why: 'Google cuts around 155 and my old one was 197, so the part being dropped was the location, and this ends on the strongest clause while still keeping Austin.' },
   { name: 'Card alt text', attr: 'og:image:alt', current: 'Samie Vargas, applied AI. Austin, remote.', status: 'Live',
     why: 'Some clients and every screen reader get this instead of the image, and it was missing entirely.' },
