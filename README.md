@@ -112,7 +112,7 @@ The LLM apps talk to the Anthropic API through a Cloudflare Worker, so the key s
 
 ## Features worth noting
 
-**Five patterns, one row each**: the work page is organised around agents, RAG, agent assist and QA, fine-tuning and MCP, with one dot per test case under each and the cases that still break drawn in red, so the evals are the first thing you see and every project also carries one "In plain terms" sentence for the reader who does not live in this vocabulary.
+**Five patterns, one row each**: the work page is organised around agents, RAG, agent assist and QA, fine-tuning and MCP, with one dot per test case under each and the cases that still break drawn in red, so the evals are the first thing you see and every project also carries at least one "In plain terms" sentence for the reader who does not live in this vocabulary.
 
 **Result lines**: every project ends on the same four fields: what it replaced, what it took, what it costs to run, and what still breaks. The last one is filled from the project's own eval, not from optimism.
 

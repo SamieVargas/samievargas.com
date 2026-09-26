@@ -10,7 +10,7 @@ This file is the source of truth for every number, date and version that appears
 4. When a new eval lands, add a new dated row and keep the old one under **History**; never overwrite a result in place.
 5. Order of trust: the results file in the source repo, then this file, then `data/content.js`, then page copy. If they disagree, the page is wrong.
 6. Rows marked **UNSOURCED** or **RECONCILE** are on the site but not yet traced; do not repeat them in new copy until they are resolved.
-7. Voice rules for all site copy: no em dashes; run-on sentences joined with commas, "and", "so", "which is"; no punchy fragments; no "not X, it's Y"; headlines are full claims in sentence case; every project carries one "In plain terms" line (`.plain`). Résumé bullets and recreated product output may stay as originally written.
+7. Voice rules for all site copy: no em dashes; run-on sentences joined with commas, "and", "so", "which is"; no punchy fragments; no "not X, it's Y"; headlines are full claims in sentence case; every project carries at least one "In plain terms" line (`.plain`); Claude adds exactly one unless Samie asks for more, and any extra ones she adds (for a term like RAG, MCP, dbt or Socrata) stay. Résumé bullets and recreated product output may stay as originally written.
 8. After changing `css/`, `js/` or `data/`, bump the `?v=` token on every page and import in one pass.
 
 ## Timeline

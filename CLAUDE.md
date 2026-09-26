@@ -11,7 +11,7 @@ Read `FACTS.md` before any edit. Every number, date, model name and version on t
 Every page follows the 3a style in `design/samie-3a-style.md`: read it before building or changing a page, a doc, a deck or a tool that should look like this site. Tokens live on `:root` at the top of `css/styles.css`; components use the tokens, never a literal colour.
 
 - Scroll load-ins go through `onSeen` / `autoReveal` in `js/reveal.js` (one IntersectionObserver with a `-10%` bottom margin plus a bounding-rect tick). Never a whole-section threshold.
-- Every project carries exactly one "In plain terms" sentence (`.plain`).
+- Every project carries at least one "In plain terms" sentence (`.plain`). When Claude adds one, it adds exactly one, unless Samie asks for more; extra ones she has added, like the lines that explain RAG, MCP, dbt or Socrata, are on purpose and stay.
 - Anything laid out for the mock says so in a mono caption.
 - Honour `prefers-reduced-motion` by rendering the end state (`REDUCED` in `js/reveal.js`).
 
