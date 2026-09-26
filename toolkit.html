@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925h">
+  <link rel="stylesheet" href="css/styles.css?v=20260925i">
 </head>
 <body>
 
@@ -46,7 +46,6 @@
     <div class="nav__links">
       <a href="/">Work</a>
       <a href="/life">Life</a>
-      <a href="/life#notes">Notes</a>
       <a href="/apps/">Arcade</a>
       <a href="/resume">Résumé</a>
     </div>
@@ -76,9 +75,13 @@
       <h2><span class="tk-num">01</span>What I changed, and why</h2>
       <span class="tk-note">snapshotted from the repo on every push</span>
     </div>
-    <p class="tk-intro">The list on the left is written by the repo itself: on every push, a small Action snapshots the commits behind samievargas.com, from the <a href="https://github.com/SamieVargas/samievargas.github.io">SamieVargas/samievargas.github.io</a> repo, into the site, so it updates when I push and never has to ask GitHub from your browser. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why.</p>
+    <p class="tk-intro">The list on the left is written by the repo itself: on every push, a small Action snapshots the commits behind samievargas.com, from the <a href="https://github.com/SamieVargas/samievargas.github.io">SamieVargas/samievargas.github.io</a> repo, into the site, so it updates when I push and never has to ask GitHub from your browser. The notes on the right are the ones worth a sentence of explanation, because a commit message never says why, so any commit with a "Why:" line in its body shows up there on its own.</p>
     <div class="tk-strip" id="tk-strip" aria-label="Pushes per week"></div>
     <div class="tk-strip-axis"><span id="tk-strip-from"></span><span id="tk-strip-cap">one stem per week, taller is more pushes · latest in green</span><span id="tk-strip-to"></span></div>
+    <div class="tk-pages" id="tk-pages" hidden>
+      <div class="sechead tk-subhead"><h3>When each page last changed</h3><span class="meta">from the same snapshot, newest first</span></div>
+      <div id="tk-pages-rows"></div>
+    </div>
     <div class="tk-two">
       <div class="tk-col">
         <div class="sechead tk-subhead"><h3>Commits</h3><span class="meta" id="tk-feed-status">latest first</span></div>
@@ -105,8 +108,8 @@
     <p class="tk-intro">Young Serif for anything that speaks, Onest for the reading, and Geist Mono for anything that labels or measures, with paper and ink for the frame and one green for the thing you should look at.</p>
 
     <div class="tk-type">
-      <div class="tk-type__card tk-up" style="--d:.15s"><span class="micro tk-micro">Speaks</span><span class="tk-type__name tk-f-serif">Young Serif</span><span class="tk-type__sample tk-s-serif">Sixty seconds in the car becomes a record.</span></div>
-      <div class="tk-type__card tk-up" style="--d:.27s"><span class="micro tk-micro">Reads</span><span class="tk-type__name tk-f-sans">Onest</span><span class="tk-type__sample tk-s-sans">A rep talks into their phone in a parking lot, and onboarding gets a record.</span></div>
+      <div class="tk-type__card tk-up" style="--d:.15s"><span class="micro tk-micro">Speaks</span><span class="tk-type__name tk-f-serif">Young Serif</span><span class="tk-type__sample tk-s-serif">A rep's voice note becomes a CRM record.</span></div>
+      <div class="tk-type__card tk-up" style="--d:.27s"><span class="micro tk-micro">Reads</span><span class="tk-type__name tk-f-sans">Onest</span><span class="tk-type__sample tk-s-sans">A field sales rep talks into their phone after a visit, and the open questions get flagged.</span></div>
       <div class="tk-type__card tk-up" style="--d:.39s"><span class="micro tk-micro">Labels</span><span class="tk-type__name tk-f-mono">Geist Mono</span><span class="tk-type__sample tk-s-mono">golden transcripts · 8/8 pass · $0.0313</span></div>
     </div>
 
@@ -183,6 +186,16 @@
           <div class="tk-fav tk-pop" style="--d:.45s"><span class="tk-fav__s tk-fav__s--16">S</span><span class="tk-fav__l">16px · tab</span></div>
         </div>
         <p class="tk-set">favicon.svg · favicon-32.png · favicon-16.png · apple-touch-icon 180 · icon-192 · icon-512, both maskable</p>
+        <div class="sechead tk-subhead"><h3>Across the site</h3><span class="meta">the real files, at their real sizes</span></div>
+        <div class="tk-favs tk-favs--files">
+          <div class="tk-fav"><img class="tk-fav__img" src="favicon-16.png" width="16" height="16" alt="16px favicon"><span class="tk-fav__l">favicon-16</span></div>
+          <div class="tk-fav"><img class="tk-fav__img" src="favicon-32.png" width="32" height="32" alt="32px favicon"><span class="tk-fav__l">favicon-32</span></div>
+          <div class="tk-fav"><img class="tk-fav__img" src="favicon.svg" width="48" height="48" alt="SVG favicon"><span class="tk-fav__l">favicon.svg</span></div>
+          <div class="tk-fav"><img class="tk-fav__img tk-fav__img--r" src="apple-touch-icon.png" width="60" height="60" alt="Apple touch icon"><span class="tk-fav__l">apple-touch · 180</span></div>
+          <div class="tk-fav"><img class="tk-fav__img tk-fav__img--r" src="icon-192.png" width="64" height="64" alt="192px app icon"><span class="tk-fav__l">icon-192 · 512</span></div>
+          <div class="tk-fav"><img class="tk-fav__img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231A6B5A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='20' fill='white'%3ES%3C/text%3E%3C/svg%3E" width="32" height="32" alt="The raccoon page's own favicon, an italic S"><span class="tk-fav__l">/raccoon only</span></div>
+        </div>
+        <p class="tk-set">every page, the arcade and its fifteen apps, the replays and the 404 share the same set, and /raccoon keeps its own italic S because it keeps its own look</p>
       </div>
       <div class="tk-col tk-col--16">
         <div class="sechead tk-subhead"><h3>Social card · 1200×630</h3><span class="meta">was 347×190</span></div>
@@ -196,7 +209,7 @@
   <section class="tk-sec tk-sec--18" id="tk-copy">
     <div class="tk-sechead">
       <h2><span class="tk-num">04</span>The lines that do the work</h2>
-      <span class="tk-note">length against the limit each surface truncates at</span>
+      <span class="tk-note">read live from the home page · length against each surface's limit</span>
     </div>
     <div id="tk-meta"></div>
   </section>
@@ -227,6 +240,6 @@
   </div>
 </footer>
 
-<script type="module" src="js/toolkit.js?v=20260925h"></script>
+<script type="module" src="js/toolkit.js?v=20260925i"></script>
 </body>
 </html>
