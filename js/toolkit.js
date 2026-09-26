@@ -8,8 +8,8 @@
 // sample in the HTML is the real class from css/styles.css.
 // ============================================================
 
-import { $, $$, esc, onSeen, autoReveal, wait } from './reveal.js?v=20260925h';
-import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260925h';
+import { $, $$, esc, onSeen, autoReveal, wait } from './reveal.js?v=20260925i';
+import { TK_REPO, TK_FALLBACK, TK_NOTES, TK_META, TK_TOKENS } from '../data/content.js?v=20260925i';
 
 const TZ = 'America/Chicago';
 const day = (iso) => new Date(iso.length <= 10 ? `${iso}T12:00:00Z` : iso);
@@ -160,6 +160,24 @@ function applySnapshot(snap) {
   if (snap.first) renderAge(snap.first);
   if (Array.isArray(snap.weeks) && snap.weeks.some((n) => n > 0)) stripFromWeeks(snap.weeks, snap.generated || snap.commits[0].date);
   else stripFromDates(snap.commits);
+  if (Array.isArray(snap.notes) && snap.notes.length) renderNotes(snap.notes);
+  renderPages(snap.pages);
+}
+
+// When each page last changed, newest first, from the same snapshot.
+function renderPages(pages) {
+  const host = $('#tk-pages');
+  if (!host) return;
+  if (!Array.isArray(pages) || !pages.length) { host.hidden = true; return; }
+  host.hidden = false;
+  const rows = [...pages].sort((a, b) => day(b.date) - day(a.date));
+  $('#tk-pages-rows').innerHTML = rows.map((p) => `
+    <a class="tk-page tk-c tk-c--y" href="https://github.com/${TK_REPO}/commit/${esc(p.sha)}" title="${esc(p.message)}">
+      <span class="tk-page__l">${esc(p.label)}</span>
+      <span class="tk-page__m">${esc(p.message)}</span>
+      <span class="tk-page__d">${esc(ago(p.date))}</span>
+    </a>`).join('');
+  stage(secLog, $$('.tk-page', host), (i) => 300 + i * 60);
 }
 
 function loadSnapshot() {
@@ -170,9 +188,14 @@ function loadSnapshot() {
     .catch(() => { renderStatus('failed'); applyFallback(); });
 }
 
-function renderNotes() {
+// The reasons: commits with a "Why:" line come first, from the snapshot,
+// then the hand-written notes in content.js for anything older.
+function renderNotes(fromRepo = []) {
   const host = $('#tk-notes');
-  host.innerHTML = TK_NOTES.map((n) => `
+  const repo = fromRepo.map((n) => ({ date: ymd(n.date), title: n.title, body: n.body }));
+  const seenT = new Set(repo.map((n) => n.title));
+  const list = [...repo, ...TK_NOTES.filter((n) => !seenT.has(n.title))].slice(0, 8);
+  host.innerHTML = list.map((n) => `
     <div class="tk-why tk-c tk-c--y">
       <span class="tk-why__d">${esc(n.date)}</span>
       <span class="tk-why__t">${esc(n.title)}</span>
@@ -238,9 +261,28 @@ function wireHue() {
 }
 
 // ── 04 · Copy against each surface's limit ───────────────────
+// The current value of each row is read from the live home page's <head>,
+// so it can never drift from what ships; content.js only holds the limit
+// and the reason, and its `current` is the fallback if the fetch fails.
 const META_ORDER = ['<title>', 'description', 'og:title', 'og:description'];
-function renderMeta() {
-  const rows = META_ORDER.map((k) => TK_META.find((m) => m.key === k)).filter(Boolean);
+function readHead(doc) {
+  const get = (sel) => doc.querySelector(sel)?.getAttribute('content')?.trim();
+  return {
+    '<title>': doc.querySelector('title')?.textContent.trim(),
+    description: get('meta[name="description"]'),
+    'og:title': get('meta[property="og:title"]'),
+    'og:description': get('meta[property="og:description"]'),
+  };
+}
+function loadMeta() {
+  fetch('./', { cache: 'no-cache' })
+    .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
+    .then((html) => renderMeta(readHead(new DOMParser().parseFromString(html, 'text/html'))))
+    .catch(() => renderMeta({}));
+}
+function renderMeta(live = {}) {
+  const rows = META_ORDER.map((k) => TK_META.find((m) => m.key === k)).filter(Boolean)
+    .map((m) => ({ ...m, current: live[m.key] || m.current }));
   const host = $('#tk-meta');
   host.innerHTML = rows.map((m) => {
     const n = m.current.length;
@@ -268,5 +310,5 @@ renderNotes();
 renderTokens();
 renderDots();
 wireHue();
-renderMeta();
+loadMeta();
 loadSnapshot();

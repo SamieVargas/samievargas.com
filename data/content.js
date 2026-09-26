@@ -32,14 +32,14 @@ export const HERO_LOG = {
 // on the Assist row, where the red dots are the two fixtures (inj01, inj08)
 // that moved a suggestion in guideline-assist's injection-2026-09-24.json.
 export const SPINE = {
-  title: 'Five patterns, one row each',
+  title: 'Five common ways to deploy AI, and my builds for each',
   note: 'one dot per test case · red is a case that still breaks',
   rows: [
-    { label: 'Agents', name: 'Field discovery', line: 'voice note to CRM record, a person approves every write', dots: 10, bad: [0, 2, 3, 5, 7, 8], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.0313 →', href: '#field-discovery' },
-    { label: 'RAG', name: 'Life in Pixels', line: 'a router in front of retrieval, every answer checked against its cited days', dots: 26, bad: [], cap: '26 questions · 26 valid citations', cta: '100% · watch it run →', href: '/pixels/' },
-    { label: 'Assist + QA', name: 'Guideline Assist', line: 'a live next-step suggestion for a support agent, and a QA pass on the finished chat, both held to the written guidelines', dots: 10, bad: [0, 7], cap: '10 injection fixtures · 2 moved a suggestion at least once', cta: '73.9% next action · watch it run →', href: '/assist/' },
-    { label: 'Fine-tuning', name: 'Card matching, tuned vs prompted', line: 'a small open model against Haiku and Sonnet', pending: true, cap: 'baselines scored · tuned run not yet', cta: 'in progress', href: '#fine-tuning' },
-    { label: 'MCP', name: 'Pixels server', line: 'the same retrieval, for Claude Desktop and Claude Code, data stays local', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
+    { label: 'Agents', name: 'Field discovery', line: 'a rep records what they heard on a visit, and it writes up the account and flags what\'s still missing', plain: 'AI does the job, a person signs off.', dots: 10, bad: [0, 2, 3, 5, 7, 8], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.0313 →', href: '#field-discovery' },
+    { label: 'RAG', name: 'Life in Pixels', line: 'ask questions about years of my mood journal, and every answer is checked against the days it cites', plain: 'AI answers from your records, with sources.', dots: 26, bad: [], cap: '26 questions · 26 valid citations', cta: '100% · watch it run →', href: '/pixels/' },
+    { label: 'Assist + QA', name: 'Guideline Assist', line: 'a live next-step suggestion for a support agent, and a QA pass on the finished chat, both held to the written guidelines', plain: 'AI suggests the next move, then checks the work.', dots: 10, bad: [0, 7], cap: '10 injection fixtures · 2 moved a suggestion at least once', cta: '73.9% next action · watch it run →', href: '/assist/' },
+    { label: 'Fine-tuning', name: 'Card matching, tuned vs prompted', line: 'a small open model against Haiku and Sonnet', plain: 'a smaller model trained to do one job cheaper.', pending: true, cap: 'baselines scored · tuned run not yet', cta: 'in progress', href: '#fine-tuning' },
+    { label: 'MCP', name: 'Pixels server', line: 'the same journal search, as a tool Claude Desktop and Claude Code can call, with the data kept local', plain: 'a plug that lets AI use your tools and data.', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
   ],
   rule: 'across the earlier builds · 0 parse failures in 520 structured calls',
   plain: 'each row is one common way companies put AI to work, and each dot is a test I ran on it, so you can see at a glance what holds up and what still slips.',
@@ -75,7 +75,7 @@ export const FD_RECORD = {
   ],
 };
 export const FD_CASE = [
-  { k: 'Problem', v: 'Reps type four lines into a CRM field that cannot tell silence from a resolved requirement.' },
+  { k: 'Problem', v: 'Reps type a few lines of notes into the CRM, with no way to tell what was covered from what was skipped.' },
   { k: 'Approach', v: 'A fixed requirements library, one call under a closed enum, and a proposal step where approve is the only path to a write.' },
   { k: 'Went wrong', v: 'Planted instructions moved a proposal at least once in six of ten fixtures.' },
   { k: 'Result', v: '8 of 8 golden · 0 unneeded writes in 12 · $0.0313 · 21.5s', mono: true },
@@ -138,12 +138,13 @@ export const SIGNAL_PILE = {
 
 // Brain Dump, sort@v3 (brain-dump worker/contracts.js): three levels with a
 // separate "feeling anxious" switch, three buckets, and "now" capped per level
-// with a task timer. The four runs are real, one long voice-note dump given
-// to the live page on 24 Sep 2026, copied from its exported plans: two at
-// "a little", one at "none", one at "none" with anxious on, $0.05 for all
-// four on claude-sonnet-5. The page shows the first few of each list.
+// with a task timer. The runs are real, one long voice-note dump given to
+// the live page on 24 Sep 2026, copied from its exported plans: four were
+// recorded for $0.05 on claude-sonnet-5, and three are shown (a little, none,
+// none with anxious on) since the repeat "a little" run was cut on 25 Sep
+// 2026. The page shows the first few of each list.
 export const BD_V3 = {
-  date: '24 Sep 2026', model: 'claude-sonnet-5', prompt: 'sort@v3', cost: '$0.05 for all four runs',
+  date: '24 Sep 2026', model: 'claude-sonnet-5', prompt: 'sort@v3', cost: '$0.05 for the four runs recorded that day',
   levels: { plenty: { cap: 3, timer: 25 }, 'a little': { cap: 2, timer: 15 }, none: { cap: 1, timer: 5 } },
   dumpChars: 2732,
   // An excerpt of the dump, in order; `hl` marks the words a run quoted back.
@@ -161,7 +162,6 @@ export const BD_V3 = {
   ],
   runs: [
     {"level": "a little", "anxious": false, "now": [{"label": "order groceries.", "detail": "open the delivery app already on your phone and order just enough for lunch today, not the whole week.", "why": "you said \"I don't have anything for lunch and it's already like almost eleven\"", "strategy": "micro-commitment", "src": "lunch"}, {"label": "call the pharmacy.", "detail": "make the one call, ask for the 90-day refill switch, and you're done once you've said it.", "why": "you said \"the pharmacy is the one I keep coming back to\"", "strategy": "5-min rule", "src": "pharmacy"}], "later": [{"t": "do", "x": "Check the lease renewal date in the calendar to confirm it's the right one."}, {"t": "do", "x": "Clear the couch boxes out of the living room."}, {"t": "do", "x": "Ping Matt for the missing QBR notes."}, {"t": "do", "x": "Write the QBR recap email for your boss before sending it to the group."}, {"t": "decide", "x": "Decide whether to keep the storage seats or the regular ones before scheduling pickup."}, {"t": "do", "x": "Figure out the chaise lounge setup so the storage area is reachable."}, {"t": "do", "x": "Hang the Lego sets on the wall instead of the dining table."}, {"t": "decide", "x": "Decide whether to go to pottery class tonight."}, {"t": "do", "x": "Pick a costume for the friend's birthday."}, {"t": "idea", "x": "Download mods for Stardew Valley to have ready for the new Steam machine."}, {"t": "idea", "x": "Excitement about the new Steam machine and the games waiting for it."}, {"t": "do", "x": "Restart strength training, even just a short session."}, {"t": "decide", "x": "Decide on weekend plans, including dinner with the guys."}, {"t": "do", "x": "Go back to the calming podcast episodes."}, {"t": "idea", "x": "The day-at-a-glance display idea."}], "letGo": ["The couch boxes sitting out do not mean you're behind.", "The clutter around the storage seats does not define how capable you are.", "Missing pottery class tonight, if that happens, does not undo the fact that you try.", "Two weeks without strength training does not cancel how much you like it when you do it.", "The day-at-a-glance idea does not need to be perfect before it starts.", "Being scared about the lease date is not the same as having missed it."]},
-    {"level": "a little", "anxious": false, "now": [{"label": "call the pharmacy.", "detail": "one call, ask for the 90-day switch, and that's the whole task today.", "why": "you said \"the pharmacy is the one I keep coming back to\" so it goes first.", "strategy": "5-min rule", "src": "pharmacy"}, {"label": "order groceries.", "detail": "open the app already on your phone and press order on the first lunch option you see.", "why": "you don't have anything for lunch and it's already almost eleven.", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "check the lease renewal date already sitting in your calendar."}, {"t": "do", "x": "move the couch boxes out of the living room."}, {"t": "do", "x": "ping Matt for the missing QBR notes."}, {"t": "do", "x": "write and send the QBR recap email to your boss."}, {"t": "decide", "x": "decide between keeping the storage seats or the regular ones before scheduling pickup."}, {"t": "do", "x": "move the chaise lounge so the storage is reachable."}, {"t": "do", "x": "hang the Lego sets on the wall instead of the dining table."}, {"t": "decide", "x": "decide whether to go to pottery class tonight."}, {"t": "decide", "x": "decide on a costume for your friend's birthday."}, {"t": "idea", "x": "download the mods for Stardew before you play."}, {"t": "idea", "x": "look forward to trying the games you've wanted on the new Steam Machine."}, {"t": "do", "x": "ease back into strength training, even a short session."}, {"t": "decide", "x": "decide about dinner with the guys this weekend."}, {"t": "do", "x": "put on the calming podcast you like, even a familiar episode."}, {"t": "idea", "x": "sketch a rough version of the day-at-a-glance display idea."}], "letGo": ["the lease renewal date is already saved in your calendar, not a countdown to disaster.", "missing a class you signed up for doesn't undo the parts of you that do show up.", "the boxes and clutter around you are just objects, not a verdict on how you're doing.", "two weeks without strength training is a pause, not a failure."]},
     {"level": "none", "anxious": false, "now": [{"label": "order lunch.", "detail": "open the delivery app already on your phone and press order on the first thing that looks good.", "why": "you said \"I need to order groceries cuz I don't have anything for lunch and it's already like almost eleven\" — this is the body need underneath everything else on the list", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "call the pharmacy to ask them to switch the prescription to a 90-day fill"}, {"t": "do", "x": "check the lease renewal date already sitting in the calendar"}, {"t": "do", "x": "break down and move the couch boxes out of the living room"}, {"t": "do", "x": "write and send the QBR recap email to your boss before it goes to the group"}, {"t": "do", "x": "ping Matt for the missing notes"}, {"t": "decide", "x": "decide whether to keep the storage seats or the regular ones"}, {"t": "do", "x": "figure out how to get to the storage seat past the chaise lounge setup"}, {"t": "do", "x": "hang the Lego sets on the wall instead of the dining table"}, {"t": "decide", "x": "decide whether to go to pottery class tonight"}, {"t": "do", "x": "put together a costume for your friend's birthday"}, {"t": "idea", "x": "download the mods for Stardew Valley so it's ready to play"}, {"t": "idea", "x": "look into the new Steam machine and the games you want to play on it"}, {"t": "do", "x": "restart strength training, even a short session"}, {"t": "decide", "x": "decide whether to go to dinner with the guys this weekend"}, {"t": "idea", "x": "go back to the calming podcast episodes"}, {"t": "idea", "x": "the idea for a display that shows your whole day at a glance"}], "letGo": ["missing the exact lease date is not a disaster waiting to happen, it's just a number to check when you're ready.", "the couch boxes and storage clutter are not a reflection of you, they're just things waiting for a slower day.", "skipping pottery tonight, if that's what happens, doesn't erase that part of you that wanted to try it.", "two weeks without strength training doesn't undo how much you like it when you do it.", "the day-at-a-glance display doesn't have to be perfect before it's allowed to exist."]},
     {"level": "none", "anxious": true, "now": [{"label": "order lunch.", "detail": "open the app already on your phone and press order on the first thing you see.", "why": "you said \"I don't have anything for lunch and it's already like almost eleven\"", "strategy": "one gesture", "src": "lunch"}], "later": [{"t": "do", "x": "when you're ready, call the pharmacy and ask about switching to the 90-day prescription."}, {"t": "do", "x": "double-check the lease renewal date already in the calendar."}, {"t": "do", "x": "unpack or move the couch boxes still sitting in the living room."}, {"t": "do", "x": "write the QBR recap email for your boss before it goes to the group."}, {"t": "do", "x": "message Matt for the missing notes."}, {"t": "decide", "x": "decide whether to keep the storage seats or the regular ones for the couch setup."}, {"t": "do", "x": "schedule the couch pickup once the seat decision is made."}, {"t": "do", "x": "hang the Lego sets on the wall."}, {"t": "decide", "x": "decide whether tonight feels like a pottery class night."}, {"t": "decide", "x": "decide on a costume for your friend's birthday party."}, {"t": "do", "x": "download the mods for Stardew Valley when it feels good to sit with that."}, {"t": "idea", "x": "look forward to playing games on the new Steam Machine once it arrives."}, {"t": "do", "x": "ease back into strength training with whatever length feels okay, even ten minutes."}, {"t": "do", "x": "order groceries for the rest of the week."}, {"t": "decide", "x": "decide whether dinner with the guys this weekend sounds good."}, {"t": "idea", "x": "put on an episode of the podcast you like, new or familiar, whichever feels calming."}, {"t": "idea", "x": "the day-at-a-glance display idea, to build whenever it feels fun rather than heavy."}], "letGo": ["missing the lease date by a little bit is not a disaster waiting to happen.", "skipping pottery tonight doesn't undo your good intentions or who you are.", "two weeks without strength training doesn't erase the progress you already built.", "the display idea doesn't have to be perfect before it's allowed to exist.", "the clutter in the living room is just boxes, not a measure of your worth.", "having this much in your head right now doesn't mean you're behind."]},
   ],
@@ -300,20 +300,20 @@ const OBSERVATIONS = [
   { tag: 'May 2026 · Instacart · 3.4M orders', title: 'The 0.60 reorder rate is technically correct and also meaningless',
     paragraphs: [
       'The Instacart dataset gets cited constantly: 60% of items in a typical order are things the shopper has bought before. I spent a week building a transformation layer on top of it to make the data trustworthy, and the first real query I ran made the number fall apart.',
-      'New shoppers reorder at 0.221 and veterans at 0.670, which is the same metric on the same platform in the same dataset with a threefold difference, and the average turns out to blend shoppers who behave very differently into one number that describes none of them.',
+      'New shoppers reorder at 0.221 and regulars at 0.670, which is the same metric on the same platform in the same dataset with a threefold difference, and the average turns out to blend shoppers who behave very differently into one number that describes none of them.', 'That matters because anything built on the 0.60, a forecast, a model or a "buy it again" feature, would overestimate what new shoppers do and underestimate regulars, so the first job was to split the number before trusting it.',
       'Also, I am in this dataset, I ordered groceries the day I ran the query, and dairy and produce came back as my top two reorder departments, which was just my cart.'],
     sourceText: 'Built in dbt on BigQuery ·', linkText: 'Full project ↗', linkHref: 'https://github.com/SamieVargas/instacart-project' },
-  { tag: 'Apr–May 2026 · personal biometric data', title: 'My nervous system knew about the raccoon before I did',
+  { tag: 'Apr–May 2026 · personal biometric data', title: 'My nervous system knew about the raccoon before I saw them.',
     paragraphs: [
-      'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans, and then I got up early one Wednesday and found a mother raccoon and her babies nesting on my balcony.',
-      'The wearable data told the story better than I could, five consecutive days at a body battery of 5 out of 100, which is the floor, most of them before I knew what the threat was, and my sleep score fell from a baseline of 81 to 53.',
-      'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to baseline, the nervous system does not get the memo, and that lag is what the data made visible.'],
+      'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans. Then I got up early one Wednesday, and while doing a morning workout (to help myself sleep better), I found a mother raccoon and her babies nesting on my balcony.',
+      'My Garmin wearable data told the story better than I could, showing five consecutive days at a body battery of 5 out of 100, which is its "zero." Before I even saw the raccoon family, my body was noticing it, and my sleep score fell from a baseline of 81 to 53.',
+      'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to my baseline. My nervous system does not get the memo, and I found that lag interesting, as it is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_LIFE } },
-  { tag: 'May 2026 · 21,160 inspection records', title: 'Being flagged does not fix it',
+  { tag: 'May 2026 · 21,160 inspection records', title: 'Being written up does not fix health code violations.',
     paragraphs: [
-      'I started by querying every restaurant I actually eat at against the city health inspection API, and places that were sent for a follow-up visit averaged 84.4 against 90.9 for routine visits, 6.45 points apart, which is the opposite direction of what I expected.',
-      'A second pattern showed up across a venue\'s inspection history, the average score drifts from 90.5 at the first inspection to 92.6 by the fifteenth, which is 2.1 points toward more violations and starts to show by the fifth or sixth visit, so being flagged does not seem to be what fixes it, and the city already has the data to spot the ones sliding, although only the venues still open for a fifteenth visit reach the end of that line.'],
+      'I started by querying every restaurant I actually eat at against the City of Austin\'s health inspection API, and places that were sent for a follow-up visit averaged 84.4 against 90.9 for routine visits, 6.45 points apart, which is the opposite direction of what I expected.',
+      'A second pattern showed up across a location\'s inspection history, the average score drifts from 90.5 at the first inspection to 92.6 by the fifteenth, which is 2.1 points toward more violations and starts to show by the fifth or sixth visit. So being written-up does not seem to be what fixes it, and the city already has the data to spot the locations that are sliding, although only the locations still open for a fifteenth visit reach the end of that line.'],
     sourceText: 'City of Austin open data ·', linkText: 'Full analysis ↗', linkHref: 'https://www.kaggle.com/code/samievargas/atx-foodie-inspection' },
   { tag: 'May 2026 · systems', title: 'Every productivity system I have built has the same failure mode',
     paragraphs: [
@@ -335,7 +335,7 @@ const RESULTS = {
     // README's ablation (2026-09-21/22, 20 runs per arm): vibe-risk right in 7
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
-    signal:    ['An hour of account digging by hand before every quarterly review', 'A two-call LLM pipeline, a Cloudflare Worker, and a Python CLI twin', 'Cloudflare\'s free tier, and API tokens only while someone runs a read', 'A mood without an event is read right in 7 runs of 20, and one case names the wrong buyer in 19 of 20'],
+    signal:    ['An hour of account digging by hand before every account call', 'Haiku summarizes each document in 300 tokens, Sonnet 4.6 writes the brief under a JSON Schema, a Cloudflare Worker holds the key, and a Python CLI twin runs a 13-account golden set', 'About $0.03 per brief for the Sonnet call at list price ($0.0308 over 260 eval runs), the per-document summaries on top, and Cloudflare\'s free tier for the Worker', 'A mood without an event is read right in 7 runs of 20, one case names the wrong buyer in 19 of 20, and a long transcript loses its second risk every time'],
     // Brain Dump README (sort@v4 at effort medium, 24 Sep 2026): the 47 tabs,
     // one file, a Worker holding the prompts, three levels and the anxious
     // switch, no database. Cost: the sort@v4 medium grid averaged $0.0071 a
@@ -345,13 +345,17 @@ const RESULTS = {
     // the two "a little" runs on BD_V3 put the same two tasks in opposite
     // orders.
     braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', 'Under a cent a sort at list price, $0.0071 on average after tuning, on Cloudflare\'s free tier, no database', '7 of 120 eval plans still gave a worry-heavy dump more than one thing to do, "need to" slipped into 12, which the page rewrites, and the same dump at the same level can come back in a different order'],
+    // pixels-rag README, keyed golden run 2026-09-22 on Haiku 4.5: $0.0062 a
+    // question, $0.1611 for 26; S01 still failed validation after the retry
+    // (unit-glued 8.2hrs), S03 adjacency abstained, 10 of 26 needed a retry.
+    pixels:    ['A spreadsheet that filters one column at a time, and asking a model with no way to check its citations', 'A router that picks search, filter or sum, a JSON answer contract, a validator that checks every cited day and number in code, and a local MCP server', '$0.0062 a question on Haiku 4.5, $0.16 for all 26, with the index and embeddings running free on my laptop', '10 of 26 answers needed a second try to pass the checker, one true number still gets rejected, and "the day after" a workout cannot be found yet'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs
     // canned; the injection layer from the same day (6 of 10 fixtures moved a
     // proposal at least once in five runs), which is why a person approves
     // every write. The 9-in-20 modal id set from the stability arm still holds.
-    discovery: ['Four lines typed into a CRM field that cannot tell silence from a resolved requirement', 'A local requirements library, one LLM call under a closed enum, a proposal step a person approves, and an idempotent Salesforce upsert', '$0.0313 and 21.5 seconds per capture on Sonnet, and nothing at all while the published demo runs canned', 'Planted instructions moved a proposal in six of ten fixtures, so a person still approves every write and confirms every card'],
+    discovery: ['A few lines of notes in the CRM, with no way to tell what was covered from what was skipped', 'A local requirements library, one LLM call under a closed enum, a proposal step a person approves, and an idempotent Salesforce upsert', '$0.0313 and 21.5 seconds per capture on Sonnet, and nothing at all while the published demo runs canned', 'Planted instructions moved a proposal in six of ten fixtures, so a person still approves every write and confirms every card'],
     // guideline-assist README and docs/deployment-readout.md (2026-09-24/25):
     // the agent reading a policy library mid-chat and a supervisor sampling
     // chats afterwards; arm A (the whole library cached) and the validator;
@@ -361,7 +365,7 @@ const RESULTS = {
     assist:    ['An agent looking up the next step in a policy library mid-chat, and a supervisor reading a sample of chats afterwards', 'One model call per agent turn with the whole guideline library in a cached prompt, a validator that rejects any step the guideline section does not list, and a QA call on the finished chat', '$122 per 1,000 chats on Sonnet 5 at 3.2 s p95 per turn, or $48 on Haiku 4.5, which picks the right next step 50.1% of the time against 73.9% for Sonnet', 'The QA still flags 20 of 100 clean chats, half its wrong-value flags are wrong, and one planted line pulled the suggestion toward a refund in 2 of 5 runs'],
     // Instacart README: "most projects go straight to ML"; the input line on
     // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
-    instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery that runs when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
+    instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery, run on free trials, so nothing when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
     // ATX: the pest-sighting post and "where I eat" on this page; 21,160 records,
     // 84 brands, folium; Kaggle-hosted. "What still breaks" is survivorship in
     // the drift line: point 15 only averages venues inspected fifteen times.
@@ -466,57 +470,80 @@ const RECORDS = [
   { t: 'Kid Gorgeous at Radio City', a: 'John Mulaney', n: 'a comedy record, on vinyl', c: '#1f5f8a', g: 'linear-gradient(180deg,rgba(255,220,120,.3),rgba(0,0,0,0) 40%)' },
 ].map((r, i) => ({ ...r, cat: `LP-${`0${i + 1}`.slice(-2)}` }));
 
-// From the real Goodreads export. r = rating, u = unread, cur = reading now.
+// From the real Goodreads export. r = rating, u = unread, cur = reading now,
+// p = a Poirot book, s = another series (marple, tt, other), m = a maybe. The Poirot short-story collections before the current
+// book are read in order and rated 4 (Samie, 25 Sep 2026).
 const CHRISTIE = [
-  { t: 'The Mysterious Affair at Styles', y: 1920, r: 4, d: 'Jan 2' },
-  { t: 'The Murder at the Links', y: 1923, r: 3, d: 'Jan 5' },
-  { t: 'Poirot Investigates', y: 1924, r: 4, d: 'Jan 15' },
-  { t: 'The Red Signal', y: 1924, r: 3, d: 'Jan 12' },
-  { t: 'The Mystery of the Blue Jar', y: 1924, r: 3, d: 'Jan 12' },
-  { t: 'The Murder of Roger Ackroyd', y: 1926, r: 5, d: 'Jan 12', n: '"my favorite of the series!"' },
-  { t: 'The Big Four', y: 1927, r: 2, d: 'Jan 17' },
-  { t: 'The Mystery of the Blue Train', y: 1928, r: 4, d: 'Jan 18' },
+  { t: 'The Mysterious Affair at Styles', p: 1, y: 1920, r: 4, d: 'Jan 2' },
+  { t: 'The Murder at the Links', p: 1, y: 1923, r: 3, d: 'Jan 5' },
+  { t: 'Poirot Investigates', p: 1, y: 1924, r: 4, d: 'Jan 15' },
+  { t: 'The Red Signal', y: 1924, r: 4, d: 'Jan 12', n: 'the Christopher Lee audio narration' },
+  { t: 'The Mystery of the Blue Jar', y: 1924, r: 4, d: 'Jan 12', n: 'the Christopher Lee audio narration' },
+  { t: 'The Murder of Roger Ackroyd', p: 1, y: 1926, r: 5, d: 'Jan 12', n: '"my favorite of the series!"' },
+  { t: 'The Big Four', p: 1, y: 1927, r: 2, d: 'Jan 17' },
+  { t: 'The Mystery of the Blue Train', p: 1, y: 1928, r: 4, d: 'Jan 18' },
   { t: 'The Seven Dials Mystery', y: 1929, r: 3, d: 'Jan 24' },
-  { t: 'Black Coffee', y: 1930, u: 1 },
-  { t: 'Peril at End House', y: 1932, r: 4, d: 'Jan 19' },
-  { t: 'Lord Edgware Dies', y: 1933, r: 4, d: 'Jan 21' },
-  { t: 'Murder on the Orient Express', y: 1934, r: 5, d: 'reread · date lost' },
-  { t: 'Three Act Tragedy', y: 1935, r: 4, d: 'Jan 26' },
-  { t: 'Death in the Clouds', y: 1935, r: 4, d: 'Jan 27' },
-  { t: 'The A.B.C. Murders', y: 1936, r: 4, d: 'Jan 29' },
-  { t: 'Murder in Mesopotamia', y: 1936, r: 4, d: 'Feb 1' },
-  { t: 'Cards on the Table', y: 1936, r: 4, d: 'Feb 2' },
-  { t: 'Dumb Witness', y: 1937, r: 4, d: 'Feb 4' },
-  { t: 'Death on the Nile', y: 1937, r: 4, d: 'read three times · date lost' },
-  { t: 'Murder in the Mews', y: 1937, r: 4, d: 'Jan 20' },
-  { t: 'Appointment with Death', y: 1938, r: 3, d: 'Feb 7' },
-  { t: "Hercule Poirot's Christmas", y: 1938, r: 4, d: 'Feb 7' },
+  { t: 'Black Coffee', p: 1, y: 1930, u: 1 },
+  { t: 'Peril at End House', p: 1, y: 1932, r: 4, d: 'Jan 19' },
+  { t: 'Lord Edgware Dies', p: 1, y: 1933, r: 4, d: 'Jan 21' },
+  { t: 'Murder on the Orient Express', p: 1, y: 1934, r: 5, d: 'reread · date lost' },
+  { t: 'Three Act Tragedy', p: 1, y: 1935, r: 4, d: 'Jan 26' },
+  { t: 'Death in the Clouds', p: 1, y: 1935, r: 4, d: 'Jan 27' },
+  { t: 'The A.B.C. Murders', p: 1, y: 1936, r: 4, d: 'Jan 29' },
+  { t: 'Murder in Mesopotamia', p: 1, y: 1936, r: 4, d: 'Feb 1' },
+  { t: 'Cards on the Table', p: 1, y: 1936, r: 4, d: 'Feb 2' },
+  { t: 'Dumb Witness', p: 1, y: 1937, r: 4, d: 'Feb 4' },
+  { t: 'Death on the Nile', p: 1, y: 1937, r: 4, d: 'read three times · date lost' },
+  { t: 'Murder in the Mews', p: 1, y: 1937, r: 4, d: 'Jan 20' },
+  { t: 'Appointment with Death', p: 1, y: 1938, r: 3, d: 'Feb 7' },
+  { t: "Hercule Poirot's Christmas", p: 1, y: 1938, r: 4, d: 'Feb 7' },
   { t: 'And Then There Were None', y: 1939, r: 5, d: 'Jan 19' },
-  { t: 'The Regatta Mystery', y: 1939, u: 1 },
-  { t: 'Sad Cypress', y: 1940, r: 4, d: 'Feb 9' },
-  { t: 'One, Two, Buckle My Shoe', y: 1940, r: 5, d: 'Feb 10' },
-  { t: 'Evil Under the Sun', y: 1941, r: 3, d: 'Feb 12' },
-  { t: 'Five Little Pigs', y: 1942, r: 5, d: 'Feb 14' },
-  { t: 'The Moving Finger', y: 1942, u: 1 },
-  { t: 'The Hollow', y: 1946, r: 5, d: 'Feb 19', n: '"I was so mad reading this book"' },
-  { t: 'The Labours of Hercules', y: 1947, u: 1 },
-  { t: 'Taken at the Flood', y: 1948, r: 4, d: 'Feb 21' },
-  { t: 'The Witness for the Prosecution', y: 1948, u: 1 },
-  { t: 'Three Blind Mice and Other Stories', y: 1950, u: 1 },
-  { t: 'The Under Dog and Other Stories', y: 1951, u: 1 },
-  { t: "Mrs. McGinty's Dead", y: 1952, r: 5, d: 'Feb 21' },
-  { t: 'After the Funeral', y: 1953, r: 4, d: 'Feb 28' },
-  { t: 'Hickory Dickory Dock', y: 1955, r: 2, d: 'May 3' },
-  { t: "Dead Man's Folly", y: 1956, cur: 1 },
-  { t: 'Cat Among the Pigeons', y: 1959, u: 1 },
-  { t: 'The Adventure of the Christmas Pudding', y: 1960, u: 1 },
-  { t: 'Double Sin and Other Stories', y: 1961, u: 1 },
-  { t: 'The Clocks', y: 1963, u: 1 },
-  { t: 'Third Girl', y: 1966, u: 1 },
-  { t: "Hallowe'en Party", y: 1969, u: 1 },
-  { t: 'Elephants Can Remember', y: 1972, u: 1 },
-  { t: "Poirot's Early Cases", y: 1974, u: 1 },
-  { t: 'Curtain', y: 1975, u: 1 },
+  { t: 'The Regatta Mystery', p: 1, y: 1939, r: 4, d: 'short stories, read in order' },
+  { t: 'Sad Cypress', p: 1, y: 1940, r: 4, d: 'Feb 9' },
+  { t: 'One, Two, Buckle My Shoe', p: 1, y: 1940, r: 5, d: 'Feb 10' },
+  { t: 'Evil Under the Sun', p: 1, y: 1941, r: 3, d: 'Feb 12' },
+  { t: 'Five Little Pigs', p: 1, y: 1942, r: 5, d: 'Feb 14' },
+  { t: 'The Moving Finger', s: 'marple', y: 1942, m: 1 },
+  { t: 'The Hollow', p: 1, y: 1946, r: 5, d: 'Feb 19', n: '"I was so mad reading this book"' },
+  { t: 'The Labours of Hercules', p: 1, y: 1947, r: 4, d: 'short stories, read in order' },
+  { t: 'Taken at the Flood', p: 1, y: 1948, r: 4, d: 'Feb 21' },
+  { t: 'The Witness for the Prosecution', y: 1948, r: 3, d: 'date not logged' },
+  { t: 'Three Blind Mice and Other Stories', y: 1950, r: 3, d: 'date not logged' },
+  { t: 'The Under Dog and Other Stories', p: 1, y: 1951, r: 4, d: 'short stories, read in order' },
+  { t: "Mrs. McGinty's Dead", p: 1, y: 1952, r: 5, d: 'Feb 21' },
+  { t: 'After the Funeral', p: 1, y: 1953, r: 4, d: 'Feb 28' },
+  { t: 'Hickory Dickory Dock', p: 1, y: 1955, r: 2, d: 'May 3' },
+  { t: "Dead Man's Folly", p: 1, y: 1956, cur: 1 },
+  { t: 'Cat Among the Pigeons', p: 1, y: 1959, u: 1 },
+  { t: 'The Adventure of the Christmas Pudding', p: 1, y: 1960, u: 1 },
+  { t: 'Double Sin and Other Stories', p: 1, y: 1961, u: 1 },
+  { t: 'The Clocks', p: 1, y: 1963, u: 1 },
+  { t: 'Third Girl', p: 1, y: 1966, u: 1 },
+  { t: "Hallowe'en Party", p: 1, y: 1969, u: 1 },
+  { t: 'Elephants Can Remember', p: 1, y: 1972, u: 1 },
+  { t: "Poirot's Early Cases", p: 1, y: 1974, u: 1 },
+  { t: 'Curtain', p: 1, y: 1975, u: 1 },
+  // Maybes: the Marple, Tommy and Tuppence, Quin and Parker Pyne books, not started.
+  { t: 'The Secret Adversary', s: 'tt', y: 1922, m: 1 },
+  { t: 'Partners in Crime', s: 'tt', y: 1929, m: 1 },
+  { t: 'The Murder at the Vicarage', s: 'marple', y: 1930, m: 1 },
+  { t: 'The Mysterious Mr Quin', s: 'other', y: 1930, m: 1 },
+  { t: 'The Thirteen Problems', s: 'marple', y: 1932, m: 1 },
+  { t: 'Parker Pyne Investigates', s: 'other', y: 1934, m: 1 },
+  { t: 'N or M?', s: 'tt', y: 1941, m: 1 },
+  { t: 'The Body in the Library', s: 'marple', y: 1942, m: 1 },
+  { t: 'A Murder Is Announced', s: 'marple', y: 1950, m: 1 },
+  { t: 'They Do It with Mirrors', s: 'marple', y: 1952, m: 1 },
+  { t: 'A Pocket Full of Rye', s: 'marple', y: 1953, m: 1 },
+  { t: '4.50 from Paddington', s: 'marple', y: 1957, m: 1 },
+  { t: "The Mirror Crack'd from Side to Side", s: 'marple', y: 1962, m: 1 },
+  { t: 'A Caribbean Mystery', s: 'marple', y: 1964, m: 1 },
+  { t: "At Bertram's Hotel", s: 'marple', y: 1965, m: 1 },
+  { t: 'By the Pricking of My Thumbs', s: 'tt', y: 1968, m: 1 },
+  { t: 'Nemesis', s: 'marple', y: 1971, m: 1 },
+  { t: 'Postern of Fate', s: 'tt', y: 1973, m: 1 },
+  { t: 'Sleeping Murder', s: 'marple', y: 1976, m: 1 },
+  { t: "Miss Marple's Final Cases", s: 'marple', y: 1979, m: 1 },
   { t: 'The Unexpected Guest', y: 1999, r: 4, d: 'Feb 3', n: 'the Osborne novelisation' },
 ];
 
@@ -524,8 +551,6 @@ const CHRISTIE = [
 const PROGRESS = [
   { title: 'The full Greenbelt, out and back', note: '15 of 21 miles', pct: 71 },
   { title: 'Hercule Poirot novels, in order', note: "26 of 33 · on Dead Man's Folly", pct: 79 },
-  { title: 'Snowflake hands-on badges', note: '1 of 3', pct: 33 },
-  { title: 'dbt Certified Developer', note: 'fundamentals done', pct: 45 },
   { title: 'Steam review-bombing detection', note: '31M+ reviews, modeling', pct: 30 },
   { title: 'Solo travel, London first', note: 'neighborhoods mapped', pct: 20 },
 ];
@@ -545,11 +570,11 @@ const RING_FIT = {
 };
 
 // /life#notes · one entry per OBSERVATIONS item, same order: the "In
-// plain terms" line and the numbers each note's chart draws. The rebuild
-// bars in note 04 are illustrative and the page captions them as such.
+// plain terms" line and the numbers each note's chart draws. The effort
+// curve in note 04 is illustrative and the page captions it as such.
 export const LIFE_NOTES = [
   { plain: 'new shoppers rarely rebuy and regulars almost always do, so the one famous average is two different groups mashed together and it fits neither of them.',
-    chart: { label: 'reorder rate · pooled, then split', pooled: 0.60, split: [{ k: 'new', v: 0.221 }, { k: 'veteran', v: 0.670 }] } },
+    chart: { label: 'reorder rate · pooled, then split', pooled: 0.60, split: [{ k: 'new shoppers', v: 0.221 }, { k: 'regular shoppers', v: 0.670 }] } },
   { plain: 'my body was stressed for days before I knew why, and it stayed stressed for more than a week after the problem was gone.',
     chart: { label: 'body battery, out of 100', hint: 'tap a day', start: 'Apr 25', found: 'Apr 29' } },
   // Gap: the notebook's printed impact table, follow-up 84.409091 (110 visits)
@@ -558,9 +583,9 @@ export const LIFE_NOTES = [
     chart: { label: 'average score by inspection number', scores: ATX_DRIFT,
       first: '90.5 · 1st visit', last: '92.6 · 15th', gapLabel: 'Follow-up visits against routine ones', gap: 6.45 } },
   { plain: 'every version of my to-do setup gets better, and every version still needs me at my most tired, which is the design problem worth solving and why Brain Dump exists.',
-    chart: { label: 'four rebuilds, one shared weak spot', versions: ['v1', 'v2', 'v3', 'v4'], gapLabel: 'same gap',
-      caption: 'bar is how much better each one got · the dot is the moment it asks too much',
-      illustrative: 'bar lengths are illustrative, there is no score behind them' } },
+    chart: { label: 'how hard it is to keep going, over time', cycles: ['v1', 'v2', 'v3', 'v4'], now: 'now', threshold: 'too much',
+      caption: 'each hill is a rebuild, a burst of effort that gets easier, and the red dot is the bad week that makes it too much again',
+      illustrative: 'the shape is illustrative, there is no score behind it' } },
 ];
 
 // ── Toolkit page ─────────────────────────────────────────────
@@ -568,6 +593,9 @@ export const LIFE_NOTES = [
 const TK_REPO = 'SamieVargas/samievargas.github.io';
 
 const TK_FALLBACK = [
+  { message: 'Add /assist, the Guideline Assist replay, and its row on the work page', date: '2026-09-25' },
+  { message: 'Rebuild the ATX Foodie drift chart with a real scale', date: '2026-09-24' },
+  { message: 'Snapshot the change log into the site on every push', date: '2026-09-09' },
   { message: 'Add the launch kit: favicon set, social card, 404, manifest', date: '2026-08-22' },
   { message: 'Split /life out of the work page', date: '2026-08-20' },
   { message: 'Annotate the analysis projects with what each one found', date: '2026-08-18' },
@@ -577,22 +605,30 @@ const TK_FALLBACK = [
 ];
 
 const TK_NOTES = [
+  // 26 Sep 2026 copy pass, hardcoded so the reasons show before the Action
+  // rewrites data/changelog.json. Each title is the commit subject, so a
+  // "Why:" note from the snapshot replaces its twin here instead of repeating.
+  { date: '2026-09-26', title: 'Correct what moved between the hand review and the repo', body: 'A few numbers had been rounded in the copy pass and a few pages were still on the old asset token, and FACTS.md says a number is never rounded past its source, so those went back to the locked values, the three Brain Dump runs are counted as three everywhere, and the certification list says which ones left the résumé.' },
+  { date: '2026-09-26', title: 'Show when each page last changed and why on /toolkit', body: 'A commit list says what changed and never why, and the reasons were only ever written by hand after the fact, so a commit that carries a Why line now writes its own note, and each page says when it last changed so a stale page is easy to spot.' },
+  { date: '2026-09-26', title: 'Rewrite the résumé for AI deployment roles, and print the PDF from the page', body: 'The old résumé read as account management with AI on the side, and the roles I am going for read it the other way round, so it now leads with taking AI from discovery to adoption and proves it with evals, drops the certs that do not help that story, and prints from the page so the PDF can never fall behind the site.' },
+  { date: '2026-09-26', title: 'Rewrite the site copy for readers outside AI, and split the Christie shelf by series', body: 'The site was written for people who already know what an agent or RAG is, and the people deciding whether to hire me often do not, so every row now says what the thing does in plain words, the hard terms get one plain line each, and the headline says what I actually do, which is build AI into the tools we already use and test it myself.' },
+  { date: '2026-09-26', title: 'Lock every number in FACTS.md and point CLAUDE.md at it', body: 'The same number kept drifting between the homepage, the résumé and the notes whenever a copy edit rounded or reworded it, so there is now one place that says what each number is and where it came from, and if a page disagrees with it the page is wrong.' },
   { date: '2026-09-09', title: 'The change log writes itself', body: 'This list used to ask the GitHub API from your browser, which only works while the repo is public and your IP has rate limit left, and lately neither held, so now a small Action snapshots the commit log into the site on every push, which keeps the same list without an API call and means it cannot show anything that is not already deployed.' },
   { date: '2026-08-22', title: 'The mark and the card', body: 'The social card was 347×190, so every platform upscaled it into a blur, and the tab title was just my name, which meant the first thing anyone saw of this site was the least considered part of it, so I redrew both in the same type as the rest.' },
   { date: '2026-08-20', title: 'Moving the personal half', body: 'The raccoon, the tarot decks, and the tooth zones are the most interesting things here and the worst thing to put between a hiring manager and my projects, so they have their own page now, linked from the nav, and nothing was deleted.' },
   { date: '2026-08-18', title: 'Projects that show their work', body: 'The cards described what I built without showing the messy input going in and the clean result coming out, which is the part worth seeing, so every project now names its input, marks four things in the output, and ends on what it found.' },
-  { date: '2026-08-14', title: 'Signal', body: 'I spent eight years doing an hour of account digging before every quarterly review, and I got tired enough of it that I built the thing that does it in a minute.' },
+  { date: '2026-08-14', title: 'Signal', body: 'I spent eight years doing an hour of account digging before every account call, and I got tired enough of it that I built the thing that does it in a minute.' },
   { date: '2026-06-10', title: 'Starting over', body: 'I always wanted my own website, and I wanted to teach myself to code past HTML, and doing it without a framework meant I had to understand every piece, which was slower and also the whole reason I did it.' },
 ];
 
 const TK_META = [
   { name: 'Tab title', attr: '<title>', key: '<title>', max: 60, current: 'Samie Vargas · applied AI', status: 'Live · 25 chars',
     why: 'My name on its own loses to every other Samie Vargas in a search result, and it says nothing in a tab strip of twelve, so this says what I do in the space I have.' },
-  { name: 'Social title', attr: 'og:title · twitter:title', key: 'og:title', max: 70, current: 'I build AI into the workflows customers already run, and I publish how often it breaks', status: 'Live · 86 chars',
+  { name: 'Social title', attr: 'og:title · twitter:title', key: 'og:title', max: 70, current: 'I build AI into the workflows we already use, and test them myself.', status: 'Live · 67 chars',
     why: 'This is the line that shows up in someone\'s Slack, which is how most people get here, so it should be the claim, since my name is already on the card as the domain.' },
   { name: 'Social description', attr: 'og:description', key: 'og:description', max: 200, current: 'Agents, RAG, agent assist, fine-tuning and MCP, a dot for every test case, and five builds with their evals, from Field discovery to Guideline Assist.', status: 'Live · 150 chars',
     why: 'The title makes the claim, so this carries proof instead of repeating it, and every number here is one I can walk someone through.' },
-  { name: 'Search description', attr: 'meta name="description"', key: 'description', max: 160, current: 'I build AI into the workflows customers already run, and I publish how often it breaks. Five builds with dated evals, eight years at GLG. Austin, remote.', status: 'Live · 153 chars',
+  { name: 'Search description', attr: 'meta name="description"', key: 'description', max: 160, current: 'I build AI into the workflows we already use, and test them myself. Five builds with dated evals, eight years at GLG. Austin, remote.', status: 'Live · 133 chars',
     why: 'Google cuts around 155 and my old one was 197, so the part being dropped was the location, and this ends on the strongest clause while still keeping Austin.' },
   { name: 'Card alt text', attr: 'og:image:alt', current: 'Samie Vargas, applied AI. Austin, remote.', status: 'Live',
     why: 'Some clients and every screen reader get this instead of the image, and it was missing entirely.' },

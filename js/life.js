@@ -14,9 +14,9 @@
 import {
   LIFE_FIELD, LIFE_RELATED, INVOICE_ROWS, RACCOON_LIFE, PROGRESS,
   RECORDS, CHRISTIE, RING_FIT, READING, PLAYING, OBSERVATIONS, LIFE_NOTES,
-} from '../data/content.js?v=20260925h';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260925h';
-import { driftChart, revealDrift } from './drift-chart.js?v=20260925h';
+} from '../data/content.js?v=20260925i';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp } from './reveal.js?v=20260925i';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925i';
 
 // Category hues: same lightness and chroma, hue only. "Built" is the accent.
 const KIND_COLOR = {
@@ -153,14 +153,27 @@ function playProgress() {
 }
 
 // ── The Christie shelf ───────────────────────────────────────
-const bookClass = (c) => (c.cur ? 'c' : c.u ? 'u' : String(c.r));
+const bookClass = (c) => (c.cur ? 'c' : c.m ? 'm' : c.u ? 'u' : String(c.r));
+const bookState = (c) => (c.cur ? 'reading now' : c.m ? 'a maybe' : c.u ? 'not read yet' : `${c.r} stars`);
 
 function buildChristie() {
   const shelf = $('#life-books');
-  shelf.innerHTML = CHRISTIE.map((c, i) => {
-    const state_ = c.cur ? 'reading now' : c.u ? 'not read yet' : `${c.r} stars`;
-    return `<button type="button" class="life-b life-b--${bookClass(c)}" data-book="${i}" style="--d:${((150 + i * 28) / 1000).toFixed(3)}s" aria-label="${esc(`${c.t}, ${c.y}, ${state_}`)}"></button>`;
-  }).join('');
+  const spine = (c, i, k) => {
+    const state_ = bookState(c);
+    return `<button type="button" class="life-b life-b--${bookClass(c)}" data-book="${i}" style="--d:${((150 + k * 28) / 1000).toFixed(3)}s" aria-label="${esc(`${c.t}, ${c.y}, ${state_}`)}"></button>`;
+  };
+  const all = CHRISTIE.map((c, i) => ({ c, i }));
+  const group = (label, list) => {
+    list = [...list].sort((a, b) => a.c.y - b.c.y);
+    const read = list.filter(({ c }) => c.r).length;
+    const tally = read ? `${read} of ${list.length} read` : `${list.length} maybes`;
+    return `<div class="life-shelf"><span class="life-micro">${esc(label)} · ${tally}</span><div class="life-books">${list.map(({ c, i }, k) => spine(c, i, k)).join('')}</div></div>`;
+  };
+  shelf.innerHTML = group('Poirot', all.filter(({ c }) => c.p))
+    + group('Standalones and stories', all.filter(({ c }) => !c.p && !c.s))
+    + group('Miss Marple', all.filter(({ c }) => c.s === 'marple'))
+    + group('Tommy and Tuppence', all.filter(({ c }) => c.s === 'tt'))
+    + group('Quin and Parker Pyne', all.filter(({ c }) => c.s === 'other'));
   shelf.addEventListener('click', (e) => {
     const b = e.target.closest('[data-book]');
     if (!b) return;
@@ -171,12 +184,13 @@ function buildChristie() {
 }
 
 function renderBook() {
-  $$('#life-books [data-book]').forEach((b, i) => {
-    b.classList.toggle('is-sel', i === state.book);
-    b.setAttribute('aria-pressed', String(i === state.book));
+  $$('#life-books [data-book]').forEach((b) => {
+    const on = Number(b.dataset.book) === state.book;
+    b.classList.toggle('is-sel', on);
+    b.setAttribute('aria-pressed', String(on));
   });
   const c = CHRISTIE[state.book];
-  const m = c.u ? 'not read yet' : c.cur ? 'reading now' : `${'★'.repeat(c.r)} · ${c.d}${c.n ? ` · ${c.n}` : ''}`;
+  const m = c.m ? 'a maybe, not started' : c.u ? 'not read yet' : c.cur ? 'reading now' : `${'★'.repeat(c.r)} · ${c.d}${c.n ? ` · ${c.n}` : ''}`;
   $('#life-book').innerHTML = `<span class="life-book__y">${c.y}</span><span class="life-book__b"><span class="life-book__t">${esc(c.t)}</span><span class="life-book__m">${esc(m)}</span></span>`;
 }
 
@@ -239,10 +253,10 @@ function noteChart(i) {
   }
   if (c.found) {
     return `
-      <div class="nc nc--days" data-chart="days">
+      <div class="nc nc--days" data-chart="days" style="--n:${RACCOON_LIFE.length}">
         <div class="nc-head"><span class="life-micro life-micro--faint">${esc(c.label)}</span><span class="nc-hint">${esc(c.hint)}</span></div>
         <div class="nc-days">${RACCOON_LIFE.map((d, k) => `<button type="button" data-day="${k}" aria-label="${esc(`${d.d}: ${d.v}`)}" class="${d.d === c.found ? 'is-found' : ''}"><i style="height:0%"></i></button>`).join('')}</div>
-        <div class="nc-days__lab">${RACCOON_LIFE.map((d) => `<span>${esc(d.d.split(' ')[1] || d.d)}</span>`).join('')}</div>
+        <div class="nc-days__lab">${RACCOON_LIFE.map((d, k) => { const [m, n] = d.d.split(' '); const showM = k === 0 || m !== RACCOON_LIFE[k - 1].d.split(' ')[0]; return `<span${d.d === c.found ? ' class="is-found"' : ''}>${esc(n || d.d)}${showM ? `<b>${esc(m)}</b>` : ''}</span>`; }).join('')}</div>
         <div class="nc-read"><span class="nc-read__v"></span><span class="nc-read__b"><span class="nc-read__d"></span><span class="nc-read__n"></span></span></div>
       </div>`;
   }
@@ -254,16 +268,21 @@ function noteChart(i) {
         <div class="nc-foot"><span>${esc(c.gapLabel)}</span><span class="nc-foot__n"><span class="nc-gap">−0</span> pts</span></div>
       </div>`;
   }
-  if (c.versions) {
+  if (c.cycles) {
+    const peaks = [24, 112, 200, 288];
+    const dots = [92, 180, 268, 354];
     return `
-      <div class="nc nc--vers" data-chart="vers">
+      <div class="nc nc--cycle" data-chart="cycle">
         <span class="life-micro life-micro--faint">${esc(c.label)}</span>
-        ${c.versions.map((v, k) => `
-          <div class="nc-ver" style="--d:${((200 + k * 220) / 1000).toFixed(2)}s">
-            <span class="nc-ver__n">${esc(v)}</span>
-            <div class="nc-ver__t"><i style="--w:${40 + k * 18}%"></i></div>
-            <span class="nc-ver__gap"><i></i>${esc(c.gapLabel)}</span>
-          </div>`).join('')}
+        <svg class="nc-cycle" viewBox="0 0 400 200" role="img" aria-label="${esc(c.caption)}">
+          <line x1="0" y1="186" x2="400" y2="186" class="nc-cycle__base"></line>
+          <line x1="0" y1="92" x2="400" y2="92" class="nc-cycle__limit"></line>
+          <text x="48" y="86" class="nc-cycle__lim-t">${esc(c.threshold)}</text>
+          <path class="nc-cycle__line" pathLength="1" d="M0,176 C10,176 12,34 24,34 C38,34 42,140 60,140 C74,140 80,100 92,92 C100,88 102,34 112,34 C126,34 130,152 150,152 C164,152 170,102 180,92 C188,88 190,34 200,34 C214,34 218,160 238,160 C252,160 258,102 268,92 C276,88 278,34 288,34 C302,34 306,166 326,166 C340,166 346,102 354,92 C360,88 362,62 370,62 C382,62 384,172 400,172"></path>
+          ${dots.map((x, k) => `<circle cx="${x}" cy="92" r="4.5" class="nc-cycle__dot" style="--d:${(0.5 + k * 0.35).toFixed(2)}s"></circle>`).join('')}
+          ${c.cycles.map((v, k) => `<text x="${peaks[k]}" y="24" text-anchor="middle" class="nc-cycle__v">${esc(v)}</text>`).join('')}
+          <text x="370" y="52" text-anchor="middle" class="nc-cycle__v nc-cycle__v--now">${esc(c.now)}</text>
+        </svg>
         <span class="nc-cap">${esc(c.caption)}</span>
         <span class="nc-cap nc-cap--faint">${esc(c.illustrative)}</span>
       </div>`;
@@ -337,6 +356,8 @@ function playNote(article) {
   } else if (kind === 'days') {
     const bars = $$('.nc-days i', article);
     tween(1200, (p) => bars.forEach((el, k) => { el.style.height = `${(RACCOON_LIFE[k].v * p).toFixed(1)}%`; }), 300);
+  } else if (kind === 'cycle') {
+    $('.nc--cycle', article).classList.add('is-drawn');
   } else if (kind === 'line') {
     revealDrift(article, 400);
     const c = LIFE_NOTES[Number(article.dataset.note)].chart;
@@ -345,20 +366,8 @@ function playNote(article) {
   // The rebuild rows stage themselves in CSS off .is-in.
 }
 
-// ── Nav: Notes is current once the notes are on screen ───────
-function wireNav() {
-  const life = $('#nav-life'), notes = $('#nav-notes'), sec = $('#notes');
-  let raf = 0;
-  const update = () => {
-    raf = 0;
-    const inNotes = sec.getBoundingClientRect().top < 120;
-    life.classList.toggle('is-here', !inNotes);
-    notes.classList.toggle('is-here', inNotes);
-    if (inNotes) { notes.setAttribute('aria-current', 'location'); life.removeAttribute('aria-current'); } else { life.setAttribute('aria-current', 'page'); notes.removeAttribute('aria-current'); }
-  };
-  window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
-  update();
-}
+// ── Nav: Notes is a section of this page, so Life stays current ──
+function wireNav() {}
 
 // The page above the notes is built here, after the browser has already
 // tried to honour #notes, so land on the anchor again once layout settles.
