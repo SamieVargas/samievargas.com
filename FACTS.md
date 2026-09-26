@@ -12,6 +12,15 @@ This file is the source of truth for every number, date and version that appears
 6. Rows marked **UNSOURCED** or **RECONCILE** are on the site but not yet traced; do not repeat them in new copy until they are resolved.
 7. Voice rules for all site copy: no em dashes; run-on sentences joined with commas, "and", "so", "which is"; no punchy fragments; no "not X, it's Y"; headlines are full claims in sentence case; every project carries at least one "In plain terms" line (`.plain`); Claude adds exactly one unless Samie asks for more, and any extra ones she adds (for a term like RAG, MCP, dbt or Socrata) stay. Résumé bullets and recreated product output may stay as originally written.
 8. After changing `css/`, `js/` or `data/`, bump the `?v=` token on every page and import in one pass.
+9. Each build's own repo is the source of truth for that build, its README first and then the results files the README names, and this file copies from it. When a build's README changes, update its row here first and then every page that repeats it, and when the site says something its README does not, the site is wrong until the README says it too.
+
+| Build | Source-of-truth repo | Read first |
+| --- | --- | --- |
+| Field discovery | [SamieVargas/Field-Sales-Build](https://github.com/SamieVargas/Field-Sales-Build) (private) | `README.md`, `evals/` results |
+| Life in Pixels | [SamieVargas/pixels-rag](https://github.com/SamieVargas/pixels-rag) | `README.md`, `evals/results/` |
+| Guideline Assist | [SamieVargas/guideline-assist](https://github.com/SamieVargas/guideline-assist) | `README.md`, `docs/`, `evals/results/` |
+| Signal | [SamieVargas/signal](https://github.com/SamieVargas/signal) | `README.md`, `evals/results/`, `config.py` |
+| Brain Dump | [SamieVargas/brain-dump](https://github.com/SamieVargas/brain-dump) | `README.md`, `evals/results/`, `worker/` |
 
 ## Timeline
 

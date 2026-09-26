@@ -4,7 +4,7 @@ Plain HTML, one stylesheet (`css/styles.css`), vanilla ES modules (`js/*.js`), c
 
 ## Numbers are locked
 
-Read `FACTS.md` before any edit. Every number, date, model name and version on the site is recorded there with its source, and it wins over page copy. Never change a figure on a page, or in `data/content.js`, without changing its row in `FACTS.md` first, and never let a copy edit round, rephrase or drop a number. Rows marked UNSOURCED or RECONCILE stay out of new copy until they are resolved.
+Read `FACTS.md` before any edit, and for a build's numbers read that build's own repo README, which is the source of truth FACTS.md copies from (rule 9 lists the repos). Every number, date, model name and version on the site is recorded there with its source, and it wins over page copy. Never change a figure on a page, or in `data/content.js`, without changing its row in `FACTS.md` first, and never let a copy edit round, rephrase or drop a number. Rows marked UNSOURCED or RECONCILE stay out of new copy until they are resolved.
 
 ## Design
 
