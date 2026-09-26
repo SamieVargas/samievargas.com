@@ -45,6 +45,7 @@ This file is the source of truth for every number, date and version that appears
 | 23 Sep 2026 | Haiku / Sonnet list prices read for cost columns | pixels-rag, signal config |
 | 24 Sep 2026 | Guideline Assist assist, QA, shadow and injection runs; Brain Dump sort@v3 and sort@v4 grid; Brain Dump live-page runs exported | guideline-assist, brain-dump results |
 | 25 Sep 2026 | Guideline Assist readout docs; homepage copy pass | guideline-assist docs, this repo |
+| 25–26 Sep 2026 | Guideline Assist prompt tuning, held-out confirm and Gemini Flash runs | guideline-assist `docs/prompt-tuning.md`, results |
 | Sep 2026 | Knowledge-base pilot with a 60-person team, through September | resume.html |
 | Oct 2026 | Planned rollout to four more pods (about 240 people), gated | resume.html |
 | 23 Apr – 10 May 2026 | Raccoon window (found 29 Apr, removed 3 May) | content.js RACCOON_LIFE |
@@ -111,12 +112,15 @@ This file is the source of truth for every number, date and version that appears
 | Test set | 100 frozen ABCD test chats (ASAPP, MIT; a fictional retailer, role-played by trained crowdworkers, real conversations between people with no real customers), 349 action points, 693 call points |
 | Baseline | a no-model guideline-order baseline told the gold intent scores 73.4%; 11.4% of gold actions are not in their section, so validated accuracy tops out at 88.6% |
 | Sonnet 5, arm A | next action 73.9% (258/349); intent 88.0%; p50 / p95 2.1 / 3.2 s; $121.83 per 1,000 chats |
-| Haiku 4.5, arm A | next action 50.1% (175/349); intent 79.9%; 1.6 / 2.7 s; $48.47 per 1,000 |
-| Arm B | Haiku $55.02, 2.7 / 4.3 s; Sonnet $148.03, 3.7 / 5.8 s |
+| Haiku 4.5, arm A | next action 50.1% (175/349); intent 79.9%; 1.6 / 2.7 s; $47.89 per 1,000 |
+| Arm B | Haiku $55.13, 2.7 / 4.3 s; Sonnet $147.49, 3.7 / 5.8 s |
 | Library | 55 subflow sections plus 10 flow sections; 27,563 tokens on Haiku 4.5, 37,708 on Sonnet 5, cached; 13.10 triggers per conversation |
 | Shadow | 79.5% (140/176) over 50 conversations; 36 disagreements: 13 agent drifted, 11 assist wrong, 12 both off |
 | QA | flags 20 of 100 clean chats (rules-only 63); recall 100/100 removed, 99/99 swapped, 57/59 changed values; wrong-value precision 51.8% (57/110); 358 copies graded |
 | Injection | 47 of 50 runs held; 2 of 10 fixtures moved a suggestion (inj01 2 of 5 to a refund, inj08 1 of 5 to none_yet); a measured rate, not a claim of injection resistance |
+| Prompt tuning (tune_60, dev split, 25 and 26 Sep 2026) | gates set before any call: no more than 3 points lost on next action or intent, at least 20% cheaper; six library renderings tried; dedupe −1.4 next action at 14% cheaper, nosub −6.0 at 44%, outline −10.2 at 60%, bare −10.2 at 67%, keysub −7.0 at 24%; none passed all gates (`docs/prompt-tuning.md`) |
+| Held-out confirm (assist_100, 26 Sep 2026) | Sonnet 5 full 73.4% (256/349), $121.98, p95 2.4 s; Sonnet 5 dedupe 76.2% (266/349), +2.9 [0.0, +5.7], $104.55, 14% cheaper, p95 2.6 s (`tuning-confirm-assist_100-2026-09-26.json`) |
+| Gemini 3.8 Flash (assist_100, 26 Sep 2026, Vertex AI) | explicit cache: full 82.2% (287/349), intent 87.7%, false alarms 25.0%, $47.23 per 1,000, p50 / p95 3.0 / 22.4 s; dedupe 82.0%, $39.11, 2.3 / 5.8 s; automatic cache (hit on 20 of 693 turns): 82.2%, $262.50; +8.9 [+5.2, +12.5] next action over Sonnet full, paired; prices from third-party listings, UNCONFIRMED against Google's page (`tuning-gemini-assist_100-2026-09-26.json`, `assist-gemini-2026-09-26.json`) |
 | Stop lines | after two weeks on the customer's own traffic, pull back if shadow agreement stays below 75%, p95 goes above 4 s, assist-wrong outnumbers agent drift, supervisors overturn more than one QA flag in five, any line moves toward skipping verification or refunding, or cost runs over budget ($121.83 as the reference) |
 
 ## Signal (repo: SamieVargas/signal)
@@ -194,5 +198,6 @@ When a row changes, move the old value here with the date it stopped being curre
 | 26 Sep 2026 | Pixels routes | 3 plus unanswerable | the README counts four routes |
 | 26 Sep 2026 | Pixels finding | hot yoga plus walking beat everything else for sleep and recovery | it came from asking the model, and the committed data is a synthetic fixture that plants it |
 | 26 Sep 2026 | Guideline Assist costs | shown as $122 and $48 | the results files say $121.83 and $48.47, and rule 3 does not round |
+| 26 Sep 2026 | Guideline Assist Haiku arm A and arm B costs | $48.47, $55.02, $148.03 | the exporter averaged cost per turn through a four-place rounding; recomputed unrounded it is $47.89, $55.13 and $147.49 (guideline-assist PR #10) |
 | 26 Sep 2026 | Signal latency | "51 seconds" (UNSOURCED) | no source anywhere in the repo |
 | 26 Sep 2026 | Structured outputs scope | "across the earlier builds" | 520 is Signal alone |

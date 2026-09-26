@@ -18,13 +18,13 @@
 
 import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925j';
 
-const DATA_URL = '../data/assist-replay.json?v=20260925j';
+const DATA_URL = '../data/assist-replay.json?v=20260926a';
 const REPO = 'https://github.com/SamieVargas/guideline-assist';
 const TURN_MS = 750;
 const HOLD_MS = 2200;
 // Flow hues from the style guide's category set, one per ABCD flow.
 const FLOW_HUE = { account_access: 200, troubleshoot_site: 145, manage_account: 250, order_issue: 60, storewide_query: 290, subscription_inquiry: 330, product_defect: 60, shipping_issue: 145, purchase_dispute: 330, single_item_query: 200 };
-const MODEL = { 'claude-sonnet-5': 'Sonnet 5', 'claude-haiku-4-5-20251001': 'Haiku 4.5' };
+const MODEL = { 'claude-sonnet-5': 'Sonnet 5', 'claude-haiku-4-5-20251001': 'Haiku 4.5', 'gemini-3.8-flash': 'Gemini 3.8 Flash' };
 
 const state = { data: null, conv: null, shown: 0, playing: false };
 let timer = 0;
@@ -214,6 +214,92 @@ function renderAblation(d) {
   $('#as-abl-cap').textContent = `${a.n_action} action points and ${a.n_points} call points over 100 test chats (assist_100, ${d.samples.assist_100}). Cost is the mean cost per call times ${d.triggers_per_conversation} calls per chat times 1,000, at list prices read on ${d.prices_read_on}. Source: ${d.source_files.assist}.`;
 }
 
+// ── 04 · Cost against accuracy ────────────────────────────────
+// Held-out runs only (assist_100), cost on x and next action on y, one
+// dot per model and library. The configuration the readout pilots on is
+// the accent dot; a hollow dot is the same model with its cache missing.
+const PILOT = (r) => r.model === 'claude-sonnet-5' && r.library === 'full' && r.run === 'confirm';
+const LIB = { full: 'full library', dedupe: 'repeats dropped' };
+const LATENCY_KILL_MS = 4000;
+// Label side per dot, so neighbours never collide (set by eye on the recorded values).
+const LABEL = { 'claude-haiku-4-5-20251001|full|explicit': 'r', 'claude-sonnet-5|full|explicit': 'r', 'claude-sonnet-5|dedupe|explicit': 'l',
+  'gemini-3.8-flash|full|explicit': 'a', 'gemini-3.8-flash|dedupe|explicit': 'b', 'gemini-3.8-flash|full|implicit': 'al' };
+
+function tcName(r) { return `${MODEL[r.model] || r.model} · ${LIB[r.library] || r.library}`; }
+
+function renderTuning(d) {
+  const t = d.tuning;
+  if (!t) { $('#cost').hidden = true; return; }
+  const rows = t.held_out;
+  const X_MAX = Math.ceil(Math.max(...rows.map((r) => r.cost_per_1000)) / 50) * 50;
+  const Y_LO = 45, Y_HI = 90;
+  const x = (c) => (c / X_MAX) * 100;
+  const y = (v) => 100 - ((v * 100 - Y_LO) / (Y_HI - Y_LO)) * 100;
+  const xt = []; for (let c = 0; c <= X_MAX; c += 50) xt.push(c);
+  const yt = []; for (let v = 50; v <= Y_HI; v += 10) yt.push(v);
+  const imp = rows.find((r) => r.cache === 'implicit');
+  const exp = imp && rows.find((r) => r.model === imp.model && r.library === imp.library && r.cache === 'explicit');
+  const arrow = imp && exp ? `<line class="as-tc__arrow" x1="${(x(imp.cost_per_1000) - 1.6).toFixed(2)}" x2="${(x(exp.cost_per_1000) + 2).toFixed(2)}" y1="${y(imp.next_action.rate).toFixed(2)}" y2="${y(exp.next_action.rate).toFixed(2)}" vector-effect="non-scaling-stroke" marker-end="url(#as-tc-head)"></line>` : '';
+  const dots = rows.map((r, i) => {
+    const side = LABEL[`${r.model}|${r.library}|${r.cache}`] || 'r';
+    const cls = `as-tc__dot${PILOT(r) ? ' is-pick' : ''}${r.cache === 'implicit' ? ' is-miss' : ''}`;
+    const name = `${tcName(r)}${r.cache === 'implicit' ? ', cache missed' : ''}`;
+    return `<button type="button" class="${cls}" data-i="${i}" style="left:${x(r.cost_per_1000).toFixed(2)}%;top:${y(r.next_action.rate).toFixed(2)}%" aria-label="${esc(`${name}: ${pct(r.next_action.rate)} next action at $${r.cost_per_1000.toFixed(2)} per 1,000 chats`)}"></button>
+      <span class="as-tc__lab as-tc__lab--${side}" style="left:${x(r.cost_per_1000).toFixed(2)}%;top:${y(r.next_action.rate).toFixed(2)}%"><span class="as-tc__full">${esc(name)}</span><span class="as-tc__n" aria-hidden="true">${i + 1}</span></span>`;
+  }).join('');
+  $('#as-tc').innerHTML = `
+    <figure class="as-tc">
+      <div class="as-tc__plot">
+        <div class="as-tc__y" aria-hidden="true">${yt.map((v) => `<span style="top:${y(v / 100).toFixed(2)}%">${v}%</span>`).join('')}</div>
+        <div class="as-tc__area">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs><marker id="as-tc-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"></path></marker></defs>
+            ${yt.map((v) => `<line class="as-tc__grid" x1="0" x2="100" y1="${y(v / 100).toFixed(2)}" y2="${y(v / 100).toFixed(2)}" vector-effect="non-scaling-stroke"></line>`).join('')}
+            ${arrow}
+          </svg>
+          ${imp && exp ? `<span class="as-tc__note" style="left:${((x(imp.cost_per_1000) + x(exp.cost_per_1000)) / 2).toFixed(2)}%;top:${y(imp.next_action.rate).toFixed(2)}%">explicit cache: $${imp.cost_per_1000.toFixed(2)} → $${exp.cost_per_1000.toFixed(2)}</span>` : ''}
+          ${dots}
+          <div class="as-tc__tip" id="as-tc-tip" role="status" hidden></div>
+        </div>
+      </div>
+      <figcaption class="as-tc__x"><span>$0</span><span>cost per 1,000 chats →</span><span>$${X_MAX}</span></figcaption>
+      <div class="as-tc__key"><span><i class="as-tc__sw is-pick"></i>what I would pilot on</span><span><i class="as-tc__sw"></i>measured</span><span><i class="as-tc__sw is-miss"></i>same model, cache missed</span><span class="as-tc__ylab">↑ right next action, of 349</span></div>
+    </figure>`;
+  const tip = $('#as-tc-tip');
+  const show = (b) => {
+    const r = rows[+b.dataset.i];
+    tip.innerHTML = `<strong>${esc(tcName(r))}${r.cache === 'implicit' ? ', cache missed' : ''}</strong>
+      <span>next action ${pct(r.next_action.rate)} · intent ${pct(r.intent.rate)}</span>
+      <span>p95 ${secs(r.p95_ms)} per turn · false alarms ${pct(r.false_alarm.rate)}</span>
+      <span>$${r.cost_per_1000.toFixed(2)} per 1,000 chats · ${pct(r.cache_share, 0)} read from cache</span>`;
+    tip.style.left = b.style.left; tip.style.top = b.style.top;
+    tip.classList.toggle('is-left', parseFloat(b.style.left) > 55);
+    tip.hidden = false;
+  };
+  const area = $('#as-tc .as-tc__area');
+  area.addEventListener('pointerover', (e) => { const b = e.target.closest('.as-tc__dot'); if (b) show(b); });
+  area.addEventListener('focusin', (e) => { const b = e.target.closest('.as-tc__dot'); if (b) show(b); });
+  area.addEventListener('pointerleave', () => { tip.hidden = true; });
+  area.addEventListener('focusout', () => { tip.hidden = true; });
+
+  const files = [...new Set(rows.map((r) => r.file))].join(', ');
+  $('#as-tc-cap').textContent = `Arm A on the ${rows[0].n_action} action points of the 100 held-out test chats (assist_100, ${d.samples.assist_100}), 24 to 26 September 2026. Cost is the mean cost per call times ${d.triggers_per_conversation} calls per chat times 1,000 at list prices; the Gemini prices come from third-party listings I could not confirm against Google's own page. Hover or tab to a dot for the rest. Sources: ${files}.`;
+
+  $('#as-tc-rows').innerHTML = rows.map((r, i) => {
+    const slow = r.p95_ms > LATENCY_KILL_MS;
+    return `<div class="px-abl__row as-tc__row${PILOT(r) ? ' is-pick' : ''}"><span><span class="as-tc__n" aria-hidden="true">${i + 1}</span>${esc(tcName(r))} · ${r.cache === 'implicit' ? 'automatic cache' : 'cached'}</span><span class="px-mono">${pct(r.next_action.rate)}</span><span class="px-mono">${pct(r.intent.rate)}</span><span class="px-mono${slow ? ' as-slow' : ''}">${secs(r.p95_ms)}${slow ? ' <em>over 4 s</em>' : ''}</span><span class="px-mono">${pct(r.false_alarm.rate)}</span><span class="px-mono">$${r.cost_per_1000.toFixed(2)}</span></div>`;
+  }).join('');
+
+  const signed = (v) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(1)}`;
+  const DROPS = { dedupe: 'repeated flow text', keysub: 'repeats, and the step bullets that are click-through or tone advice', nosub: 'repeats, and every bullet under each step', outline: 'repeats, and the steps themselves', bare: 'everything but the section header and action list' };
+  $('#as-sel-rows').innerHTML = t.selection.map((r) => {
+    const kept = r.gates.quality && r.gates.cost && r.gates.mechanism;
+    const why = kept ? 'kept' : !r.gates.quality ? `no, lost over ${t.gate_points} points` : !r.gates.cost ? `no, under ${Math.round(t.gate_cost * 100)}% cheaper` : 'no';
+    return `<div class="px-abl__row as-sel__row"><span>${esc(DROPS[r.style] || r.style)}<em class="as-sel__id">${esc(r.style)} · round ${esc(r.round.slice(1))}</em></span><span class="px-mono">${signed(r.d_next_action.delta)} pts</span><span class="px-mono">${signed(r.d_intent.delta)} pts</span><span class="px-mono">${Math.round(r.cost_cut * 100)}%</span><span>${esc(why)}</span></div>`;
+  }).join('');
+  $('#as-sel-cap').textContent = `Each change is scored on the same call points as a full-library run from the same day, and the columns are the points it gained or lost against that run. The repeated-text cut held up on the held-out chats too, at +2.9 points of next action on Sonnet, and at 14% it stays under the 20% bar I set, so I would use it as a default while counting it as a cut that did not pass. Sources: ${Object.values(t.selection_files).join(', ')}; the full log with every prediction is docs/prompt-tuning.md in the repo.`;
+}
+
 // ── Boot ──────────────────────────────────────────────────────
 async function boot() {
   autoReveal();
@@ -230,6 +316,7 @@ async function boot() {
   renderList(d);
   renderQASummary(d.qa);
   renderAblation(d);
+  renderTuning(d);
 
   const ex = d.qa.examples;
   $('#as-qa-tabs').innerHTML = ex.map((e) => `<button type="button" class="px-kind" data-kind="${esc(e.kind)}" aria-pressed="false">${esc(e.kind === 'remove' ? 'a step removed' : e.kind === 'swap' ? 'two steps swapped' : 'a value changed')}</button>`).join('');

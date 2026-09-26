@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Guideline Assist, replayed · Samie Vargas</title>
-  <meta name="description" content="Six recorded support chats played back turn by turn next to what a live agent assist suggested before each turn, plus a post-call QA graded on planted defects and the context ablation behind the design.">
+  <meta name="description" content="Six recorded support chats played back turn by turn next to what a live agent assist suggested before each turn, plus a post-call QA graded on planted defects, the context ablation behind the design, and what it costs on Sonnet, Haiku and Gemini Flash.">
   <link rel="canonical" href="https://samievargas.com/assist/">
   <meta name="theme-color" content="#1a6b5a">
 
@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css?v=20260925j">
+  <link rel="stylesheet" href="../css/styles.css?v=20260926a">
 </head>
 <body>
 
@@ -136,15 +136,44 @@
       <span class="caption" id="as-abl-cap"></span>
     </div>
   </section>
+
+  <!-- ── 04 COST ─────────────────────────────────────────────── -->
+  <section class="px-sec as-cost" id="cost" data-in>
+    <div class="row-between">
+      <h2 class="px-h2 px-h2--32 rv"><span class="px-num">04</span>What it costs, and where a cheaper model came out ahead</h2>
+      <span class="px-note rv">the rules for every cut were written down before the first call</span>
+    </div>
+    <div class="px-split px-split--start">
+        <p class="px-body rv" style="--d:.06s">After the first runs I tried to bring the cost down without losing accuracy, and since most of what arm A spends goes to reading the cached guideline library on every turn, I set the rules before any call, which were no more than 3 points lost on next action or intent and at least 20% cheaper, and tried six shorter versions of the library on 60 chats from the dev split while keeping the test chats held out. Nothing that saved 20% or more held accuracy, so the only cut I would keep drops the flow text repeated under every subflow, which saved 14% and held up on the held-out chats.</p>
+        <p class="px-body rv" style="--d:.1s">I also added Gemini 3.8 Flash as a third model because real-time assist is where the cheaper models compete, and with the library in an explicit context cache it got the next action right more often than Sonnet at about 40% of the cost, while my first run of it on Vertex's automatic cache cost more than Sonnet because the cache hit on 20 of 693 turns. Its slowest answers are what hold it back, since its p95 through Vertex's global endpoint on the day I ran it was well over the 4 s I set as a kill criterion.</p>
+    </div>
+    <p class="plain rv" style="--d:.14s"><strong>In plain terms:</strong> the cheap model was the most accurate one here once its caching was set up right, and it was also the slowest at the tail on the day I tested it, so I would start on Sonnet and switch once Gemini's slowest answers come in under four seconds.</p>
+    <div class="px-stack rv" style="--d:.1s">
+      <div id="as-tc"></div>
+      <span class="caption" id="as-tc-cap"></span>
+    </div>
+    <div class="px-abl rv" style="--d:.1s">
+      <div class="px-abl__row as-tc__row px-abl__row--head"><span>model · library · cache</span><span>next action</span><span>intent</span><span>p95 / turn</span><span>false alarms</span><span>per 1,000 chats</span></div>
+      <div id="as-tc-rows"></div>
+    </div>
+    <div class="px-stack">
+      <span class="as-k">what I tried to cut first, on the 60 dev chats, each paired against the full library run the same day</span>
+      <div class="px-abl">
+        <div class="px-abl__row as-sel__row px-abl__row--head"><span>library</span><span>next action</span><span>intent</span><span>cheaper</span><span>kept?</span></div>
+        <div id="as-sel-rows"></div>
+      </div>
+      <span class="caption" id="as-sel-cap"></span>
+    </div>
+  </section>
 </main>
 
 <footer class="foot foot--light px-foot">
   <div class="foot__in">
-    <span>Recorded 24 September 2026 · ABCD, ASAPP Research, MIT licence</span>
+    <span>Recorded 24 to 26 September 2026 · ABCD, ASAPP Research, MIT licence</span>
     <span class="foot__links"><a href="/toolkit">Site toolkit ↗</a><a href="/">← back to the work</a></span>
   </div>
 </footer>
 
-<script type="module" src="../js/assist.js?v=20260925j"></script>
+<script type="module" src="../js/assist.js?v=20260926a"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-25T01:30:22+00:00",
+ "generated": "2026-09-26T19:32:19+00:00",
  "repo": "https://github.com/SamieVargas/guideline-assist",
  "badge": "ABCD, ASAPP Research, role-played conversations with trained crowdworkers, no real customers",
  "license": "ABCD is MIT licensed, Copyright (c) 2021 ASAPP Research",
@@ -159,7 +159,7 @@
    },
    "p50_ms": 1609.1,
    "p95_ms": 2689.5,
-   "cost_per_1000": 48.47,
+   "cost_per_1000": 47.89,
    "false_alarm": {
     "k": 187,
     "n": 344,
@@ -217,7 +217,7 @@
    },
    "p50_ms": 2666.0,
    "p95_ms": 4312.4,
-   "cost_per_1000": 55.02,
+   "cost_per_1000": 55.13,
    "false_alarm": {
     "k": 182,
     "n": 344,
@@ -246,7 +246,7 @@
    },
    "p50_ms": 3655.3,
    "p95_ms": 5818.5,
-   "cost_per_1000": 148.03,
+   "cost_per_1000": 147.49,
    "false_alarm": {
     "k": 146,
     "n": 344,
@@ -259,6 +259,296 @@
    }
   }
  ],
+ "tuning": {
+  "gate_points": 3.0,
+  "gate_cost": 0.2,
+  "selection": [
+   {
+    "round": "r1",
+    "style": "dedupe",
+    "d_next_action": {
+     "n": 215,
+     "delta": -1.3953488372093024,
+     "lo": -4.684632142672199,
+     "hi": 1.8939344682535948
+    },
+    "d_intent": {
+     "n": 429,
+     "delta": -0.4662004662004662,
+     "lo": -2.295306795394608,
+     "hi": 1.3629058629936757
+    },
+    "cost_cut": 0.142,
+    "gates": {
+     "quality": true,
+     "cost": false,
+     "mechanism": true
+    }
+   },
+   {
+    "round": "r1",
+    "style": "nosub",
+    "d_next_action": {
+     "n": 215,
+     "delta": -6.046511627906977,
+     "lo": -11.069171078769791,
+     "hi": -1.0238521770441626
+    },
+    "d_intent": {
+     "n": 429,
+     "delta": -0.4662004662004662,
+     "lo": -2.6111882870402816,
+     "hi": 1.6787873546393488
+    },
+    "cost_cut": 0.4393,
+    "gates": {
+     "quality": false,
+     "cost": true,
+     "mechanism": true
+    }
+   },
+   {
+    "round": "r1",
+    "style": "outline",
+    "d_next_action": {
+     "n": 215,
+     "delta": -10.232558139534884,
+     "lo": -15.045962524607384,
+     "hi": -5.419153754462384
+    },
+    "d_intent": {
+     "n": 429,
+     "delta": 0.9324009324009324,
+     "lo": -1.1112900279947733,
+     "hi": 2.976091892796638
+    },
+    "cost_cut": 0.6005,
+    "gates": {
+     "quality": false,
+     "cost": true,
+     "mechanism": true
+    }
+   },
+   {
+    "round": "r1",
+    "style": "bare",
+    "d_next_action": {
+     "n": 215,
+     "delta": -10.232558139534884,
+     "lo": -16.136636959494194,
+     "hi": -4.328479319575573
+    },
+    "d_intent": {
+     "n": 429,
+     "delta": -10.023310023310025,
+     "lo": -13.34355053268195,
+     "hi": -6.7030695139380985
+    },
+    "cost_cut": 0.6747,
+    "gates": {
+     "quality": false,
+     "cost": true,
+     "mechanism": true
+    }
+   },
+   {
+    "round": "r2",
+    "style": "keysub",
+    "d_next_action": {
+     "n": 215,
+     "delta": -6.976744186046512,
+     "lo": -11.977707382344443,
+     "hi": -1.975780989748581
+    },
+    "d_intent": {
+     "n": 429,
+     "delta": 0.2331002331002331,
+     "lo": -1.652719711907652,
+     "hi": 2.118920178108118
+    },
+    "cost_cut": 0.2404,
+    "gates": {
+     "quality": false,
+     "cost": true,
+     "mechanism": true
+    }
+   }
+  ],
+  "selection_files": {
+   "r1": "tuning-r1-tune_60-2026-09-25.json",
+   "r2": "tuning-r2-tune_60-2026-09-26.json"
+  },
+  "held_out": [
+   {
+    "model": "claude-haiku-4-5-20251001",
+    "library": "full",
+    "cache": "explicit",
+    "run": "parts 3-4",
+    "file": "assist-2026-09-24.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 175,
+     "n": 349,
+     "rate": 0.5014
+    },
+    "intent": {
+     "k": 554,
+     "n": 693,
+     "rate": 0.7994
+    },
+    "p50_ms": 1609.1,
+    "p95_ms": 2689.5,
+    "cost_per_1000": 47.89,
+    "false_alarm": {
+     "k": 187,
+     "n": 344,
+     "rate": 0.5436
+    },
+    "cache_share": 0.9878
+   },
+   {
+    "model": "claude-sonnet-5",
+    "library": "full",
+    "cache": "explicit",
+    "run": "confirm",
+    "file": "tuning-confirm-assist_100-2026-09-26.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 256,
+     "n": 349,
+     "rate": 0.7335
+    },
+    "intent": {
+     "k": 606,
+     "n": 693,
+     "rate": 0.8745
+    },
+    "p50_ms": 2005.5,
+    "p95_ms": 2384.8,
+    "cost_per_1000": 121.98,
+    "false_alarm": {
+     "k": 174,
+     "n": 344,
+     "rate": 0.5058
+    },
+    "cache_share": 0.9892
+   },
+   {
+    "model": "claude-sonnet-5",
+    "library": "dedupe",
+    "cache": "explicit",
+    "run": "confirm",
+    "file": "tuning-confirm-assist_100-2026-09-26.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 266,
+     "n": 349,
+     "rate": 0.7622
+    },
+    "intent": {
+     "k": 605,
+     "n": 693,
+     "rate": 0.873
+    },
+    "p50_ms": 2083.9,
+    "p95_ms": 2579.9,
+    "cost_per_1000": 104.55,
+    "false_alarm": {
+     "k": 154,
+     "n": 344,
+     "rate": 0.4477
+    },
+    "cache_share": 0.9873
+   },
+   {
+    "model": "gemini-3.8-flash",
+    "library": "full",
+    "cache": "explicit",
+    "run": "gemini",
+    "file": "tuning-gemini-assist_100-2026-09-26.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 287,
+     "n": 349,
+     "rate": 0.8223
+    },
+    "intent": {
+     "k": 608,
+     "n": 693,
+     "rate": 0.8773
+    },
+    "p50_ms": 3010.5,
+    "p95_ms": 22368.5,
+    "cost_per_1000": 47.23,
+    "false_alarm": {
+     "k": 86,
+     "n": 344,
+     "rate": 0.25
+    },
+    "cache_share": 0.942
+   },
+   {
+    "model": "gemini-3.8-flash",
+    "library": "dedupe",
+    "cache": "explicit",
+    "run": "gemini",
+    "file": "tuning-gemini-assist_100-2026-09-26.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 286,
+     "n": 349,
+     "rate": 0.8195
+    },
+    "intent": {
+     "k": 608,
+     "n": 693,
+     "rate": 0.8773
+    },
+    "p50_ms": 2331.5,
+    "p95_ms": 5847.7,
+    "cost_per_1000": 39.11,
+    "false_alarm": {
+     "k": 82,
+     "n": 344,
+     "rate": 0.2384
+    },
+    "cache_share": 0.9325
+   },
+   {
+    "model": "gemini-3.8-flash",
+    "library": "full",
+    "cache": "implicit",
+    "run": "gemini implicit",
+    "file": "assist-gemini-2026-09-26.json",
+    "n_points": 693,
+    "n_action": 349,
+    "next_action": {
+     "k": 287,
+     "n": 349,
+     "rate": 0.8223
+    },
+    "intent": {
+     "k": 608,
+     "n": 693,
+     "rate": 0.8773
+    },
+    "p50_ms": 10705.5,
+    "p95_ms": 205341.6,
+    "cost_per_1000": 262.5,
+    "false_alarm": {
+     "k": 84,
+     "n": 344,
+     "rate": 0.2442
+    },
+    "cache_share": 0.0222
+   }
+  ]
+ },
  "qa": {
   "summary": {
    "rules": {
