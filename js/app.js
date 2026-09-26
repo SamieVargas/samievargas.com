@@ -10,9 +10,9 @@ import {
   PX_REPLAY, AS_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925h';
-import { driftChart, revealDrift } from './drift-chart.js?v=20260925h';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925h';
+} from '../data/content.js?v=20260925i';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925i';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925i';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -47,7 +47,7 @@ function spine() {
     const ext = /^https?:/.test(r.href) ? ' rel="noopener"' : '';
     return `<div class="spine__row${r.pending ? ' spine__row--pending' : ''} rv" style="--d:${(0.1 + i * 0.15).toFixed(2)}s">
       <span class="spine__label">${esc(r.label)}</span>
-      <span class="spine__line"><strong>${esc(r.name)}</strong> · ${esc(r.line)}</span>
+      <span class="spine__line"><strong>${esc(r.name)}</strong> · ${esc(r.line)}${r.plain ? `<span class="spine__plain">${esc(r.plain)}</span>` : ''}</span>
       ${viz}
       <a class="spine__cta" href="${esc(r.href)}"${ext}>${esc(r.cta)}</a>
     </div>`;
@@ -292,7 +292,7 @@ function brainDump() {
     if (animate == null) return;
     items.forEach((el) => setTimeout(() => requestAnimationFrame(() => el.classList.add('is-on')), animate + Number(el.dataset.k) * 110));
   };
-  $('#bd-source').textContent = `four real runs of the same dump, ${B.date}, ${B.model}, prompt ${B.prompt}, ${B.cost} · the page shows the first few of each list`;
+  $('#bd-source').textContent = `three real runs of the same dump, ${B.date}, ${B.model}, prompt ${B.prompt}, ${B.cost} · the page shows the first few of each list`;
   renderPlan(null);
 
   $$('button', runsEl).forEach((b, i) => b.addEventListener('click', () => {

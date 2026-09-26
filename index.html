@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Samie Vargas · applied AI</title>
-  <meta name="description" content="I build AI into the workflows customers already run, and I publish how often it breaks. Five builds with dated evals, eight years at GLG. Austin, remote.">
+  <meta name="description" content="I build AI into the workflows we already use, and test them myself. Five builds with dated evals, eight years at GLG. Austin, remote.">
   <link rel="canonical" href="https://samievargas.com/">
   <meta name="theme-color" content="#1a6b5a">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://samievargas.com/">
-  <meta property="og:title" content="I build AI into the workflows customers already run, and I publish how often it breaks">
+  <meta property="og:title" content="I build AI into the workflows we already use, and test them myself.">
   <meta property="og:description" content="Agents, RAG, agent assist, fine-tuning and MCP, a dot for every test case, and five builds with their evals, from Field discovery to Guideline Assist.">
   <meta property="og:image" content="https://samievargas.com/og-card.png">
   <meta property="og:image:width" content="1200">
@@ -38,20 +38,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925h">
+  <link rel="stylesheet" href="css/styles.css?v=20260925i">
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav__in">
-    <a class="nav__name" href="#top">Samie Vargas</a>
+    <a class="nav__name" href="/">Samie Vargas</a>
     <div class="nav__links">
-      <a href="#patterns">Patterns</a>
-      <a href="#field-discovery">Builds</a>
-      <a href="#analysis">Analysis</a>
-      <a href="#experience">Experience</a>
+      <a href="/" class="is-here" aria-current="page">Work</a>
       <a href="/life">Life</a>
-      <a href="/life#notes">Notes</a>
       <a href="/apps/">Arcade</a>
       <a href="/resume">Résumé</a>
     </div>
@@ -64,8 +60,8 @@
   <header class="hero" data-in>
     <div class="hero__copy">
       <span class="eyebrow rv" style="--d:.05s">Applied AI · customer-facing builds · Austin, remote</span>
-      <h1 class="h1 rv" style="--d:.15s">I build AI into the workflows customers already run, and I publish how often it breaks.</h1>
-      <p class="lead rv" style="--d:.35s">Eight years at GLG, most recently running a $14M+ enterprise book as the AI person on a non-AI team, and five builds with dated evals on every one, so the log on the right is the last run.</p>
+      <h1 class="h1 rv" style="--d:.15s">I build AI into the workflows we already use, and test them myself.</h1>
+      <p class="lead rv" style="--d:.35s">Eight years at GLG, most recently running a $14M+ enterprise book as the AI person on a non-AI team, and five builds with dated evals on every one.</p>
       <div class="hero__actions rv rv--fade" style="--d:.5s">
         <a class="btn btn--ink" href="#field-discovery">See the builds ↓</a>
         <button type="button" class="btn btn--line" data-copy-email>Copy my email</button>
@@ -81,9 +77,9 @@
   <!-- ── SPINE: five patterns ─────────────────────────────── -->
   <section class="sec sec--major spine" id="patterns" data-in>
     <div class="row-between"><h2 class="spine__title" id="spine-title"></h2><span class="meta" id="spine-note"></span></div>
+    <p class="plain"><strong>In plain terms:</strong> <span id="spine-plain"></span></p>
     <div class="spine__rows" id="spine-rows"></div>
     <div class="spine__rule"><div class="spine__track"><i id="spine-fill"></i></div><span id="spine-rule"></span></div>
-    <p class="plain"><strong>In plain terms:</strong> <span id="spine-plain"></span></p>
   </section>
 
   <!-- ── FIELD DISCOVERY ──────────────────────────────────── -->
@@ -91,8 +87,8 @@
     <div class="cols cols--start">
       <div class="stack stack--14 rv">
         <span class="eyebrow">Agents · Field discovery · LLM pipeline, built solo</span>
-        <h2 class="h2">Sixty seconds in the car becomes a record onboarding can open.</h2>
-        <p class="body">A rep talks into their phone in a parking lot, and onboarding gets a record with the unanswered questions named on it.</p>
+        <h2 class="h2">A rep's sixty-second voice note becomes a CRM record, with the open questions flagged.</h2>
+        <p class="body">The transcript is checked against the 19 requirement cards for that kind of business, each card comes back confirmed, inferred or not discussed, and nothing is written to the CRM until a person approves it, at about $0.03 a run.</p>
         <p class="plain"><strong>In plain terms:</strong> a salesperson rambles into their phone after a visit, and the tool pulls out what matters, flags what nobody asked about, and waits for a person to okay it before anything touches the sales system.</p>
         <div class="btn-row">
           <a class="btn btn--accent btn--sm" href="/field-discovery/">Read the case study</a>
@@ -174,6 +170,7 @@
             <i class="mcp__pkt" id="mcp-pkt"></i>
           </div>
           <span class="card-note">Two read-only tools and the same router and validator, so Claude on my laptop can ask the same questions directly and the data never leaves the machine.</span>
+          <p class="plain"><strong>In plain terms:</strong> RAG is how the answers get found, by looking up the right days before writing a reply, and MCP is a standard plug that lets an AI assistant like Claude use that lookup as one of its own tools, so I can ask my journal questions from inside Claude instead of a separate app.</p>
         </div>
         <div class="hairgrid hairgrid--2">
           <div class="stat"><span class="stat__n" id="px-valid">0/26</span><span class="stat__l">valid citations, 26 questions</span></div>
@@ -182,6 +179,7 @@
         <a class="px-more" href="/pixels/">Replay all 26 questions →</a>
       </div>
     </div>
+    <div class="results" data-results="pixels"></div>
   </section>
 
   <!-- ── GUIDELINE ASSIST: AGENT ASSIST + QA ──────────────── -->
@@ -208,6 +206,7 @@
           <div class="stat"><span class="stat__n" id="as-next-pct">0%</span><span class="stat__l">right next step, 349 agent actions</span></div>
           <div class="stat"><span class="stat__n">79.5%</span><span class="stat__l">shadow: matched what the agent did next, 176 actions</span></div>
         </div>
+        <p class="plain"><strong>In plain terms:</strong> the first number is how often it suggested the step the guidelines call for, and the second is how often, running silently next to the agent on 50 recorded chats, it suggested what the agent actually did next, which means an agent would set aside about one suggestion in five, and I'd pull it back if that ever reached one in four, because that is the point where people stop reading them.</p>
         <span class="caption">Sonnet 5 with the whole guideline library in a cached prompt, 100 frozen test chats, 24 September 2026. ABCD is role-played by trained crowdworkers, no real customers, MIT licensed, Copyright (c) 2021 ASAPP Research.</span>
         <a class="px-more" href="/assist/">Replay six chats and the QA →</a>
       </div>
@@ -236,7 +235,7 @@
     <div class="stack rv">
       <div class="row-between row-between--c"><span class="eyebrow">Structured outputs · Signal · LLM app, in use</span><a class="btn btn--accent btn--44" href="https://samievargas.com/signal/">Try it on your own notes ↗</a></div>
       <div class="stack narrow">
-        <h2 class="h2">Messy documents go in and a read you can act on comes out.</h2>
+        <h2 class="h2">Messy account documents go in and a read you can act on comes out.</h2>
         <p class="body">Haiku summarizes each document and Sonnet synthesizes, which cut the main call from roughly 23k to about 1k input tokens, and every section of the brief names its sources.</p>
         <p class="plain"><strong>In plain terms:</strong> you drop in a pile of messy account notes and get back a short read on whether the customer is at risk, who actually matters, and the one thing to do today.</p>
       </div>
@@ -255,15 +254,15 @@
     </div>
     <div class="cols">
       <div class="stack">
-        <h3 class="h3 h3--22">A mood with no event behind it is read right in seven of twenty.</h3>
+        <h3 class="h3 h3--22">When a customer sounds unhappy but nothing specific went wrong, it reads the risk right in only seven of twenty runs.</h3>
         <div class="sig20" id="sig20"></div>
         <span class="caption">ablation, 20 runs per arm · which runs is laid out for the mock</span>
         <p class="body">It is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, which is why that number is on the page.</p>
       </div>
       <div class="hairgrid hairgrid--3 sig-stats">
-        <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">input tokens, from ~23k</span></div>
-        <div class="stat"><span class="stat__n stat__n--28" id="sig-prep">60</span><span class="stat__l">minutes of prep</span></div>
-        <div class="stat"><span class="stat__n stat__n--28" id="sig-sec">0s</span><span class="stat__l">paste to read</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">tokens the main model reads per brief, down from ~23k, so each read costs less</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-prep">60</span><span class="stat__l">minute of prep before an account review, down from about an hour by hand</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-sec">0s</span><span class="stat__l">from pasting the notes in to getting the read back</span></div>
       </div>
     </div>
     <div class="results" data-results="signal"></div>
@@ -281,7 +280,7 @@
     </div>
     <div class="cols cols--24">
       <div class="bd-dump">
-        <span class="bd__micro">One long voice note · the same dump for all four runs</span>
+        <span class="bd__micro">One long voice note · the same dump for all three runs</span>
         <p class="bd-dump__text" id="bd-dump"></p>
         <span class="bd__cap" id="bd-caption"></span>
       </div>
@@ -293,7 +292,8 @@
       </div>
     </div>
     <div class="bd-tune" id="bd-tune">
-      <div class="bd-tune__head"><span class="h3 bd-tune__title">Tuning the prompt halved the wait, and halving it again doubled the one mistake the page cannot fix.</span><span class="bd__cap" id="bd-tune-cap"></span></div>
+      <div class="bd-tune__head"><span class="h3 bd-tune__title">Prompt tuning halved the wait, and cutting the effort to halve it again doubled the one mistake the page cannot fix.</span><span class="bd__cap" id="bd-tune-cap"></span></div>
+      <p class="plain"><strong>In plain terms:</strong> I changed the instructions and how hard the model thinks, without retraining the model itself.</p>
       <div class="bd-tune__rows" id="bd-tune-rows" role="table" aria-label="Three prompt and effort settings on the same eval grid"></div>
       <span class="bd__cap" id="bd-tune-source"></span>
     </div>
@@ -305,18 +305,18 @@
     <div class="row-between rv rv--fade"><h2 class="h2">The analysis work</h2><span class="meta">both start from a question I actually had</span></div>
     <div class="card dag-card" id="dag-card" data-in>
       <div class="row-between"><span class="fd-step__k" id="dag-head"></span><span class="dag-meta"><span class="dag-meta__n">tests passing <strong id="dag-tests">0</strong>/35</span><span>data flowing left to right</span></span></div>
+      <p class="plain"><strong>In plain terms:</strong> dbt is a tool for turning raw data into clean, tested tables with plain SQL, and this map shows Instacart's raw order data moving through five cleanup steps and one join into the three tables the analysis reads from, with 35 automatic checks on the way, which matters because the 0.60 reorder rate everyone cites got checked against the data before anything was modeled on it.</p>
       <div class="dag-scroll"><div class="dag" id="dag"></div></div>
     </div>
-    <p class="an__p">Raw grocery orders go in on the left, get cleaned and joined in steps, and come out on the right as tidy tables, with 35 automatic checks making sure nothing broke along the way.</p>
     <div class="cols">
       <div class="stack stack--14" id="reorder" data-in>
         <span class="eyebrow">Instacart · 3.4M orders</span>
-        <h3 class="h3 h3--26">I rebuilt one cited number until it split in half.</h3>
+        <h3 class="h3 h3--26">The 0.60 reorder rate everyone cites hides two groups, new customers at 0.22 and regulars at 0.67.</h3>
         <div class="split">
           <div class="split__pooled"><i id="split-pooled"></i><span id="split-pooled-l">0.60 pooled</span></div>
           <div class="split__rows">
             <div class="split__track"><i id="split-new" style="background:var(--ink)"></i></div><span>new · 0.221</span>
-            <div class="split__track"><i id="split-vet" style="background:var(--accent)"></i></div><span>veteran · 0.670</span>
+            <div class="split__track"><i id="split-vet" style="background:var(--accent)"></i></div><span>regular · 0.670</span>
           </div>
         </div>
         <p class="an__p">New shoppers reorder at 0.221 and veterans at 0.670, so the 0.60 everyone cites describes neither, and a random forest at 0.9886 AUC for veterans against 0.8566 for new users confirmed the split was real.</p>
@@ -328,7 +328,7 @@
         <h3 class="h3 h3--26">Venues drift 2.1 points worse between their first inspection and their fifteenth.</h3>
         <div id="drift-chart"></div>
         <span class="caption">the ends, 90.5 and 92.6, are printed in the notebook · the points between are read off its chart</span>
-        <p class="plain"><strong>In plain terms:</strong> the more times a restaurant gets inspected the slightly worse it tends to do, so getting flagged does not seem to make places clean up, though only the places still open for a fifteenth visit are counted at the end.</p>
+        <p class="plain"><strong>In plain terms:</strong> the more times a restaurant gets inspected the slightly worse it tends to do, so getting flagged does not seem to make places clean up, though only the places still open for a fifteenth visit are counted at the end. The data came from the City of Austin's open data portal, which runs on Socrata, and the Socrata API is the way to pull those public records straight into code without downloading spreadsheets by hand.</p>
         <a class="an__link" href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">See the findings ↗</a>
       </div>
     </div>
@@ -396,6 +396,6 @@
   </div>
 </section>
 
-<script type="module" src="js/app.js?v=20260925h"></script>
+<script type="module" src="js/app.js?v=20260925i"></script>
 </body>
 </html>

@@ -15,9 +15,9 @@
 // from 1300ms over 1800ms, validate at 3300ms).
 // ============================================================
 
-import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925h';
+import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925i';
 
-const DATA_URL = '../data/pixels-runs.json?v=20260925h';
+const DATA_URL = '../data/pixels-runs.json?v=20260925i';
 const KINDS = ['all', 'semantic', 'filter', 'aggregate', 'unanswerable'];
 const AT = { route: 150, retrieve: 650, answerBox: 1150, typeFrom: 1300, typeMs: 1800, validate: 3300 };
 
