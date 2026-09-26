@@ -138,12 +138,13 @@ export const SIGNAL_PILE = {
 
 // Brain Dump, sort@v3 (brain-dump worker/contracts.js): three levels with a
 // separate "feeling anxious" switch, three buckets, and "now" capped per level
-// with a task timer. The four runs are real, one long voice-note dump given
-// to the live page on 24 Sep 2026, copied from its exported plans: two at
-// "a little", one at "none", one at "none" with anxious on, $0.05 for all
-// four on claude-sonnet-5. The page shows the first few of each list.
+// with a task timer. The runs are real, one long voice-note dump given to
+// the live page on 24 Sep 2026, copied from its exported plans: four were
+// recorded for $0.05 on claude-sonnet-5, and three are shown (a little, none,
+// none with anxious on) since the repeat "a little" run was cut on 25 Sep
+// 2026. The page shows the first few of each list.
 export const BD_V3 = {
-  date: '24 Sep 2026', model: 'claude-sonnet-5', prompt: 'sort@v3', cost: 'about a cent a run',
+  date: '24 Sep 2026', model: 'claude-sonnet-5', prompt: 'sort@v3', cost: '$0.05 for the four runs recorded that day',
   levels: { plenty: { cap: 3, timer: 25 }, 'a little': { cap: 2, timer: 15 }, none: { cap: 1, timer: 5 } },
   dumpChars: 2732,
   // An excerpt of the dump, in order; `hl` marks the words a run quoted back.
@@ -305,7 +306,7 @@ const OBSERVATIONS = [
   { tag: 'Apr–May 2026 · personal biometric data', title: 'My nervous system knew about the raccoon before I saw them.',
     paragraphs: [
       'For several nights I slept badly and could not explain it, so I blamed podcasts and cancelled plans. Then I got up early one Wednesday, and while doing a morning workout (to help myself sleep better), I found a mother raccoon and her babies nesting on my balcony.',
-      'My Garmin wearable data told the story better than I could, showing that five consecutive days at a body battery of 5 out of 100, which is their "zero." Before I even saw the raccoon family, my body was noticing it, and my sleep score fell from a baseline of 81 to 53.',
+      'My Garmin wearable data told the story better than I could, showing five consecutive days at a body battery of 5 out of 100, which is its "zero." Before I even saw the raccoon family, my body was noticing it, and my sleep score fell from a baseline of 81 to 53.',
       'The part that surprised me was after, because the raccoons were removed on May 3 and it still took eight days to return to my baseline. My nervous system does not get the memo, and I found that lag interesting, as it is what the data made visible.'],
     sourceText: 'Full story with photos →', linkText: 'The Raccoon Invoice →', linkHref: '/raccoon/',
     chart: { title: 'Body battery, out of 100', hint: 'Scrub the days', max: 100, days: RACCOON_LIFE } },
@@ -604,6 +605,14 @@ const TK_FALLBACK = [
 ];
 
 const TK_NOTES = [
+  // 26 Sep 2026 copy pass, hardcoded so the reasons show before the Action
+  // rewrites data/changelog.json. Each title is the commit subject, so a
+  // "Why:" note from the snapshot replaces its twin here instead of repeating.
+  { date: '2026-09-26', title: 'Correct what moved between the hand review and the repo', body: 'A few numbers had been rounded in the copy pass and a few pages were still on the old asset token, and FACTS.md says a number is never rounded past its source, so those went back to the locked values, the three Brain Dump runs are counted as three everywhere, and the certification list says which ones left the résumé.' },
+  { date: '2026-09-26', title: 'Show when each page last changed and why on /toolkit', body: 'A commit list says what changed and never why, and the reasons were only ever written by hand after the fact, so a commit that carries a Why line now writes its own note, and each page says when it last changed so a stale page is easy to spot.' },
+  { date: '2026-09-26', title: 'Rewrite the résumé for AI deployment roles, and print the PDF from the page', body: 'The old résumé read as account management with AI on the side, and the roles I am going for read it the other way round, so it now leads with taking AI from discovery to adoption and proves it with evals, drops the certs that do not help that story, and prints from the page so the PDF can never fall behind the site.' },
+  { date: '2026-09-26', title: 'Rewrite the site copy for readers outside AI, and split the Christie shelf by series', body: 'The site was written for people who already know what an agent or RAG is, and the people deciding whether to hire me often do not, so every row now says what the thing does in plain words, the hard terms get one plain line each, and the headline says what I actually do, which is build AI into the tools we already use and test it myself.' },
+  { date: '2026-09-26', title: 'Lock every number in FACTS.md and point CLAUDE.md at it', body: 'The same number kept drifting between the homepage, the résumé and the notes whenever a copy edit rounded or reworded it, so there is now one place that says what each number is and where it came from, and if a page disagrees with it the page is wrong.' },
   { date: '2026-09-09', title: 'The change log writes itself', body: 'This list used to ask the GitHub API from your browser, which only works while the repo is public and your IP has rate limit left, and lately neither held, so now a small Action snapshots the commit log into the site on every push, which keeps the same list without an API call and means it cannot show anything that is not already deployed.' },
   { date: '2026-08-22', title: 'The mark and the card', body: 'The social card was 347×190, so every platform upscaled it into a blur, and the tab title was just my name, which meant the first thing anyone saw of this site was the least considered part of it, so I redrew both in the same type as the rest.' },
   { date: '2026-08-20', title: 'Moving the personal half', body: 'The raccoon, the tarot decks, and the tooth zones are the most interesting things here and the worst thing to put between a hiring manager and my projects, so they have their own page now, linked from the nav, and nothing was deleted.' },

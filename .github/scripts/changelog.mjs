@@ -49,7 +49,7 @@ const notes = git('log', 'HEAD', '--no-merges', '--extended-regexp', '--grep=^Wh
   .split('\x1e').map((r) => r.trim()).filter(Boolean).map((r) => {
     const [sha, date, title, body = ''] = r.split('\x1f');
     const why = body.split('\n').find((l) => /^Why:/i.test(l.trim()));
-    return why ? { sha, date, title, body: why.trim().replace(/^Why:\s*/i, '') } : null;
+    return why ? { sha, date, title, body: why.trim().replace(/^Why:\s*/i, '').replace(/^./, (ch) => ch.toUpperCase()) } : null;
   }).filter(Boolean);
 
 // Commits per seven-day bucket, oldest first, the newest bucket ending now.

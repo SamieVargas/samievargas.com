@@ -15,8 +15,8 @@ Every certificate and accreditation I hold, with its verify link and every cours
 | Google Business Intelligence Certificate | Google / Coursera · Jun 2026 | [CLF3CXNNZO4L](https://www.coursera.org/account/accomplishments/specialization/CLF3CXNNZO4L) | yes | yes |
 | Snowflake Hands-On Essentials: Data Warehouse | Snowflake · Jun 2026 · badge 184380098 | [badge](https://achieve.snowflake.com/e3201335-75c2-4604-98c1-4c8063699131) | yes | yes |
 | dbt Fundamentals | dbt Labs · May 2026 | [credential](https://credentials.getdbt.com/5470c199-7753-4f90-99a3-07e8f8c6fe51) | yes | yes |
-| Google Analytics Certification (GA4) | Google Skillshop · May 2026 · ID 182987115 | [credential](https://skillshop.credential.net/da7f2a2d-1e02-4267-aaca-d6bfbfc3036e#acc.5RV2vAUu) | yes | yes |
-| Google Data Analytics Certificate | Google / Coursera · May 2026 | [HRA1SDNA2WE5](https://coursera.org/verify/professional-cert/HRA1SDNA2WE5) | no | yes |
+| Google Analytics Certification (GA4) | Google Skillshop · May 2026 · ID 182987115 | [credential](https://skillshop.credential.net/da7f2a2d-1e02-4267-aaca-d6bfbfc3036e#acc.5RV2vAUu) | yes | no, dropped 26 Sep 2026 |
+| Google Data Analytics Certificate | Google / Coursera · May 2026 | [HRA1SDNA2WE5](https://coursera.org/verify/professional-cert/HRA1SDNA2WE5) | no | no, dropped 26 Sep 2026 |
 
 ## The courses underneath
 
@@ -71,6 +71,6 @@ These were on an earlier résumé and have no link on file yet, so they stay off
 
 | Certificate | Issuer | résumé |
 | --- | --- | --- |
-| PMP, Project Management Professional | PMI | yes |
+| PMP, Project Management Professional | PMI | no, dropped 26 Sep 2026 |
 | Six Sigma White Belt | | no |
 | Professional Scrum Master I (PSM I) | Scrum.org | no, named under Delivery skills only |

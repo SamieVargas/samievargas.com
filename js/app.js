@@ -237,7 +237,7 @@ function signal() {
 }
 
 // ── Brain Dump: the dump types, then a recorded plan drops in ──
-// Four real sort@v3 runs of one dump (BD_V3). Picking a run swaps the plan and
+// Three real sort@v3 runs of one dump (BD_V3). Picking a run swaps the plan and
 // lights the words in the dump that its "now" steps quote back.
 const BD_SHOW = { later: 5, letGo: 3 };
 const bdLabel = (r, i, all) => {

@@ -124,7 +124,7 @@ export function stagedLoader(mount, opts = {}) {
     const i = Math.max(0, stage);
     rows[i].row.classList.remove('is-on');
     rows[i].row.classList.add('is-bad');
-    rows[i].label.textContent = how ? `${what} — ${how}` : what;
+    rows[i].label.textContent = how ? `${what} · ${how}` : what;
     fill.classList.add('is-bad');
   }
 
