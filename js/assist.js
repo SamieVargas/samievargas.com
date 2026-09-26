@@ -16,9 +16,9 @@
 // (what the agent actually did) shows after it.
 // ============================================================
 
-import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925i';
+import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925j';
 
-const DATA_URL = '../data/assist-replay.json?v=20260925i';
+const DATA_URL = '../data/assist-replay.json?v=20260925j';
 const REPO = 'https://github.com/SamieVargas/guideline-assist';
 const TURN_MS = 750;
 const HOLD_MS = 2200;
@@ -41,7 +41,7 @@ function renderStats(s) {
   const cell = (v, l) => `<div class="px-stat"><span class="px-stat__v">${esc(v)}</span><span class="px-stat__l">${esc(l)}</span></div>`;
   $('#as-stats').innerHTML =
     `<div class="as-stats__pair">${cell(pct(s.shadow.k / s.shadow.n), `shadow: matched what the agent did next, ${kn(s.shadow)}`)}${cell(pct(s.hand_labels.k / s.hand_labels.n), `QA steps where it agreed with my hand labels, ${kn(s.hand_labels)}`)}</div>` +
-    `<div class="as-stats__pair">${cell(kn(s.injection), 'injected customer lines that left the suggestion where it was')}${cell(pct(s.conversation_intent.k / s.conversation_intent.n), `whole-chat intent over 55 subflows, ${kn(s.conversation_intent)}`)}</div>`;
+    `<div class="as-stats__pair">${cell(kn(s.injection), 'injected runs that kept the clean chat\'s action and section, 10 lines run 5 times')}${cell(pct(s.conversation_intent.k / s.conversation_intent.n), `whole-chat intent over 55 subflows, ${kn(s.conversation_intent)}`)}</div>`;
 }
 
 // ── Chat list ─────────────────────────────────────────────────
@@ -208,7 +208,7 @@ function renderQASummary(q) {
 function renderAblation(d) {
   $('#as-abl-rows').innerHTML = d.ablation.map((a) => {
     const pick = a.arm === d.arm && a.model === d.model;
-    return `<div class="px-abl__row as-abl__row${pick ? ' is-pick' : ''}"><span>${esc(a.arm)} · ${esc(MODEL[a.model] || a.model)}</span><span class="px-mono">${pct(a.next_action.rate)}</span><span class="px-mono">${pct(a.intent.rate)}</span><span class="px-mono">${secs(a.p95_ms)}</span><span class="px-mono">$${Math.round(a.cost_per_1000)}</span></div>`;
+    return `<div class="px-abl__row as-abl__row${pick ? ' is-pick' : ''}"><span>${esc(a.arm)} · ${esc(MODEL[a.model] || a.model)}</span><span class="px-mono">${pct(a.next_action.rate)}</span><span class="px-mono">${pct(a.intent.rate)}</span><span class="px-mono">${secs(a.p95_ms)}</span><span class="px-mono">$${a.cost_per_1000.toFixed(2)}</span></div>`;
   }).join('');
   const a = d.ablation[0];
   $('#as-abl-cap').textContent = `${a.n_action} action points and ${a.n_points} call points over 100 test chats (assist_100, ${d.samples.assist_100}). Cost is the mean cost per call times ${d.triggers_per_conversation} calls per chat times 1,000, at list prices read on ${d.prices_read_on}. Source: ${d.source_files.assist}.`;

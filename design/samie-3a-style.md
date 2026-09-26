@@ -4,7 +4,7 @@ A lab-notebook layout set in an editorial serif, with one green accent and evide
 
 ## Principles
 1. Proof before claims. Every section shows a real number, a real run or a real artifact, and the visual draws that number instead of decorating around it.
-2. One reader at a time. Technical detail sits in mono and tables, and every project carries one "In plain terms" sentence for the non-technical reader.
+2. One reader at a time. Technical detail sits in mono and tables, and every project carries at least one "In plain terms" sentence for the non-technical reader.
 3. Quiet frame, lively content. The page chrome is paper, ink and hairlines; motion and color live only inside the evidence.
 4. Honest labels. Anything laid out for the mock (which cells are red, placeholder bars) says so in a small mono caption.
 
@@ -71,7 +71,7 @@ Category colors (data types, pattern kinds, dbt tiers): same lightness and chrom
 ## Copy
 - Follow the voice rules in `CLAUDE.md`: no em dashes, run-on sentences joined with commas and "and", no "not X, it's Y".
 - Headlines are a full claim in sentence case. Labels are lower-case facts in mono. Numbers are never rounded past what the source says.
-- Every project gets exactly one "In plain terms" sentence.
+- Every project gets at least one "In plain terms" sentence; Claude adds exactly one unless Samie asks for more, and extra ones she has added stay.
 
 ## Don'ts
 - No gradients in the chrome, no emoji, no drop shadows beyond a hover lift, no rounded cards, no left-border accent stripes.

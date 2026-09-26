@@ -294,31 +294,31 @@
       <h3>Field Discovery Broker: Requirements Triage for Field Sales</h3>
       <p class="cv-stack">Anthropic Messages API · Salesforce REST (OAuth) · Closed-Enum JSON Contract · Human-Approved Writes · Shadow Mode · Cloudflare Worker · <a href="https://samievargas.com/field-discovery/">samievargas.com/field-discovery</a></p>
       <p class="cv-pt"><i></i><span>Built for a final-round case and presented to a leadership panel: turns a field sales rep's voice note into a Salesforce record with open requirements flagged before handoff, with a closed-enum contract enforced by a five-rule validator, reject-and-retry, offline capture and an idempotent upsert; a person approves every write.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated 22 Sep 2026: 8 of 8 golden transcripts pass with 0 hard fails; 0 invented requirement IDs against 99 without the closed enum (20 runs each); 100% escalation recall and precision on 12 proposal fixtures with 0 unneeded writes; 5 of 5 slipped go-lives flagged in shadow; 40 of 50 injection runs unchanged; $0.0313 per capture.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated 22 Sep 2026: 8 of 8 golden transcripts pass with 0 hard fails; 100% escalation recall and precision on 12 proposal fixtures with 0 unneeded writes; 5 of 5 slipped go-lives flagged in shadow on fixture deals; 40 of 50 injection runs unchanged; $0.0313 per extraction; 0 invented IDs against 99 without the closed enum (29 Aug).</span></p>
     </div>
     <div class="cv-proj">
       <h3>Guideline Assist: Live Agent Assist and Post-Call QA</h3>
       <p class="cv-stack">Anthropic API · Prompt Caching · Validator-Enforced Next Steps · Post-Call QA · Context Ablation · Shadow Run · <a href="https://samievargas.com/assist/">samievargas.com/assist</a></p>
-      <p class="cv-pt"><i></i><span>Next-step suggestions for a live support agent from a 55-section guideline library in a cached prompt, a validator that rejects any step the section does not list, and a post-call QA pass.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated on 100 frozen ABCD test chats, 24 Sep 2026: right next action on 258 of 349 (73.9%) on Sonnet 5 at $122 per 1,000 chats, against 50.1% at $48 on Haiku 4.5; 79.5% shadow agreement with what agents actually did next (140 of 176); the QA still flags 20 of 100 clean chats, and 2 of 10 injection fixtures moved a suggestion.</span></p>
+      <p class="cv-pt"><i></i><span>Next-step suggestions for a live support agent from a 55-subflow guideline library in a cached prompt, a validator that rejects any step the section does not list, and a post-call QA pass.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 100 frozen ABCD test chats, 24 Sep 2026: right next action on 258 of 349 (73.9%) on Sonnet 5 at $121.83 per 1,000 chats, level with a 73.4% no-model baseline, against 50.1% at $48.47 on Haiku 4.5; 79.5% agreement with agents' next step on a 50-chat shadow subset; the QA still flags 20 of 100 clean chats, and 2 of 10 injection fixtures moved a suggestion.</span></p>
     </div>
     <div class="cv-proj">
       <h3>Signal: Account Intelligence for Customer Success</h3>
       <p class="cv-stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Structured Outputs · Paired Ablation · <a href="https://samievargas.com/signal/">samievargas.com/signal</a></p>
-      <p class="cv-pt"><i></i><span>Reads messy account files, images and PDFs included, and writes revenue-risk and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from 22,976 to at most 1,012 input tokens. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated on 13 synthetic accounts, 20 runs per arm, Sep 2026: 90% risk-type recall in both arms; 0 parse failures in 520 native-contract runs; source weighting worth 24 points of economic-buyer accuracy (93% against 69%); $0.0308 per brief.</span></p>
+      <p class="cv-pt"><i></i><span>Reads messy account files, images and PDFs included, and writes revenue-risk and pre-call briefs: Haiku 4.5 summarizes each document and Sonnet 4.6 synthesizes, cutting a long transcript's main call from 22,976 to at most 1,012 input tokens. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 13 synthetic accounts, 20 runs per arm, Sep 2026: 90% risk-type recall in both arms; 0 parse failures in 520 native-contract runs; source weighting worth 24 points of economic-buyer accuracy (93% against 69%); $0.0308 per brief (analysis call).</span></p>
     </div>
     <div class="cv-proj">
       <h3>Brain Dump: LLM Planner for Executive-Function Support</h3>
       <p class="cv-stack">Anthropic API · Cloudflare Workers · Strict JSON Contract · Rule-Graded Evals · Vanilla JS · <a href="https://samievargas.com/brain-dump">samievargas.com/brain-dump</a></p>
-      <p class="cv-pt"><i></i><span>Turns an unstructured brain dump into a plan sized to how much someone has left: three levels and an anxious switch cap what to do now, a strict JSON contract sorts every item into now, later or let go, and the page re-checks every plan. Early users' feedback drove a single-step capture flow.</span></p>
+      <p class="cv-pt"><i></i><span>Turns an unstructured brain dump into a plan sized to someone's energy: three levels cap what to do now and an anxious switch softens the language, a strict JSON contract sorts every item into now, later or let go, and the page re-checks it. Early users' feedback drove a single-step capture flow.</span></p>
       <p class="cv-pt"><i></i><span>Evaluated on a 120-plan grid, 24 Sep 2026: prompt tuning at medium effort, which the live Worker runs, cut the median sort from 14.0 s to 7.3 s and cost from $0.0134 to $0.0071 a plan; low effort was faster still but more than doubled the one miss the page cannot fix (7 to 16 of 120).</span></p>
     </div>
     <div class="cv-proj">
       <h3>Life in Pixels: RAG and a Local MCP Server</h3>
       <p class="cv-stack">Python · ChromaDB · Local Embeddings (MiniLM) · Router + Code-Enforced Citations · Golden-Set Evals · MCP Server · <a href="https://github.com/SamieVargas/pixels-rag">github.com/SamieVargas/pixels-rag</a></p>
       <p class="cv-pt"><i></i><span>RAG over six months of my own daily data: a router sends each question to search, filter, sum or refusal, a validator checks every cited date and number, and the same pipeline runs as a local read-only MCP server for Claude Desktop and Claude Code.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated on 26 questions, 22 Sep 2026, Haiku 4.5: 100% route accuracy, 26 of 26 valid citations, 5 of 5 unanswerable questions refused, 85% of expected facts, $0.0062 per question.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 26 questions over a synthetic export, 22 Sep 2026, Haiku 4.5: 100% route accuracy, 26 of 26 valid citations, 5 of 5 unanswerable questions refused, 85% of expected facts, $0.0062 per question.</span></p>
     </div>
   </section>
 
@@ -371,7 +371,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260925i';
+import { TK_REPO } from './data/content.js?v=20260925j';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest

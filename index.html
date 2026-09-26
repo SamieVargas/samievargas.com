@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=20260925i">
+  <link rel="stylesheet" href="css/styles.css?v=20260925j">
 </head>
 <body>
 
@@ -88,7 +88,7 @@
       <div class="stack stack--14 rv">
         <span class="eyebrow">Agents · Field discovery · LLM pipeline, built solo</span>
         <h2 class="h2">A rep's sixty-second voice note becomes a CRM record, with the open questions flagged.</h2>
-        <p class="body">The transcript is checked against the 19 requirement cards for that kind of business, each card comes back confirmed, inferred or not discussed, and nothing is written to the CRM until a person approves it, at $0.0313 a run.</p>
+        <p class="body">The transcript is checked against the 19 requirement cards for that kind of business, each card comes back confirmed, inferred or not discussed, and nothing is written to the CRM until a person approves it, at $0.0313 for the extraction and $0.0561 for the step that proposes the update.</p>
         <p class="plain"><strong>In plain terms:</strong> a salesperson rambles into their phone after a visit, and the tool pulls out what matters, flags what nobody asked about, and waits for a person to okay it before anything touches the sales system.</p>
         <div class="btn-row">
           <a class="btn btn--accent btn--sm" href="/field-discovery/">Read the case study</a>
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="card fd-said rv rv--fade" style="--d:.2s">
-        <span class="micro">What the rep actually said, four hours later</span>
+        <span class="micro">What the rep said in an end-of-week catch-up, shortened from the golden transcript</span>
         <p class="fd-said__text"><span id="fd-typed"></span><span class="cursor" aria-hidden="true">▍</span></p>
         <span class="fd-said__note" id="fd-note">The sentence that decides the go-live date is the last one, after the tacos.</span>
       </div>
@@ -121,8 +121,8 @@
         <div class="fd-step rv" style="--d:.5s">
           <span class="fd-step__k">3 · Confirm</span>
           <div class="fd-card fd-card--viab" data-fd="rent"><span class="fd-card__t">Rental counter on a second system</span><span class="fd-card__m">confirm before onboarding</span></div>
-          <div class="fd-card fd-card--conf" data-fd="dm"><span>Decision maker · Ted?</span><span>✓</span></div>
-          <div class="fd-card fd-card--gap" data-fd="gap">Never came up: budget, timeline, chemical licence</div>
+          <div class="fd-card fd-card--gap" data-fd="dm">Decision maker · a manager, Ted?, authority not stated</div>
+          <div class="fd-card fd-card--gap" data-fd="gap">Never came up: budget, timeline, restricted chemicals</div>
         </div>
         <div class="fd-step fd-step--dark rv" style="--d:.6s">
           <span class="fd-step__k">4 · Hand off</span>
@@ -139,7 +139,7 @@
         <h3 class="h3">Ten planted instructions, five runs each, forty of fifty unchanged.</h3>
         <div class="inj" id="inj-grid"></div>
         <div class="legend"><span><i class="d" style="background:var(--ink)"></i>unchanged</span><span><i class="d" style="background:var(--alert)"></i>moved a proposal</span></div>
-        <span class="caption">Totals from the 22 Sep run · which runs moved is laid out for the mock</span>
+        <span class="caption">From the 22 Sep run, fixture by fixture and run by run</span>
         <p class="body">I hid sneaky instructions in the notes to see if I could trick it, and it held steady most of the time and slipped often enough that a person still approves every change.</p>
       </div>
     </div>
@@ -149,7 +149,7 @@
   <!-- ── LIFE IN PIXELS: RAG + MCP ────────────────────────── -->
   <section class="sec px" id="pixels" data-in>
     <div class="stack narrow rv">
-      <span class="eyebrow">RAG + MCP · Life in Pixels · six months of my own daily data</span>
+      <span class="eyebrow">RAG + MCP · Life in Pixels · six months of my own daily data · evals on a synthetic export shaped like it</span>
       <h2 class="h2">Ask it a question in plain language, and every day it cites is checked before you see the answer.</h2>
       <p class="plain"><strong>In plain terms:</strong> it works like a search engine for my own daily log that has to show which days the answer came from, and it double-checks those days are real before it answers.</p>
     </div>
@@ -169,12 +169,12 @@
             <span>Claude Desktop</span><span class="mcp__srv">pixels-rag · stdio</span><span class="mcp__disk">daily data · on disk</span>
             <i class="mcp__pkt" id="mcp-pkt"></i>
           </div>
-          <span class="card-note">Two read-only tools and the same router and validator, so Claude on my laptop can ask the same questions directly and the data never leaves the machine.</span>
-          <p class="plain"><strong>In plain terms:</strong> RAG is how the answers get found, by looking up the right days before writing a reply, and MCP is a standard plug that lets an AI assistant like Claude use that lookup as one of its own tools, so I can ask my journal questions from inside Claude instead of a separate app.</p>
+          <span class="card-note">Two read-only tools and the same router and validator, so Claude on my laptop can ask the same questions directly, the data stays on disk, and a question sends only the days it retrieved, or the computed table, to the model.</span>
+          <p class="plain"><strong>In plain terms:</strong> RAG is how the answers get found, by looking up the right days before writing a reply, and MCP is a standard plug that lets an AI assistant like Claude use that lookup as one of its own tools, so I can ask my daily data questions from inside Claude instead of a separate app.</p>
         </div>
         <div class="hairgrid hairgrid--2">
           <div class="stat"><span class="stat__n" id="px-valid">0/26</span><span class="stat__l">valid citations, 26 questions</span></div>
-          <div class="stat"><span class="stat__n">3</span><span class="stat__l">routes: search, filter, sum</span></div>
+          <div class="stat"><span class="stat__n">4</span><span class="stat__l">routes: search, filter, sum, refusal</span></div>
         </div>
         <a class="px-more" href="/pixels/">Replay all 26 questions →</a>
       </div>
@@ -206,8 +206,8 @@
           <div class="stat"><span class="stat__n" id="as-next-pct">0%</span><span class="stat__l">right next step, 349 agent actions</span></div>
           <div class="stat"><span class="stat__n">79.5%</span><span class="stat__l">shadow: matched what the agent did next, 176 actions</span></div>
         </div>
-        <p class="plain"><strong>In plain terms:</strong> the first number is how often it suggested the step the guidelines call for, and the second is how often, running silently next to the agent on 50 recorded chats, it suggested what the agent actually did next, which means an agent would set aside about one suggestion in five, and I'd pull it back if that ever reached one in four, because that is the point where people stop reading them.</p>
-        <span class="caption">Sonnet 5 with the whole guideline library in a cached prompt, 100 frozen test chats, 24 September 2026. ABCD is role-played by trained crowdworkers, no real customers, MIT licensed, Copyright (c) 2021 ASAPP Research.</span>
+        <p class="plain"><strong>In plain terms:</strong> both numbers count how often it suggested the step the agent actually took next, the first over 100 recorded chats and the second running silently next to the agent on 50 of them, which means an agent would set aside about one suggestion in five, and I'd pull it back if agreement stayed below 75% for two weeks on a customer's own traffic, or if a suggestion took longer than 4 s to arrive at p95.</p>
+        <span class="caption">Sonnet 5 with the whole guideline library in a cached prompt, 349 agent actions in 100 frozen test chats and 176 in a 50-chat subset for shadow, 24 September 2026, level with a no-model guideline-order baseline at 73.4%. ABCD is chats for a fictional retailer role-played by trained crowdworkers, real conversations between people with no real customers, MIT licence, Copyright (c) 2021 ASAPP Research.</span>
         <a class="px-more" href="/assist/">Replay six chats and the QA →</a>
       </div>
     </div>
@@ -219,7 +219,7 @@
     <div class="stack rv rv--fade">
       <span class="eyebrow eyebrow--muted">Fine-tuning · in progress</span>
       <h2 class="h2 h2--sub">Card matching, tuned against prompted, on the same golden set.</h2>
-      <p class="body ft__body">Every model call on this page is a prompted Haiku or Sonnet under a schema, and the next build tunes a small model on card matching, the one task here that is a closed classification, and the result goes on this page even if it says to keep prompting.</p>
+      <p class="body ft__body">Every model call on this page is a prompted Haiku or Sonnet, under a schema or a tolerant parser, and the next build tunes a small model on card matching, the one task here that is a closed classification, and the result goes on this page even if it says to keep prompting.</p>
       <p class="plain"><strong>In plain terms:</strong> I am testing whether training a small model on one narrow job beats just asking a big model well, and if it does not, I will say so here.</p>
     </div>
     <div class="ft__bars">
@@ -236,7 +236,7 @@
       <div class="row-between row-between--c"><span class="eyebrow">Structured outputs · Signal · LLM app, in use</span><a class="btn btn--accent btn--44" href="https://samievargas.com/signal/">Try it on your own notes ↗</a></div>
       <div class="stack narrow">
         <h2 class="h2">Messy account documents go in and a read you can act on comes out.</h2>
-        <p class="body">Haiku summarizes each document and Sonnet synthesizes, which cut the main call from roughly 23k to about 1k input tokens, and every section of the brief names its sources.</p>
+        <p class="body">Haiku 4.5 summarizes each document and Sonnet 4.6 synthesizes, which cut the main call from 22,976 to at most 1,012 input tokens on two long transcripts, and each section of the brief is asked to name its sources, which it did for 92% of the required ones across 260 eval runs.</p>
         <p class="plain"><strong>In plain terms:</strong> you drop in a pile of messy account notes and get back a short read on whether the customer is at risk, who actually matters, and the one thing to do today.</p>
       </div>
     </div>
@@ -248,21 +248,22 @@
       </div>
       <div class="sig-arrow" id="sig-arrow" aria-hidden="true">→</div>
       <div class="card sig-out">
-        <span class="micro">What comes back, 51 seconds later</span>
+        <span class="micro">What comes back, in about a minute</span>
         <div id="sig-out"></div>
+        <span class="caption">example output, laid out for the mock</span>
       </div>
     </div>
     <div class="cols">
       <div class="stack">
         <h3 class="h3 h3--22">When a customer sounds unhappy but nothing specific went wrong, it reads the risk right in only seven of twenty runs.</h3>
         <div class="sig20" id="sig20"></div>
-        <span class="caption">ablation, 20 runs per arm · which runs is laid out for the mock</span>
-        <p class="body">It is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, which is why that number is on the page.</p>
+        <span class="caption">arm A, with the weighting block, 20 runs · which runs is laid out for the mock</span>
+        <p class="body">It is good at spotting trouble tied to something that happened and still weak at reading a vague mood with nothing behind it, and the source-weighting block that fixes the buyer makes this case worse, 7 of 20 with it against 14 of 20 without, which is why that number is on the page.</p>
       </div>
       <div class="hairgrid hairgrid--3 sig-stats">
-        <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">tokens the main model reads per brief, down from ~23k, so each read costs less</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-tok">~23k</span><span class="stat__l">input tokens on the main call for a long transcript, down from 22,976, so each read costs less</span></div>
         <div class="stat"><span class="stat__n stat__n--28" id="sig-prep">60</span><span class="stat__l">minute of prep before an account review, down from about an hour by hand</span></div>
-        <div class="stat"><span class="stat__n stat__n--28" id="sig-sec">0s</span><span class="stat__l">from pasting the notes in to getting the read back</span></div>
+        <div class="stat"><span class="stat__n stat__n--28" id="sig-sec">0s</span><span class="stat__l">seconds for the analysis call, the mean over 260 eval runs</span></div>
       </div>
     </div>
     <div class="results" data-results="signal"></div>
@@ -273,9 +274,9 @@
     <div class="stack rv">
       <div class="row-between row-between--c"><span class="eyebrow bd__eyebrow">Structured outputs · Brain Dump · LLM app, in use</span><a class="btn btn--on-dark btn--44" href="https://samievargas.com/brain-dump">Try it here ↗</a></div>
       <div class="stack narrow">
-        <h2 class="h2">Five minutes of talking comes back as one thing to do first and a list that can wait.</h2>
-        <p class="body bd__body">You say how much you have, plenty, a little or none, and whether you are feeling anxious, and the sorter puts every item into now, later or let go under a strict JSON contract, with now capped by that level and each step quoting back the words it came from.</p>
-        <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how much energy you have, and it hands back the one or two things to do first, a safe list for later, and the worries you can set down.</p>
+        <h2 class="h2">One long voice note comes back as a short list to do first, one task at a time, and a list that can wait.</h2>
+        <p class="body bd__body">You say how much you have, plenty, a little or none, and whether you are feeling anxious, and the sorter puts every item into now, later or let go under a strict JSON contract, with now capped by that level and each step saying why it was picked, in the dump's own words when it can.</p>
+        <p class="plain"><strong>In plain terms:</strong> you dump everything on your mind, say how much energy you have, and it hands back up to three things to do first, one at a time, a safe list for later, and the worries you can set down.</p>
       </div>
     </div>
     <div class="cols cols--24">
@@ -292,7 +293,7 @@
       </div>
     </div>
     <div class="bd-tune" id="bd-tune">
-      <div class="bd-tune__head"><span class="h3 bd-tune__title">Prompt tuning halved the wait, and cutting the effort to halve it again doubled the one mistake the page cannot fix.</span><span class="bd__cap" id="bd-tune-cap"></span></div>
+      <div class="bd-tune__head"><span class="h3 bd-tune__title">A tuned prompt at medium effort halved the wait, and cutting the effort to halve it again more than doubled the one mistake the page cannot fix.</span><span class="bd__cap" id="bd-tune-cap"></span></div>
       <p class="plain"><strong>In plain terms:</strong> I changed the instructions and how hard the model thinks, without retraining the model itself.</p>
       <div class="bd-tune__rows" id="bd-tune-rows" role="table" aria-label="Three prompt and effort settings on the same eval grid"></div>
       <span class="bd__cap" id="bd-tune-source"></span>
@@ -396,6 +397,6 @@
   </div>
 </section>
 
-<script type="module" src="js/app.js?v=20260925i"></script>
+<script type="module" src="js/app.js?v=20260925j"></script>
 </body>
 </html>

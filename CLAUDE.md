@@ -4,14 +4,14 @@ Plain HTML, one stylesheet (`css/styles.css`), vanilla ES modules (`js/*.js`), c
 
 ## Numbers are locked
 
-Read `FACTS.md` before any edit. Every number, date, model name and version on the site is recorded there with its source, and it wins over page copy. Never change a figure on a page, or in `data/content.js`, without changing its row in `FACTS.md` first, and never let a copy edit round, rephrase or drop a number. Rows marked UNSOURCED or RECONCILE stay out of new copy until they are resolved.
+Read `FACTS.md` before any edit, and for a build's numbers read that build's own repo README, which is the source of truth FACTS.md copies from (rule 9 lists the repos). Every number, date, model name and version on the site is recorded there with its source, and it wins over page copy. Never change a figure on a page, or in `data/content.js`, without changing its row in `FACTS.md` first, and never let a copy edit round, rephrase or drop a number. Rows marked UNSOURCED or RECONCILE stay out of new copy until they are resolved.
 
 ## Design
 
 Every page follows the 3a style in `design/samie-3a-style.md`: read it before building or changing a page, a doc, a deck or a tool that should look like this site. Tokens live on `:root` at the top of `css/styles.css`; components use the tokens, never a literal colour.
 
 - Scroll load-ins go through `onSeen` / `autoReveal` in `js/reveal.js` (one IntersectionObserver with a `-10%` bottom margin plus a bounding-rect tick). Never a whole-section threshold.
-- Every project carries exactly one "In plain terms" sentence (`.plain`).
+- Every project carries at least one "In plain terms" sentence (`.plain`). When Claude adds one, it adds exactly one, unless Samie asks for more; extra ones she has added, like the lines that explain RAG, MCP, dbt or Socrata, are on purpose and stay.
 - Anything laid out for the mock says so in a mono caption.
 - Honour `prefers-reduced-motion` by rendering the end state (`REDUCED` in `js/reveal.js`).
 

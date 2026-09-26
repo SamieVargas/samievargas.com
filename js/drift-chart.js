@@ -8,7 +8,7 @@
 // since the line uses a non-scaling stroke).
 // ============================================================
 
-import { REDUCED, esc, tween } from './reveal.js?v=20260925i';
+import { REDUCED, esc, tween } from './reveal.js?v=20260925j';
 
 // Whole-point bounds around the data, e.g. 89.8–92.6 → 89–93.
 function bounds(scores) {
