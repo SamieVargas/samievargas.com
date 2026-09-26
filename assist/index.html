@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css?v=20260925i">
+  <link rel="stylesheet" href="../css/styles.css?v=20260925j">
 </head>
 <body>
 
@@ -61,7 +61,7 @@
     <span class="eyebrow rv">samievargas.com/assist · agent assist + QA · recorded runs</span>
     <h1 class="px-h1 rv" style="--d:.06s">Guideline Assist, <em>replayed</em>.</h1>
     <p class="px-lead rv" style="--d:.12s">A live assist reads a support chat as it happens and tells the agent the next step from the company's written guidelines, with the values to enter and the section it came from, and a post-call QA then grades the finished chat against the same guidelines. Below are six recorded chats played back one turn at a time, with each suggestion shown before the turn it was about and what the agent actually did shown after.</p>
-    <p class="px-fine rv" style="--d:.18s">Nothing on this page is live. Every suggestion is copied from <code>evals/results/assist-2026-09-24.json</code> in the repo (Sonnet 5 with the whole guideline library in a cached prompt), and every QA status from <code>qa-2026-09-24.json</code>. The chats are from ABCD, ASAPP Research, role-played conversations with trained crowdworkers, no real customers. ABCD is MIT licensed, Copyright (c) 2021 ASAPP Research.</p>
+    <p class="px-fine rv" style="--d:.18s">Nothing on this page is live. Every suggestion is copied from <code>evals/results/assist-2026-09-24.json</code> in the repo (Sonnet 5 with the whole guideline library in a cached prompt), and every QA status from <code>qa-2026-09-24.json</code>. The chats are from ABCD, ASAPP Research, chats for a fictional retailer role-played by trained crowdworkers, real conversations between people with no real customers. ABCD is MIT licensed, Copyright (c) 2021 ASAPP Research.</p>
     <p class="plain px-plain rv" style="--d:.24s"><strong>In plain terms:</strong> it works like a colleague reading over a support agent's shoulder who has memorized the rulebook and whispers the next step, and then checks the finished conversation for steps that were skipped or done wrong.</p>
     <div class="as-stats rv" style="--d:.3s" id="as-stats" aria-label="Shadow, hand-label, injection and intent results, 24 and 25 September 2026"></div>
   </header>
@@ -125,7 +125,7 @@
   <section class="px-sec px-split px-split--start" id="ablation" data-in>
     <div class="px-stack">
       <h2 class="px-h2 px-h2--32 rv"><span class="px-num">03</span>Caching the whole guideline library beat looking up one section</h2>
-      <p class="px-body rv" style="--d:.06s">Arm A puts all 55 guideline sections in a cached prompt prefix on every turn, and arm B asks for the intent first and then passes in only that section. A cached read costs a tenth of fresh input, and arm B pays for a second call and still gets the intent wrong more often, so arm A came out cheaper and faster on both models, and Sonnet on arm A is the version replayed above.</p>
+      <p class="px-body rv" style="--d:.06s">Arm A puts all 55 subflow guideline sections, plus the 10 flow sections, in a cached prompt prefix on every turn, and arm B asks for the intent first and then passes in only that section. A cached read costs a tenth of fresh input, and arm B pays for a second call and still gets the intent wrong more often, so arm A came out cheaper and faster on both models, and Sonnet on arm A is the version replayed above.</p>
       <p class="plain rv" style="--d:.12s"><strong>In plain terms:</strong> handing the model the whole rulebook every time, from a cache, turned out cheaper and quicker than looking up the one page it needed first.</p>
     </div>
     <div class="px-stack rv" style="--d:.1s">
@@ -145,6 +145,6 @@
   </div>
 </footer>
 
-<script type="module" src="../js/assist.js?v=20260925i"></script>
+<script type="module" src="../js/assist.js?v=20260925j"></script>
 </body>
 </html>

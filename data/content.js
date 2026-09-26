@@ -8,8 +8,8 @@
 // Every row of the hero log is a result line published elsewhere on the
 // site with its date: field discovery from the 22 Sep 2026 run, Pixels
 // from evals/results/2026-09-22.json, Signal from the README ablation,
-// the parse count from the structured-output tally across Signal, Brain
-// Dump and field discovery (0 failures in 520 runs), and the guideline row
+// the parse count from Signal's two native-contract ablation arms (signal
+// README, 260 runs each, 0 recovered and 0 failed), and the guideline row
 // from guideline-assist's evals/results/assist-2026-09-24.json (Sonnet 5,
 // arm A, 258 of 349 action points).
 export const HERO_LOG = {
@@ -20,8 +20,8 @@ export const HERO_LOG = {
     { p: 'field_disc', k: 'unneeded writes, 12 fixtures', v: '0', tone: 'ok' },
     { p: 'field_disc', k: 'planted instructions, 50 runs', v: '40 unchanged', tone: 'warn' },
     { p: 'pixels_rag', k: 'valid citations, 26 questions', v: '26/26', tone: 'ok' },
-    { p: 'guideline', k: 'next action, 349 agent turns', v: '73.9%', tone: 'warn' },
-    { p: 'structured', k: 'parse failures', v: '0 / 520', tone: 'ok' },
+    { p: 'guideline', k: 'next action, 349 agent actions', v: '73.9%', tone: 'warn' },
+    { p: 'signal', k: 'parse failures, native contract', v: '0 / 520', tone: 'ok' },
     { p: 'signal', k: 'mood with no event', v: '7/20', tone: 'bad' },
     { p: 'cost', k: 'per capture', v: '$0.0313 · 21.5s', tone: '' },
   ],
@@ -35,17 +35,18 @@ export const SPINE = {
   title: 'Five common ways to deploy AI, and my builds for each',
   note: 'one dot per test case · red is a case that still breaks',
   rows: [
-    { label: 'Agents', name: 'Field discovery', line: 'a rep records what they heard on a visit, and it writes up the account and flags what\'s still missing', plain: 'AI does the job, a person signs off.', dots: 10, bad: [0, 2, 3, 5, 7, 8], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.0313 →', href: '#field-discovery' },
-    { label: 'RAG', name: 'Life in Pixels', line: 'ask questions about years of my mood journal, and every answer is checked against the days it cites', plain: 'AI answers from your records, with sources.', dots: 26, bad: [], cap: '26 questions · 26 valid citations', cta: '100% · watch it run →', href: '/pixels/' },
+    { label: 'Agents', name: 'Field discovery', line: 'a rep records what they heard on a visit, and it writes up the account and flags what\'s still missing', plain: 'AI does the job, a person signs off.', dots: 10, bad: [0, 3, 4, 6, 7, 9], cap: '10 injection fixtures · 6 moved a proposal at least once', cta: '8/8 golden · $0.0313 →', href: '#field-discovery' },
+    { label: 'RAG', name: 'Life in Pixels', line: 'ask questions about six months of my own daily data, and every answer is checked against the days it cites', plain: 'AI answers from your records, with sources.', dots: 26, bad: [0, 2, 6], cap: '26 questions · 26 valid citations · 3 still miss', cta: '100% · watch it run →', href: '/pixels/' },
     { label: 'Assist + QA', name: 'Guideline Assist', line: 'a live next-step suggestion for a support agent, and a QA pass on the finished chat, both held to the written guidelines', plain: 'AI suggests the next move, then checks the work.', dots: 10, bad: [0, 7], cap: '10 injection fixtures · 2 moved a suggestion at least once', cta: '73.9% next action · watch it run →', href: '/assist/' },
     { label: 'Fine-tuning', name: 'Card matching, tuned vs prompted', line: 'a small open model against Haiku and Sonnet', plain: 'a smaller model trained to do one job cheaper.', pending: true, cap: 'baselines scored · tuned run not yet', cta: 'in progress', href: '#fine-tuning' },
-    { label: 'MCP', name: 'Pixels server', line: 'the same journal search, as a tool Claude Desktop and Claude Code can call, with the data kept local', plain: 'a plug that lets AI use your tools and data.', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
+    { label: 'MCP', name: 'Pixels server', line: 'the same search over my daily data, as a tool Claude Desktop and Claude Code can call, with the data kept on disk', plain: 'a plug that lets AI use your tools and data.', tags: ['tool · ask', 'tool · read'], cap: 'read-only · stdio', cta: 'the server ↗', href: 'https://github.com/SamieVargas/pixels-rag' },
   ],
-  rule: 'across the earlier builds · 0 parse failures in 520 structured calls',
+  rule: 'Signal\'s native structured-output contract · 0 parse failures in 520 analysis calls, 260 in each ablation arm',
   plain: 'each row is one common way companies put AI to work, and each dot is a test I ran on it, so you can see at a glance what holds up and what still slips.',
 };
 
-// Field discovery: the real transcript, and what each step shows as the
+// Field discovery: the G02 golden transcript (Field-Sales-Build
+// fixtures/golden-set.json), shortened, and what each step shows as the
 // typing passes the words it came from.
 export const FD_SEGMENTS = [
   { t: '“Kestrel, this was Tuesday I think. Parking was a nightmare. ' },
@@ -53,45 +54,46 @@ export const FD_SEGMENTS = [
   { t: 'They’re on an epi core system', hl: true, at: 'inc' },
   { t: ', wants better reporting, hates the processing fees. Two lanes, he wants a third. Grabbed lunch after at the taco place. Oh and ' },
   { t: 'they rent equipment out the back, trailers and a scissor lift', hl: true, at: 'rent' },
-  { t: ', so that’d need to tie in.”' },
+  { t: ', they run that on a point a rental thing, so that’d need to tie in.”' },
 ];
 export const FD_MATCH = {
   head: 'hardware_rental · 19 cards',
   rows: [
     { k: 'incumbent_system', v: 'confirmed', tone: 'ok', at: 'inc' },
     { k: 'rental_contracts', v: 'confirmed', tone: 'ok', at: 'rent' },
-    { k: 'decision_maker', v: 'inferred', tone: 'inf', at: 'dm' },
-    { k: 'chemical_licence', v: 'not_discussed', tone: 'gap', at: 'end', after: 300 },
+    { k: 'decision_maker', v: 'not_discussed', tone: 'gap', at: 'dm' },
+    { k: 'restricted_chemicals', v: 'not_discussed', tone: 'gap', at: 'end', after: 300 },
     { k: 'budget', v: 'not_discussed', tone: 'gap', at: 'end', after: 600 },
   ],
 };
 export const FD_RECORD = {
   head: 'Opportunity 006Ax0001',
   rows: [
-    { k: 'Discovery_Status', v: 'Open gaps' },
+    { k: 'Discovery_Status', v: 'In discovery' },
     { k: 'Viability_Flag', v: 'rental_contracts', tone: 'bad' },
-    { k: 'Golive_Shift', v: '+3 wks' },
-    { k: 'Discovery_Open', v: '3 items' },
+    { k: 'Discovery_Confirmed', v: '4 cards' },
+    { k: 'Discovery_Open', v: '8 cards' },
   ],
 };
 export const FD_CASE = [
   { k: 'Problem', v: 'Reps type a few lines of notes into the CRM, with no way to tell what was covered from what was skipped.' },
-  { k: 'Approach', v: 'A fixed requirements library, one call under a closed enum, and a proposal step where approve is the only path to a write.' },
+  { k: 'Approach', v: 'A fixed requirements library, one extraction call under a closed enum, and an action loop that can only propose, where a person approving is the only path to a write.' },
   { k: 'Went wrong', v: 'Planted instructions moved a proposal at least once in six of ten fixtures.' },
   { k: 'Result', v: '8 of 8 golden · 0 unneeded writes in 12 · $0.0313 · 21.5s', mono: true },
-  { k: 'Next time', v: 'Let the proposal step pick its own tools in a loop, with every current rule kept as the fence.' },
+  { k: 'Next time', v: 'Run a real pilot so the outcome metrics have field numbers, re-run the stability arm on the current golden set, and add fixtures for mixed language, a two-vertical merchant and a rep dictating while driving.' },
 ];
-// Totals from the 22 Sep run: 10 fixtures, 5 runs each, 40 of 50 unchanged,
-// six fixtures moved at least once. Which runs moved is laid out for the mock.
-export const FD_INJECTION = { fixtures: 10, runs: 5, moved: { 0: [1, 3], 2: [2], 3: [0, 2, 4], 5: [3], 7: [1, 4], 8: [2] } };
+// The 22 Sep run, run by run (Field-Sales-Build evals/results/latest.json,
+// injection rows I01 to I10): 10 fixtures, 5 runs each, 40 of 50 unchanged,
+// six fixtures moved at least once.
+export const FD_INJECTION = { fixtures: 10, runs: 5, moved: { 0: [2], 3: [0], 4: [0, 1, 4], 6: [0, 4], 7: [0], 9: [0, 2] } };
 
 // Life in Pixels: one replayed run, from data/pixels-runs.json.
 export const PX_REPLAY = {
-  q: 'How was the week of June 8 to 14?',
-  routes: ['search', 'filter · date range', 'sum'], picked: 1,
-  days: ['06-08', '06-09', '06-10', '06-11', '06-12', '06-13'],
+  q: 'What was the week of June 8 like?',
+  routes: ['search', 'filter', 'sum'], picked: 0,
+  days: ['06-08', '06-09', '06-10', '06-11', '06-12', '06-13', '06-14'],
   a: 'The week of June 8-14 was challenging overall. On 2026-06-08, you had a low mood with poor sleep and moderate stress, though productivity was high. On 2026-06-09, you experienced irritability and high stress with another poor night.',
-  check: '✓ 6 of 6 cited days exist in the data',
+  check: '✓ 7 of 7 cited days were retrieved · 1 retry',
 };
 
 // Guideline Assist: one recorded call, from data/assist-replay.json (chat
@@ -112,7 +114,7 @@ export const AS_REPLAY = {
 export const SIGNAL_PILE = {
   scraps: [
     { x: 'call notes 4/12: "budget owner changed, new CFO wants value by renewal"', l: '2%', t: '36px', r: -4, ty: 'TXT', g: '¶', h: 60, lg: 'call notes' },
-    { x: 'renewal_deck_v3.pptx', l: '38%', t: '90px', r: 6, ty: 'PPTX', g: '▭', h: 28, lg: 'slides' },
+    { x: 'renewal_deck_v3.pdf', l: '38%', t: '90px', r: 6, ty: 'PDF', g: '▭', h: 28, lg: 'slides' },
     { x: 'crm_export_q2.csv (412 rows)', l: '8%', t: '140px', r: -7, ty: 'CSV', g: '▦', h: 145, lg: 'CRM export' },
     { x: 'slack thread, 60 messages', l: '40%', t: '192px', r: 3, ty: 'CHAT', g: '◌', h: 265, lg: 'Slack' },
   ],
@@ -136,7 +138,8 @@ export const SIGNAL_PILE = {
   strip: { runs: 20, right: [1, 4, 6, 9, 12, 15, 18] },
 };
 
-// Brain Dump, sort@v3 (brain-dump worker/contracts.js): three levels with a
+// Brain Dump, sort@v3 (brain-dump worker/prompts.js, since replaced live by
+// sort@v4 at medium effort; levels in worker/contracts.js): three levels with a
 // separate "feeling anxious" switch, three buckets, and "now" capped per level
 // with a task timer. The runs are real, one long voice-note dump given to
 // the live page on 24 Sep 2026, copied from its exported plans: four were
@@ -173,8 +176,10 @@ export const BD_V3 = {
 // levels, anxious off and on, 120 plans a run on claude-sonnet-5. Latency is
 // the median and p90 of the 120 calls, cost the mean per plan at list price,
 // "one gentle item" counts the mental-load dumps that got more than one now
-// item, which is the one miss the page cannot fix, and "need to" counts the
-// plans with a banned phrase, which the page rewrites. The Worker runs `live`.
+// item, which is the one miss the page cannot fix, and banned counts the
+// plans with any banned phrase ("need to", "should", "you have to", "lazy"),
+// which the page rewrites; "need to" alone is 8, 9 and 7 of the 60 anxious
+// plans. The Worker runs `live` (worker/prompts.js, wrangler.toml).
 export const BD_TUNING = {
   date: '24 Sep 2026', plans: 120,
   runs: [
@@ -206,7 +211,7 @@ export const ATX_DRIFT = [90.5, 90.6, 90.55, 90.6, 91.05, 91.15, 89.8, 90.1, 90.
 
 export const SKILL_AREAS = [
   { label: 'AI enablement', line: 'LLM workflow design & deployment · LLM evaluation (golden sets, ablations, injection fixtures) · Code-enforced JSON contracts · Reject-and-retry validation · Model routing · RAG · Prompt caching · Prompt engineering · Human-in-the-loop process design · Team-level AI adoption · AI tool evaluation · AI fluency enablement' },
-  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · SQL / BigQuery · dbt Cloud · Structured JSON / schema design · ChromaDB · Hugging Face embeddings (sentence-transformers) · MCP servers · Salesforce REST API · Socrata API · folium · Google Apps Script' },
+  { label: 'Build', line: 'Python (pandas · scikit-learn) · Vanilla JavaScript · Anthropic API · Cloudflare Workers · SQL / BigQuery · dbt Cloud · Structured JSON / schema design · ChromaDB · Local embeddings (MiniLM via ChromaDB) · MCP servers · Salesforce REST API · Socrata API · folium · Google Apps Script' },
   { label: 'Delivery', line: 'Full-lifecycle engagement management · Multi-stakeholder orchestration · Workflow & SOP design · Health scoring systems · Adoption & usage tracking · Agile / Scrum (PSM I)' },
   { label: 'Data', line: 'EDA · Regression & classification modeling · Cohort & segment analysis · Behavioral pattern detection · Data modeling · Looker Studio · Tableau' },
   { label: 'Stack', line: 'Anthropic API · Claude · Claude Code · MCP · Hugging Face Hub · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · Salesforce · GA4' },
@@ -335,34 +340,34 @@ const RESULTS = {
     // README's ablation (2026-09-21/22, 20 runs per arm): vibe-risk right in 7
     // of 20 with the weighting block, champion-loss names the wrong buyer in
     // 19 of 20. The max_tokens cutoff behaviour still holds but is not a finding.
-    signal:    ['An hour of account digging by hand before every account call', 'Haiku summarizes each document in 300 tokens, Sonnet 4.6 writes the brief under a JSON Schema, a Cloudflare Worker holds the key, and a Python CLI twin runs a 13-account golden set', 'About $0.03 per brief for the Sonnet call at list price ($0.0308 over 260 eval runs), the per-document summaries on top, and Cloudflare\'s free tier for the Worker', 'A mood without an event is read right in 7 runs of 20, one case names the wrong buyer in 19 of 20, and a long transcript loses its second risk every time'],
+    signal:    ['An hour of account digging by hand before every account call', 'Haiku 4.5 summarizes each document in at most 300 tokens, Sonnet 4.6 writes the brief, under a JSON Schema when the native contract is on and through a tolerant parser by default, a Cloudflare Worker holds the key, and a Python CLI twin runs a 13-account golden set', '$0.0308 a brief for the Sonnet analysis call over 260 eval runs at list prices read 23 Sep 2026, with the per-document summaries on top and not yet counted', 'A mood without an event is read right in 7 runs of 20 with the weighting block and 14 without it, one case names the wrong buyer in 19 of 20, a long transcript loses its second risk every time, and one account cites its usage CSV in 1 run of 20'],
     // Brain Dump README (sort@v4 at effort medium, 24 Sep 2026): the 47 tabs,
     // one file, a Worker holding the prompts, three levels and the anxious
     // switch, no database. Cost: the sort@v4 medium grid averaged $0.0071 a
     // plan (BD_TUNING), and the four live sort@v3 runs of one long dump came
     // to $0.05. "What still breaks": the same grid, 7 of 120 mental-load plans
-    // got more than one now item and 12 of 120 carried a banned phrase, and
-    // the two "a little" runs on BD_V3 put the same two tasks in opposite
-    // orders.
-    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', 'Under a cent a sort at list price, $0.0071 on average after tuning, on Cloudflare\'s free tier, no database', '7 of 120 eval plans still gave a worry-heavy dump more than one thing to do, "need to" slipped into 12, which the page rewrites, and the same dump at the same level can come back in a different order'],
+    // got more than one now item and 12 of 120 carried a banned phrase, "need
+    // to" in 9 of them (brain-dump README and the sort@v4 medium results file).
+    braindump: ['Forty-seven mental tabs with no way to tell a task from a worry', 'One HTML file, a Cloudflare Worker that holds the prompts and the key, three levels and a feeling-anxious switch', '$0.0071 a plan on average after tuning, on the short eval dumps and at list prices still to be re-checked, with no database', '7 of 120 eval plans still gave a worry-heavy dump more than one thing to do, and a banned phrase got into 12, "need to" in 9 of them, which the page rewrites before anyone sees the plan'],
     // pixels-rag README, keyed golden run 2026-09-22 on Haiku 4.5: $0.0062 a
     // question, $0.1611 for 26; S01 still failed validation after the retry
     // (unit-glued 8.2hrs), S03 adjacency abstained, 10 of 26 needed a retry.
-    pixels:    ['A spreadsheet that filters one column at a time, and asking a model with no way to check its citations', 'A router that picks search, filter or sum, a JSON answer contract, a validator that checks every cited day and number in code, and a local MCP server', '$0.0062 a question on Haiku 4.5, $0.16 for all 26, with the index and embeddings running free on my laptop', '10 of 26 answers needed a second try to pass the checker, one true number still gets rejected, and "the day after" a workout cannot be found yet'],
+    pixels:    ['A spreadsheet that filters one column at a time, and asking a model with no way to check its citations', 'A router that picks search, filter, sum or an admission that the data cannot answer, a JSON answer contract, a validator that checks every cited day and number in code, and a local MCP server', '$0.0062 a question on Haiku 4.5 and $0.1611 for all 26 at list prices read 23 Sep 2026, with the index and embeddings running free on my laptop', '10 of 26 answers needed a second try to pass the checker, one true number still gets rejected, and "the day after" a workout cannot be found yet'],
     // Field discovery: the CRM free-text field it replaces; the two tiers, the
     // proposal step and the Salesforce upsert; sonnet pricing from the eval run
     // ($0.0313, 21.5 s on 2026-09-22), and $0 published because the demo runs
     // canned; the injection layer from the same day (6 of 10 fixtures moved a
     // proposal at least once in five runs), which is why a person approves
-    // every write. The 9-in-20 modal id set from the stability arm still holds.
-    discovery: ['A few lines of notes in the CRM, with no way to tell what was covered from what was skipped', 'A local requirements library, one LLM call under a closed enum, a proposal step a person approves, and an idempotent Salesforce upsert', '$0.0313 and 21.5 seconds per capture on Sonnet, and nothing at all while the published demo runs canned', 'Planted instructions moved a proposal in six of ten fixtures, so a person still approves every write and confirms every card'],
+    // every write. The 9-in-20 modal id set is from the 29 Aug stability arm,
+    // which has not been re-run since the golden set changed on 20 Sep.
+    discovery: ['A few lines of notes in the CRM, with no way to tell what was covered from what was skipped', 'A local requirements library, one extraction call under a closed enum, an action loop that can only propose, a person who approves each proposal, and an idempotent Salesforce upsert', '$0.0313 and 21.5 seconds per extraction and $0.0561 and 18.8 seconds per proposal run on claude-sonnet-5, at prices still marked to re-check, and nothing at all while the published demo runs canned', 'Planted instructions moved a proposal in six of ten fixtures and 10 of 12 proposal fixtures pass, so a person still approves every proposed write and confirms every inferred card'],
     // guideline-assist README and docs/deployment-readout.md (2026-09-24/25):
     // the agent reading a policy library mid-chat and a supervisor sampling
     // chats afterwards; arm A (the whole library cached) and the validator;
-    // $122 per 1,000 chats on Sonnet 5 arm A and $48 on Haiku 4.5 arm A at
-    // 50.1% next action; 20 of 100 clean chats flagged
-    // by the QA and 2 of 10 injection fixtures that moved a suggestion.
-    assist:    ['An agent looking up the next step in a policy library mid-chat, and a supervisor reading a sample of chats afterwards', 'One model call per agent turn with the whole guideline library in a cached prompt, a validator that rejects any step the guideline section does not list, and a QA call on the finished chat', '$122 per 1,000 chats on Sonnet 5 at 3.2 s p95 per turn, or $48 on Haiku 4.5, which picks the right next step 50.1% of the time against 73.9% for Sonnet', 'The QA still flags 20 of 100 clean chats, half its wrong-value flags are wrong, and one planted line pulled the suggestion toward a refund in 2 of 5 runs'],
+    // $121.83 per 1,000 chats on Sonnet 5 arm A and $48.47 on Haiku 4.5 arm A
+    // at 50.1% next action; 20 of 100 clean chats flagged by the QA, 51.8%
+    // wrong-value precision (57/110), and 47 of 50 injected runs held.
+    assist:    ['An agent looking up the next step in a policy library mid-chat, and a supervisor reading a sample of chats afterwards', 'One model call per agent turn with the whole guideline library in a cached prompt, a validator that rejects any step the guideline section does not list, and a QA call on the finished chat', '$121.83 per 1,000 chats on Sonnet 5 at 3.2 s p95 per turn, or $48.47 on Haiku 4.5, which picks the right next step 50.1% of the time against 73.9% for Sonnet', 'Sonnet\'s 73.9% is only level with a no-model guideline-order baseline at 73.4%, the QA still flags 20 of 100 clean chats and its wrong-value flags are right only 51.8% of the time, and one planted line pulled the suggestion to a refund in 2 of 5 runs, although 47 of 50 injected runs held'],
     // Instacart README: "most projects go straight to ML"; the input line on
     // this page; dbt Cloud on BigQuery; the days_since_prior_order cap at 30.
     instacart: ['Modeling on the cited 0.60 reorder rate without checking it first', 'Five staging models, one join, three marts, thirty-five tests', 'A dbt Cloud project on BigQuery, run on free trials, so nothing when I run it', 'Days-since-prior is capped at 30, so 30 means 30 or more'],
@@ -385,7 +390,7 @@ const CONTACT_LINKS = [
 // ── Life page ────────────────────────────────────────────────
 
 const LIFE_FIELD = [
-  { id: 'walk', short: 'A walk is worth half a point', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language. A router decides whether a question is a search, a filter or a sum, the numbers are computed in code, every answer cites the days it came from, the whole thing doubles as a local MCP server so Claude Desktop can ask it questions while the data stays on my machine, and hot yoga plus walking still beat everything else for sleep and recovery.' },
+  { id: 'walk', short: 'What a walk is worth', kind: 'Noticed → built', title: 'What a walk is actually worth', x: '62%', y: '18%', year: '2026', art: 'assets/pixels-rag/pixels-rag-1.png', href: 'https://github.com/SamieVargas/pixels-rag', linkLabel: 'See how it works ↗', line: 'Six months of my own daily data, askable in plain language. A router decides whether a question is a search, a filter, a sum or unanswerable, sums are computed in code, every number in an answer is checked against the days it cites, and the whole thing doubles as a local MCP server so Claude Desktop can ask it questions while the data stays on my machine, and the hot yoga plus walking pattern I first got by asking the model is something I am still checking against the day records.' },
   { id: 'lifeos', short: 'Life OS', kind: 'Built', title: 'Life OS', x: '88%', y: '30%', year: '2025–26', art: 'assets/life-os/lifeos_today.png', line: 'A daily dashboard pulling from two of my own data endpoints, fifteen charts across health, habits, and whatever I said I would do.' },
   { id: 'tarot', short: 'Tarot tracker', kind: 'Built', title: 'Seven decks and a tracker', x: '76%', y: '58%', year: '2025', art: 'assets/tarot-tracker/deck.png', line: 'Every pull logged across all 78 cards, including the ones that keep coming back, and I built it because I pull most mornings anyway.' },
   { id: 'journal', short: 'Journaling since 2020', kind: 'Built', title: 'My own journaling app', x: '70%', y: '80%', year: '2020–26', line: 'Daily since 2020, in an app I built so the prompts are exactly what I want, and the patterns across months are different from what shows up in a single day.' },
@@ -608,6 +613,7 @@ const TK_NOTES = [
   // 26 Sep 2026 copy pass, hardcoded so the reasons show before the Action
   // rewrites data/changelog.json. Each title is the commit subject, so a
   // "Why:" note from the snapshot replaces its twin here instead of repeating.
+  { date: '2026-09-26', title: 'Match every build on the site to its own repo README', body: 'The site had drifted from what each build\'s README actually says, and anyone who clicks through to a repo should find the same numbers there, so every figure now matches its README and results files, and anything the README does not back up was taken off, softened or marked as laid out for the mock.' },
   { date: '2026-09-26', title: 'Correct what moved between the hand review and the repo', body: 'A few numbers had been rounded in the copy pass and a few pages were still on the old asset token, and FACTS.md says a number is never rounded past its source, so those went back to the locked values, the three Brain Dump runs are counted as three everywhere, and the certification list says which ones left the résumé.' },
   { date: '2026-09-26', title: 'Show when each page last changed and why on /toolkit', body: 'A commit list says what changed and never why, and the reasons were only ever written by hand after the fact, so a commit that carries a Why line now writes its own note, and each page says when it last changed so a stale page is easy to spot.' },
   { date: '2026-09-26', title: 'Rewrite the résumé for AI deployment roles, and print the PDF from the page', body: 'The old résumé read as account management with AI on the side, and the roles I am going for read it the other way round, so it now leads with taking AI from discovery to adoption and proves it with evals, drops the certs that do not help that story, and prints from the page so the PDF can never fall behind the site.' },

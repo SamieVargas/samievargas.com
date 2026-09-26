@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Onest:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css?v=20260925i">
+  <link rel="stylesheet" href="../css/styles.css?v=20260925j">
 </head>
 <body>
 
@@ -70,7 +70,7 @@
   <section class="px-sec px-runs" id="runs">
     <div class="row-between">
       <h2 class="px-h2"><span class="px-num">01</span>Pick a question and watch each step it took</h2>
-      <span class="px-note">two steps are model calls, two are code, and the code gets the last word</span>
+      <span class="px-note">the router and the answer are model calls, retrieval and the check are code, and the code gets the last word</span>
     </div>
     <div class="px-grid">
       <div class="px-side">
@@ -105,8 +105,8 @@
   <section class="px-sec px-split px-split--center" id="mcp" data-in>
     <div class="px-stack">
       <h2 class="px-h2 px-h2--32 rv"><span class="px-num">03</span>The same pipeline as an MCP server</h2>
-      <p class="px-body rv" style="--d:.06s">The router, the validator and the model call are exposed over stdio as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it never leaves the machine, and there is deliberately no write tool, and the config and the two tool schemas are in the repo.</p>
-      <p class="plain rv" style="--d:.09s"><strong>In plain terms:</strong> RAG is how the answers get found, and MCP is a standard plug that lets Claude use that same search as one of its own tools, so I can ask my data questions from inside Claude and it never leaves my laptop.</p>
+      <p class="px-body rv" style="--d:.06s">The router, the validator and the model call are exposed over stdio as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while the data stays on the machine, a question sends only its evidence to the model provider, as the command line does, and <code>list_days</code> sends nothing anywhere and is capped at 100 days, and there is deliberately no write tool, and the config and the two tool schemas are in the repo.</p>
+      <p class="plain rv" style="--d:.09s"><strong>In plain terms:</strong> RAG is how the answers get found, and MCP is a standard plug that lets Claude use that same search as one of its own tools, so I can ask my data questions from inside Claude, the log stays on my laptop, and only the days a question needs go to the model.</p>
       <div class="px-actions rv" style="--d:.12s">
         <a class="btn btn--sm btn--accent" href="https://github.com/SamieVargas/pixels-rag">Read the repo ↗</a>
         <a class="btn btn--sm btn--tint" href="/#patterns">Back to the work</a>
@@ -128,6 +128,6 @@
   </div>
 </footer>
 
-<script type="module" src="../js/pixels.js?v=20260925i"></script>
+<script type="module" src="../js/pixels.js?v=20260925j"></script>
 </body>
 </html>

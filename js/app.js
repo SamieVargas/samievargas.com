@@ -10,9 +10,9 @@ import {
   PX_REPLAY, AS_REPLAY, SIGNAL_PILE, BD_V3, BD_TUNING, DAG, REORDER, ATX_DRIFT,
   ROLES, SKILL_AREAS, CERT_LIST, OFF_CLOCK, CONTACT_CMD, CONTACT_LINKS,
   RESULT_FIELDS, RESULTS,
-} from '../data/content.js?v=20260925i';
-import { driftChart, revealDrift } from './drift-chart.js?v=20260925i';
-import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925i';
+} from '../data/content.js?v=20260925j';
+import { driftChart, revealDrift } from './drift-chart.js?v=20260925j';
+import { REDUCED, $, $$, esc, onSeen, autoReveal, tween, countUp, typeText, wait, wireCopyEmail } from './reveal.js?v=20260925j';
 
 const on = (el, ms = 0) => { if (!el) return; if (REDUCED || !ms) el.classList.add('is-on'); else setTimeout(() => el.classList.add('is-on'), ms); };
 const hue = (h, l = 0.52, c = 0.12) => `oklch(${l} ${c} ${h})`;
@@ -231,7 +231,9 @@ function signal() {
     tween(1800, (p) => {
       tok.textContent = `~${Math.round(23 - 22 * p)}k`;
       prep.textContent = String(Math.round(60 - 59 * p));
-      sec.textContent = `${Math.round(51 * p)}s`;
+      // Mean analysis latency, 35,921 ms over arm A's 260 runs (signal
+      // evals/results/2026-09-21-full-native-weighted-x20.md).
+      sec.textContent = `${(35.9 * p).toFixed(1)}s`;
     }, 1800);
   });
 }
@@ -292,7 +294,7 @@ function brainDump() {
     if (animate == null) return;
     items.forEach((el) => setTimeout(() => requestAnimationFrame(() => el.classList.add('is-on')), animate + Number(el.dataset.k) * 110));
   };
-  $('#bd-source').textContent = `three real runs of the same dump, ${B.date}, ${B.model}, prompt ${B.prompt}, ${B.cost} · the page shows the first few of each list`;
+  $('#bd-source').textContent = `three real runs of the same dump on the live page, ${B.date}, ${B.model}, on the earlier prompt ${B.prompt}, which the Worker has since replaced with sort@v4 at medium effort, ${B.cost} · the page shows the first few of each list`;
   renderPlan(null);
 
   $$('button', runsEl).forEach((b, i) => b.addEventListener('click', () => {

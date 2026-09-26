@@ -15,9 +15,9 @@
 // from 1300ms over 1800ms, validate at 3300ms).
 // ============================================================
 
-import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925i';
+import { REDUCED, $, esc, onSeen, autoReveal } from './reveal.js?v=20260925j';
 
-const DATA_URL = '../data/pixels-runs.json?v=20260925i';
+const DATA_URL = '../data/pixels-runs.json?v=20260925j';
 const KINDS = ['all', 'semantic', 'filter', 'aggregate', 'unanswerable'];
 const AT = { route: 150, retrieve: 650, answerBox: 1150, typeFrom: 1300, typeMs: 1800, validate: 3300 };
 
@@ -37,7 +37,7 @@ function renderStats(d) {
     [pct(a.facts), 'expected facts in the answer'],
     [`${a.abstained_when_should[0]} of ${a.abstained_when_should[1]}`, 'unanswerable, refused'],
     [secs(a.mean_latency_ms), 'mean latency'],
-    [usd(a.mean_cost_usd), `mean cost · ${d.prices.model}`],
+    [usd(a.mean_cost_usd), `mean cost · ${d.prices.model} · $${d.prices.input_per_mtok} / $${d.prices.output_per_mtok} per M, read ${d.prices.read}`],
   ];
   $('#px-stats').innerHTML = cells.map(([v, l]) => `<div class="px-stat"><span class="px-stat__v">${esc(v)}</span><span class="px-stat__l">${esc(l)}</span></div>`).join('');
 }
@@ -98,7 +98,7 @@ function renderTrace(r) {
       chips: [...shownDays.map((x) => chip(x)), ...(days.length > shownDays.length ? [chip(`+${days.length - shownDays.length} more`, 'more')] : [])],
     }),
     `<div class="px-step px-step--kind px-step--answer">
-      <span class="px-step__k"><span class="px-step__n">3 · Answer</span><span class="px-step__who">model call</span></span>
+      <span class="px-step__k"><span class="px-step__n">3 · Answer</span><span class="px-step__who">${r.route === 'unanswerable' ? 'code' : 'model call'}</span></span>
       <span class="px-answer"><span id="px-typed"></span><span class="cursor" id="px-cur" aria-hidden="true">▍</span></span>
     </div>`,
     step({
