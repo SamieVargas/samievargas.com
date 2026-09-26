@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Résumé · Samie Vargas</title>
-<meta name="description" content="Samie Vargas, applied-AI operator in enterprise customer success. Austin, TX · remote. Printable résumé.">
+<meta name="description" content="Samie Vargas, applied-AI deployment lead in enterprise customer success. Austin, TX · remote. Printable résumé.">
 <link rel="canonical" href="https://samievargas.com/resume">
 <meta name="theme-color" content="#1a6b5a">
 <meta name="robots" content="noindex">
@@ -64,7 +64,9 @@
     text-wrap: pretty;
   }
   a { color: var(--accent); text-decoration: none; }
-  a:hover { color: var(--ink); }
+  a:hover { color: var(--ink); text-decoration: underline; }
+  .cv-head p a, .cv-stack a { color: var(--accent); }
+  @media print { a { color: var(--accent) !important; } }
   [hidden] { display: none !important; }
 
   /* ── Bar (screen only) ── */
@@ -95,7 +97,7 @@
   .cv-sheet {
     position: relative;
     max-width: 8.5in; margin: 32px auto 48px; background: var(--card);
-    padding: 0.55in; border: 1px solid var(--rule);
+    padding: 0.4in; border: 1px solid var(--rule);
     box-shadow: 0 2px 14px rgba(22, 21, 19, .06);
   }
 
@@ -146,7 +148,7 @@
   .cv-stack { margin-bottom: 4px; font: 400 9px var(--mono); color: var(--muted); }
 
   .cv-cert { padding: 5px 0; border-top: 1px solid var(--rule); font-size: 10px; line-height: 1.55; }
-  .cv-edu { padding-top: 6px; border-top: 1px solid var(--rule); font-size: 10px; line-height: 1.55; }
+  .cv-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-top: 6px; border-top: 1px solid var(--rule); font-size: 10px; line-height: 1.55; }
   .cv-avoid { break-inside: avoid; }
 
   /* Load-in: each block rises in turn, 110ms apart. Only with JS, so the
@@ -193,7 +195,10 @@
     .guide { transition: none; }
   }
 
-  @page { size: letter; margin: 0.55in; }
+  @page { size: letter; margin: 0.4in; }
+  /* The section label rides inside the first build so it never sits alone at the foot of a page. */
+  .cv-proj--first { border-top: 0; padding-top: 0; }
+  .cv-proj--first .cv-label { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
   @media print {
     body { background: #fff; }
     .cv-bar { display: none; }
@@ -212,7 +217,7 @@
     <div class="cv-actions">
       <a class="cv-btn cv-btn--line" href="/">← Back to the site</a>
       <button type="button" class="cv-btn cv-btn--tint" id="guide-btn" aria-pressed="true">Hide page box</button>
-      <a class="cv-btn cv-btn--fill" href="/Resume.pdf" download>Download PDF ↓</a>
+      <button type="button" class="cv-btn cv-btn--fill" id="pdf-btn">Download PDF ↓</button>
     </div>
   </div>
 </div>
@@ -221,30 +226,29 @@
   <div class="guide" id="guide" aria-hidden="true"><span class="guide__lab">margin</span></div>
   <header class="cv-head cv-rv">
     <h1>Samie Vargas</h1>
-    <p>Austin, TX · Remote · 214-587-3539<br>sammisnv@gmail.com · samievargas.com<br>linkedin.com/in/samievargas12</p>
+    <p>Austin, TX · Remote · <a href="tel:+12145873539">214-587-3539</a><br><a href="mailto:sammisnv@gmail.com">sammisnv@gmail.com</a> · <a href="https://samievargas.com">samievargas.com</a><br><a href="https://www.linkedin.com/in/samievargas12/">linkedin.com/in/samievargas12</a></p>
   </header>
 
   <section class="cv-sec cv-rv">
-    <p class="cv-label">00 · Summary</p>
-    <p class="cv-summary">Applied-AI operator embedded for 8 years in an enterprise customer-facing team at GLG, a PE-backed global expert network: the AI person on a non-AI team, who designed and deployed the LLM workflows the team runs on, drove their adoption, measured the result, and is now building AI governance guardrails into the team’s internal tooling. Owns the full post-sales lifecycle for a $14M+ B2B portfolio of professional services firms including Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger, from scoping and success criteria through implementation, enablement, value realization, and expansion. Builds the technical layer hands-on on the raw Anthropic API, with code-enforced JSON contracts, model routing, RAG, and golden-set and ablation evals, most recently a Salesforce-integrated discovery triage pipeline built for a final-round case study and presented to a cross-functional leadership panel. Targeting applied AI deployment and AI solutions roles, remote-first.</p>
+    <p class="cv-label">Summary</p>
+    <p class="cv-summary">Applied-AI deployment lead with eight years in enterprise customer success at GLG, running a $14M+ B2B portfolio at 100% retention as the AI person on a non-AI team. Takes AI from discovery to adoption: scopes the workflow, builds the first version on the Anthropic API, proves it with golden-set, ablation, shadow and injection evals, and drives the rollout. Five shipped builds with dated evals. Targeting AI deployment, solutions engineering and deployment strategist roles, remote-first.</p>
   </section>
 
   <section class="cv-sec cv-rv">
-    <p class="cv-label">01 · Skills</p>
-    <div class="cv-comp"><span>Applied AI</span><span>Generative AI / LLM Workflow Design &amp; Deployment · Code-Enforced JSON Contracts · Reject-and-Retry Validation · LLM Evaluation (Golden Sets &amp; Ablations) · Model Routing · RAG · Context Management · Prompt Engineering · Human-in-the-Loop Process Design · AI Governance &amp; Guardrails · Team-Level AI Adoption · Change Management · AI Tool Evaluation</span></div>
-    <div class="cv-comp"><span>Build</span><span>Python (pandas) · Machine Learning (scikit-learn) · Anthropic Messages API &amp; SDK · Structured JSON / Schema Design · SQL / BigQuery · ELT Data Pipelines (dbt Cloud) · Salesforce REST API (OAuth) · REST API Integration · Cloudflare Workers &amp; Pages · Vanilla JavaScript · Google Apps Script · Vector Database (ChromaDB) · Hugging Face Embedding Models (sentence-transformers) · MCP Servers (Python SDK)</span></div>
-    <div class="cv-comp"><span>Delivery</span><span>Full-Lifecycle Engagement Management · Post-Sales Account Management · Implementation &amp; Rollout · Value Realization &amp; Business Outcome Metrics · Executive Business Reviews (QBR / MBR) · Playbooks &amp; Best Practices · Workshops &amp; Design Sessions · Multi-Stakeholder Orchestration · Workflow &amp; SOP Design · Health Scoring Systems · Adoption &amp; Usage Tracking · Agile / Scrum (PSM I) · Cross-Functional Coordination</span></div>
-    <div class="cv-comp"><span>Data</span><span>EDA · Regression &amp; Classification Modeling · Cohort &amp; Segment Analysis · Behavioral Pattern Detection · Data Modeling · Marketing Analytics (GA4) · Looker Studio · Tableau</span></div>
-    <div class="cv-comp"><span>Stack</span><span>Claude · Claude Code · Anthropic API · MCP · Hugging Face Hub · ChatGPT · Gemini · Salesforce · Snowflake · BigQuery · Databricks · dbt Cloud · GitHub · GA4</span></div>
+    <p class="cv-label">Skills</p>
+    <div class="cv-comp"><span>Deployment</span><span>Discovery &amp; Scoping · Success Criteria &amp; Value Realization · Implementation &amp; Rollout · Enablement &amp; Change Management · Human-in-the-Loop Design · AI Governance · QBR / MBR · Multi-Stakeholder Orchestration</span></div>
+    <div class="cv-comp"><span>Build</span><span>Python (pandas, scikit-learn) · Anthropic API &amp; SDK · Structured Outputs · RAG (ChromaDB) · MCP Servers · Prompt Caching · Model Routing · Cloudflare Workers · JavaScript · Salesforce REST (OAuth) · SQL / BigQuery · dbt Cloud</span></div>
+    <div class="cv-comp"><span>Evaluation</span><span>Golden Sets · Paired Ablations · Injection Fixtures · Shadow Runs · Code-Enforced Validators · Cost &amp; Latency Tracking</span></div>
+    <div class="cv-comp"><span>Tools</span><span>Claude · Claude Code · ChatGPT · Gemini · Salesforce · Snowflake · Databricks · Tableau · GitHub</span></div>
   </section>
 
   <section class="cv-sec cv-rv">
-    <p class="cv-label">02 · Professional experience</p>
+    <p class="cv-label">Professional experience</p>
     <div class="cv-co">
       <h2>GLG</h2>
       <span class="cv-meta">Austin, TX · Remote · Jul 2018 – Present</span>
     </div>
-    <p class="cv-meta cv-co-desc">Enterprise customer success, implementation &amp; account management for professional services firms · B2B</p>
+    <p class="cv-meta cv-co-desc">PE-backed global expert network · enterprise customer success, implementation &amp; account management for professional services firms · B2B</p>
 
     <div class="cv-role">
       <div class="cv-role-head">
@@ -252,15 +256,12 @@
         <span class="cv-meta">Oct 2023 – Present · Senior Team Leader until the org flattened</span>
       </div>
       <ul>
-        <li><i></i><span>Designed a Claude-ready knowledge base over the PSF Emerging segment's ~110-document library, with an orientation layer that directs the model to cite each document and its date, quote compliance guidance verbatim, surface conflicting guidance rather than resolve it, respect a restricted-content boundary, and report gaps instead of inventing process; in a paired test on 10 simple requests it cut an average of three back-and-forth turns and answered accurately on all 10.</span></li>
-        <li><i></i><span>Piloting it with a 60-person team through September 2026, with rollout to four more pods (about 240 people) in October gated on no increase in back-and-forth against the paired baseline, and 1x1s with high-usage users shaping revisions.</span></li>
-        <li><i></i><span>Lead a team of 5 client-facing managers, between 5 and 10 per quarter as account needs shift, on LLM workflows I designed and deployed, using Claude, ChatGPT, Gemini, and in-house tools for account analysis, QBR prep, escalation drafting, and data synthesis; cut MBR prep from 3 hours per account per month to 1 hour per month across four accounts.</span></li>
-        <li><i></i><span>Contributed to internal and client-facing AI enablement strategy as GLG scaled its home-grown AI tooling; the main outcome was a tool that raised the share of client deliverables (subject-matter experts available for scheduling) produced within the first hour from 10% to ~25% in a single quarter.</span></li>
-        <li><i></i><span>Built the team's internal SharePoint, used daily by 60+ people and adopted as the model for three other BUs: enabling it for AI governance with guardrails for answer accuracy, coaching other teams to build their own, and owning its long-term data governance.</span></li>
-        <li><i></i><span>Own end-to-end engagement and delivery for a $14M+ enterprise portfolio at 100% retention, managing rollout, enablement, health monitoring, and expansion across Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney, and Roland Berger.</span></li>
-        <li><i></i><span>Translate ambiguous enterprise needs into structured workflows: scope deliverables with internal product and operations teams, define success criteria, set timelines, and ensure execution at scale across concurrent engagements.</span></li>
-        <li><i></i><span>Built custom Salesforce health-scoring dashboards and automated reporting that surfaced account risk early, gave leadership a live view of portfolio health, and reduced reactive escalations.</span></li>
-        <li><i></i><span>Drove 5% YoY portfolio growth by mapping new use cases and operational gaps through structured discovery, and led enablement sessions for stakeholder layers from end users to senior executives.</span></li>
+        <li><i></i><span>Own the post-sales lifecycle for a $14M+ enterprise portfolio at 100% retention, including Deloitte, Accenture, Gartner, KPMG, AlixPartners, Kearney and Roland Berger, from scoping and success criteria through rollout, enablement, health monitoring and expansion; 5% YoY portfolio growth.</span></li>
+        <li><i></i><span>Designed and deployed the LLM workflows a team of 5 client-facing managers runs on, across Claude, ChatGPT, Gemini and in-house tools, for account analysis, QBR prep, escalation drafting and data synthesis; cut MBR prep from 3 hours to 1 per account per month across four accounts.</span></li>
+        <li><i></i><span>Built a Claude-ready knowledge base over a ~110-document library, with rules to cite each document and its date, quote compliance guidance verbatim, surface conflicts instead of resolving them, and report gaps instead of inventing process; in a paired test on 10 simple requests it answered all 10 accurately and cut an average of three back-and-forth turns.</span></li>
+        <li><i></i><span>Running the pilot with a 60-person team through September 2026, with rollout to four more pods (about 240 people) in October gated on no increase in back-and-forth against the paired baseline.</span></li>
+        <li><i></i><span>Contributed to AI enablement as GLG scaled in-house tooling; the main tool raised deliverables produced within the first hour from 10% to ~25% in one quarter.</span></li>
+        <li><i></i><span>Built the team SharePoint, used daily by 60+ people and adopted by three other BUs, with guardrails for answer accuracy.</span></li>
       </ul>
     </div>
 
@@ -270,9 +271,8 @@
         <span class="cv-meta">May 2022 – Oct 2023</span>
       </div>
       <ul>
-        <li><i></i><span>Founded and scaled an internal Center of Excellence from scratch: built lifecycle playbooks, onboarding templates, and Agile-driven delivery cadences adopted org-wide, cutting new-hire ramp to revenue production from 3 months to 1 and standardizing quality.</span></li>
-        <li><i></i><span>Managed a team of 5 client solutions specialists while carrying a personal enterprise book, bridging IC delivery and people management through a high-growth phase.</span></li>
-        <li><i></i><span>Built renewal forecasting models and pipeline tracking in Salesforce that recognized $300K per quarter in revenue opportunities that would previously have gone untracked, and surfaced at-risk accounts earlier.</span></li>
+        <li><i></i><span>Managed 5 client solutions specialists while carrying an enterprise book, and founded an internal Center of Excellence: lifecycle playbooks, onboarding templates and Agile delivery cadences adopted org-wide, cutting new-hire ramp to revenue from 3 months to 1.</span></li>
+        <li><i></i><span>Built renewal forecasting and pipeline tracking in Salesforce that recognized $300K per quarter in previously untracked revenue opportunities.</span></li>
       </ul>
     </div>
 
@@ -282,71 +282,64 @@
         <span class="cv-meta">Jul 2018 – May 2022</span>
       </div>
       <ul>
-        <li><i></i><span>Grew from IC to senior managing complex enterprise accounts across consulting, financial services, and technology, promoted three times in under four years.</span></li>
-        <li><i></i><span>Built custom Salesforce reporting infrastructure for account-health visibility that became the team standard.</span></li>
+        <li><i></i><span>Promoted three times in under four years, managing complex enterprise accounts across consulting, financial services and technology.</span></li>
+        <li><i></i><span>Built the Salesforce account-health reporting that became the team standard.</span></li>
       </ul>
     </div>
   </section>
 
   <section class="cv-sec cv-rv">
-    <p class="cv-label">03 · Applied AI &amp; analytics projects</p>
-    <div class="cv-proj">
-      <h3>Field Discovery Broker: AI Requirements Triage for Field Sales</h3>
-      <p class="cv-stack">Anthropic Messages API · Salesforce REST (OAuth) · Validator-Enforced JSON Contract · Human-Approved Proposals · Shadow Mode · Cloudflare Worker · Offline-First · samievargas.com/field-discovery</p>
-      <p class="cv-pt"><i></i><span>Built for a final-round hiring case and presented to a cross-functional leadership panel: a Salesforce-integrated extraction pipeline that checks field discovery against a vertical-aware requirement library and flags what is missing before onboarding handoff, with a closed-enum JSON contract enforced by a five-rule validator in code, reject-and-retry that feeds violations back to the model, deterministic alias matching and conflict detection so only the extraction is probabilistic, offline capture that replays when signal returns, and an idempotent upsert to Salesforce. A second stage reads the record Salesforce already holds and proposes the next discovery update or an engineer escalation; a person approves, edits or rejects each proposal, approve is the only path to a write, and read-before-write, one-per-kind and no-contradiction rules are enforced in code, with a shadow mode that records proposals without showing them.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated in seven layers, all numbers from 22 September 2026: a hand-written golden set graded with recall on viability cards as the primary metric (8 of 8 pass, 0 hard fails, 2 of 2 recalled); a paired ablation of the closed enum (0 invented requirement IDs versus 99 across 20 runs each); twelve proposal fixtures (100% escalation recall and precision, 0 unnecessary writes); a shadow run scored against hand-written outcomes (78% status agreement, 5 of 5 slipped go-lives flagged); and ten injection fixtures (80% of runs unchanged by a planted instruction).</span></p>
+    <div class="cv-proj cv-proj--first">
+      <p class="cv-label">AI deployment builds</p>
+      <h3>Field Discovery Broker: Requirements Triage for Field Sales</h3>
+      <p class="cv-stack">Anthropic Messages API · Salesforce REST (OAuth) · Closed-Enum JSON Contract · Human-Approved Writes · Shadow Mode · Cloudflare Worker · <a href="https://samievargas.com/field-discovery/">samievargas.com/field-discovery</a></p>
+      <p class="cv-pt"><i></i><span>Built for a final-round case and presented to a leadership panel: turns a field sales rep's voice note into a Salesforce record with open requirements flagged before handoff, with a closed-enum contract enforced by a five-rule validator, reject-and-retry, offline capture and an idempotent upsert; a person approves every write.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated 22 Sep 2026: 8 of 8 golden transcripts pass with 0 hard fails; 0 invented requirement IDs against 99 without the closed enum (20 runs each); 100% escalation recall and precision on 12 proposal fixtures with 0 unneeded writes; 5 of 5 slipped go-lives flagged in shadow; 40 of 50 injection runs unchanged; $0.0313 per capture.</span></p>
     </div>
     <div class="cv-proj">
       <h3>Guideline Assist: Live Agent Assist and Post-Call QA</h3>
-      <p class="cv-stack">Anthropic API · Prompt Caching · Validator-Enforced Next Steps · Post-Call QA · Context Ablation · samievargas.com/assist</p>
-      <p class="cv-pt"><i></i><span>Built a live assist that names a support agent's next step from the written guidelines, with the whole 55-section library in a cached prompt, a validator in code that rejects any step the section does not list, and a post-call QA pass on the finished chat. Evaluated on 100 frozen ABCD test chats, 24 September 2026: the right next action on 258 of 349 agent actions (73.9%) on Sonnet 5, at $122 per 1,000 chats against $48 on Haiku 4.5 at 50.1%, with the cached library cheaper and faster than looking up one section; the QA still flags 20 of 100 clean chats, and 2 of 10 injection fixtures moved a suggestion.</span></p>
+      <p class="cv-stack">Anthropic API · Prompt Caching · Validator-Enforced Next Steps · Post-Call QA · Context Ablation · Shadow Run · <a href="https://samievargas.com/assist/">samievargas.com/assist</a></p>
+      <p class="cv-pt"><i></i><span>Next-step suggestions for a live support agent from a 55-section guideline library in a cached prompt, a validator that rejects any step the section does not list, and a post-call QA pass.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 100 frozen ABCD test chats, 24 Sep 2026: right next action on 258 of 349 (73.9%) on Sonnet 5 at $122 per 1,000 chats, against 50.1% at $48 on Haiku 4.5; 79.5% shadow agreement with what agents actually did next (140 of 176); the QA still flags 20 of 100 clean chats, and 2 of 10 injection fixtures moved a suggestion.</span></p>
+    </div>
+    <div class="cv-proj">
+      <h3>Signal: Account Intelligence for Customer Success</h3>
+      <p class="cv-stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Structured Outputs · Paired Ablation · <a href="https://samievargas.com/signal/">samievargas.com/signal</a></p>
+      <p class="cv-pt"><i></i><span>Reads messy account files, images and PDFs included, and writes revenue-risk and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from 22,976 to at most 1,012 input tokens. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 13 synthetic accounts, 20 runs per arm, Sep 2026: 90% risk-type recall in both arms; 0 parse failures in 520 native-contract runs; source weighting worth 24 points of economic-buyer accuracy (93% against 69%); $0.0308 per brief.</span></p>
     </div>
     <div class="cv-proj">
       <h3>Brain Dump: LLM Planner for Executive-Function Support</h3>
-      <p class="cv-stack">Anthropic API · Cloudflare Workers · Structured JSON · Rule-Graded Evals · Vanilla JS · samievargas.com/brain-dump</p>
-      <p class="cv-pt"><i></i><span>Built and shipped an LLM tool that turns unstructured brain dumps into a plan matched to how much someone has left: three levels (plenty, a little, none) and a separate feeling-anxious switch set the cap on what to do now and the tone, a strict JSON contract sorts every item into now, later or let go with each now step quoting the words it came from, the page re-checks every plan against the same rules before showing it, and an emergency one-thing mode has its own prompt, schema and hard-coded fallback, all behind a Cloudflare Worker that keeps the key server-side. Early users’ feedback drove a single-step simplification to the capture flow.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated with deterministic graders and no labels over twenty hand-written dumps and five follow-up conversations, 24 September 2026: 120 of 120 plans parsed under the native contract across all three levels with the anxious switch on and off, with the cap, schema, strategy and why rules at 100%, "need to" still appeared in 8 of 60 anxious plans (the page rewrites it), and a plan cost $0.0134 on average, and a tuned prompt at medium effort, which the live Worker runs, cut that to $0.0071 and the median sort from 14.0 s to 7.3 s.</span></p>
+      <p class="cv-stack">Anthropic API · Cloudflare Workers · Strict JSON Contract · Rule-Graded Evals · Vanilla JS · <a href="https://samievargas.com/brain-dump">samievargas.com/brain-dump</a></p>
+      <p class="cv-pt"><i></i><span>Turns an unstructured brain dump into a plan sized to how much someone has left: three levels and an anxious switch cap what to do now, a strict JSON contract sorts every item into now, later or let go, and the page re-checks every plan. Early users' feedback drove a single-step capture flow.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on a 120-plan grid, 24 Sep 2026: prompt tuning at medium effort, which the live Worker runs, cut the median sort from 14.0 s to 7.3 s and cost from $0.0134 to $0.0071 a plan; low effort was faster still but more than doubled the one miss the page cannot fix (7 to 16 of 120).</span></p>
     </div>
     <div class="cv-proj">
-      <h3>Signal: Account Intelligence for CS Professionals</h3>
-      <p class="cv-stack">Anthropic API · Model Routing · Multimodal Input · Source-Weighted Prompts · Paired Ablation Evals · samievargas.com/signal</p>
-      <p class="cv-pt"><i></i><span>Designed a multi-call LLM pipeline that reads messy account files, images and PDFs included, for second-order sentiment and surfaces revenue risk, relationship health, and pre-call briefs: Haiku summarizes each document and Sonnet synthesizes, cutting the main call from roughly 23k to about 1k input tokens on long transcripts, with source-weighted prompts, per-section source attribution, and a JSON contract behind a tolerant parser. Cut account prep from about an hour to one minute; validated with early users, including a senior CS leader.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated on 13 hand-written account cases, 20 runs each under both arms of a source-weighting ablation, 21 and 22 September 2026: 90% risk-type recall in both arms, 0 parse failures in 520 runs under the native contract against 8 of 13 replies recovered by the parser under the prompt contract, and the weighting block worth 24 points of economic-buyer accuracy (93% against 69%), all of it on the three cases built around the most-mentioned name.</span></p>
-    </div>
-    <div class="cv-proj">
-      <h3>Instacart dbt + ML: When Does Data Become Trustworthy?</h3>
-      <p class="cv-stack">dbt Cloud · BigQuery · SQL · scikit-learn · github.com/SamieVargas/instacart-project</p>
-      <p class="cv-pt"><i></i><span>Built a staging → mart dbt pipeline across 3.4M orders with 35 passing tests; found a 0.60 reorder ratio hides a 3x segment gap (0.221 new vs 0.670 veteran users), validated with random forest (AUC 0.989 vs 0.857).</span></p>
-    </div>
-    <div class="cv-proj">
-      <h3>samievargas.com: The Site and Its Arcade</h3>
-      <p class="cv-stack">Vanilla ES Modules · CSS Custom Properties · Cloudflare Workers · GitHub Pages · No framework, no build step · samievargas.com</p>
-      <p class="cv-pt"><i></i><span>Built and shipped the portfolio site with no framework and no build step: two LLM apps behind a Cloudflare Worker with the key server-side, live-built SVG visualizations, a public design-system page with a component sandbox, and fifteen self-contained browser apps, six pulling live data from keyless APIs (Wikidata SPARQL, Open Library, City of Austin).</span></p>
-    </div>
-    <div class="cv-proj">
-      <h3>Life in Pixels RAG + Life OS: Personal Data Tools</h3>
-      <p class="cv-stack">Python · ChromaDB · Hugging Face Embeddings (MiniLM · bge · e5) · Cross-Encoder Reranking · Anthropic SDK · Code-Enforced Citations · Golden-Set Evals · MCP Server · Apps Script · github.com/SamieVargas/pixels-rag</p>
-      <p class="cv-pt"><i></i><span>Built a RAG pipeline from scratch over six months of my own daily behavioral data: day-level chunks with metadata, local Hugging Face embeddings in ChromaDB (MiniLM by default, bge-small and e5 as measured arms, a cross-encoder reranker measured against plain top-k), and a router that decides whether a question is a search, a filter, a sum or unanswerable, so filters and aggregates run in code and only the search goes through retrieval. Every answer is checked in code against the retrieved days and the computed table, with one reject-and-retry on an uncited date or an invented number, and follow-ups are rewritten from the last three turns before anything is retrieved. The same router, validator and model call are exposed as a local MCP server with two read-only tools, so Claude Desktop and Claude Code can ask the data questions while it stays on the machine. It surfaced that hot yoga plus walking beat everything else for sleep and recovery. Alongside it, Life OS, a daily dashboard in Apps Script pulling from two of my own data endpoints into fifteen charts.</span></p>
-      <p class="cv-pt"><i></i><span>Evaluated on 26 hand-written questions over a seeded synthetic export, 22 September 2026: 100% route accuracy, 100% valid citations with 0 hard fails, all 5 unanswerable questions refused, 85% of expected facts in the answer, and a 20-run chunking ablation where weekly rollups lifted the one whole-week question from 71% to 100% recall and changed nothing else.</span></p>
-    </div>
-    <div class="cv-proj">
-      <h3>ATX Foodie: Public Health Compliance Analysis</h3>
-      <p class="cv-stack">Python · Socrata API · folium · kaggle.com/code/samievargas/atx-foodie-inspection</p>
-      <p class="cv-pt"><i></i><span>Pulled 21,160 City of Austin inspection records via API; built a brand compliance scorecard and folium choropleth, finding follow-up inspections average 84.4 against 90.9 for routine visits, and scores drifting 2.1 points toward more violations between a venue's first inspection and its fifteenth.</span></p>
+      <h3>Life in Pixels: RAG and a Local MCP Server</h3>
+      <p class="cv-stack">Python · ChromaDB · Local Embeddings (MiniLM) · Router + Code-Enforced Citations · Golden-Set Evals · MCP Server · <a href="https://github.com/SamieVargas/pixels-rag">github.com/SamieVargas/pixels-rag</a></p>
+      <p class="cv-pt"><i></i><span>RAG over six months of my own daily data: a router sends each question to search, filter, sum or refusal, a validator checks every cited date and number, and the same pipeline runs as a local read-only MCP server for Claude Desktop and Claude Code.</span></p>
+      <p class="cv-pt"><i></i><span>Evaluated on 26 questions, 22 Sep 2026, Haiku 4.5: 100% route accuracy, 26 of 26 valid citations, 5 of 5 unanswerable questions refused, 85% of expected facts, $0.0062 per question.</span></p>
     </div>
   </section>
 
   <section class="cv-sec cv-avoid cv-rv">
-    <p class="cv-label">04 · Certifications</p>
+    <p class="cv-label">Analytics &amp; other work</p>
+    <p class="cv-cert"><strong><a href="https://github.com/SamieVargas/instacart-project">Instacart dbt + ML</a></strong> · dbt Cloud, BigQuery, scikit-learn · staging-to-mart pipeline over 3.4M orders with 35 passing tests; the cited 0.60 reorder rate hides new shoppers at 0.221 and regulars at 0.670 (random forest AUC 0.989 against 0.857).</p>
+    <p class="cv-cert"><strong><a href="https://www.kaggle.com/code/samievargas/atx-foodie-inspection">ATX Foodie</a></strong> · Python, Socrata API, folium · 21,160 City of Austin inspections; follow-ups average 84.4 against 90.9 for routine visits, and scores drift 2.1 points toward more violations by the fifteenth inspection.</p>
+  </section>
+
+  <section class="cv-sec cv-avoid cv-rv">
+    <p class="cv-label">Certifications</p>
     <p class="cv-cert">Anthropic AI Fluency: Claude 101 · Claude Code 101 · Agent Skills · Claude Cowork · AI Capabilities &amp; Limitations · AI Fluency Framework</p>
     <p class="cv-cert">Databricks: AI Agent Fundamentals · Generative AI Fundamentals · Databricks Fundamentals &nbsp;·&nbsp; dbt Fundamentals &nbsp;·&nbsp; Snowflake Hands-On Essentials</p>
-    <p class="cv-cert">Google: AI Professional · Advanced Data Analytics · Business Intelligence · Data Analytics · GA4 &nbsp;·&nbsp; PMP · PMI</p>
+    <p class="cv-cert">Google: AI Professional · Advanced Data Analytics · Business Intelligence</p>
   </section>
 
   <section class="cv-sec cv-avoid cv-rv cv-rv--fade">
-    <p class="cv-label">05 · Education</p>
-    <p class="cv-edu">B.S. Biochemistry · The University of Texas at Austin</p>
+    <p class="cv-label">Education</p>
+    <p class="cv-edu"><span>B.S.A. Biochemistry · The University of Texas at Austin</span><span class="cv-meta">May 2018</span></p>
   </section>
+
 </main>
 
 <script>
@@ -378,7 +371,7 @@
 <aside class="stamp" id="stamp" hidden></aside>
 
 <script type="module">
-import { TK_REPO } from './data/content.js?v=20260925h';
+import { TK_REPO } from './data/content.js?v=20260925i';
 
 // ── R1 ── The guide has to sit on the real print margin, so read the
 // @page rule rather than hardcoding a percentage; it then stays honest
@@ -459,6 +452,17 @@ function loadStamp() {
 }
 
 loadStamp();
+
+// ── PDF ── The button prints this page, so the PDF is always the current
+// résumé rather than a file that can fall behind it. The @page rule above
+// sets letter with 0.4in margins; choose "Save as PDF" in the dialog.
+document.getElementById('pdf-btn').addEventListener('click', () => {
+  blocks.forEach((el) => el.classList.add('is-in'));
+  const prev = document.title;
+  document.title = 'SamieVargas_Resume';
+  window.print();
+  setTimeout(() => { document.title = prev; }, 500);
+});
 </script>
 
 </body>
