@@ -1,9 +1,24 @@
 {
-  "generated": "2026-09-26T01:06:25Z",
+  "generated": "2026-09-26T01:22:30Z",
   "repo": "SamieVargas/samievargas.github.io",
   "first": "2026-05-20T20:37:01-05:00",
-  "total": 315,
+  "total": 319,
   "commits": [
+    {
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "date": "2026-09-26T01:19:29Z",
+      "message": "Match every build on the site to its own repo README"
+    },
+    {
+      "sha": "e43e432b84752ae08c80f2fbdbf71ace18ecc9f1",
+      "date": "2026-09-26T01:11:31Z",
+      "message": "Name each build's own repo as the source of truth in FACTS.md"
+    },
+    {
+      "sha": "434cc07eb00463f7b1147cae27531bb3e559e6e8",
+      "date": "2026-09-26T01:06:33Z",
+      "message": "Allow more than one \"In plain terms\" line per project"
+    },
     {
       "sha": "f4f5d58633de0f1f7829bf48ea231e18229e4cce",
       "date": "2026-09-26T01:04:05Z",
@@ -38,29 +53,14 @@
       "sha": "e5b4f214739de16cd2b57126bba253ffbe0109cd",
       "date": "2026-09-25T21:50:56Z",
       "message": "Fix roles, the raccoon timeline, certs and repo links, add Guideline Assist to the résumé"
-    },
-    {
-      "sha": "6ca2a423ea027378dc0b6f0cc467f8cf2289371f",
-      "date": "2026-09-25T21:32:30Z",
-      "message": "Voice pass on the raccoon page, fix its dead links, and finish the version bump"
-    },
-    {
-      "sha": "c92a577f442ce175f653d81503261e72eb70f2bd",
-      "date": "2026-09-25T21:32:13Z",
-      "message": "Voice pass on the fifteen arcade apps"
-    },
-    {
-      "sha": "7251e9ca85a35f68a819123aec0cf83666bde4fb",
-      "date": "2026-09-25T21:29:23Z",
-      "message": "Bump the asset version token to 20260925f"
     }
   ],
   "weeks": [
     0,
     35,
     22,
-    111,
-    16,
+    112,
+    15,
     0,
     3,
     0,
@@ -75,74 +75,92 @@
     16,
     15,
     0,
-    71
+    75
   ],
   "pages": [
     {
       "file": "index.html",
       "label": "Work",
-      "date": "2026-09-26T01:04:05Z",
-      "sha": "f4f5d58633de0f1f7829bf48ea231e18229e4cce",
-      "message": "Correct what moved between the hand review and the repo"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "life.html",
       "label": "Life",
-      "date": "2026-09-26T01:00:11Z",
-      "sha": "ba365156883dc9d65b7f1276de5c2c11fc583db1",
-      "message": "Rewrite the site copy for readers outside AI, and split the Christie shelf by series"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "resume.html",
       "label": "Résumé",
-      "date": "2026-09-26T01:02:04Z",
-      "sha": "258c9f20d029bfd112fa2dee63f50f927318e373",
-      "message": "Rewrite the résumé for AI deployment roles, and print the PDF from the page"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "pixels/index.html",
       "label": "Pixels replay",
-      "date": "2026-09-26T01:00:11Z",
-      "sha": "ba365156883dc9d65b7f1276de5c2c11fc583db1",
-      "message": "Rewrite the site copy for readers outside AI, and split the Christie shelf by series"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "assist/index.html",
       "label": "Assist replay",
-      "date": "2026-09-26T01:00:11Z",
-      "sha": "ba365156883dc9d65b7f1276de5c2c11fc583db1",
-      "message": "Rewrite the site copy for readers outside AI, and split the Christie shelf by series"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "apps/index.html",
       "label": "Arcade",
-      "date": "2026-09-26T01:00:11Z",
-      "sha": "ba365156883dc9d65b7f1276de5c2c11fc583db1",
-      "message": "Rewrite the site copy for readers outside AI, and split the Christie shelf by series"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "raccoon/index.html",
       "label": "Raccoon",
-      "date": "2026-09-26T01:04:05Z",
-      "sha": "f4f5d58633de0f1f7829bf48ea231e18229e4cce",
-      "message": "Correct what moved between the hand review and the repo"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "toolkit.html",
       "label": "Toolkit",
-      "date": "2026-09-26T01:02:09Z",
-      "sha": "5146e988a73d9085e6941b88537e0ab2adff3799",
-      "message": "Show when each page last changed and why on /toolkit"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     },
     {
       "file": "404.html",
       "label": "404",
-      "date": "2026-09-26T01:00:11Z",
-      "sha": "ba365156883dc9d65b7f1276de5c2c11fc583db1",
-      "message": "Rewrite the site copy for readers outside AI, and split the Christie shelf by series"
+      "date": "2026-09-26T01:19:29Z",
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "message": "Match every build on the site to its own repo README"
     }
   ],
   "notes": [
+    {
+      "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+      "date": "2026-09-26T01:19:29Z",
+      "title": "Match every build on the site to its own repo README",
+      "body": "The site had drifted from what each build's README actually says, and anyone who clicks through to a repo should find the same numbers there, so every figure now matches its README and results files, and anything the README does not back up was taken off, softened or marked as laid out for the mock."
+    },
+    {
+      "sha": "e43e432b84752ae08c80f2fbdbf71ace18ecc9f1",
+      "date": "2026-09-26T01:11:31Z",
+      "title": "Name each build's own repo as the source of truth in FACTS.md",
+      "body": "The numbers on the site kept drifting from the builds they describe, and each build's README is where the eval actually gets written up, so that is what the site copies from, and where the two disagree the site is the one that has to change."
+    },
+    {
+      "sha": "434cc07eb00463f7b1147cae27531bb3e559e6e8",
+      "date": "2026-09-26T01:06:33Z",
+      "title": "Allow more than one \"In plain terms\" line per project",
+      "body": "Some projects need a second plain line to explain a term like RAG or dbt, and those were my call, so the rule is at least one, and Claude adds one unless I ask for more."
+    },
     {
       "sha": "f4f5d58633de0f1f7829bf48ea231e18229e4cce",
       "date": "2026-09-26T01:04:05Z",
@@ -175,7 +193,7 @@
     }
   ],
   "resume": {
-    "sha": "258c9f20d029bfd112fa2dee63f50f927318e373",
-    "date": "2026-09-26T01:02:04Z"
+    "sha": "7c7831408921278a175791348875c8cb8e3c415c",
+    "date": "2026-09-26T01:19:29Z"
   }
 }
